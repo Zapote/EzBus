@@ -54,6 +54,10 @@
       <Project>{4142F834-AC35-4E99-9932-291805075F80}</Project>
       <Name>EzBus.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EzBus\EzBus.csproj">
+      <Project>{31bb0ddf-dced-49d0-8fc8-0d8ac396dd7b}</Project>
+      <Name>EzBus</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
