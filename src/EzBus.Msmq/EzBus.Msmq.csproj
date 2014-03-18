@@ -49,7 +49,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="package.nuspec">
+    <None Include="ezbus.msmq.nuspec">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
