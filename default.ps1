@@ -10,7 +10,7 @@ $toolsDir = "$baseDir\Tools"
 $outputDir = "$buildDir\Output"
 $artifactsDir = "$buildDir\Artifacts"
 $releaseDir = "$buildDir\Release"
-$nunitexec = "$toolsDir\nunit-2.6.3\bin\nunit-console.exe"
+$nunitexec = "$toolsDir\nunit-2.6.3\nunit-console.exe"
 $zipExec = "$toolsDir\zip\7za.exe"
 $nugetExec = "$toolsDir\nuget\nuget.exe"
 include $toolsDir\psake\buildutils.ps1
