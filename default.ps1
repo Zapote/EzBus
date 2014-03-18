@@ -17,7 +17,7 @@ include $toolsDir\psake\buildutils.ps1
 
 task default -depends DoRelease
 
-task DoRelease -depends GenerateAssemblyInfo, Test, CreateDeployPackages, CreateWebDeployPackages, ZipAndCopyToArtifacts, CreateNugetPackages{
+task DoRelease -depends GenerateAssemblyInfo, InstallNugetPackages, Test, CreateNugetPackages{
 }
 
 task Clean{
@@ -62,7 +62,6 @@ task Init -depends InitEnvironment, Clean, DetectOperatingSystemArchitecture {
 	echo "Current Directory: $currentDirectory" 
  }
  
-
 task GenerateAssemblyInfo{
 	$assemblyInfoDirs = Get-ChildItem -path "$baseDir" -recurse -include "*.csproj" | % {
 		$propDir = $_.DirectoryName + "\Properties"
@@ -87,7 +86,7 @@ task GenerateAssemblyInfo{
 	}
 }
 
-task CompileMain -depends Init{ 
+task CompileMain { 
 	Delete-Directory $outputDir
 	Create-Directory $outputDir
 
@@ -120,61 +119,24 @@ task Test -depends CompileMain{
 	$testAssemblies += Get-ChildItem -path "$outputDir" -recurse -include *.Test.dll
 	exec {&$nunitexec $testAssemblies $script:nunitTargetFramework /xml="$buildDir\TestReports\TestResults.xml" /noshadow /nologo } 
 } 
- 
-task CreateDeployPackages{
-	dir $outputDir -recurse -include *.deploy | %{
-		$nuspec = $_.FullName
-		$srcDir = $_.DirectoryName
 
-		[xml]$nuspecXml = Get-Content $nuspec
-		$name = $nuspecXml.package.metadata.id
-		$version = "$ProductVersion.$BuildNumber"
-		$targetDir = "$releaseDir\$name-$version"
+task InstallNugetPackages -depends Init {
+	Write-Host "Looking for packages.config files..."
+	
+	$packageConfigs = Get-ChildItem -path "$baseDir" -recurse -include packages.config | where {$_ -notmatch 'obj'}
+	$packageConfigs | % {
+		$configFile = $_.FullName
+		$directory = $_.Directory
+		$installDir = "$directory\..\packages\"
 		
-		Delete-Directory $targetDir
-		Create-Directory $targetDir 
-				
-		foreach ($file in $nuspecXml.package.files.file){
-			$src = $file.GetAttribute("src")
-			$target = $file.GetAttribute("target")
-			$target = $target.Replace("lib\net40", "")
-			$exclude = $file.GetAttribute("exclude").split(";")
-			if($target.EndsWith("\"))
-			{
-				Write-Host "create target: $targetDir\$target"
-				Create-Directory "$targetDir\$target"
-			}
-			Copy-Item  "$srcDir\$src" "$targetDir\$target" -recurse -force -exclude $exclude
+		Write-Host "Installing packages for $configFile"
+		
+		if(!(Test-Path $installDir)){
+			Create-Directory $installDir
 		}
 		
-		Write-Host "Done: $name"
-	}
-}
-
-task CreateWebDeployPackages{
-	Get-ChildItem -path "$baseDir" -recurse -include _PublishedWebsites | % {
-		$source = Get-ChildItem -path $_ -recurse | Select-Object -First 1
-		$name = $source.BaseName
-		$packageDir = "$releaseDir\$name-$Version"
-		$exclude = ("Web.Debug.config","Web.Release.config")
-		Create-Directory $packageDir
-		foreach ($file in Get-ChildItem -path $source.FullName -exclude $exclude){
-			Copy-Item $file $packageDir -recurse
-		}
-		
-		Write-Host "Done: $name"
-	}
-}
-
-task ZipAndCopyToArtifacts{
-	dir $releaseDir | Where-Object { $_.PSIsContainer } | % {
-		$packageName = $_.Name
-		
-		echo "creating archive for $packageName"
-		
-		$archive = "$artifactsDir\$packageName.zip"
-		$packageDir = $_.FullName
-		exec { &$zipExec a -tzip $archive $packageDir\** }
+		$installDir = Resolve-Path $installDir
+		exec { &$nugetExec install $configFile -o "$installDir\" }
 	}
 }
 
