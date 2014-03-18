@@ -1,46 +1,46 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Messaging;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace EzBus.Msmq
 {
-    public class MsmqMessageSender : ISendingChannel
+    public class MsmqSendingChannel : ISendingChannel
     {
-        public void Send(EndpointAddress destination, MessageEnvelope message)
+        public void Send(EndpointAddress destination, ChannelMessage channelMessage)
         {
             var queueName = MsmqAddressHelper.GetQueueName(destination);
-            var queuePath = MsmqAddressHelper.GetQueueName(destination);
+            var queuePath = MsmqAddressHelper.GetQueuePath(destination);
             if (!MessageQueue.Exists(queueName)) throw new Exception(string.Format("Destination {0} does not exist.", destination));
 
             var destinationQueue = new MessageQueue(queuePath);
 
-            var tx = new MessageQueueTransaction();
-
-            tx.Begin();
-
             var queueMessage = new Message
             {
-                BodyStream = message.BodyStream,
-                Label = message.MessageType.Name,
-                Extension = ConvertHeaders(message)
+                BodyStream = channelMessage.BodyStream,
+                Label = channelMessage.Headers.First().Value,
+                Extension = ConvertHeaders(channelMessage)
             };
 
-            destinationQueue.Send(queueMessage, tx);
-
-            tx.Commit();
+            using (var tx = new MessageQueueTransaction())
+            {
+                tx.Begin();
+                destinationQueue.Send(queueMessage, tx);
+                tx.Commit();
+            }
         }
 
-        private static byte[] ConvertHeaders(MessageEnvelope envelope)
+        private static byte[] ConvertHeaders(ChannelMessage message)
         {
-            var stringBuilder = new StringBuilder();
-
-            foreach (var header in envelope.Headers)
-            {
-                stringBuilder.AppendLine(header.ToString());
-            }
-
+            var xmlSerializer = new XmlSerializer(typeof(MessageHeader[]));
+            var textWriter = new StringWriter();
+            xmlSerializer.Serialize(textWriter, message.Headers.ToArray());
+            var xml = textWriter.ToString();
+            textWriter.Close();
             var encoding = new UTF8Encoding();
-            return encoding.GetBytes(stringBuilder.ToString());
+            return encoding.GetBytes(xml);
         }
     }
 }

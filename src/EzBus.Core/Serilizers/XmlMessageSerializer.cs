@@ -6,10 +6,11 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Linq;
+using EzBus.Serilizers;
 
 namespace EzBus.Core.Serilizers
 {
-    public class XmlMessageSerializer
+    public class XmlMessageSerializer : IMessageSerilizer
     {
         public Stream Serialize(object obj)
         {

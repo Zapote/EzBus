@@ -4,6 +4,6 @@ namespace EzBus
 {
     public interface IAssemblyScanner
     {
-        Type[] GetMessageHandlers();
+        Type[] FindTypeInAssemblies(Type typeToFind);
     }
 }

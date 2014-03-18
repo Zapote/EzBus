@@ -33,9 +33,11 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Messaging" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MsmqAddressHelper.cs" />
+    <Compile Include="MsmqFactoryExtensions.cs" />
     <Compile Include="MsmqReceivingChannel.cs" />
     <Compile Include="MsmqSendingChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

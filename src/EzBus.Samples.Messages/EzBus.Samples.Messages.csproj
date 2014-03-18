@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}</ProjectGuid>
+    <ProjectGuid>{7AFF69F7-6271-425F-B725-CEF40051F772}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EzBus</RootNamespace>
-    <AssemblyName>EzBus</AssemblyName>
+    <RootNamespace>EzBus.Samples.Messages</RootNamespace>
+    <AssemblyName>EzBus.Samples.Messages</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,22 +32,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EndpointAddress.cs" />
-    <Compile Include="IAssemblyScanner.cs" />
-    <Compile Include="IBus.cs" />
-    <Compile Include="IBusStarter.cs" />
-    <Compile Include="IEndpointConfig.cs" />
-    <Compile Include="IBusFactory.cs" />
-    <Compile Include="IMessageHandler.cs" />
-    <Compile Include="IReceivingChannel.cs" />
-    <Compile Include="ISendingChannel.cs" />
-    <Compile Include="ChannelMessage.cs" />
-    <Compile Include="MessageHeader.cs" />
-    <Compile Include="MessageReceivedEventArgs.cs" />
+    <Compile Include="SayHello.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serilizers\IMessageSerilizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

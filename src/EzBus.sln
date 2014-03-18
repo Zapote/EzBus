@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Core.Test", "EzBus.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Msmq", "EzBus.Msmq\EzBus.Msmq.csproj", "{3F5D0C34-372D-49CD-A591-CFD59471EDA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Client", "EzBus.Samples.Client\EzBus.Samples.Client.csproj", "{2006E185-94A0-43A8-9C5B-01B8F3892E78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Messages", "EzBus.Samples.Messages\EzBus.Samples.Messages.csproj", "{7AFF69F7-6271-425F-B725-CEF40051F772}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,14 @@ Global
 		{3F5D0C34-372D-49CD-A591-CFD59471EDA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F5D0C34-372D-49CD-A591-CFD59471EDA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F5D0C34-372D-49CD-A591-CFD59471EDA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2006E185-94A0-43A8-9C5B-01B8F3892E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2006E185-94A0-43A8-9C5B-01B8F3892E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2006E185-94A0-43A8-9C5B-01B8F3892E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2006E185-94A0-43A8-9C5B-01B8F3892E78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AFF69F7-6271-425F-B725-CEF40051F772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AFF69F7-6271-425F-B725-CEF40051F772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AFF69F7-6271-425F-B725-CEF40051F772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AFF69F7-6271-425F-B725-CEF40051F772}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

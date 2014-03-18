@@ -37,6 +37,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyScanner.cs" />
+    <Compile Include="Bus.cs" />
+    <Compile Include="EndpointConfig.cs" />
+    <Compile Include="EndpointHost.cs" />
+    <Compile Include="BusFactory.cs" />
+    <Compile Include="HandlerCache.cs" />
+    <Compile Include="HandlerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serilizers\TypeExtensions.cs" />
     <Compile Include="Serilizers\XmlMessageSerializer.cs" />

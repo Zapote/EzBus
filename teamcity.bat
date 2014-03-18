@@ -1,0 +1,2 @@
+@echo off
+powershell -NoProfile -ExecutionPolicy unrestricted -Command "& {Import-Module '.\tools\psake\psake.psm1'; invoke-psake -t %1 -properties @{ BuildNumber='%2' }; if ($Error -ne '') {write-host "ERROR: $error" -fore RED; exit $error.Count} }"

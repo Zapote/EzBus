@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{2006E185-94A0-43A8-9C5B-01B8F3892E78}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EzBus</RootNamespace>
-    <AssemblyName>EzBus</AssemblyName>
+    <RootNamespace>EzBus.Samples.Client</RootNamespace>
+    <AssemblyName>EzBus.Samples.Client</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,22 +34,33 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EndpointAddress.cs" />
-    <Compile Include="IAssemblyScanner.cs" />
-    <Compile Include="IBus.cs" />
-    <Compile Include="IBusStarter.cs" />
-    <Compile Include="IEndpointConfig.cs" />
-    <Compile Include="IBusFactory.cs" />
-    <Compile Include="IMessageHandler.cs" />
-    <Compile Include="IReceivingChannel.cs" />
-    <Compile Include="ISendingChannel.cs" />
-    <Compile Include="ChannelMessage.cs" />
-    <Compile Include="MessageHeader.cs" />
-    <Compile Include="MessageReceivedEventArgs.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serilizers\IMessageSerilizer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EzBus.Core\EzBus.Core.csproj">
+      <Project>{4142F834-AC35-4E99-9932-291805075F80}</Project>
+      <Name>EzBus.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EzBus.Msmq\EzBus.Msmq.csproj">
+      <Project>{3F5D0C34-372D-49CD-A591-CFD59471EDA2}</Project>
+      <Name>EzBus.Msmq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EzBus.Samples.Messages\EzBus.Samples.Messages.csproj">
+      <Project>{7AFF69F7-6271-425F-B725-CEF40051F772}</Project>
+      <Name>EzBus.Samples.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EzBus\EzBus.csproj">
+      <Project>{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}</Project>
+      <Name>EzBus</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

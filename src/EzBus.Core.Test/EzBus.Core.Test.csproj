@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyScannerTest.cs" />
+    <Compile Include="TestHelpers\BarHandler.cs" />
+    <Compile Include="TestHelpers\FooHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\XmlDeserializationTest.cs" />
     <Compile Include="Serializers\XmlSerializationTest.cs" />
