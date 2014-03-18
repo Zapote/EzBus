@@ -1,2 +1,2 @@
-EzBus - A very easy messaging framework
-=======
+EzBus - Easy messaging for you!
+===============================
