@@ -82,7 +82,7 @@ namespace EzBus.Core.Test.Serializers
         [Test]
         public void ComplexTypeIsSerializedCorrect()
         {
-            const string stringValue = "Some text";
+            const string stringValue = "First_section_is_generic_for_assembly text";
             const int intValue = 1;
             var message = new MockMessage(stringValue) { MockData = { IntValue = intValue } };
 

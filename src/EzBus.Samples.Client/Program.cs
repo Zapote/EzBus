@@ -10,17 +10,17 @@ namespace EzBus.Samples.Client
         static void Main(string[] args)
         {
             var bus = BusFactory.Setup().WithMsmq().Start();
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
-            bus.Send("EzBus.Samples.Client", new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
+            bus.Send(new SayHello("Larry"));
             Console.Read();
         }
 

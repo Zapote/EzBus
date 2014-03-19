@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
@@ -38,6 +39,9 @@
   <ItemGroup>
     <Compile Include="AssemblyScanner.cs" />
     <Compile Include="Bus.cs" />
+    <Compile Include="Config\DestinationCollection.cs" />
+    <Compile Include="Config\DestinationElement.cs" />
+    <Compile Include="Config\DestinationSection.cs" />
     <Compile Include="EndpointConfig.cs" />
     <Compile Include="EndpointHost.cs" />
     <Compile Include="BusFactory.cs" />
@@ -58,8 +62,10 @@
   <ItemGroup>
     <None Include="ezbus.nuspec">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

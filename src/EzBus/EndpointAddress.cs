@@ -12,7 +12,7 @@
         }
 
         public EndpointAddress(string queueName)
-            : this(queueName, string.Empty)
+            : this(queueName, "")
         {
 
         }
@@ -20,6 +20,12 @@
         public override string ToString()
         {
             return string.Format("{0}@{1}", QueueName, MachineName);
+        }
+
+        public static EndpointAddress Parse(string s)
+        {
+            var parts = s.Split('@');
+            return parts.Length > 1 ? new EndpointAddress(parts[0], parts[1]) : new EndpointAddress(parts[0]);
         }
     }
 }
