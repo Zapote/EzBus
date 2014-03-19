@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using EzBus.Core.Config;
+using EzBus.Core.Routing;
 using EzBus.Core.Serilizers;
 
 namespace EzBus.Core
@@ -10,27 +9,22 @@ namespace EzBus.Core
     public class Bus : IBus
     {
         private readonly ISendingChannel sendingChannel;
+        private readonly IMessageRouting messageRouting;
         private readonly XmlMessageSerializer serializer;
-        private readonly IDictionary<string, string> messageRouting = new Dictionary<string, string>();
 
-        public Bus(ISendingChannel sendingChannel)
+        public Bus(ISendingChannel sendingChannel, IMessageRouting messageRouting)
         {
             if (sendingChannel == null) throw new ArgumentNullException("sendingChannel");
+            if (messageRouting == null) throw new ArgumentNullException("messageRouting");
             this.sendingChannel = sendingChannel;
+            this.messageRouting = messageRouting;
             serializer = new XmlMessageSerializer();
-
-            var destinations = DestinationSection.Section.Destinations;
-
-            foreach (DestinationElement destination in destinations)
-            {
-                messageRouting.Add(destination.Assembly, destination.Endpoint);
-            }
         }
 
         public void Send(object message)
         {
-            var messageAssembly = message.GetType().Assembly;
-            var address = messageRouting[messageAssembly.GetName().Name];
+            var assemblyName = message.GetType().Assembly.GetName().Name;
+            var address = messageRouting.GetRoute(assemblyName, message.GetType().FullName);
             Send(address, message);
         }
 
@@ -38,7 +32,9 @@ namespace EzBus.Core
         {
             var stream = serializer.Serialize(message);
             var channelMessage = CreateChannelMessage(message.GetType(), stream);
-            sendingChannel.Send(EndpointAddress.Parse(destinationQueue), channelMessage);
+            var destination = EndpointAddress.Parse(destinationQueue);
+            channelMessage.AddHeader("Destination", destination.ToString());
+            sendingChannel.Send(destination, channelMessage);
         }
 
         private static ChannelMessage CreateChannelMessage(Type messageType, Stream stream)

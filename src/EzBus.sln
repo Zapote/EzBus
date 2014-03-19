@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Client", "EzB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Messages", "EzBus.Samples.Messages\EzBus.Samples.Messages.csproj", "{7AFF69F7-6271-425F-B725-CEF40051F772}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{D3C1F484-FA35-4E22-B917-70CF79960AD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,5 +48,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2006E185-94A0-43A8-9C5B-01B8F3892E78} = {D3C1F484-FA35-4E22-B917-70CF79960AD0}
+		{7AFF69F7-6271-425F-B725-CEF40051F772} = {D3C1F484-FA35-4E22-B917-70CF79960AD0}
 	EndGlobalSection
 EndGlobal

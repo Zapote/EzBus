@@ -41,13 +41,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyScannerTest.cs" />
+    <Compile Include="BusTest.cs" />
     <Compile Include="Config\DestinationSectionConfigTest.cs" />
+    <Compile Include="TestHelpers\FakeMessageChannel.cs" />
+    <Compile Include="TestHelpers\FakeMessageRouting.cs" />
+    <Compile Include="MessageRoutingTest.cs" />
     <Compile Include="TestHelpers\BarHandler.cs" />
     <Compile Include="TestHelpers\FooHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\XmlDeserializationTest.cs" />
     <Compile Include="Serializers\XmlSerializationTest.cs" />
     <Compile Include="TestHelpers\MockData.cs" />
+    <Compile Include="TestHelpers\MockEnum.cs" />
     <Compile Include="TestHelpers\MockMessage.cs" />
     <Compile Include="TestHelpers\MockMessageWithCollection.cs" />
   </ItemGroup>

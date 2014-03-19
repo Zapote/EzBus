@@ -42,11 +42,15 @@
     <Compile Include="Config\DestinationCollection.cs" />
     <Compile Include="Config\DestinationElement.cs" />
     <Compile Include="Config\DestinationSection.cs" />
+    <Compile Include="Routing\DestinationMissingException.cs" />
     <Compile Include="EndpointConfig.cs" />
     <Compile Include="EndpointHost.cs" />
     <Compile Include="BusFactory.cs" />
     <Compile Include="HandlerCache.cs" />
     <Compile Include="HandlerInfo.cs" />
+    <Compile Include="Routing\ConfigurableMessageRouting.cs" />
+    <Compile Include="Routing\IMessageRouting.cs" />
+    <Compile Include="Routing\MessageRoutingException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serilizers\TypeExtensions.cs" />
     <Compile Include="Serilizers\XmlMessageSerializer.cs" />

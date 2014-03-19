@@ -8,14 +8,14 @@ namespace EzBus.Core
 {
     public class EndpointHost
     {
-        private readonly EndpointConfig config;
+        private readonly IReceivingChannel receivingChannel;
         private readonly IMessageSerilizer messageSerializer;
         private HandlerCache handlerCache;
 
-        public EndpointHost(EndpointConfig config)
+        public EndpointHost(IReceivingChannel receivingChannel)
         {
-            if (config == null) throw new ArgumentNullException("config");
-            this.config = config;
+            if (receivingChannel == null) throw new ArgumentNullException("receivingChannel");
+            this.receivingChannel = receivingChannel;
             messageSerializer = new XmlMessageSerializer();
         }
 
@@ -30,9 +30,8 @@ namespace EzBus.Core
                 handlerCache.Add(handlerType);
             }
 
-            var receiver = config.ReceivingChannel;
-            receiver.Initialize(new EndpointAddress(CreateEndpointName()));
-            receiver.OnMessageReceived += OnMessageReceived;
+            receivingChannel.Initialize(new EndpointAddress(CreateEndpointName()));
+            receivingChannel.OnMessageReceived += OnMessageReceived;
         }
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)

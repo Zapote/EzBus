@@ -25,10 +25,9 @@ namespace EzBus.Core.Test.Config
         {
             var destination = destinations[1];
 
-            Assert.That(destination.Endpoint, Is.EqualTo("acme.input.fast"));
+            Assert.That(destination.Endpoint, Is.EqualTo("acme.input.fastlane"));
             Assert.That(destination.Assembly, Is.EqualTo("Acme.Messages"));
             Assert.That(destination.Message, Is.EqualTo("Acme.Messages.DoAction"));
-
         }
     }
 }

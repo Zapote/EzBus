@@ -1,4 +1,6 @@
-﻿namespace EzBus.Core
+﻿using EzBus.Core.Routing;
+
+namespace EzBus.Core
 {
     public class BusFactory : IBusFactory, IBusStarter
     {
@@ -8,14 +10,19 @@
 
         public IBus SendOnly()
         {
-            return new Bus(config.SendingChannel);
+            return CreateBus();
         }
 
         public IBus Start()
         {
-            var host = new EndpointHost(config);
+            var host = new EndpointHost(config.ReceivingChannel);
             host.Start();
-            return new Bus(config.SendingChannel);
+            return CreateBus();
+        }
+
+        private Bus CreateBus()
+        {
+            return new Bus(config.SendingChannel, new ConfigurableMessageRouting());
         }
 
         public static IBusFactory Setup()

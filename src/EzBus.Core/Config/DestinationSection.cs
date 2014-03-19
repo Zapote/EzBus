@@ -18,7 +18,6 @@ namespace EzBus.Core.Config
                 if (section == null) throw new ConfigurationErrorsException("Unable to retrieve 'destination' section");
                 return section;
             }
-
         }
     }
 }

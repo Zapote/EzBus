@@ -24,5 +24,10 @@ namespace EzBus.Core.Config
             get { return (string)this["Message"]; }
             set { this["Message"] = value; }
         }
+
+        public override string ToString()
+        {
+            return string.IsNullOrEmpty(Message) ? Assembly : string.Format("{0}, {1}", Assembly, Message);
+        }
     }
 }
