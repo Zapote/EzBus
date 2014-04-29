@@ -26,7 +26,7 @@ namespace EzBus.Core
 
         private static Type GetMessageType(Type handlerType)
         {
-            var handlerInterface = handlerType.GetInterface(typeof(IMessageHandler<>).Name);
+            var handlerInterface = handlerType.GetInterface(typeof(IHandle<>).Name);
             return handlerInterface.GetGenericArguments()[0];
         }
     }

@@ -42,6 +42,10 @@
     <Compile Include="Config\DestinationCollection.cs" />
     <Compile Include="Config\DestinationElement.cs" />
     <Compile Include="Config\DestinationSection.cs" />
+    <Compile Include="InvokeResult.cs" />
+    <Compile Include="IObjectFactory.cs" />
+    <Compile Include="ISubscriptionStorage.cs" />
+    <Compile Include="DefaultObjectFactory.cs" />
     <Compile Include="Routing\DestinationMissingException.cs" />
     <Compile Include="EndpointConfig.cs" />
     <Compile Include="EndpointHost.cs" />
@@ -55,7 +59,7 @@
     <Compile Include="Serilizers\TypeExtensions.cs" />
     <Compile Include="Serilizers\XmlMessageSerializer.cs" />
     <Compile Include="Serilizers\XmlValueConverter.cs" />
-    <Compile Include="WorkerThread.cs" />
+    <Compile Include="Subscriber.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EzBus\EzBus.csproj">

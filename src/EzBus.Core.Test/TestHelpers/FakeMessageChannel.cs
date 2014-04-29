@@ -6,12 +6,20 @@ namespace EzBus.Core.Test.TestHelpers
     {
         public void Send(EndpointAddress destination, ChannelMessage channelMessage)
         {
+            channelMessage.BodyStream.Seek(0, 0);
             LastSentDestination = destination;
-            if (OnMessageReceived != null) OnMessageReceived(this, new MessageReceivedEventArgs() { });
+
+            if (destination.QueueName.EndsWith("error")) return;
+ 
+            if (OnMessageReceived != null) OnMessageReceived(this, new MessageReceivedEventArgs
+            {
+                Message = channelMessage
+            });
         }
 
-        public void Initialize(EndpointAddress inputAddress)
+        public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
+
         }
 
         public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;

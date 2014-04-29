@@ -14,9 +14,7 @@ namespace EzBus.Core.Config
         {
             get
             {
-                var section = ConfigurationManager.GetSection("destinations") as DestinationSection;
-                if (section == null) throw new ConfigurationErrorsException("Unable to retrieve 'destination' section");
-                return section;
+                return ConfigurationManager.GetSection("destinations") as DestinationSection ?? new DestinationSection();
             }
         }
     }

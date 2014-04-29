@@ -43,6 +43,8 @@
     <Compile Include="AssemblyScannerTest.cs" />
     <Compile Include="BusTest.cs" />
     <Compile Include="Config\DestinationSectionConfigTest.cs" />
+    <Compile Include="DefaultObjectFactoryTest.cs" />
+    <Compile Include="EndpointHostTest.cs" />
     <Compile Include="TestHelpers\FakeMessageChannel.cs" />
     <Compile Include="TestHelpers\FakeMessageRouting.cs" />
     <Compile Include="MessageRoutingTest.cs" />

@@ -18,7 +18,7 @@ namespace EzBus.Core.Test
         [Test]
         public void Scanner_should_find_all_handlers_types()
         {
-            var handlers = scanner.FindTypeInAssemblies(typeof(IMessageHandler<>));
+            var handlers = scanner.FindTypeInAssemblies(typeof(IHandle<>));
 
             Assert.That(handlers.Count(), Is.GreaterThanOrEqualTo(2));
             Assert.That(handlers, Contains.Item(typeof(BarHandler)));

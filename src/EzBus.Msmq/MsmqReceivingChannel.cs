@@ -18,23 +18,29 @@ namespace EzBus.Msmq
 
         public string InstanceId { get; set; }
 
-        public void Initialize(EndpointAddress inputAddress)
+        public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
-            var queueName = MsmqAddressHelper.GetQueueName(inputAddress);
-            var queuePath = MsmqAddressHelper.GetQueuePath(inputAddress);
+            var inputQueueName = MsmqAddressHelper.GetQueueName(inputAddress);
+            var inputQueuePath = MsmqAddressHelper.GetQueuePath(inputAddress);
+            var errorQueueName = MsmqAddressHelper.GetQueueName(errorAddress);
 
-            inputQueue = MessageQueue.Exists(queueName) ? new MessageQueue(queuePath, QueueAccessMode.Receive) : MessageQueue.Create(queueName, true);
+            inputQueue = MessageQueue.Exists(inputQueueName) ? new MessageQueue(inputQueuePath, QueueAccessMode.Receive) : MessageQueue.Create(inputQueueName, true);
+
+            if (!MessageQueue.Exists(errorQueueName))
+            {
+                MessageQueue.Create(errorQueueName, true);
+            }
+
             inputQueue.MessageReadPropertyFilter = new MessagePropertyFilter
             {
                 Body = true,
-                TimeToBeReceived = true,
                 Recoverable = true,
                 Id = true,
-                ResponseQueue = true,
                 CorrelationId = true,
                 Extension = true,
                 AppSpecific = true
             };
+
             inputQueue.ReceiveCompleted += OnReceiveCompleted;
             inputQueue.BeginReceive();
         }

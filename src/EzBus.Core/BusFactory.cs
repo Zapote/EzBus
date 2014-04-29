@@ -15,7 +15,7 @@ namespace EzBus.Core
 
         public IBus Start()
         {
-            var host = new EndpointHost(config.ReceivingChannel);
+            var host = new EndpointHost(config);
             host.Start();
             return CreateBus();
         }

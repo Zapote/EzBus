@@ -17,7 +17,6 @@ namespace EzBus.Core.Test.Config
             Assert.That(destination.Endpoint, Is.EqualTo("acme.input"));
             Assert.That(destination.Assembly, Is.EqualTo("Acme.Messages"));
             Assert.That(destination.Message, Is.EqualTo(""));
-
         }
 
         [Test]

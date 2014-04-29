@@ -1,6 +1,6 @@
 ﻿namespace EzBus
 {
-    public interface IMessageHandler<in T>
+    public interface IHandle<in T>
     {
         void Handle(T message);
     }
