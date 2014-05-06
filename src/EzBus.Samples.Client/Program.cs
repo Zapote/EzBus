@@ -24,10 +24,25 @@ namespace EzBus.Samples.Client
 
         public class SayHelloHandler2 : IHandle<SayHello>
         {
+            private readonly Dependency dependency;
+
+            public SayHelloHandler2(Dependency dependency)
+            {
+                if (dependency == null) throw new ArgumentNullException("dependency");
+                this.dependency = dependency;
+            }
+
             public void Handle(SayHello message)
             {
-                Console.WriteLine("Hello {0}! This is 2 ez!", message.Name);
-                //throw new Exception("UNABLE TO FIX!");
+                dependency.PrintOnScreen("Hello {0}.", message.Name);
+            }
+        }
+
+        public class Dependency
+        {
+            public void PrintOnScreen(string message, params object[] arg)
+            {
+                Console.WriteLine(message, arg);
             }
         }
     }

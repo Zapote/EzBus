@@ -1,4 +1,5 @@
-﻿using EzBus.Core.Test.TestHelpers;
+﻿using EzBus.Core.Builders;
+using EzBus.Core.Test.TestHelpers;
 using NUnit.Framework;
 
 namespace EzBus.Core.Test

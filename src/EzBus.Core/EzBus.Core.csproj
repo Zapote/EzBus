@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EzBus.Core</RootNamespace>
     <AssemblyName>EzBus.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,9 +46,10 @@
     <Compile Include="Config\DestinationElement.cs" />
     <Compile Include="Config\DestinationSection.cs" />
     <Compile Include="InvokeResult.cs" />
-    <Compile Include="IObjectFactory.cs" />
+    <Compile Include="Builders\IObjectFactory.cs" />
     <Compile Include="ISubscriptionStorage.cs" />
-    <Compile Include="DefaultObjectFactory.cs" />
+    <Compile Include="Builders\DefaultObjectFactory.cs" />
+    <Compile Include="Builders\LightInject.cs" />
     <Compile Include="Routing\DestinationMissingException.cs" />
     <Compile Include="EndpointConfig.cs" />
     <Compile Include="EndpointHost.cs" />

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EzBus.Core
+namespace EzBus.Core.Builders
 {
     public interface IObjectFactory
     {

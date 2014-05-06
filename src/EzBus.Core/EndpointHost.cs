@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using EzBus.Core.Builders;
 using EzBus.Core.Serilizers;
 using EzBus.Serilizers;
 
