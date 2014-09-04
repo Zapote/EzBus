@@ -34,11 +34,17 @@ namespace EzBus.Samples.Client
 
             public void Handle(SayHello message)
             {
+                throw new Exception("Error in handler");
                 dependency.PrintOnScreen("Hello {0}.", message.Name);
             }
         }
 
-        public class Dependency
+        public interface IDependency
+        {
+            void PrintOnScreen(string message, params object[] arg);
+        }
+
+        public class Dependency : IDependency
         {
             public void PrintOnScreen(string message, params object[] arg)
             {

@@ -4,25 +4,25 @@ namespace EzBus.Core.Config
 {
     public class DestinationElement : ConfigurationElement
     {
-        [ConfigurationProperty("Assembly", DefaultValue = "", IsRequired = true)]
+        [ConfigurationProperty("assembly", DefaultValue = "", IsRequired = true)]
         public string Assembly
         {
-            get { return (string)this["Assembly"]; }
-            set { this["Assembly"] = value; }
+            get { return (string)this["assembly"]; }
+            set { this["assembly"] = value; }
         }
 
-        [ConfigurationProperty("Endpoint", DefaultValue = "", IsRequired = true)]
+        [ConfigurationProperty("endpoint", DefaultValue = "", IsRequired = true)]
         public string Endpoint
         {
-            get { return (string)this["Endpoint"]; }
-            set { this["Endpoint"] = value; }
+            get { return (string)this["endpoint"]; }
+            set { this["endpoint"] = value; }
         }
 
-        [ConfigurationProperty("Message", DefaultValue = "", IsRequired = false)]
+        [ConfigurationProperty("message", DefaultValue = "", IsRequired = false)]
         public string Message
         {
-            get { return (string)this["Message"]; }
-            set { this["Message"] = value; }
+            get { return (string)this["message"]; }
+            set { this["message"] = value; }
         }
 
         public override string ToString()

@@ -10,5 +10,11 @@ namespace EzBus.Core.Builders
         {
             return container.TryGetInstance(type);
         }
+
+        public void Register<TService, TImplementation>()
+            where TImplementation : TService
+        {
+            container.Register<TService, TImplementation>();
+        }
     }
 }
