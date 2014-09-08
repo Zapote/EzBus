@@ -44,11 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyScannerTest.cs" />
-    <Compile Include="BusTest.cs" />
+    <Compile Include="Specifications\SpecificationBase.cs" />
+    <Compile Include="Specifications\BusSpecificationBase.cs" />
+    <Compile Include="Specifications\When_message_is_published.cs" />
+    <Compile Include="Specifications\When_message_is_sent.cs" />
     <Compile Include="Config\DestinationSectionConfigTest.cs" />
     <Compile Include="Config\SubscriptionsSectionConfigTest.cs" />
     <Compile Include="DefaultObjectFactoryTest.cs" />
     <Compile Include="EndpointHostTest.cs" />
+    <Compile Include="Specifications\GivenAttribute.cs" />
+    <Compile Include="Specifications\SpecificationAttribute.cs" />
+    <Compile Include="Specifications\ThenAttribute.cs" />
+    <Compile Include="SubscriptionMessageHandlerTest.cs" />
     <Compile Include="TestHelpers\FakeMessageChannel.cs" />
     <Compile Include="TestHelpers\FakeMessageRouting.cs" />
     <Compile Include="MessageRoutingTest.cs" />

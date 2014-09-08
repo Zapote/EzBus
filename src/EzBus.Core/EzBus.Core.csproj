@@ -48,14 +48,15 @@
     <Compile Include="Config\SubscriptionCollection.cs" />
     <Compile Include="Config\SubscriptionElement.cs" />
     <Compile Include="Config\SubscriptionSection.cs" />
+    <Compile Include="InMemorySubscriptionStorage.cs" />
     <Compile Include="InvokeResult.cs" />
     <Compile Include="Builders\IObjectFactory.cs" />
     <Compile Include="ISubscriptionStorage.cs" />
     <Compile Include="Builders\DefaultObjectFactory.cs" />
     <Compile Include="Builders\LightInject.cs" />
     <Compile Include="Routing\DestinationMissingException.cs" />
-    <Compile Include="EndpointConfig.cs" />
-    <Compile Include="EndpointHost.cs" />
+    <Compile Include="HostConfig.cs" />
+    <Compile Include="Host.cs" />
     <Compile Include="BusFactory.cs" />
     <Compile Include="HandlerCache.cs" />
     <Compile Include="HandlerInfo.cs" />
@@ -66,7 +67,8 @@
     <Compile Include="Serilizers\TypeExtensions.cs" />
     <Compile Include="Serilizers\XmlMessageSerializer.cs" />
     <Compile Include="Serilizers\XmlValueConverter.cs" />
-    <Compile Include="Subscriber.cs" />
+    <Compile Include="Subscription.cs" />
+    <Compile Include="SubscriptionMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EzBus\EzBus.csproj">

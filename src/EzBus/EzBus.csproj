@@ -41,7 +41,7 @@
     <Compile Include="IAssemblyScanner.cs" />
     <Compile Include="IBus.cs" />
     <Compile Include="IBusStarter.cs" />
-    <Compile Include="IEndpointConfig.cs" />
+    <Compile Include="IHostConfig.cs" />
     <Compile Include="IBusFactory.cs" />
     <Compile Include="IHandle.cs" />
     <Compile Include="IReceivingChannel.cs" />

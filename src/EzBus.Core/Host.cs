@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EzBus.Core.Builders;
@@ -7,9 +8,8 @@ using EzBus.Serilizers;
 
 namespace EzBus.Core
 {
-    public class EndpointHost
+    public class Host
     {
-        private readonly EndpointConfig endpointConfig;
         private readonly IReceivingChannel receivingChannel;
         private readonly ISendingChannel sendingChannel;
         private readonly IObjectFactory objectFactory;
@@ -19,13 +19,12 @@ namespace EzBus.Core
         private string inputQueue;
         private string errorQueue;
 
-        public EndpointHost(EndpointConfig endpointConfig)
+        public Host(HostConfig hostConfig)
         {
-            if (endpointConfig == null) throw new ArgumentNullException("endpointConfig");
-            this.endpointConfig = endpointConfig;
-            receivingChannel = endpointConfig.ReceivingChannel;
-            sendingChannel = endpointConfig.SendingChannel;
-            objectFactory = endpointConfig.ObjectFactory;
+            if (hostConfig == null) throw new ArgumentNullException("hostConfig");
+            receivingChannel = hostConfig.ReceivingChannel;
+            sendingChannel = hostConfig.SendingChannel;
+            objectFactory = hostConfig.ObjectFactory;
             messageSerializer = new XmlMessageSerializer();
         }
 
@@ -38,6 +37,9 @@ namespace EzBus.Core
         {
             var scanner = new AssemblyScanner();
             var handlerTypes = scanner.FindTypeInAssemblies(typeof(IHandle<>));
+
+            if (NoCustomHandlersFound(handlerTypes)) return;
+
             handlerCache = new HandlerCache();
 
             foreach (var handlerType in handlerTypes)
@@ -49,6 +51,12 @@ namespace EzBus.Core
             errorQueue = string.Format("{0}.error", inputQueue);
             receivingChannel.Initialize(new EndpointAddress(inputQueue), new EndpointAddress(errorQueue));
             receivingChannel.OnMessageReceived += OnMessageReceived;
+        }
+
+        private static bool NoCustomHandlersFound(IList<Type> handlerTypes)
+        {
+            if (handlerTypes.Count == 0) return true;
+            return handlerTypes.Count == 1 && handlerTypes[0] == typeof(SubscriptionMessageHandler);
         }
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -109,6 +117,7 @@ namespace EzBus.Core
                 }
                 catch (Exception ex)
                 {
+                    //TODO:Figure out some logging
                     Console.WriteLine("Error in attempt {0}: {1}", i + 1, ex.InnerException.Message);
                     exception = ex;
                     success = false;

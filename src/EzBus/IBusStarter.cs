@@ -3,6 +3,5 @@
     public interface IBusStarter
     {
         IBus Start();
-        IBus SendOnly();
     }
 }

@@ -8,18 +8,18 @@ namespace EzBus.Core.Test
     public class EndpointHostTest : IHandle<FailingMessage>
     {
         private FakeMessageChannel messageChannel;
-        private EndpointHost host;
+        private Host host;
         private IBus bus;
 
         [SetUp]
         public void TestSetup()
         {
             messageChannel = new FakeMessageChannel();
-            bus = new Bus(messageChannel, new FakeMessageRouting());
-            var config = new EndpointConfig();
+            bus = new Bus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());
+            var config = new HostConfig();
             config.SetReceivingChannel(messageChannel);
             config.SetSendingChannel(messageChannel);
-            host = new EndpointHost(config);
+            host = new Host(config);
             host.Start();
         }
 

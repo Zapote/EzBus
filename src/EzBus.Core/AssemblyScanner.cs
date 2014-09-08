@@ -16,7 +16,6 @@ namespace EzBus.Core
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
             var types = new List<Type>();
 
-
             foreach (var file in assemblyFiles)
             {
                 var assembly = Assembly.LoadFile(file);

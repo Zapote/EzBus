@@ -1,9 +1,8 @@
-﻿using System.Linq.Expressions;
-using EzBus.Core.Builders;
+﻿using EzBus.Core.Builders;
 
 namespace EzBus.Core
 {
-    public class EndpointConfig : IEndpointConfig
+    public class HostConfig : IHostConfig
     {
         public ISendingChannel SendingChannel { get; private set; }
         public IReceivingChannel ReceivingChannel { get; private set; }
@@ -11,7 +10,7 @@ namespace EzBus.Core
         public int WorkerThreads { get; private set; }
         public int NumberOfRetrys { get; private set; }
 
-        public EndpointConfig()
+        public HostConfig()
         {
             NumberOfRetrys = 5;
             ObjectFactory = new DefaultObjectFactory();

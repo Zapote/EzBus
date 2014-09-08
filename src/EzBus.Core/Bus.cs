@@ -10,14 +10,17 @@ namespace EzBus.Core
     {
         private readonly ISendingChannel sendingChannel;
         private readonly IMessageRouting messageRouting;
+        private readonly ISubscriptionStorage subscriptionStorage;
         private readonly XmlMessageSerializer serializer;
 
-        public Bus(ISendingChannel sendingChannel, IMessageRouting messageRouting)
+        public Bus(ISendingChannel sendingChannel, IMessageRouting messageRouting, ISubscriptionStorage subscriptionStorage)
         {
             if (sendingChannel == null) throw new ArgumentNullException("sendingChannel");
             if (messageRouting == null) throw new ArgumentNullException("messageRouting");
+            if (subscriptionStorage == null) throw new ArgumentNullException("subscriptionStorage");
             this.sendingChannel = sendingChannel;
             this.messageRouting = messageRouting;
+            this.subscriptionStorage = subscriptionStorage;
             serializer = new XmlMessageSerializer();
         }
 
@@ -49,7 +52,12 @@ namespace EzBus.Core
 
         public void Publish(object message)
         {
-            throw new NotImplementedException();
+            var endpoints = subscriptionStorage.GetSubscribersEndpoints(message.GetType());
+
+            foreach (var endpoint in endpoints)
+            {
+                Send(endpoint, message);
+            }
         }
     }
 }

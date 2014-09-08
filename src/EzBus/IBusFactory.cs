@@ -2,6 +2,6 @@
 {
     public interface IBusFactory
     {
-        IEndpointConfig Config { get; }
+        IHostConfig Config { get; }
     }
 }

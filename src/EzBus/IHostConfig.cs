@@ -1,6 +1,6 @@
 ﻿namespace EzBus
 {
-    public interface IEndpointConfig
+    public interface IHostConfig
     {
         ISendingChannel SendingChannel { get; }
         IReceivingChannel ReceivingChannel { get; }

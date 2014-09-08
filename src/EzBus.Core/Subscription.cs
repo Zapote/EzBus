@@ -2,9 +2,9 @@
 
 namespace EzBus.Core
 {
-    public class Subscriber
+    public class Subscription
     {
-        public string Queueueueue { get; set; }
+        public string Endpoint { get; set; }
         public Type MessageType { get; set; }
     }
 }
