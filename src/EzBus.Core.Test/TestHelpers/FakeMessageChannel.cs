@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EzBus.Core.Test.TestHelpers
 {
     public class FakeMessageChannel : ISendingChannel, IReceivingChannel
     {
-        private readonly List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
+        private static readonly List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
+        private static event EventHandler<MessageReceivedEventArgs> InnerMessageHandler;
+
+        public FakeMessageChannel()
+        {
+            sentDestinations.Clear();
+            InnerMessageHandler = null;
+        }
 
         public void Send(EndpointAddress destination, ChannelMessage channelMessage)
         {
             channelMessage.BodyStream.Seek(0, 0);
-            LastSentDestination = destination;
             sentDestinations.Add(destination);
             if (destination.QueueName.EndsWith("error")) return;
 
-            if (OnMessageReceived != null) OnMessageReceived(this, new MessageReceivedEventArgs
+            if (InnerMessageHandler != null) InnerMessageHandler(this, new MessageReceivedEventArgs
             {
                 Message = channelMessage
             });
@@ -25,9 +32,20 @@ namespace EzBus.Core.Test.TestHelpers
 
         }
 
-        public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
+        public event EventHandler<MessageReceivedEventArgs> OnMessageReceived
+        {
+            add
+            {
+                InnerMessageHandler += value;
+            }
+            remove
+            {
+                InnerMessageHandler -= value;
+            }
+        }
 
-        public EndpointAddress LastSentDestination { get; private set; }
+        public EndpointAddress LastSentDestination { get { return sentDestinations.Last(); } }
+
         public IEnumerable<EndpointAddress> GetSentDestinations()
         {
             return sentDestinations;

@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="AssemblyScanner.cs" />
     <Compile Include="Bus.cs" />
+    <Compile Include="MessageChannelResolver.cs" />
+    <Compile Include="ChannelTypes.cs" />
     <Compile Include="Config\DestinationCollection.cs" />
     <Compile Include="Config\DestinationElement.cs" />
     <Compile Include="Config\DestinationSection.cs" />

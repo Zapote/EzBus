@@ -51,7 +51,7 @@
     <Compile Include="Config\DestinationSectionConfigTest.cs" />
     <Compile Include="Config\SubscriptionsSectionConfigTest.cs" />
     <Compile Include="DefaultObjectFactoryTest.cs" />
-    <Compile Include="EndpointHostTest.cs" />
+    <Compile Include="HostTest.cs" />
     <Compile Include="Specifications\GivenAttribute.cs" />
     <Compile Include="Specifications\SpecificationAttribute.cs" />
     <Compile Include="Specifications\ThenAttribute.cs" />

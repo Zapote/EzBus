@@ -7,7 +7,12 @@ namespace EzBus.Core
 {
     public class AssemblyScanner : IAssemblyScanner
     {
-        public Type[] FindTypeInAssemblies(Type typeToFind)
+        public Type[] FindType<T>()
+        {
+            return FindType(typeof(T));
+        }
+
+        public Type[] FindType(Type t)
         {
             var executingAssembly = Assembly.GetExecutingAssembly();
             var directory = Path.GetDirectoryName(executingAssembly.Location) ?? "\\.";
@@ -22,7 +27,7 @@ namespace EzBus.Core
 
                 foreach (var type in assembly.GetTypes())
                 {
-                    var handlerInterface = type.GetInterface(typeToFind.Name);
+                    var handlerInterface = type.GetInterface(t.Name);
                     if (handlerInterface == null) continue;
                     types.Add(type);
                 }

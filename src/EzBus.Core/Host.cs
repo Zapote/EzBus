@@ -10,33 +10,28 @@ namespace EzBus.Core
 {
     public class Host
     {
-        private readonly IReceivingChannel receivingChannel;
-        private readonly ISendingChannel sendingChannel;
+        private ISendingChannel sendingChannel;
         private readonly IObjectFactory objectFactory;
         private readonly IMessageSerilizer messageSerializer;
         private HandlerCache handlerCache;
-        private int numberOfRetrys = 5;
         private string inputQueue;
         private string errorQueue;
+        private readonly int workerThreads;
+        private readonly int numberOfRetrys;
 
         public Host(HostConfig hostConfig)
         {
             if (hostConfig == null) throw new ArgumentNullException("hostConfig");
-            receivingChannel = hostConfig.ReceivingChannel;
-            sendingChannel = hostConfig.SendingChannel;
             objectFactory = hostConfig.ObjectFactory;
+            workerThreads = hostConfig.WorkerThreads;
+            numberOfRetrys = hostConfig.NumberOfRetrys;
             messageSerializer = new XmlMessageSerializer();
-        }
-
-        public void SetNumberOfRetrys(int value)
-        {
-            numberOfRetrys = value;
         }
 
         public void Start()
         {
             var scanner = new AssemblyScanner();
-            var handlerTypes = scanner.FindTypeInAssemblies(typeof(IHandle<>));
+            var handlerTypes = scanner.FindType(typeof(IHandle<>));
 
             if (NoCustomHandlersFound(handlerTypes)) return;
 
@@ -49,8 +44,15 @@ namespace EzBus.Core
 
             inputQueue = CreateEndpointName();
             errorQueue = string.Format("{0}.error", inputQueue);
-            receivingChannel.Initialize(new EndpointAddress(inputQueue), new EndpointAddress(errorQueue));
-            receivingChannel.OnMessageReceived += OnMessageReceived;
+
+            sendingChannel = MessageChannelResolver.GetSendingChannel();
+
+            for (var i = 0; i < workerThreads; i++)
+            {
+                var receivingChannel = MessageChannelResolver.GetReceivingChannel();
+                receivingChannel.Initialize(new EndpointAddress(inputQueue), new EndpointAddress(errorQueue));
+                receivingChannel.OnMessageReceived += OnMessageReceived;
+            }
         }
 
         private static bool NoCustomHandlersFound(IList<Type> handlerTypes)

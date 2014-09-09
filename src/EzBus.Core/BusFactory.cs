@@ -1,26 +1,30 @@
-﻿using EzBus.Core.Routing;
+﻿using System;
+using System.Linq;
+using EzBus.Core.Routing;
 
 namespace EzBus.Core
 {
-    public class BusFactory : IBusFactory, IBusStarter
+    public class BusFactory : IBusStarter
     {
         private readonly HostConfig config = new HostConfig();
+        private Host host;
 
-        public IHostConfig Config { get { return config; } }
+        public HostConfig Config { get { return config; } }
 
         public IBus Start()
         {
-            var host = new Host(config);
+            host = new Host(config);
             host.Start();
             return CreateBus();
         }
 
-        private Bus CreateBus()
+        private static Bus CreateBus()
         {
-            return new Bus(config.SendingChannel, new ConfigurableMessageRouting(), new InMemorySubscriptionStorage());
+            var sendingChannel = MessageChannelResolver.GetSendingChannel();
+            return new Bus(sendingChannel, new ConfigurableMessageRouting(), new InMemorySubscriptionStorage());
         }
 
-        public static IBusFactory Setup()
+        public static BusFactory Setup()
         {
             return new BusFactory();
         }

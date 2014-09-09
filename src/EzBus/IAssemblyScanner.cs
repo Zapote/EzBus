@@ -4,6 +4,7 @@ namespace EzBus
 {
     public interface IAssemblyScanner
     {
-        Type[] FindTypeInAssemblies(Type typeToFind);
+        Type[] FindType(Type t);
+        Type[] FindType<T>();
     }
 }

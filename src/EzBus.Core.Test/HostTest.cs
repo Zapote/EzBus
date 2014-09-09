@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace EzBus.Core.Test
 {
     [TestFixture]
-    public class EndpointHostTest : IHandle<FailingMessage>
+    public class HostTest : IHandle<FailingMessage>
     {
         private FakeMessageChannel messageChannel;
         private Host host;
@@ -17,8 +17,6 @@ namespace EzBus.Core.Test
             messageChannel = new FakeMessageChannel();
             bus = new Bus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());
             var config = new HostConfig();
-            config.SetReceivingChannel(messageChannel);
-            config.SetSendingChannel(messageChannel);
             host = new Host(config);
             host.Start();
         }

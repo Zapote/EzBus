@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MsmqAddressHelper.cs" />
-    <Compile Include="MsmqFactoryExtensions.cs" />
     <Compile Include="MsmqReceivingChannel.cs" />
     <Compile Include="MsmqSendingChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

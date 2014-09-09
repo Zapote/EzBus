@@ -1,6 +1,5 @@
 ﻿using System;
 using EzBus.Core;
-using EzBus.Msmq;
 using EzBus.Samples.Messages;
 
 namespace EzBus.Samples.Client
@@ -9,7 +8,7 @@ namespace EzBus.Samples.Client
     {
         static void Main(string[] args)
         {
-            var bus = BusFactory.Setup().WithMsmq().Start();
+            var bus = new BusFactory().Start();
             bus.Send(new SayHello("Larry"));
             Console.Read();
         }
@@ -34,7 +33,6 @@ namespace EzBus.Samples.Client
 
             public void Handle(SayHello message)
             {
-                throw new Exception("Error in handler");
                 dependency.PrintOnScreen("Hello {0}.", message.Name);
             }
         }

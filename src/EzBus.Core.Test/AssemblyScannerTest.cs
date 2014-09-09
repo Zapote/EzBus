@@ -18,11 +18,20 @@ namespace EzBus.Core.Test
         [Test]
         public void Scanner_should_find_all_handlers_types()
         {
-            var handlers = scanner.FindTypeInAssemblies(typeof(IHandle<>));
+            var handlers = scanner.FindType(typeof(IHandle<>));
 
             Assert.That(handlers.Count(), Is.GreaterThanOrEqualTo(2));
             Assert.That(handlers, Contains.Item(typeof(BarHandler)));
             Assert.That(handlers, Contains.Item(typeof(FooHandler)));
+        }
+
+        [Test]
+        public void Scanner_should_find_all_IReceivingChannel_types()
+        {
+            var handlers = scanner.FindType(typeof(IReceivingChannel));
+
+            Assert.That(handlers.Count(), Is.GreaterThanOrEqualTo(1));
+            Assert.That(handlers, Contains.Item(typeof(FakeMessageChannel)));
         }
     }
 }
