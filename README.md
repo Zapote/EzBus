@@ -1,7 +1,7 @@
 EzBus - Messaging made easy!
 ===============================
 
-Getting started with EzBus: 
+## Getting started: 
 -------------------------------
 
 #### Send your message
