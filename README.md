@@ -13,7 +13,7 @@ Bus.Send("messageservice", new StartTheBus());
 #### Publish your message
 
 ```C#
-Bus.Publish("messageservice", new BusStarted("EasyBus"));
+Bus.Publish(new BusStarted("EasyBus"));
 ```
 
 #### Handle your message
