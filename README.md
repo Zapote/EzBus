@@ -23,7 +23,7 @@ public class StartTheBusHandler : IHandle<StartTheBus>
 {
   public void Handle(StartTheBus message)
   {
-    Bus.Publish(new BusStarted("EasyBus));
+    Bus.Publish(new BusStarted("EasyBus"));
   }
 }
 ```
