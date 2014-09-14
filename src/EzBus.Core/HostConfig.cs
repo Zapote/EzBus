@@ -12,7 +12,7 @@ namespace EzBus.Core
         {
             NumberOfRetrys = 5;
             WorkerThreads = 1;
-            ObjectFactory = new DefaultObjectFactory();
+            ObjectFactory = new LightInjectObjectFactory();
         }
 
         public void SetNumberOfWorkerThreads(int threads)

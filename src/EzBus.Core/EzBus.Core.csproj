@@ -41,8 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyScanner.cs" />
+    <Compile Include="Builders\IServiceRegistry.cs" />
+    <Compile Include="Builders\RegistryInstance.cs" />
     <Compile Include="Bus.cs" />
     <Compile Include="EzBus.cs" />
+    <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="MessageChannelResolver.cs" />
     <Compile Include="ChannelTypes.cs" />
     <Compile Include="Config\DestinationCollection.cs" />
@@ -52,11 +55,11 @@
     <Compile Include="Config\SubscriptionElement.cs" />
     <Compile Include="Config\SubscriptionSection.cs" />
     <Compile Include="InMemorySubscriptionStorage.cs" />
-    <Compile Include="InvokeResult.cs" />
-    <Compile Include="Builders\IObjectFactory.cs" />
+    <Compile Include="InvokationResult.cs" />
     <Compile Include="ISubscriptionStorage.cs" />
-    <Compile Include="Builders\DefaultObjectFactory.cs" />
+    <Compile Include="Builders\LightInjectObjectFactory.cs" />
     <Compile Include="Builders\LightInject.cs" />
+    <Compile Include="MessageFilterResolver.cs" />
     <Compile Include="Routing\DestinationMissingException.cs" />
     <Compile Include="HostConfig.cs" />
     <Compile Include="Host.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="Serilizers\TypeExtensions.cs" />
     <Compile Include="Serilizers\XmlMessageSerializer.cs" />
     <Compile Include="Serilizers\XmlValueConverter.cs" />
+    <Compile Include="Builders\ServiceRegistry.cs" />
     <Compile Include="Subscription.cs" />
     <Compile Include="SubscriptionMessageHandler.cs" />
   </ItemGroup>

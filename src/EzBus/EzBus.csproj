@@ -42,6 +42,8 @@
     <Compile Include="IBus.cs" />
     <Compile Include="IBusStarter.cs" />
     <Compile Include="IHandle.cs" />
+    <Compile Include="IMessageFilter.cs" />
+    <Compile Include="IObjectFactory.cs" />
     <Compile Include="IReceivingChannel.cs" />
     <Compile Include="ISendingChannel.cs" />
     <Compile Include="ChannelMessage.cs" />

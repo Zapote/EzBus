@@ -31,9 +31,11 @@ namespace EzBus.Core
         public void Start()
         {
             var scanner = new AssemblyScanner();
-            var handlerTypes = scanner.FindType(typeof(IHandle<>));
+            var handlerTypes = scanner.FindTypes(typeof(IHandle<>));
 
             if (NoCustomHandlersFound(handlerTypes)) return;
+
+            objectFactory.Initialize();
 
             handlerCache = new HandlerCache();
 
@@ -103,30 +105,39 @@ namespace EzBus.Core
             sendingChannel.Send(new EndpointAddress(errorQueue), message);
         }
 
-        private InvokeResult InvokeHandler(Type handlerType, object message)
+        private InvokationResult InvokeHandler(Type handlerType, object message)
         {
             var success = true;
             Exception exception = null;
             var methodInfo = handlerType.GetMethod("Handle", new[] { message.GetType() });
+
+            objectFactory.BeginScope();
+
             var handler = objectFactory.CreateInstance(handlerType);
+            var messageFilters = MessageFilterResolver.GetMessageFilters(objectFactory);
 
             for (var i = 0; i < numberOfRetrys; i++)
             {
                 try
                 {
+                    messageFilters.Apply(x => x.Before());
                     methodInfo.Invoke(handler, new[] { message });
+                    messageFilters.Apply(x => x.After(null));
                     break;
                 }
                 catch (Exception ex)
                 {
-                    //TODO:Figure out some logging
+                    //TODO: Logging
                     Console.WriteLine("Error in attempt {0}: {1}", i + 1, ex.InnerException.Message);
                     exception = ex;
                     success = false;
+                    messageFilters.Apply(x => x.After(ex));
                 }
             }
 
-            return new InvokeResult(success, exception);
+            objectFactory.EndScope();
+
+            return new InvokationResult(success, exception);
         }
 
         public void Stop()

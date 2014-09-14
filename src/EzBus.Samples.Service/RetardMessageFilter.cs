@@ -1,22 +1,24 @@
 ﻿using System;
-using EzBus.Samples.Messages;
 
 namespace EzBus.Samples.Service
 {
-    public class SayHelloHandler : IHandle<SayHello>
+    public class RetardMessageFilter : IMessageFilter
     {
         private readonly IDependency dependency;
 
-        public SayHelloHandler(IDependency dependency)
+        public RetardMessageFilter(IDependency dependency)
         {
             if (dependency == null) throw new ArgumentNullException("dependency");
             this.dependency = dependency;
         }
 
-        public void Handle(SayHello message)
+        public void Before()
         {
             Console.WriteLine(dependency.Id);
-            Console.WriteLine(message);
+        }
+
+        public void After(Exception ex)
+        {
             Console.WriteLine(dependency.Id);
         }
     }

@@ -18,7 +18,7 @@ namespace EzBus.Core.Test
         [Test]
         public void Scanner_should_find_all_handlers_types()
         {
-            var handlers = scanner.FindType(typeof(IHandle<>));
+            var handlers = scanner.FindTypes(typeof(IHandle<>));
 
             Assert.That(handlers.Count(), Is.GreaterThanOrEqualTo(2));
             Assert.That(handlers, Contains.Item(typeof(BarHandler)));
@@ -28,7 +28,7 @@ namespace EzBus.Core.Test
         [Test]
         public void Scanner_should_find_all_IReceivingChannel_types()
         {
-            var handlers = scanner.FindType(typeof(IReceivingChannel));
+            var handlers = scanner.FindTypes(typeof(IReceivingChannel));
 
             Assert.That(handlers.Count(), Is.GreaterThanOrEqualTo(1));
             Assert.That(handlers, Contains.Item(typeof(FakeMessageChannel)));

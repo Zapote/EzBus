@@ -32,7 +32,7 @@
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "All public members are documented.")]
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Performance")]
 
-namespace EzBus.Core.Builders
+namespace EzBus.Core.Builders.LightInject
 {
     using System;
     using System.Collections.Concurrent;
