@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Web;
 
 namespace EzBus.Core
 {
@@ -14,8 +15,17 @@ namespace EzBus.Core
 
         public Type[] FindTypes(Type t)
         {
-            var executingAssembly = Assembly.GetExecutingAssembly();
-            var directory = Path.GetDirectoryName(executingAssembly.Location) ?? "\\.";
+            string directory = string.Empty;
+            var httpContext = HttpContext.Current;
+            if (httpContext != null)
+            {
+                directory = httpContext.Server.MapPath("/bin");
+            }
+            else
+            {
+                var executingAssembly = Assembly.GetExecutingAssembly();
+                directory = Path.GetDirectoryName(executingAssembly.Location) ?? "\\.";
+            }
             var assemblyFiles = new List<string>();
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
