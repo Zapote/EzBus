@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EzBus.Core.Builders.LightInject;
 
 namespace EzBus.Core.Builders
@@ -7,6 +8,7 @@ namespace EzBus.Core.Builders
     {
         private readonly IServiceContainer container = new ServiceContainer();
         private Scope scope;
+
 
         public object CreateInstance(Type type)
         {
@@ -23,7 +25,8 @@ namespace EzBus.Core.Builders
                 if (registry == null) continue;
                 foreach (var instance in registry.Instances)
                 {
-                    container.Register(instance.Service, instance.Implementation, new PerScopeLifetime());
+                    var lifetime = lifeCycleToLifeTime[instance.LifeCycle];
+                    container.Register(instance.Service, instance.Implementation, lifetime);
                 }
             }
         }
@@ -37,5 +40,12 @@ namespace EzBus.Core.Builders
         {
             scope.Dispose();
         }
+
+        private readonly IDictionary<LifeCycle, ILifetime> lifeCycleToLifeTime = new Dictionary<LifeCycle, ILifetime>
+        {
+            {LifeCycle.Default, new PerScopeLifetime()},
+            {LifeCycle.Singleton, new PerContainerLifetime()},
+            {LifeCycle.Unique, new PerRequestLifeTime()}
+        };
     }
 }

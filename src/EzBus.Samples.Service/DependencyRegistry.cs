@@ -6,7 +6,7 @@ namespace EzBus.Samples.Service
     {
         public DependencyRegistry()
         {
-            Register<IDependency, Dependency>();
+            Register<IDependency, Dependency>().As.Singelton();
         }
     }
 }

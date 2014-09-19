@@ -1,6 +1,7 @@
 ﻿using EzBus;
 using EzBus.Core;
 
+
 public class Bus
 {
     private static readonly IBus bus;

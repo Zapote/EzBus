@@ -2,11 +2,11 @@
 
 namespace EzBus.Samples.Service
 {
-    public class RetardMessageFilter : IMessageFilter
+    public class MyMessageFilter : IMessageFilter
     {
         private readonly IDependency dependency;
 
-        public RetardMessageFilter(IDependency dependency)
+        public MyMessageFilter(IDependency dependency)
         {
             if (dependency == null) throw new ArgumentNullException("dependency");
             this.dependency = dependency;

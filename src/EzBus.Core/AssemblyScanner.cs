@@ -8,6 +8,14 @@ namespace EzBus.Core
 {
     public class AssemblyScanner : IAssemblyScanner
     {
+        private static List<string> assemblyFiles;
+        private static bool directoryScanned;
+
+        public AssemblyScanner()
+        {
+            LoadAssemblyFiles();
+        }
+
         public Type[] FindTypes<T>()
         {
             return FindTypes(typeof(T));
@@ -15,20 +23,6 @@ namespace EzBus.Core
 
         public Type[] FindTypes(Type t)
         {
-            string directory = string.Empty;
-            var httpContext = HttpContext.Current;
-            if (httpContext != null)
-            {
-                directory = httpContext.Server.MapPath("/bin");
-            }
-            else
-            {
-                var executingAssembly = Assembly.GetExecutingAssembly();
-                directory = Path.GetDirectoryName(executingAssembly.Location) ?? "\\.";
-            }
-            var assemblyFiles = new List<string>();
-            assemblyFiles.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
-            assemblyFiles.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
             var types = new List<Type>();
 
             foreach (var file in assemblyFiles)
@@ -59,6 +53,27 @@ namespace EzBus.Core
             }
 
             return types.ToArray();
+        }
+
+        private static void LoadAssemblyFiles()
+        {
+            if (directoryScanned) return;
+            string directory;
+            var httpContext = HttpContext.Current;
+
+            if (httpContext != null)
+            {
+                directory = httpContext.Server.MapPath("/bin");
+            }
+            else
+            {
+                var executingAssembly = Assembly.GetExecutingAssembly();
+                directory = Path.GetDirectoryName(executingAssembly.Location) ?? "\\.";
+            }
+            assemblyFiles = new List<string>();
+            assemblyFiles.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
+            assemblyFiles.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
+            directoryScanned = true;
         }
     }
 }

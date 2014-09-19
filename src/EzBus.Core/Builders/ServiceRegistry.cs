@@ -6,10 +6,11 @@ namespace EzBus.Core.Builders
     {
         private readonly IList<RegistryInstance> instances = new List<RegistryInstance>();
 
-        protected ServiceRegistry Register<TService, TImplementation>() where TImplementation : TService
+        protected IConfigureLifeCycle Register<TService, TImplementation>() where TImplementation : TService
         {
-            instances.Add(new RegistryInstance(typeof(TService), typeof(TImplementation)));
-            return this;
+            var registryInstance = new RegistryInstance(typeof(TService), typeof(TImplementation));
+            instances.Add(registryInstance);
+            return registryInstance;
         }
 
         public IEnumerable<RegistryInstance> Instances

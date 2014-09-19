@@ -42,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyScanner.cs" />
+    <Compile Include="Builders\IHaveLifeCycle.cs" />
+    <Compile Include="Builders\IConfigureLifeCycle.cs" />
     <Compile Include="Builders\IServiceRegistry.cs" />
+    <Compile Include="Builders\LifeCycle.cs" />
     <Compile Include="Builders\RegistryInstance.cs" />
     <Compile Include="Bus.cs" />
     <Compile Include="EzBus.cs" />

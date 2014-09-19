@@ -46,7 +46,7 @@
     <Compile Include="IDependency.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RetardMessageFilter.cs" />
+    <Compile Include="MyMessageFilter.cs" />
     <Compile Include="SayHelloHandler.cs" />
   </ItemGroup>
   <ItemGroup>

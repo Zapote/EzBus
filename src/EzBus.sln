@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{D3C1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Service", "EzBus.Samples.Service\EzBus.Samples.Service.csproj", "{3CE1DE6D-8AB1-458B-80FD-379FAE057A8B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.WebClient", "EzBus.Samples.WebClient\EzBus.Samples.WebClient.csproj", "{FA536BC0-EBCB-46EE-BF10-74F58009B87F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{3CE1DE6D-8AB1-458B-80FD-379FAE057A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CE1DE6D-8AB1-458B-80FD-379FAE057A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CE1DE6D-8AB1-458B-80FD-379FAE057A8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA536BC0-EBCB-46EE-BF10-74F58009B87F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA536BC0-EBCB-46EE-BF10-74F58009B87F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA536BC0-EBCB-46EE-BF10-74F58009B87F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA536BC0-EBCB-46EE-BF10-74F58009B87F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,5 +67,6 @@ Global
 		{2006E185-94A0-43A8-9C5B-01B8F3892E78} = {D3C1F484-FA35-4E22-B917-70CF79960AD0}
 		{7AFF69F7-6271-425F-B725-CEF40051F772} = {D3C1F484-FA35-4E22-B917-70CF79960AD0}
 		{3CE1DE6D-8AB1-458B-80FD-379FAE057A8B} = {D3C1F484-FA35-4E22-B917-70CF79960AD0}
+		{FA536BC0-EBCB-46EE-BF10-74F58009B87F} = {D3C1F484-FA35-4E22-B917-70CF79960AD0}
 	EndGlobalSection
 EndGlobal
