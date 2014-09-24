@@ -45,9 +45,9 @@
     <Compile Include="Builders\IHaveLifeCycle.cs" />
     <Compile Include="Builders\IConfigureLifeCycle.cs" />
     <Compile Include="Builders\IServiceRegistry.cs" />
-    <Compile Include="Builders\LifeCycle.cs" />
     <Compile Include="Builders\RegistryInstance.cs" />
     <Compile Include="Bus.cs" />
+    <Compile Include="ChannelMessageFactory.cs" />
     <Compile Include="EzBus.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="MessageChannelResolver.cs" />
@@ -80,6 +80,7 @@
     <Compile Include="Builders\ServiceRegistry.cs" />
     <Compile Include="Subscription.cs" />
     <Compile Include="SubscriptionMessageHandler.cs" />
+    <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EzBus\EzBus.csproj">

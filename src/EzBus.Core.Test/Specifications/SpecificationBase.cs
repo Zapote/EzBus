@@ -4,7 +4,6 @@ namespace EzBus.Core.Test.Specifications
     public abstract class SpecificationBase
     {
         [Given]
-
         public void Setup()
         {
             Given();

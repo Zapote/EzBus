@@ -9,9 +9,13 @@ namespace EzBus.Core.Test.TestHelpers
         private static readonly List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
         private static event EventHandler<MessageReceivedEventArgs> InnerMessageHandler;
 
-        public FakeMessageChannel()
+        public static void Reset()
         {
             sentDestinations.Clear();
+        }
+
+        public FakeMessageChannel()
+        {
             InnerMessageHandler = null;
         }
 
@@ -44,9 +48,15 @@ namespace EzBus.Core.Test.TestHelpers
             }
         }
 
-        public EndpointAddress LastSentDestination { get { return sentDestinations.Last(); } }
+        public static EndpointAddress LastSentDestination
+        {
+            get
+            {
+                return sentDestinations.LastOrDefault();
+            }
+        }
 
-        public IEnumerable<EndpointAddress> GetSentDestinations()
+        public static IEnumerable<EndpointAddress> GetSentDestinations()
         {
             return sentDestinations;
         }

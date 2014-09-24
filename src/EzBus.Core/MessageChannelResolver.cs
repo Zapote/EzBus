@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
-using EzBus.Core.Builders;
 
 namespace EzBus.Core
 {
@@ -17,12 +15,12 @@ namespace EzBus.Core
 
         public static ISendingChannel GetSendingChannel()
         {
-            return (ISendingChannel)new LightInjectObjectFactory().CreateInstance(sendingChannelType);
+            return (ISendingChannel)sendingChannelType.CreateInstance();
         }
 
         public static IReceivingChannel GetReceivingChannel()
         {
-            return (IReceivingChannel)new LightInjectObjectFactory().CreateInstance(receivingChannelType);
+            return (IReceivingChannel)receivingChannelType.CreateInstance();
         }
 
         private static void ResolveTypes()

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using EzBus.Core.Builders;
 using EzBus.Core.Serilizers;
 using EzBus.Serilizers;
 
@@ -13,6 +12,8 @@ namespace EzBus.Core
         private ISendingChannel sendingChannel;
         private readonly IObjectFactory objectFactory;
         private readonly IMessageSerilizer messageSerializer;
+        private readonly ISubscriptionStorage subscriptionStorage;
+
         private HandlerCache handlerCache;
         private string inputQueue;
         private string errorQueue;
@@ -25,6 +26,7 @@ namespace EzBus.Core
             objectFactory = hostConfig.ObjectFactory;
             workerThreads = hostConfig.WorkerThreads;
             numberOfRetrys = hostConfig.NumberOfRetrys;
+            subscriptionStorage = hostConfig.SubscriptionStorage;
             messageSerializer = new XmlMessageSerializer();
         }
 
@@ -35,7 +37,10 @@ namespace EzBus.Core
 
             if (NoCustomHandlersFound(handlerTypes)) return;
 
+
             objectFactory.Initialize();
+
+            objectFactory.Register<ISubscriptionStorage>(subscriptionStorage.GetType());
 
             handlerCache = new HandlerCache();
 
@@ -48,6 +53,19 @@ namespace EzBus.Core
             errorQueue = string.Format("{0}.error", inputQueue);
 
             sendingChannel = MessageChannelResolver.GetSendingChannel();
+
+            var subscriptions = Config.SubscriptionSection.Section.Subscriptions;
+
+            foreach (Config.SubscriptionElement subscription in subscriptions)
+            {
+                var subscriptionMessage = new SubscriptionMessage
+                {
+                    Endpoint = string.Format("{0}@{1}", inputQueue, Environment.MachineName)
+                };
+
+                var destination = EndpointAddress.Parse(subscription.Endpoint);
+                sendingChannel.Send(destination, ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, messageSerializer));
+            }
 
             for (var i = 0; i < workerThreads; i++)
             {

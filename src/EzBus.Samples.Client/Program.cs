@@ -7,6 +7,7 @@ namespace EzBus.Samples.Client
     {
         static void Main(string[] args)
         {
+            Bus.Start();
             Bus.Send(new SayHello("Client Larry"));
             Console.Read();
         }

@@ -5,19 +5,19 @@ namespace EzBus.Samples.Service
 {
     public class SayHelloHandler : IHandle<SayHello>
     {
-        private readonly IDependency dependency;
+        private readonly IOtherDependency otherDependency;
 
-        public SayHelloHandler(IDependency dependency)
+        public SayHelloHandler(IOtherDependency otherDependency)
         {
-            if (dependency == null) throw new ArgumentNullException("dependency");
-            this.dependency = dependency;
+            if (otherDependency == null) throw new ArgumentNullException("otherDependency");
+            this.otherDependency = otherDependency;
         }
 
         public void Handle(SayHello message)
         {
-            Console.WriteLine(dependency.Id);
             Console.WriteLine(message);
-            Console.WriteLine(dependency.Id);
+            Console.WriteLine(otherDependency.Id);
+            Bus.Publish(new ClientGreeted());
         }
     }
 }

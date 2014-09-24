@@ -6,7 +6,6 @@ namespace EzBus.Core
     {
         private readonly HostConfig config = new HostConfig();
         private Host host;
-
         public HostConfig Config { get { return config; } }
 
         public IBus Start()

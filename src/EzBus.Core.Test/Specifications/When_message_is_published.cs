@@ -13,6 +13,9 @@ namespace EzBus.Core.Test.Specifications
         protected override void Given()
         {
             base.Given();
+
+            FakeMessageChannel.Reset();
+
             subscriptionStorage.Store(subscriberOne, null);
             subscriptionStorage.Store(subscriberTwo, typeof(MockMessage));
             subscriptionStorage.Store(subscriberThree, typeof(object));
@@ -27,7 +30,7 @@ namespace EzBus.Core.Test.Specifications
         [Then]
         public void Then_the_message_should_be_sent_to_two_endpoints()
         {
-            var dests = messageChannel.GetSentDestinations();
+            var dests = FakeMessageChannel.GetSentDestinations();
             Assert.That(dests, Contains.Item(new EndpointAddress(subscriberOne)));
             Assert.That(dests, Contains.Item(new EndpointAddress(subscriberTwo)));
             Assert.That(dests, Has.Count.EqualTo(2));

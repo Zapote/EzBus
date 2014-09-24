@@ -9,10 +9,9 @@ namespace EzBus.Core.Builders
         private readonly IServiceContainer container = new ServiceContainer();
         private Scope scope;
 
-
         public object CreateInstance(Type type)
         {
-            return container.TryGetInstance(type);
+            return container.GetInstance(type);
         }
 
         public void Initialize()
@@ -21,12 +20,11 @@ namespace EzBus.Core.Builders
 
             foreach (var type in registryTypes)
             {
-                var registry = container.GetInstance(type) as ServiceRegistry;
+                var registry = type.CreateInstance() as ServiceRegistry;
                 if (registry == null) continue;
                 foreach (var instance in registry.Instances)
                 {
-                    var lifetime = lifeCycleToLifeTime[instance.LifeCycle];
-                    container.Register(instance.Service, instance.Implementation, lifetime);
+                    Register(instance.Service, instance.Implementation, instance.LifeCycle);
                 }
             }
         }
@@ -39,6 +37,23 @@ namespace EzBus.Core.Builders
         public void EndScope()
         {
             scope.Dispose();
+        }
+
+        public void Register<TService, TImplementation>(LifeCycle lifeCycle = LifeCycle.Default) where TImplementation : TService
+        {
+            Register(typeof(TService), typeof(TImplementation), lifeCycle);
+        }
+
+        public void Register<TService>(Type implementationType, LifeCycle lifeCycle = LifeCycle.Default)
+        {
+            Register(typeof(TService), implementationType, lifeCycle);
+        }
+
+
+        public void Register(Type serviceType, Type implementationType, LifeCycle lifeCycle = LifeCycle.Default)
+        {
+            var lifetime = lifeCycleToLifeTime[lifeCycle];
+            container.Register(serviceType, implementationType, lifetime);
         }
 
         private readonly IDictionary<LifeCycle, ILifetime> lifeCycleToLifeTime = new Dictionary<LifeCycle, ILifetime>

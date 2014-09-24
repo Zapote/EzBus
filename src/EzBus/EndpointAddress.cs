@@ -2,8 +2,6 @@
 {
     public class EndpointAddress
     {
-
-
         public string QueueName { get; private set; }
         public string MachineName { get; private set; }
 

@@ -44,6 +44,8 @@
     <Compile Include="Dependency.cs" />
     <Compile Include="DependencyRegistry.cs" />
     <Compile Include="IDependency.cs" />
+    <Compile Include="IOtherDependency.cs" />
+    <Compile Include="OtherDependency.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyMessageFilter.cs" />

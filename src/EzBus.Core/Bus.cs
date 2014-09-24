@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using EzBus.Core.Routing;
 using EzBus.Core.Serilizers;
 
@@ -33,21 +31,10 @@ namespace EzBus.Core
 
         public void Send(string destinationQueue, object message)
         {
-            var stream = serializer.Serialize(message);
-            var channelMessage = CreateChannelMessage(message.GetType(), stream);
+            var channelMessage = ChannelMessageFactory.CreateChannelMessage(message, serializer);
             var destination = EndpointAddress.Parse(destinationQueue);
             channelMessage.AddHeader("Destination", destination.ToString());
             sendingChannel.Send(destination, channelMessage);
-        }
-
-        private static ChannelMessage CreateChannelMessage(Type messageType, Stream stream)
-        {
-            var channelMessage = new ChannelMessage(stream);
-            channelMessage.AddHeader("MessageType", messageType.FullName);
-            channelMessage.AddHeader("UserPrincipal", Environment.UserName);
-            channelMessage.AddHeader("SendingMachine", Environment.MachineName);
-            channelMessage.AddHeader("SendingModule", Assembly.GetCallingAssembly().ManifestModule.Assembly.FullName);
-            return channelMessage;
         }
 
         public void Publish(object message)

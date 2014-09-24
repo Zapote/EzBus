@@ -1,4 +1,4 @@
-﻿namespace EzBus.Core.Builders
+﻿namespace EzBus
 {
     public enum LifeCycle
     {
