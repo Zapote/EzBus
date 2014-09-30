@@ -68,7 +68,7 @@ namespace EzBus.Core.Logging
 
         public void Error(object message, Exception t)
         {
-            throw new NotImplementedException();
+            ErrorFormat("{0} {1}", message, t);
         }
 
         public void Fatal(object message, Exception t)

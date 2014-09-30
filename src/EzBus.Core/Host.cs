@@ -75,7 +75,9 @@ namespace EzBus.Core
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
         {
             var messageTypeName = e.Message.Headers.ElementAt(0).Value;
+            log.DebugFormat("Message Receieved: {0}", messageTypeName);
             var handlerInfo = handlerCache.GetHandlerInfo(messageTypeName);
+
 
             object message = null;
 
@@ -88,6 +90,7 @@ namespace EzBus.Core
                 {
                     message = messageSerializer.Deserialize(e.Message.BodyStream, messageType);
                 }
+                log.DebugFormat("Invoking handler: {0}", handlerType.Name);
 
                 var result = InvokeHandler(handlerType, message);
 
@@ -163,8 +166,7 @@ namespace EzBus.Core
                 }
                 catch (Exception ex)
                 {
-                    //TODO: Logging
-                    Console.WriteLine("Error in attempt {0}: {1}", i + 1, ex.InnerException.Message);
+                    log.Error("Failed to handle message!", ex);
                     exception = ex;
                     success = false;
                     messageFilters.Apply(x => x.After(ex));
