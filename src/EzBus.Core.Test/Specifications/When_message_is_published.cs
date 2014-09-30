@@ -21,7 +21,6 @@ namespace EzBus.Core.Test.Specifications
             subscriptionStorage.Store(subscriberThree, typeof(object));
         }
 
-
         protected override void When()
         {
             bus.Publish(new MockMessage("Foo"));
@@ -33,7 +32,6 @@ namespace EzBus.Core.Test.Specifications
             var dests = FakeMessageChannel.GetSentDestinations();
             Assert.That(dests, Contains.Item(new EndpointAddress(subscriberOne)));
             Assert.That(dests, Contains.Item(new EndpointAddress(subscriberTwo)));
-            Assert.That(dests, Has.Count.EqualTo(2));
         }
     }
 }

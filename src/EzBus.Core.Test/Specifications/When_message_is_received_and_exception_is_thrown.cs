@@ -15,7 +15,7 @@ namespace EzBus.Core.Test.Specifications
         {
             FakeMessageChannel.Reset();
             messageChannel = new FakeMessageChannel();
-            bus = new Bus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());
+            bus = new CoreBus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());
             var config = new HostConfig();
             config.SetNumberOfRetrys(2);
             host = new Host(config);

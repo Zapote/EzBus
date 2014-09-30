@@ -46,10 +46,12 @@
     <Compile Include="Builders\IConfigureLifeCycle.cs" />
     <Compile Include="Builders\IServiceRegistry.cs" />
     <Compile Include="Builders\RegistryInstance.cs" />
-    <Compile Include="Bus.cs" />
+    <Compile Include="CoreBus.cs" />
     <Compile Include="ChannelMessageFactory.cs" />
     <Compile Include="EzBus.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="Logging\TraceHostLoggerFactory.cs" />
+    <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="MessageChannelResolver.cs" />
     <Compile Include="ChannelTypes.cs" />
     <Compile Include="Config\DestinationCollection.cs" />

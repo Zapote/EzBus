@@ -48,6 +48,12 @@
     <Compile Include="ISendingChannel.cs" />
     <Compile Include="ChannelMessage.cs" />
     <Compile Include="LifeCycle.cs" />
+    <Compile Include="Logging\HostLogManager.cs" />
+    <Compile Include="Logging\HostLogManagerConfig.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\LoggerFactory.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\NullLogger.cs" />
     <Compile Include="MessageHeader.cs" />
     <Compile Include="MessageReceivedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

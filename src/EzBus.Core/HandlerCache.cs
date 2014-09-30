@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EzBus.Logging;
 
 namespace EzBus.Core
 {
     public class HandlerCache
     {
+        private static readonly ILogger log = HostLogManager.GetLogger(typeof(HandlerCache));
         private readonly List<KeyValuePair<string, HandlerInfo>> handlers = new List<KeyValuePair<string, HandlerInfo>>();
 
         public void Add(Type handlerType)
@@ -17,6 +19,8 @@ namespace EzBus.Core
                     HandlerType = handlerType,
                     MessageType = messageType
                 }));
+
+            log.DebugFormat("Handler '{0}' added to cache", handlerType.FullName);
         }
 
         public IEnumerable<HandlerInfo> GetHandlerInfo(string messageTypeName)

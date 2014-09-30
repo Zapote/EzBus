@@ -44,11 +44,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EzBus.Core\EzBus.Core.csproj">
+    <ProjectReference Include="..\..\EzBus.Core\EzBus.Core.csproj">
       <Project>{4142F834-AC35-4E99-9932-291805075F80}</Project>
       <Name>EzBus.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EzBus.Msmq\EzBus.Msmq.csproj">
+    <ProjectReference Include="..\..\EzBus.Msmq\EzBus.Msmq.csproj">
       <Project>{3F5D0C34-372D-49CD-A591-CFD59471EDA2}</Project>
       <Name>EzBus.Msmq</Name>
     </ProjectReference>
@@ -56,7 +56,7 @@
       <Project>{7AFF69F7-6271-425F-B725-CEF40051F772}</Project>
       <Name>EzBus.Samples.Messages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EzBus\EzBus.csproj">
+    <ProjectReference Include="..\..\EzBus\EzBus.csproj">
       <Project>{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}</Project>
       <Name>EzBus</Name>
     </ProjectReference>

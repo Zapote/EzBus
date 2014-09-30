@@ -4,7 +4,7 @@ namespace EzBus.Core.Test.Specifications
 {
     public abstract class BusSpecificationBase : SpecificationBase
     {
-        protected Bus bus;
+        protected CoreBus bus;
         protected FakeMessageChannel messageChannel;
         protected readonly FakeMessageRouting messageRouting = new FakeMessageRouting();
         protected InMemorySubscriptionStorage subscriptionStorage;
@@ -13,7 +13,7 @@ namespace EzBus.Core.Test.Specifications
         {
             messageChannel = new FakeMessageChannel();
             subscriptionStorage = new InMemorySubscriptionStorage();
-            bus = new Bus(messageChannel, messageRouting, subscriptionStorage);
+            bus = new CoreBus(messageChannel, messageRouting, subscriptionStorage);
         }
     }
 }

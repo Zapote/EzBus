@@ -166,11 +166,11 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EzBus.Core\EzBus.Core.csproj">
+    <ProjectReference Include="..\..\EzBus.Core\EzBus.Core.csproj">
       <Project>{4142f834-ac35-4e99-9932-291805075f80}</Project>
       <Name>EzBus.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EzBus.Msmq\EzBus.Msmq.csproj">
+    <ProjectReference Include="..\..\EzBus.Msmq\EzBus.Msmq.csproj">
       <Project>{3f5d0c34-372d-49cd-a591-cfd59471eda2}</Project>
       <Name>EzBus.Msmq</Name>
     </ProjectReference>
@@ -178,7 +178,7 @@
       <Project>{7aff69f7-6271-425f-b725-cef40051f772}</Project>
       <Name>EzBus.Samples.Messages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EzBus\EzBus.csproj">
+    <ProjectReference Include="..\..\EzBus\EzBus.csproj">
       <Project>{31bb0ddf-dced-49d0-8fc8-0d8ac396dd7b}</Project>
       <Name>EzBus</Name>
     </ProjectReference>

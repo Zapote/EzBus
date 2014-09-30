@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EzBus.Core.Serilizers;
+using EzBus.Logging;
 using EzBus.Serilizers;
 
 namespace EzBus.Core
@@ -13,7 +14,7 @@ namespace EzBus.Core
         private readonly IObjectFactory objectFactory;
         private readonly IMessageSerilizer messageSerializer;
         private readonly ISubscriptionStorage subscriptionStorage;
-
+        private static readonly ILogger log = HostLogManager.GetLogger(typeof(Host));
         private HandlerCache handlerCache;
         private string inputQueue;
         private string errorQueue;
@@ -32,14 +33,18 @@ namespace EzBus.Core
 
         public void Start()
         {
+            log.Debug("Starting");
+
             var scanner = new AssemblyScanner();
             var handlerTypes = scanner.FindTypes(typeof(IHandle<>));
 
-            if (NoCustomHandlersFound(handlerTypes)) return;
-
+            if (NoCustomHandlersFound(handlerTypes))
+            {
+                log.Debug("No custom handlers found.");
+                return;
+            }
 
             objectFactory.Initialize();
-
             objectFactory.Register<ISubscriptionStorage>(subscriptionStorage.GetType());
 
             handlerCache = new HandlerCache();
@@ -50,35 +55,21 @@ namespace EzBus.Core
             }
 
             inputQueue = CreateEndpointName();
+            log.DebugFormat("Endpoint: {0}", inputQueue);
             errorQueue = string.Format("{0}.error", inputQueue);
 
             sendingChannel = MessageChannelResolver.GetSendingChannel();
-
-            var subscriptions = Config.SubscriptionSection.Section.Subscriptions;
-
-            foreach (Config.SubscriptionElement subscription in subscriptions)
-            {
-                var subscriptionMessage = new SubscriptionMessage
-                {
-                    Endpoint = string.Format("{0}@{1}", inputQueue, Environment.MachineName)
-                };
-
-                var destination = EndpointAddress.Parse(subscription.Endpoint);
-                sendingChannel.Send(destination, ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, messageSerializer));
-            }
-
+            log.DebugFormat("SendingChannel: {0}", sendingChannel.GetType());
             for (var i = 0; i < workerThreads; i++)
             {
                 var receivingChannel = MessageChannelResolver.GetReceivingChannel();
                 receivingChannel.Initialize(new EndpointAddress(inputQueue), new EndpointAddress(errorQueue));
                 receivingChannel.OnMessageReceived += OnMessageReceived;
             }
-        }
 
-        private static bool NoCustomHandlersFound(IList<Type> handlerTypes)
-        {
-            if (handlerTypes.Count == 0) return true;
-            return handlerTypes.Count == 1 && handlerTypes[0] == typeof(SubscriptionMessageHandler);
+            SendSubscriptionMessages();
+
+            log.Debug("Started");
         }
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -105,6 +96,33 @@ namespace EzBus.Core
                     PlaceMessageOnErrorQueue(e.Message, result.Exception.InnerException);
                 }
             }
+        }
+
+        private void SendSubscriptionMessages()
+        {
+            var subscriptions = Config.SubscriptionSection.Section.Subscriptions;
+
+            foreach (Config.SubscriptionElement subscription in subscriptions)
+            {
+                var subscriptionMessage = new SubscriptionMessage
+                {
+                    Endpoint = string.Format("{0}@{1}", inputQueue, Environment.MachineName)
+                };
+
+                var destination = EndpointAddress.Parse(subscription.Endpoint);
+
+                log.DebugFormat("Subscribing to: {0}", destination);
+                sendingChannel.Send(destination, ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, messageSerializer));
+            }
+        }
+
+        private static bool NoCustomHandlersFound(IList<Type> handlerTypes)
+        {
+            if (handlerTypes.Count == 0)
+            {
+                return true;
+            }
+            return handlerTypes.Count == 1 && handlerTypes[0] == typeof(SubscriptionMessageHandler);
         }
 
         private void PlaceMessageOnErrorQueue(ChannelMessage message, Exception exception)
@@ -156,11 +174,6 @@ namespace EzBus.Core
             objectFactory.EndScope();
 
             return new InvokationResult(success, exception);
-        }
-
-        public void Stop()
-        {
-
         }
 
         private string CreateEndpointName()

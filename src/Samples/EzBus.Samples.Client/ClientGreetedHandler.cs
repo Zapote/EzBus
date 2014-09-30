@@ -7,7 +7,7 @@ namespace EzBus.Samples.Client
     {
         public void Handle(ClientGreeted message)
         {
-            Console.WriteLine("I greeted!");
+            Console.WriteLine("I am greeted!");
         }
     }
 }

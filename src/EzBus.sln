@@ -11,15 +11,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Core.Test", "EzBus.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Msmq", "EzBus.Msmq\EzBus.Msmq.csproj", "{3F5D0C34-372D-49CD-A591-CFD59471EDA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Client", "EzBus.Samples.Client\EzBus.Samples.Client.csproj", "{2006E185-94A0-43A8-9C5B-01B8F3892E78}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Messages", "EzBus.Samples.Messages\EzBus.Samples.Messages.csproj", "{7AFF69F7-6271-425F-B725-CEF40051F772}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{D3C1F484-FA35-4E22-B917-70CF79960AD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Service", "EzBus.Samples.Service\EzBus.Samples.Service.csproj", "{3CE1DE6D-8AB1-458B-80FD-379FAE057A8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Client", "Samples\EzBus.Samples.Client\EzBus.Samples.Client.csproj", "{2006E185-94A0-43A8-9C5B-01B8F3892E78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.WebClient", "EzBus.Samples.WebClient\EzBus.Samples.WebClient.csproj", "{FA536BC0-EBCB-46EE-BF10-74F58009B87F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Messages", "Samples\EzBus.Samples.Messages\EzBus.Samples.Messages.csproj", "{7AFF69F7-6271-425F-B725-CEF40051F772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Service", "Samples\EzBus.Samples.Service\EzBus.Samples.Service.csproj", "{3CE1DE6D-8AB1-458B-80FD-379FAE057A8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.WebClient", "Samples\EzBus.Samples.WebClient\EzBus.Samples.WebClient.csproj", "{FA536BC0-EBCB-46EE-BF10-74F58009B87F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

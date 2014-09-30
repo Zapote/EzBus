@@ -4,14 +4,14 @@ using EzBus.Core.Serilizers;
 
 namespace EzBus.Core
 {
-    public class Bus : IBus
+    public class CoreBus : IBus
     {
         private readonly ISendingChannel sendingChannel;
         private readonly IMessageRouting messageRouting;
         private readonly ISubscriptionStorage subscriptionStorage;
         private readonly XmlMessageSerializer serializer;
 
-        public Bus(ISendingChannel sendingChannel, IMessageRouting messageRouting, ISubscriptionStorage subscriptionStorage)
+        public CoreBus(ISendingChannel sendingChannel, IMessageRouting messageRouting, ISubscriptionStorage subscriptionStorage)
         {
             if (sendingChannel == null) throw new ArgumentNullException("sendingChannel");
             if (messageRouting == null) throw new ArgumentNullException("messageRouting");
