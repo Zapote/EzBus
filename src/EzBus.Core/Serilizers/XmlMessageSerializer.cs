@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EzBus.Logging;
+using EzBus.Serilizers;
+using System;
 using System.Collections;
 using System.Globalization;
 using System.IO;
@@ -6,12 +8,13 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Linq;
-using EzBus.Serilizers;
 
 namespace EzBus.Core.Serilizers
 {
     public class XmlMessageSerializer : IMessageSerilizer
     {
+        private static readonly ILogger log = HostLogManager.GetLogger(typeof(XmlMessageSerializer));
+
         public Stream Serialize(object obj)
         {
             var xmlDocument = CreateXmlDocument();
@@ -91,10 +94,17 @@ namespace EzBus.Core.Serilizers
 
         public object Deserialize(Stream messageStream, Type messageType)
         {
-            var xDoc = XDocument.Load(messageStream);
             var instance = FormatterServices.GetUninitializedObject(messageType);
 
-            WriteToInstance(instance, messageType, xDoc.Root);
+            try
+            {
+                var xDoc = XDocument.Load(messageStream);
+                WriteToInstance(instance, messageType, xDoc.Root);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Failed to deserialize message!", ex);
+            }
 
             return instance;
         }

@@ -26,6 +26,7 @@ namespace EzBus.Core.Serilizers
                 {typeof (TimeSpan), s => XmlConvert.ToTimeSpan(s)},
                 {typeof (Byte), s => XmlConvert.ToByte(s)},
                 {typeof (String), s => s},
+                {typeof (Guid), s => XmlConvert.ToGuid(s)},
             };
         }
 

@@ -1,20 +1,21 @@
-﻿using System;
+﻿using EzBus.Core.Serilizers;
+using EzBus.Logging;
+using EzBus.Serilizers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using EzBus.Core.Serilizers;
-using EzBus.Logging;
-using EzBus.Serilizers;
 
 namespace EzBus.Core
 {
     public class Host
     {
+        private static readonly ILogger log = HostLogManager.GetLogger(typeof(Host));
+
         private ISendingChannel sendingChannel;
         private readonly IObjectFactory objectFactory;
         private readonly IMessageSerilizer messageSerializer;
         private readonly ISubscriptionStorage subscriptionStorage;
-        private static readonly ILogger log = HostLogManager.GetLogger(typeof(Host));
         private HandlerCache handlerCache;
         private string inputQueue;
         private string errorQueue;
@@ -75,9 +76,7 @@ namespace EzBus.Core
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
         {
             var messageTypeName = e.Message.Headers.ElementAt(0).Value;
-            log.DebugFormat("Message Receieved: {0}", messageTypeName);
             var handlerInfo = handlerCache.GetHandlerInfo(messageTypeName);
-            log.DebugFormat("Found {0} handlers", handlerInfo.Count());
 
             object message = null;
 
