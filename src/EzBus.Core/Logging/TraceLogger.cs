@@ -15,11 +15,11 @@ namespace EzBus.Core.Logging
             this.name = name;
         }
 
-        public bool IsDebugEnabled { get { return level >= LogLevel.Debug; } }
-        public bool IsInfoEnabled { get { return level >= LogLevel.Info; } }
-        public bool IsWarnEnabled { get { return level >= LogLevel.Warn; } }
-        public bool IsErrorEnabled { get { return level >= LogLevel.Error; } }
-        public bool IsFatalEnabled { get { return level >= LogLevel.Fatal; } }
+        public bool IsDebugEnabled { get { return level <= LogLevel.Debug; } }
+        public bool IsInfoEnabled { get { return level <= LogLevel.Info; } }
+        public bool IsWarnEnabled { get { return level <= LogLevel.Warn; } }
+        public bool IsErrorEnabled { get { return level <= LogLevel.Error; } }
+        public bool IsFatalEnabled { get { return level <= LogLevel.Fatal; } }
 
         public void Debug(object message)
         {
@@ -103,7 +103,7 @@ namespace EzBus.Core.Logging
 
         private void WriteLog(object message)
         {
-            Trace.WriteLine(string.Format("{0} [{1}] {2} {3}\t{4}", DateTime.Now, System.Threading.Thread.CurrentThread.ManagedThreadId, level, name, message));
+            Trace.WriteLine(string.Format("{0} [{1}] {2} {3} {4}", DateTime.Now, System.Threading.Thread.CurrentThread.ManagedThreadId, level, name, message));
         }
     }
 }

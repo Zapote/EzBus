@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyScannerTest.cs" />
+    <Compile Include="Logging\TraceLoggerTest.cs" />
     <Compile Include="Specifications\SpecificationBase.cs" />
     <Compile Include="Specifications\BusSpecificationBase.cs" />
     <Compile Include="Specifications\When_message_is_published.cs" />

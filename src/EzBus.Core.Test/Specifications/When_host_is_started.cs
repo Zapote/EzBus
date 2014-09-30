@@ -1,4 +1,7 @@
+using System;
+using EzBus.Core.Logging;
 using EzBus.Core.Test.TestHelpers;
+using EzBus.Logging;
 using NUnit.Framework;
 
 namespace EzBus.Core.Test.Specifications
@@ -11,6 +14,7 @@ namespace EzBus.Core.Test.Specifications
         protected override void When()
         {
             FakeMessageChannel.Reset();
+            HostLogManager.Configure(new TraceHostLoggerFactory(), LogLevel.All);
             var host = new Host(new HostConfig());
             host.Start();
         }

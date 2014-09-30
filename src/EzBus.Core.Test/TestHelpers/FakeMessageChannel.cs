@@ -6,12 +6,13 @@ namespace EzBus.Core.Test.TestHelpers
 {
     public class FakeMessageChannel : ISendingChannel, IReceivingChannel
     {
-        private static readonly List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
+        private static List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
         private static event EventHandler<MessageReceivedEventArgs> InnerMessageHandler;
 
         public static void Reset()
         {
             sentDestinations.Clear();
+            sentDestinations = new List<EndpointAddress>();
         }
 
         public FakeMessageChannel()
