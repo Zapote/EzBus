@@ -77,7 +77,7 @@ namespace EzBus.Core
             var messageTypeName = e.Message.Headers.ElementAt(0).Value;
             log.DebugFormat("Message Receieved: {0}", messageTypeName);
             var handlerInfo = handlerCache.GetHandlerInfo(messageTypeName);
-
+            log.DebugFormat("Found {0} handlers", handlerInfo.Count());
 
             object message = null;
 
@@ -90,6 +90,7 @@ namespace EzBus.Core
                 {
                     message = messageSerializer.Deserialize(e.Message.BodyStream, messageType);
                 }
+
                 log.DebugFormat("Invoking handler: {0}", handlerType.Name);
 
                 var result = InvokeHandler(handlerType, message);

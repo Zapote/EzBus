@@ -20,7 +20,7 @@ namespace EzBus.Core
                     MessageType = messageType
                 }));
 
-            log.DebugFormat("Handler '{0}' added to cache", handlerType.FullName);
+            log.DebugFormat("Handler '{0}' for message '{1}' added to cache", handlerType.FullName, messageType.FullName);
         }
 
         public IEnumerable<HandlerInfo> GetHandlerInfo(string messageTypeName)
