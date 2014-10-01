@@ -49,18 +49,17 @@ namespace EzBus.Core.Builders
             Register(typeof(TService), implementationType, lifeCycle);
         }
 
-
         public void Register(Type serviceType, Type implementationType, LifeCycle lifeCycle = LifeCycle.Default)
         {
-            var lifetime = lifeCycleToLifeTime[lifeCycle];
+            var lifetime = lifeCycleToLifeTime[lifeCycle]();
             container.Register(serviceType, implementationType, lifetime);
         }
 
-        private readonly IDictionary<LifeCycle, ILifetime> lifeCycleToLifeTime = new Dictionary<LifeCycle, ILifetime>
+        private readonly IDictionary<LifeCycle, Func<ILifetime>> lifeCycleToLifeTime = new Dictionary<LifeCycle, Func<ILifetime>>
         {
-            {LifeCycle.Default, new PerScopeLifetime()},
-            {LifeCycle.Singleton, new PerContainerLifetime()},
-            {LifeCycle.Unique, new PerRequestLifeTime()}
+            {LifeCycle.Default, () => new PerScopeLifetime()},
+            {LifeCycle.Singleton, () => new PerContainerLifetime()},
+            {LifeCycle.Unique,  () => new PerRequestLifeTime()}
         };
     }
 }

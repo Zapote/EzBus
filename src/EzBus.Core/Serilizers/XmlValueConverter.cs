@@ -19,7 +19,7 @@ namespace EzBus.Core.Serilizers
                 {typeof (UInt16), s => XmlConvert.ToUInt16(s)},
                 {typeof (UInt32), s => XmlConvert.ToUInt32(s)},
                 {typeof (UInt64), s => XmlConvert.ToUInt64(s)},
-                {typeof (Boolean), s => XmlConvert.ToBoolean(s)},
+                {typeof (Boolean), s => XmlConvert.ToBoolean(s.ToLower())},
                 {typeof (Double), s => XmlConvert.ToDouble(s)},
                 {typeof (Decimal), s => XmlConvert.ToDecimal(s)},
                 {typeof (DateTime), s => XmlConvert.ToDateTime(s, XmlDateTimeSerializationMode.Unspecified)},

@@ -155,7 +155,7 @@ namespace EzBus.Core
             objectFactory.BeginScope();
 
             var messageFilters = new IMessageFilter[0];
-            
+
             try
             {
                 var handler = objectFactory.CreateInstance(handlerType);
