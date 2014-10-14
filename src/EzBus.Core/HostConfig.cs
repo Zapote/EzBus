@@ -5,7 +5,6 @@ namespace EzBus.Core
     public class HostConfig
     {
         public IObjectFactory ObjectFactory { get; private set; }
-        public ISubscriptionStorage SubscriptionStorage { get; set; }
         public int WorkerThreads { get; private set; }
         public int NumberOfRetrys { get; private set; }
 
@@ -14,7 +13,6 @@ namespace EzBus.Core
             NumberOfRetrys = 5;
             WorkerThreads = 1;
             ObjectFactory = new LightInjectObjectFactory();
-            SubscriptionStorage = new InMemorySubscriptionStorage();
         }
 
         public void SetNumberOfWorkerThreads(int threads)

@@ -11,14 +11,13 @@ namespace EzBus.Core
     public class Host
     {
         private static readonly ILogger log = HostLogManager.GetLogger(typeof(Host));
-
-        private ISendingChannel sendingChannel;
         private readonly IObjectFactory objectFactory;
-        private readonly IMessageSerilizer messageSerializer;
-        private readonly ISubscriptionStorage subscriptionStorage;
-        private HandlerCache handlerCache;
-        private string inputQueue;
-        private string errorQueue;
+        private ISubscriptionStorage subscriptionStorage;
+        private readonly ISendingChannel sendingChannel = MessageChannelResolver.GetSendingChannel();
+        private readonly IMessageSerilizer messageSerializer = new XmlMessageSerializer();
+        private readonly HandlerCache handlerCache = new HandlerCache();
+        private readonly string endpointName;
+        private readonly string endpointErrorName;
         private readonly int workerThreads;
         private readonly int numberOfRetrys;
 
@@ -28,49 +27,32 @@ namespace EzBus.Core
             objectFactory = hostConfig.ObjectFactory;
             workerThreads = hostConfig.WorkerThreads;
             numberOfRetrys = hostConfig.NumberOfRetrys;
-            subscriptionStorage = hostConfig.SubscriptionStorage;
-            messageSerializer = new XmlMessageSerializer();
+
+            endpointName = CreateEndpointName();
+            endpointErrorName = string.Format("{0}.error", endpointName);
         }
 
         public void Start()
         {
-            log.Debug("Starting");
+            log.Debug("Starting Ezbus Host");
 
-            var scanner = new AssemblyScanner();
-            var handlerTypes = scanner.FindTypes(typeof(IHandle<>));
+            handlerCache.Prime();
+            if (handlerCache.NumberOfEntries == 0) return;
 
-            if (NoCustomHandlersFound(handlerTypes))
-            {
-                log.Debug("No custom handlers found.");
-                return;
-            }
-
+            subscriptionStorage = (ISubscriptionStorage)objectFactory.CreateInstance(typeof(ISubscriptionStorage));
+            subscriptionStorage.Initialize(new EndpointAddress(endpointName));
             objectFactory.Initialize();
-            objectFactory.Register<ISubscriptionStorage>(subscriptionStorage.GetType());
 
-            handlerCache = new HandlerCache();
-
-            foreach (var handlerType in handlerTypes)
-            {
-                handlerCache.Add(handlerType);
-            }
-
-            inputQueue = CreateEndpointName();
-            log.DebugFormat("Endpoint: {0}", inputQueue);
-            errorQueue = string.Format("{0}.error", inputQueue);
-
-            sendingChannel = MessageChannelResolver.GetSendingChannel();
-            log.DebugFormat("SendingChannel: {0}", sendingChannel.GetType());
             for (var i = 0; i < workerThreads; i++)
             {
                 var receivingChannel = MessageChannelResolver.GetReceivingChannel();
-                receivingChannel.Initialize(new EndpointAddress(inputQueue), new EndpointAddress(errorQueue));
+                receivingChannel.Initialize(new EndpointAddress(endpointName), new EndpointAddress(endpointErrorName));
                 receivingChannel.OnMessageReceived += OnMessageReceived;
             }
 
             SendSubscriptionMessages();
 
-            log.Debug("Started");
+            log.Debug("Ezbus host started");
         }
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -99,51 +81,6 @@ namespace EzBus.Core
                     PlaceMessageOnErrorQueue(e.Message, result.Exception.InnerException);
                 }
             }
-        }
-
-        private void SendSubscriptionMessages()
-        {
-            var subscriptions = Config.SubscriptionSection.Section.Subscriptions;
-
-            foreach (Config.SubscriptionElement subscription in subscriptions)
-            {
-                var subscriptionMessage = new SubscriptionMessage
-                {
-                    Endpoint = string.Format("{0}@{1}", inputQueue, Environment.MachineName)
-                };
-
-                var destination = EndpointAddress.Parse(subscription.Endpoint);
-
-                log.DebugFormat("Subscribing to: {0}", destination);
-                sendingChannel.Send(destination, ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, messageSerializer));
-            }
-        }
-
-        private static bool NoCustomHandlersFound(IList<Type> handlerTypes)
-        {
-            if (handlerTypes.Count == 0)
-            {
-                return true;
-            }
-            return handlerTypes.Count == 1 && handlerTypes[0] == typeof(SubscriptionMessageHandler);
-        }
-
-        private void PlaceMessageOnErrorQueue(ChannelMessage message, Exception exception)
-        {
-            var level = 0;
-
-            while (exception != null)
-            {
-                var headerName = string.Format("ErrorMessage L{0}", level);
-                var value = string.Format("{0}: {1}", DateTime.Now, exception.Message);
-                message.AddHeader(headerName, value);
-                exception = exception.InnerException;
-                level++;
-            }
-
-            log.Debug(errorQueue);
-
-            sendingChannel.Send(new EndpointAddress(errorQueue), message);
         }
 
         private InvokationResult InvokeHandler(Type handlerType, object message)
@@ -180,6 +117,42 @@ namespace EzBus.Core
             objectFactory.EndScope();
 
             return new InvokationResult(success, exception);
+        }
+
+        private void SendSubscriptionMessages()
+        {
+            var subscriptions = Config.SubscriptionSection.Section.Subscriptions;
+
+            foreach (Config.SubscriptionElement subscription in subscriptions)
+            {
+                var subscriptionMessage = new SubscriptionMessage
+                {
+                    Endpoint = string.Format("{0}@{1}", endpointName, Environment.MachineName)
+                };
+
+                var destination = EndpointAddress.Parse(subscription.Endpoint);
+
+                log.DebugFormat("Subscribing to: {0}", destination);
+                sendingChannel.Send(destination, ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, messageSerializer));
+            }
+        }
+
+        private void PlaceMessageOnErrorQueue(ChannelMessage message, Exception exception)
+        {
+            var level = 0;
+
+            while (exception != null)
+            {
+                var headerName = string.Format("ErrorMessage L{0}", level);
+                var value = string.Format("{0}: {1}", DateTime.Now, exception.Message);
+                message.AddHeader(headerName, value);
+                exception = exception.InnerException;
+                level++;
+            }
+
+            log.Debug(endpointErrorName);
+
+            sendingChannel.Send(new EndpointAddress(endpointErrorName), message);
         }
 
         private string CreateEndpointName()

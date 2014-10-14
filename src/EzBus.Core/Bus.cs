@@ -26,3 +26,4 @@ public class Bus
         bus.Publish(message);
     }
 }
+

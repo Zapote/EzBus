@@ -48,7 +48,7 @@
     <Compile Include="Builders\RegistryInstance.cs" />
     <Compile Include="CoreBus.cs" />
     <Compile Include="ChannelMessageFactory.cs" />
-    <Compile Include="EzBus.cs" />
+    <Compile Include="Bus.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="Logging\TraceHostLoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
@@ -62,7 +62,6 @@
     <Compile Include="Config\SubscriptionSection.cs" />
     <Compile Include="InMemorySubscriptionStorage.cs" />
     <Compile Include="InvokationResult.cs" />
-    <Compile Include="ISubscriptionStorage.cs" />
     <Compile Include="Builders\LightInjectObjectFactory.cs" />
     <Compile Include="Builders\LightInject.cs" />
     <Compile Include="MessageFilterResolver.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="Builders\ServiceRegistry.cs" />
     <Compile Include="Subscription.cs" />
     <Compile Include="SubscriptionMessageHandler.cs" />
+    <Compile Include="SubscriptionStorageResolver.cs" />
     <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

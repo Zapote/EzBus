@@ -17,7 +17,7 @@ namespace EzBus.Core.Test
         }
 
         [Test]
-        public void Subscribers_are_stored_after_subscription_messages_arrives()
+        public void Subscriber_shall_be_stored_in_storage()
         {
             handler.Handle(new SubscriptionMessage { Endpoint = endpoint });
 

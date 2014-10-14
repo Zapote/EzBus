@@ -18,6 +18,7 @@ namespace EzBus.Core.Test.Specifications
             bus = new CoreBus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());
             var config = new HostConfig();
             config.SetNumberOfRetrys(2);
+            config.ObjectFactory.Register<ISubscriptionStorage>(new InMemorySubscriptionStorage(), LifeCycle.Unique);
             host = new Host(config);
             host.Start();
         }

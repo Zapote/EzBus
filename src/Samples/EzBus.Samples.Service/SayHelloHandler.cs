@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.Core;
 using EzBus.Samples.Messages;
 
 namespace EzBus.Samples.Service

@@ -8,5 +8,10 @@ namespace EzBus.Core
         {
             return Activator.CreateInstance(t);
         }
+
+        public static bool IsLocal(this Type t)
+        {
+            return t.Namespace != null && t.Namespace.Equals("EzBus.Core");
+        }
     }
 }

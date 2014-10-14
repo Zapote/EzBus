@@ -24,46 +24,46 @@ namespace EzBus.Core.Logging
         public void Debug(object message)
         {
             if (!IsDebugEnabled) return;
-            WriteLog(message);
+            WriteLog(message, LogLevel.Debug);
         }
 
         public void Info(object message)
         {
             if (!IsInfoEnabled) return;
-            WriteLog(message);
+            WriteLog(message, LogLevel.Info, ConsoleColor.Blue);
         }
 
         public void Warn(object message)
         {
             if (!IsWarnEnabled) return;
-            WriteLog(message);
+            WriteLog(message, LogLevel.Warn, ConsoleColor.Yellow);
         }
 
         public void Error(object message)
         {
             if (!IsErrorEnabled) return;
-            WriteLog(message);
+            WriteLog(message, LogLevel.Error, ConsoleColor.Red);
         }
 
         public void Fatal(object message)
         {
             if (!IsFatalEnabled) return;
-            WriteLog(message);
+            WriteLog(message, LogLevel.Fatal, ConsoleColor.Red);
         }
 
         public void Debug(object message, Exception t)
         {
-            throw new NotImplementedException();
+            DebugFormat("{0} {1}", message, t);
         }
 
         public void Info(object message, Exception t)
         {
-            throw new NotImplementedException();
+            InfoFormat("{0} {1}", message, t);
         }
 
         public void Warn(object message, Exception t)
         {
-            throw new NotImplementedException();
+            WarnFormat("{0} {1}", message, t);
         }
 
         public void Error(object message, Exception t)
@@ -73,7 +73,7 @@ namespace EzBus.Core.Logging
 
         public void Fatal(object message, Exception t)
         {
-            throw new NotImplementedException();
+            FatalFormat("{0} {1}", message, t);
         }
 
         public void DebugFormat(string format, params object[] args)
@@ -101,9 +101,11 @@ namespace EzBus.Core.Logging
             Fatal(string.Format(format, args));
         }
 
-        private void WriteLog(object message)
+        private void WriteLog(object message, LogLevel logLevel, ConsoleColor color = ConsoleColor.Gray)
         {
-            Trace.WriteLine(string.Format("{0} [{1}] {2} {3} {4}", DateTime.Now, System.Threading.Thread.CurrentThread.ManagedThreadId, level, name, message));
+            Console.ForegroundColor = color;
+            Trace.WriteLine(string.Format("{0} [{1}] {2} {3} {4}", DateTime.Now, System.Threading.Thread.CurrentThread.ManagedThreadId, logLevel, name, message));
+            Console.ResetColor();
         }
     }
 }

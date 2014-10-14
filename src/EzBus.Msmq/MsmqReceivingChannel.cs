@@ -20,15 +20,11 @@ namespace EzBus.Msmq
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
-            var inputQueueName = MsmqAddressHelper.GetQueueName(inputAddress);
-            var inputQueuePath = MsmqAddressHelper.GetQueuePath(inputAddress);
-            var errorQueueName = MsmqAddressHelper.GetQueueName(errorAddress);
+            inputQueue = MsmqUtilities.GetQueue(inputAddress) ?? MsmqUtilities.CreateQueue(inputAddress);
 
-            inputQueue = MessageQueue.Exists(inputQueueName) ? new MessageQueue(inputQueuePath, QueueAccessMode.Receive) : MessageQueue.Create(inputQueueName, true);
-
-            if (!MessageQueue.Exists(errorQueueName))
+            if (!MsmqUtilities.QueueExists(errorAddress))
             {
-                MessageQueue.Create(errorQueueName, true);
+                MsmqUtilities.CreateQueue(errorAddress);
             }
 
             inputQueue.MessageReadPropertyFilter = new MessagePropertyFilter
@@ -65,6 +61,7 @@ namespace EzBus.Msmq
         private static MessageHeader[] GetMessageHeaders(Message m)
         {
             var xmlHeaders = System.Text.Encoding.Default.GetString(m.Extension);
+            if (string.IsNullOrEmpty(xmlHeaders)) return new MessageHeader[0];
             var serializer = new XmlSerializer(typeof(List<MessageHeader>));
             var headers = (List<MessageHeader>)serializer.Deserialize(new StringReader(xmlHeaders));
             return headers.ToArray();

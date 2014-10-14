@@ -1,4 +1,3 @@
-using System;
 using EzBus.Core.Logging;
 using EzBus.Core.Test.TestHelpers;
 using EzBus.Logging;
@@ -15,7 +14,10 @@ namespace EzBus.Core.Test.Specifications
         {
             FakeMessageChannel.Reset();
             HostLogManager.Configure(new TraceHostLoggerFactory(), LogLevel.All);
-            var host = new Host(new HostConfig());
+            var hostConfig = new HostConfig();
+            hostConfig.ObjectFactory.Register<ISubscriptionStorage>(new InMemorySubscriptionStorage(), LifeCycle.Unique);
+            var host = new Host(hostConfig);
+
             host.Start();
         }
 

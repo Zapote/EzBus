@@ -27,9 +27,8 @@ namespace EzBus.Core
         {
             var assemblyScanner = new AssemblyScanner();
             var sendingChannels = assemblyScanner.FindTypes<ISendingChannel>();
-            var localns = typeof(MessageChannelResolver).Namespace;
 
-            foreach (var type in sendingChannels.Where(type => type.Namespace != localns))
+            foreach (var type in sendingChannels.Where(type => !type.IsLocal()))
             {
                 sendingChannelType = type;
                 break;
@@ -43,7 +42,7 @@ namespace EzBus.Core
 
             var receivingChannels = assemblyScanner.FindTypes<IReceivingChannel>();
 
-            foreach (var type in receivingChannels.Where(type => type.Namespace != localns))
+            foreach (var type in receivingChannels.Where(type => !type.IsLocal()))
             {
                 receivingChannelType = type;
                 break;

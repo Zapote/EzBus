@@ -33,5 +33,35 @@ namespace EzBus.Core
             var handlerInterface = handlerType.GetInterface(typeof(IHandle<>).Name);
             return handlerInterface.GetGenericArguments()[0];
         }
+
+        public void Prime()
+        {
+            var scanner = new AssemblyScanner();
+            var handlerTypes = scanner.FindTypes(typeof(IHandle<>));
+
+            if (NoCustomHandlersFound(handlerTypes))
+            {
+                log.Debug("No custom handlers found.");
+            }
+
+            foreach (var handlerType in handlerTypes)
+            {
+                Add(handlerType);
+            }
+        }
+
+        private static bool NoCustomHandlersFound(IList<Type> handlerTypes)
+        {
+            if (handlerTypes.Count == 0)
+            {
+                return true;
+            }
+            return handlerTypes.Count == 1 && handlerTypes[0] == typeof(SubscriptionMessageHandler);
+        }
+
+        public int NumberOfEntries
+        {
+            get { return handlers.Count; }
+        }
     }
 }

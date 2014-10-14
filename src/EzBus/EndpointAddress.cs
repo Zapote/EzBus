@@ -1,4 +1,6 @@
-﻿namespace EzBus
+﻿using System;
+
+namespace EzBus
 {
     public class EndpointAddress
     {
@@ -7,6 +9,7 @@
 
         public EndpointAddress(string queueName, string machineName = "")
         {
+            if (string.IsNullOrEmpty(queueName)) throw new ArgumentNullException("queueName");
             QueueName = queueName.ToLower();
             MachineName = machineName;
         }

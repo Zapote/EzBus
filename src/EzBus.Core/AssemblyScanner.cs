@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Web;
+using EzBus.Logging;
 
 namespace EzBus.Core
 {
     public class AssemblyScanner : IAssemblyScanner
     {
+        private static readonly ILogger log = HostLogManager.GetLogger(typeof(AssemblyScanner));
         private static List<string> assemblyFiles;
         private static bool directoryScanned;
 
@@ -45,9 +47,9 @@ namespace EzBus.Core
                         types.Add(type);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    continue; //TODO: Logging
+                    log.Error(string.Format("Failed to scan assemby: {0}", file), ex);
                 }
 
             }

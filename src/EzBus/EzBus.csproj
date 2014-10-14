@@ -47,6 +47,7 @@
     <Compile Include="IReceivingChannel.cs" />
     <Compile Include="ISendingChannel.cs" />
     <Compile Include="ChannelMessage.cs" />
+    <Compile Include="ISubscriptionStorage.cs" />
     <Compile Include="LifeCycle.cs" />
     <Compile Include="Logging\HostLogManager.cs" />
     <Compile Include="Logging\HostLogManagerConfig.cs" />

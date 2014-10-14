@@ -49,6 +49,12 @@ namespace EzBus.Core.Builders
             Register(typeof(TService), implementationType, lifeCycle);
         }
 
+        public void Register<TService>(TService instance, LifeCycle lifeCycle = LifeCycle.Default)
+        {
+            var lifetime = lifeCycleToLifeTime[lifeCycle]();
+            container.Register(f => instance, lifetime);
+        }
+
         public void Register(Type serviceType, Type implementationType, LifeCycle lifeCycle = LifeCycle.Default)
         {
             var lifetime = lifeCycleToLifeTime[lifeCycle]();

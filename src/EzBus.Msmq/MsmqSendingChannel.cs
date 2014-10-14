@@ -11,8 +11,9 @@ namespace EzBus.Msmq
     {
         public void Send(EndpointAddress destination, ChannelMessage channelMessage)
         {
-            var queueName = MsmqAddressHelper.GetQueueName(destination);
-            var queuePath = MsmqAddressHelper.GetQueuePath(destination);
+            var queueName = destination.GetQueueName();
+            var queuePath = destination.GetQueuePath();
+
             if (!MessageQueue.Exists(queueName)) throw new Exception(string.Format("Destination {0} does not exist.", destination));
 
             var destinationQueue = new MessageQueue(queuePath);
