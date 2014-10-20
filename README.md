@@ -3,10 +3,7 @@ EzBus - Messaging made easy!
 
 ## Getting started
 
-#### Install
-
-
-##### NuGet
+#### Install via NuGet
 
 For MSMQ transport:<br/>
 nuget Install-package EzBus.Msmq
