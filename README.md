@@ -36,6 +36,9 @@ in app.config:
     <add endpoint="EzBus.Samples.Service"/>
   </subscriptions>
 ```
+
+add enpoints that you want tot receive messages from.
+
 #### Handle your message
 
 ```C#
