@@ -37,7 +37,7 @@ in app.config:
   </subscriptions>
 ```
 
-add enpoints that you want tot receive messages from.
+add endpoints that you want tot receive messages from.
 
 #### Handle your message
 
