@@ -1,5 +1,6 @@
 ﻿using System;
 using EzBus.Core.Test.TestHelpers;
+using EzBus.Logging;
 using NUnit.Framework;
 
 namespace EzBus.Core.Test.Specifications
@@ -10,9 +11,12 @@ namespace EzBus.Core.Test.Specifications
         private FakeMessageChannel messageChannel;
         private Host host;
         private IBus bus;
+        private static int retries;
 
         protected override void Given()
         {
+          
+            retries = 0;
             FakeMessageChannel.Reset();
             messageChannel = new FakeMessageChannel();
             bus = new CoreBus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());
@@ -21,11 +25,18 @@ namespace EzBus.Core.Test.Specifications
             config.ObjectFactory.Register<ISubscriptionStorage>(new InMemorySubscriptionStorage(), LifeCycle.Unique);
             host = new Host(config);
             host.Start();
+            HostLogManager.SetLogLevel(LogLevel.Off);
         }
 
         protected override void When()
         {
             bus.Send("Moon", new FailingMessage());
+        }
+
+        [Test]
+        public void Message_should_be_retried_two_times()
+        {
+            Assert.That(retries, Is.EqualTo(2));
         }
 
         [Test]
@@ -36,7 +47,8 @@ namespace EzBus.Core.Test.Specifications
 
         public void Handle(FailingMessage message)
         {
-            throw new Exception("Error in handler.");
+            retries++;
+            throw new Exception("Testing error in handler.");
         }
     }
 }

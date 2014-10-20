@@ -17,6 +17,11 @@ namespace EzBus.Logging
             return GetLogger(type.Name);
         }
 
+        public static void SetLogLevel(LogLevel level)
+        {
+            logLevel = level;
+        }
+
         public static void Configure(LoggerFactory factory, LogLevel level)
         {
             loggerFactory = factory;

@@ -14,7 +14,6 @@ namespace EzBus.Core
         public IBus Start()
         {
             HostLogManager.Configure(new TraceHostLoggerFactory(), LogLevel.Debug);
-
             sendingChannel = MessageChannelResolver.GetSendingChannel();
             subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
             config.ObjectFactory.Register(subscriptionStorage, LifeCycle.Singleton);

@@ -87,34 +87,35 @@ namespace EzBus.Core
         {
             var success = true;
             Exception exception = null;
-            var methodInfo = handlerType.GetMethod("Handle", new[] { message.GetType() });
 
-            objectFactory.BeginScope();
-
-            var messageFilters = new IMessageFilter[0];
-
-            try
+            for (var i = 0; i < numberOfRetrys; i++)
             {
-                var handler = objectFactory.CreateInstance(handlerType);
-                messageFilters = MessageFilterResolver.GetMessageFilters(objectFactory);
+                var methodInfo = handlerType.GetMethod("Handle", new[] { message.GetType() });
+                var messageFilters = new IMessageFilter[0];
 
-                for (var i = 0; i < numberOfRetrys; i++)
+                objectFactory.BeginScope();
+
+                try
                 {
+                    var handler = objectFactory.CreateInstance(handlerType);
+                    messageFilters = MessageFilterResolver.GetMessageFilters(objectFactory);
+
                     messageFilters.Apply(x => x.Before());
                     methodInfo.Invoke(handler, new[] { message });
                     messageFilters.Apply(x => x.After(null));
+
                     break;
                 }
-            }
-            catch (Exception ex)
-            {
-                log.Error("Failed to handle message!", ex);
-                exception = ex;
-                success = false;
-                messageFilters.Apply(x => x.After(ex));
-            }
+                catch (Exception ex)
+                {
+                    log.Error(string.Format("Failed to handle message '{0}'", message.GetType().Name), ex);
+                    exception = ex;
+                    success = false;
+                    messageFilters.Apply(x => x.After(ex));
+                }
 
-            objectFactory.EndScope();
+                objectFactory.EndScope();
+            }
 
             return new InvokationResult(success, exception);
         }

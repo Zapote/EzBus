@@ -15,11 +15,16 @@ namespace EzBus.Core.Logging
             this.name = name;
         }
 
-        public bool IsDebugEnabled { get { return level <= LogLevel.Debug; } }
-        public bool IsInfoEnabled { get { return level <= LogLevel.Info; } }
-        public bool IsWarnEnabled { get { return level <= LogLevel.Warn; } }
-        public bool IsErrorEnabled { get { return level <= LogLevel.Error; } }
-        public bool IsFatalEnabled { get { return level <= LogLevel.Fatal; } }
+        public bool IsDebugEnabled { get { return level <= LogLevel.Debug && LoggingOn(); } }
+        public bool IsInfoEnabled { get { return level <= LogLevel.Info && LoggingOn(); } }
+        public bool IsWarnEnabled { get { return level <= LogLevel.Warn && LoggingOn(); } }
+        public bool IsErrorEnabled { get { return level <= LogLevel.Error && LoggingOn(); } }
+        public bool IsFatalEnabled { get { return level <= LogLevel.Fatal && LoggingOn(); } }
+
+        private bool LoggingOn()
+        {
+            return level != LogLevel.Off;
+        }
 
         public void Debug(object message)
         {
