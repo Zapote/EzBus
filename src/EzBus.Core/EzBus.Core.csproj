@@ -50,9 +50,10 @@
     <Compile Include="ChannelMessageFactory.cs" />
     <Compile Include="Bus.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
-    <Compile Include="Logging\TraceHostLoggerFactory.cs" />
+    <Compile Include="Logging\TraceLoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
-    <Compile Include="MessageChannelResolver.cs" />
+    <Compile Include="Resolvers\LoggerFactoryResolver.cs" />
+    <Compile Include="Resolvers\MessageChannelResolver.cs" />
     <Compile Include="ChannelTypes.cs" />
     <Compile Include="Config\DestinationCollection.cs" />
     <Compile Include="Config\DestinationElement.cs" />
@@ -64,7 +65,7 @@
     <Compile Include="InvokationResult.cs" />
     <Compile Include="Builders\LightInjectObjectFactory.cs" />
     <Compile Include="Builders\LightInject.cs" />
-    <Compile Include="MessageFilterResolver.cs" />
+    <Compile Include="Resolvers\MessageFilterResolver.cs" />
     <Compile Include="Routing\DestinationMissingException.cs" />
     <Compile Include="HostConfig.cs" />
     <Compile Include="Host.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Builders\ServiceRegistry.cs" />
     <Compile Include="Subscription.cs" />
     <Compile Include="SubscriptionMessageHandler.cs" />
-    <Compile Include="SubscriptionStorageResolver.cs" />
+    <Compile Include="Resolvers\SubscriptionStorageResolver.cs" />
     <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

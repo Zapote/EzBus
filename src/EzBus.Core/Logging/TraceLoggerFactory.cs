@@ -3,9 +3,9 @@ using EzBus.Logging;
 
 namespace EzBus.Core.Logging
 {
-    public class TraceHostLoggerFactory : LoggerFactory
+    public class TraceLoggerFactory : LoggerFactory
     {
-        public TraceHostLoggerFactory()
+        public TraceLoggerFactory()
         {
             Trace.Listeners.Add(new ConsoleTraceListener());
         }

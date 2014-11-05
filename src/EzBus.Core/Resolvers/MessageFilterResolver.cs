@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EzBus.Core.Builders;
 
-namespace EzBus.Core
+namespace EzBus.Core.Resolvers
 {
-    public static class MessageFilterResolver
+    internal static class MessageFilterResolver
     {
         private static readonly List<Type> filterTypes = new List<Type>();
 
         static MessageFilterResolver()
         {
-            LoadFilterTypes();
+            ResolveTypes();
         }
 
-        private static void LoadFilterTypes()
+        private static void ResolveTypes()
         {
             var scanner = new AssemblyScanner();
             var foundType = scanner.FindTypes<IMessageFilter>();

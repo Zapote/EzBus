@@ -1,4 +1,5 @@
 ﻿using EzBus.Core.Logging;
+using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
 using EzBus.Logging;
 
@@ -13,14 +14,34 @@ namespace EzBus.Core
 
         public IBus Start()
         {
-            HostLogManager.Configure(new TraceHostLoggerFactory(), LogLevel.Debug);
-            sendingChannel = MessageChannelResolver.GetSendingChannel();
-            subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
-            config.ObjectFactory.Register(subscriptionStorage, LifeCycle.Singleton);
+            GetSendingChannel();
+            ConfigureLogging();
+            ConfigureSubscriptionStorage();
+            StartHost();
+            return CreateBus();
+        }
 
+        private void GetSendingChannel()
+        {
+            sendingChannel = MessageChannelResolver.GetSendingChannel();
+        }
+
+        private void StartHost()
+        {
             host = new Host(config);
             host.Start();
-            return CreateBus();
+        }
+
+        private void ConfigureSubscriptionStorage()
+        {
+            subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
+            config.ObjectFactory.Register(subscriptionStorage, LifeCycle.Singleton);
+        }
+
+        private static void ConfigureLogging()
+        {
+            var loggerFactory = LoggerFactoryResolver.GetLoggerFactory();
+            HostLogManager.Configure(loggerFactory, LogLevel.Debug);
         }
 
         private CoreBus CreateBus()

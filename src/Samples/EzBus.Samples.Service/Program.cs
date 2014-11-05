@@ -6,6 +6,7 @@ namespace EzBus.Samples.Service
     {
         static void Main(string[] args)
         {
+            log4net.Config.XmlConfigurator.Configure();
             Bus.Start();
             Console.Read();
         }

@@ -1,11 +1,12 @@
 ﻿using System;
-using EzBus.Core;
 using EzBus.Samples.Messages;
+using log4net;
 
 namespace EzBus.Samples.Service
 {
     public class SayHelloHandler : IHandle<SayHello>
     {
+        private readonly ILog log = LogManager.GetLogger(typeof(SayHelloHandler));
         private readonly IOtherDependency otherDependency;
 
         public SayHelloHandler(IOtherDependency otherDependency)
@@ -16,8 +17,8 @@ namespace EzBus.Samples.Service
 
         public void Handle(SayHello message)
         {
-            Console.WriteLine(message);
-            Console.WriteLine(otherDependency.Id);
+            log.Debug(message);
+            log.Debug(otherDependency.Id);
             Bus.Publish(new ClientGreeted());
         }
     }

@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.Service", "Sa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.WebClient", "Samples\EzBus.Samples.WebClient\EzBus.Samples.WebClient.csproj", "{FA536BC0-EBCB-46EE-BF10-74F58009B87F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Log4Net", "EzBus.Log4Net\EzBus.Log4Net.csproj", "{2D6A0F20-E181-434D-AABE-4D08C61E3318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{FA536BC0-EBCB-46EE-BF10-74F58009B87F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA536BC0-EBCB-46EE-BF10-74F58009B87F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA536BC0-EBCB-46EE-BF10-74F58009B87F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D6A0F20-E181-434D-AABE-4D08C61E3318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D6A0F20-E181-434D-AABE-4D08C61E3318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D6A0F20-E181-434D-AABE-4D08C61E3318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D6A0F20-E181-434D-AABE-4D08C61E3318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

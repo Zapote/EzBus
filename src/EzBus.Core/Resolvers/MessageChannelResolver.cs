@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-namespace EzBus.Core
+namespace EzBus.Core.Resolvers
 {
-    public class MessageChannelResolver
+    internal class MessageChannelResolver
     {
         private static Type sendingChannelType;
         private static Type receivingChannelType;

@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3CE1DE6D-8AB1-458B-80FD-379FAE057A8B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{2D6A0F20-E181-434D-AABE-4D08C61E3318}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EzBus.Samples.Service</RootNamespace>
-    <AssemblyName>EzBus.Samples.Service</AssemblyName>
+    <RootNamespace>EzBus.Log4Net</RootNamespace>
+    <AssemblyName>EzBus.Log4Net</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,54 +30,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dependency.cs" />
-    <Compile Include="DependencyRegistry.cs" />
-    <Compile Include="IDependency.cs" />
-    <Compile Include="IOtherDependency.cs" />
-    <Compile Include="OtherDependency.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Log4NetLogger.cs" />
+    <Compile Include="Log4NetLoggerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MyMessageFilter.cs" />
-    <Compile Include="SayHelloHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="log4net.config">
+    <None Include="ezbus.log4net.nuspec">
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EzBus.Core\EzBus.Core.csproj">
-      <Project>{4142f834-ac35-4e99-9932-291805075f80}</Project>
-      <Name>EzBus.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EzBus.Log4Net\EzBus.Log4Net.csproj">
-      <Project>{2d6a0f20-e181-434d-aabe-4d08c61e3318}</Project>
-      <Name>EzBus.Log4Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EzBus.Msmq\EzBus.Msmq.csproj">
-      <Project>{3f5d0c34-372d-49cd-a591-cfd59471eda2}</Project>
-      <Name>EzBus.Msmq</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EzBus.Samples.Messages\EzBus.Samples.Messages.csproj">
-      <Project>{7AFF69F7-6271-425F-B725-CEF40051F772}</Project>
-      <Name>EzBus.Samples.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EzBus\EzBus.csproj">
+    <ProjectReference Include="..\EzBus\EzBus.csproj">
       <Project>{31bb0ddf-dced-49d0-8fc8-0d8ac396dd7b}</Project>
       <Name>EzBus</Name>
     </ProjectReference>

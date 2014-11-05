@@ -1,4 +1,5 @@
-﻿using EzBus.Core.Serilizers;
+﻿using EzBus.Core.Resolvers;
+using EzBus.Core.Serilizers;
 using EzBus.Logging;
 using EzBus.Serilizers;
 using System;

@@ -13,7 +13,7 @@ namespace EzBus.Core.Test.Specifications
         protected override void When()
         {
             FakeMessageChannel.Reset();
-            HostLogManager.Configure(new TraceHostLoggerFactory(), LogLevel.All);
+            HostLogManager.Configure(new TraceLoggerFactory(), LogLevel.All);
             var hostConfig = new HostConfig();
             hostConfig.ObjectFactory.Register<ISubscriptionStorage>(new InMemorySubscriptionStorage(), LifeCycle.Unique);
             var host = new Host(hostConfig);

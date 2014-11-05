@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Core.Test", "EzBus.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Msmq", "EzBus.Msmq\EzBus.Msmq.csproj", "{3F5D0C34-372D-49CD-A591-CFD59471EDA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Log4Net", "EzBus.Log4Net\EzBus.Log4Net.csproj", "{2D6A0F20-E181-434D-AABE-4D08C61E3318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3F5D0C34-372D-49CD-A591-CFD59471EDA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F5D0C34-372D-49CD-A591-CFD59471EDA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F5D0C34-372D-49CD-A591-CFD59471EDA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D6A0F20-E181-434D-AABE-4D08C61E3318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D6A0F20-E181-434D-AABE-4D08C61E3318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D6A0F20-E181-434D-AABE-4D08C61E3318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D6A0F20-E181-434D-AABE-4D08C61E3318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
