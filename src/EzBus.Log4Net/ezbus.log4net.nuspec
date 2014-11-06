@@ -12,7 +12,7 @@
     <iconUrl>http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ZAPOTE_IKON_GAPPS_LOGO.png</iconUrl>
     <dependencies>
       <dependency id="EzBus"  version="[0.9.0]"/>
-      <dependency id="log4n35"  version="2.0.3"/>
+      <dependency id="log4net"  version="2.0.3"/>
     </dependencies>
   </metadata>
   <files>
