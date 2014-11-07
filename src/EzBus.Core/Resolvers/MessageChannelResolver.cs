@@ -26,33 +26,15 @@ namespace EzBus.Core.Resolvers
         private static void ResolveTypes()
         {
             var assemblyScanner = new AssemblyScanner();
+
             var sendingChannels = assemblyScanner.FindTypes<ISendingChannel>();
+            sendingChannelType = sendingChannels.LastOrDefault(type => !type.IsLocal()) ??
+                                 typeof(InMemoryMessageChannel);
 
-            foreach (var type in sendingChannels.Where(type => !type.IsLocal()))
-            {
-                sendingChannelType = type;
-                break;
-            }
-
-            if (sendingChannelType == null)
-            {
-                //TODO: add default (inmemory?) channel
-                //channelTypes.SendingChannelType = new 
-            }
 
             var receivingChannels = assemblyScanner.FindTypes<IReceivingChannel>();
-
-            foreach (var type in receivingChannels.Where(type => !type.IsLocal()))
-            {
-                receivingChannelType = type;
-                break;
-            }
-
-            if (sendingChannelType == null)
-            {
-                //TODO: add default (inmemory?) channel
-                //channelTypes.SendingChannelType = new 
-            }
+            receivingChannelType = receivingChannels.LastOrDefault(t => !t.IsLocal()) ??
+                                   typeof(InMemoryMessageChannel);
         }
     }
 }

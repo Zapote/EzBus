@@ -22,7 +22,7 @@ namespace EzBus.Core.Test.Specifications
         [Then]
         public void Then_the_message_should_end_up_in_correct_destination()
         {
-            Assert.That(FakeMessageChannel.LastSentDestination, Is.EqualTo(EndpointAddress.Parse(expectedDestination)));
+            Assert.That(InMemoryMessageChannel.LastSentDestination, Is.EqualTo(EndpointAddress.Parse(expectedDestination)));
         }
     }
 }

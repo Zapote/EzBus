@@ -12,7 +12,7 @@ namespace EzBus.Core.Test.Specifications
 
         protected override void When()
         {
-            FakeMessageChannel.Reset();
+            InMemoryMessageChannel.Reset();
             HostLogManager.Configure(new TraceLoggerFactory(), LogLevel.All);
             var hostConfig = new HostConfig();
             hostConfig.ObjectFactory.Register<ISubscriptionStorage>(new InMemorySubscriptionStorage(), LifeCycle.Unique);
@@ -24,7 +24,7 @@ namespace EzBus.Core.Test.Specifications
         [Then]
         public void Subscriptions_messages_should_be_sent()
         {
-            Assert.That(FakeMessageChannel.LastSentDestination, Is.EqualTo(EndpointAddress.Parse(expectedDestination)));
+            Assert.That(InMemoryMessageChannel.LastSentDestination, Is.EqualTo(EndpointAddress.Parse(expectedDestination)));
         }
     }
 }

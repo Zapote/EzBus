@@ -1,5 +1,4 @@
-﻿using EzBus.Core.Logging;
-using EzBus.Core.Resolvers;
+﻿using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
 using EzBus.Logging;
 

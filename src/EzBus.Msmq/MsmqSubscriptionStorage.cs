@@ -19,8 +19,8 @@ namespace EzBus.Msmq
             if (!MsmqUtilities.QueueExists(storageAddress)) return;
 
             subscriptions.Clear();
-            storageQueue = MsmqUtilities.GetQueue(storageAddress);
-            storageQueue.Formatter = new XmlMessageFormatter(new[] { typeof(MsmqSubscriptionStorageItem) });
+         
+            GetQueue();
 
             foreach (var message in storageQueue.GetAllMessages())
             {
@@ -28,6 +28,12 @@ namespace EzBus.Msmq
                 if (item == null) continue;
                 subscriptions.Add(item);
             }
+        }
+
+        private void GetQueue()
+        {
+            storageQueue = MsmqUtilities.GetQueue(storageAddress);
+            storageQueue.Formatter = new XmlMessageFormatter(new[] {typeof (MsmqSubscriptionStorageItem)});
         }
 
         public void Store(string endpoint, Type messageType)
@@ -63,6 +69,7 @@ namespace EzBus.Msmq
             if (MsmqUtilities.GetQueue(storageAddress) == null)
             {
                 MsmqUtilities.CreateQueue(storageAddress);
+                GetQueue();
             }
         }
 

@@ -8,7 +8,7 @@ namespace EzBus.Core.Test.Specifications
     [Specification]
     public class When_message_is_received_and_exception_is_thrown : SpecificationBase, IHandle<FailingMessage>
     {
-        private FakeMessageChannel messageChannel;
+        private InMemoryMessageChannel messageChannel;
         private Host host;
         private IBus bus;
         private static int retries;
@@ -17,8 +17,8 @@ namespace EzBus.Core.Test.Specifications
         {
           
             retries = 0;
-            FakeMessageChannel.Reset();
-            messageChannel = new FakeMessageChannel();
+            InMemoryMessageChannel.Reset();
+            messageChannel = new InMemoryMessageChannel();
             bus = new CoreBus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());
             var config = new HostConfig();
             config.SetNumberOfRetrys(2);
@@ -42,7 +42,7 @@ namespace EzBus.Core.Test.Specifications
         [Test]
         public void Message_should_be_placed_on_error_queue()
         {
-            Assert.That(FakeMessageChannel.LastSentDestination.QueueName, Is.EqualTo("ezbus.core.error"));
+            Assert.That(InMemoryMessageChannel.LastSentDestination.QueueName, Is.EqualTo("ezbus.core.error"));
         }
 
         public void Handle(FailingMessage message)

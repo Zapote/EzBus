@@ -49,7 +49,7 @@
       <Name>EzBus.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\EzBus.Msmq\EzBus.Msmq.csproj">
-      <Project>{3F5D0C34-372D-49CD-A591-CFD59471EDA2}</Project>
+      <Project>{3f5d0c34-372d-49cd-a591-cfd59471eda2}</Project>
       <Name>EzBus.Msmq</Name>
     </ProjectReference>
     <ProjectReference Include="..\EzBus.Samples.Messages\EzBus.Samples.Messages.csproj">

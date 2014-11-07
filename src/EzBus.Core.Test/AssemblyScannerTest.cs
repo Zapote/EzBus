@@ -31,7 +31,7 @@ namespace EzBus.Core.Test
             var handlers = scanner.FindTypes(typeof(IReceivingChannel));
 
             Assert.That(handlers.Count(), Is.GreaterThanOrEqualTo(1));
-            Assert.That(handlers, Contains.Item(typeof(FakeMessageChannel)));
+            Assert.That(handlers, Contains.Item(typeof(InMemoryMessageChannel)));
         }
     }
 }

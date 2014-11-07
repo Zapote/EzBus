@@ -14,7 +14,7 @@ namespace EzBus.Core.Test.Specifications
         {
             base.Given();
 
-            FakeMessageChannel.Reset();
+            InMemoryMessageChannel.Reset();
 
             subscriptionStorage.Store(subscriberOne, null);
             subscriptionStorage.Store(subscriberTwo, typeof(MockMessage));
@@ -29,7 +29,7 @@ namespace EzBus.Core.Test.Specifications
         [Then]
         public void Then_the_message_should_be_sent_to_two_endpoints()
         {
-            var dests = FakeMessageChannel.GetSentDestinations();
+            var dests = InMemoryMessageChannel.GetSentDestinations();
             Assert.That(dests, Contains.Item(new EndpointAddress(subscriberOne)));
             Assert.That(dests, Contains.Item(new EndpointAddress(subscriberTwo)));
         }
