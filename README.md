@@ -14,6 +14,21 @@ nuget Install-package EzBus.Msmq
 Bus.Send("ez.service.queue", new TextMessage { Text = "Hello EzBus" });
 ```
 
+Configure destinations in app.config:
+
+```xml
+  <configSections>
+    <section name="destinations" type="EzBus.Core.Config.DestinationSection, EzBus.Core"/>
+  </configSections>
+
+   <destinations>
+    <add assembly="EzBus.Messages" endpoint="ez.service.queue"/>
+  </destinations>
+```
+```C#
+Bus.Send(new TextMessage { Text = "Hello EzBus" });
+```
+
 #### Publish your message
 
 ```C#
@@ -34,7 +49,7 @@ in app.config:
   </subscriptions>
 ```
 
-add endpoints that you want tot receive messages from.
+add endpoints that you want to receive messages from.
 
 #### Handle your message
 
