@@ -11,7 +11,7 @@
     <copyright>Copyright 2014</copyright>
     <iconUrl>http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ZAPOTE_IKON_GAPPS_LOGO.png</iconUrl>
     <dependencies>
-      <dependency id="EzBus"  version="[0.9.1]"/>
+      <dependency id="EzBus"  version="[0.9.2]"/>
     </dependencies>
   </metadata>
   <files>
