@@ -108,7 +108,7 @@ task Test -depends CompileMain{
 } 
 
 task UpdateNugetPackageVersion {
-    
+    echo "Updating packages to version $Version"
     dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
 		
