@@ -1,7 +1,6 @@
 ﻿properties { 
-  $ProductVersion = "0.9"
+  $Version = "0.9.2"
   $TargetFramework = "net-4.0"
-  $BuildNumber = "2"
 } 
 
 $baseDir  = resolve-path .
@@ -44,7 +43,7 @@ task InitEnvironment{
 }
 
 task Init -depends InitEnvironment, Clean, DetectOperatingSystemArchitecture {   	
-	echo "Creating build directory at the follwing path $buildDir"
+	write-host "Creating build directory at the follwing path $buildDir"
 	Delete-Directory $buildDir
 	Create-Directory $buildDir
 	Delete-Directory $releaseDir
@@ -52,10 +51,10 @@ task Init -depends InitEnvironment, Clean, DetectOperatingSystemArchitecture {
 	Delete-Directory $artifactsDir
 	Create-Directory $artifactsDir
 	
-	$script:Version = $ProductVersion + "." + $BuildNumber
+	$script:Version = $ProductVersion
 	$currentDirectory = Resolve-Path .
 	
-	echo "Current Directory: $currentDirectory" 
+	write-host "Current Directory: $currentDirectory" 
  }
  
 task GenerateAssemblyInfo{
@@ -63,26 +62,18 @@ task GenerateAssemblyInfo{
 		$propDir = $_.DirectoryName + "\Properties"
 		Create-Directory $propDir
 		
-		$version = "$ProductVersion.$BuildNumber.0"
-		
-		$nuspecfile = Get-ChildItem -Path $_.DirectoryName -Filter "*.nuspec"
-		if($nuspecfile -ne $null){ 
-			[xml]$content = Get-Content $nuspecfile.fullname
-			$version = $content.package.metadata.version + ".0"
-		}
-		
 		Generate-Assembly-Info `
 		-file "$propDir\AssemblyInfo.cs" `
 		-title "$name $version" `
 		-description "" `
 		-company "Zapote" `
 		-product "$name $version" `
-		-version $version `
+		-version $Version `
 		-copyright "Zapote" `
 	}
 }
 
-task CompileMain { 
+task CompileMain -depends init { 
 	Delete-Directory $outputDir
 	Create-Directory $outputDir
 
@@ -118,11 +109,8 @@ task Test -depends CompileMain{
 
 task UpdateNugetPackageVersion {
     
-    echo $Version
-    
     dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
-		
 		
 		[xml]$content = Get-Content $nuspecfile
 		$content.package.metadata.version = $Version
@@ -141,7 +129,6 @@ task UpdateNugetPackageVersion {
 task CreateNugetPackages -depends UpdateNugetPackageVersion {
 	dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
-		
 		
 		[xml]$content = Get-Content $nuspecfile
 		$packageVersion = $content.package.metadata.version
