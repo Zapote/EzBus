@@ -111,7 +111,7 @@ task UpdateNugetPackageVersion {
     echo "Updating packages to version $Version"
     dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
-		
+		echo $nuspecfile
 		[xml]$content = Get-Content $nuspecfile
 		$content.package.metadata.version = $Version
 
