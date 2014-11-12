@@ -115,16 +115,14 @@ task UpdateNugetPackageVersion {
 		[xml]$content = Get-Content $nuspecfile
 		$content.package.metadata.version = $Version
 			
-		if($content.package.metadata.dependencies -ne $null){
-			echo "has dep"
+		if($content.package.metadata.dependencies.dependency -ne $null){
 			foreach($dependency in $content.package.metadata.dependencies.dependency) { 
 				if($dependency.Id.StartsWith("EzBus")){
 					$dependency.version = "[" + $Version + "]";
 				} 
 			}
+			$content.save($nuspecfile)
 		}
-
-        $content.save($nuspecfile)
 	}
 
 }
