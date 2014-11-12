@@ -10,7 +10,7 @@ namespace EzBus.Core
     public class AssemblyScanner : IAssemblyScanner
     {
         private static readonly ILogger log = HostLogManager.GetLogger(typeof(AssemblyScanner));
-        private static List<string> assemblyFiles;
+        private static readonly List<string> assemblyFiles = new List<string>();
         private static bool directoryScanned;
 
         public AssemblyScanner()
@@ -59,6 +59,7 @@ namespace EzBus.Core
 
         private static void LoadAssemblyFiles()
         {
+
             if (directoryScanned) return;
             string directory;
             var httpContext = HttpContext.Current;
@@ -72,7 +73,7 @@ namespace EzBus.Core
                 var executingAssembly = Assembly.GetExecutingAssembly();
                 directory = Path.GetDirectoryName(executingAssembly.Location) ?? "\\.";
             }
-            assemblyFiles = new List<string>();
+
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
             directoryScanned = true;

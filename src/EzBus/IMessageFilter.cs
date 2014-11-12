@@ -5,6 +5,7 @@ namespace EzBus
     public interface IMessageFilter
     {
         void Before();
-        void After(Exception ex);
+        void After();
+        void OnError(Exception ex);
     }
 }

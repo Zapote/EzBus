@@ -1,7 +1,7 @@
 ﻿properties { 
-  $ProductVersion = "0.1"
+  $ProductVersion = "0.9"
   $TargetFramework = "net-4.0"
-  $BuildNumber = "0"
+  $BuildNumber = "2"
 } 
 
 $baseDir  = resolve-path .
@@ -17,7 +17,7 @@ include $toolsDir\psake\buildutils.ps1
 
 task default -depends DoRelease
 
-task DoRelease -depends GenerateAssemblyInfo, InstallNugetPackages, Test, CreateNugetPackages{
+task DoRelease -depends GenerateAssemblyInfo, Test, CreateNugetPackages{
 }
 
 task Clean{
@@ -33,9 +33,6 @@ task InitEnvironment{
 			$netfxInstallroot =	Get-RegistryValue 'HKLM:\SOFTWARE\Microsoft\.NETFramework\' 'InstallRoot' 
 			$netfxCurrent = $netfxInstallroot + "v4.0.30319"
 			$script:msBuild = $netfxCurrent + "\msbuild.exe"
-			
-			$msDeployPath = Join-Path $env:ProgramFiles 'IIS\Microsoft Web Deploy V2'
-			$script:msDeploy = "$msDeployPath\msDeploy.exe"
 			
 			echo ".Net 4.0 build requested - $script:msBuild" 
 
@@ -56,7 +53,6 @@ task Init -depends InitEnvironment, Clean, DetectOperatingSystemArchitecture {
 	Create-Directory $artifactsDir
 	
 	$script:Version = $ProductVersion + "." + $BuildNumber
-	
 	$currentDirectory = Resolve-Path .
 	
 	echo "Current Directory: $currentDirectory" 
@@ -120,27 +116,29 @@ task Test -depends CompileMain{
 	exec {&$nunitexec $testAssemblies $script:nunitTargetFramework /xml="$buildDir\TestReports\TestResults.xml" /noshadow /nologo } 
 } 
 
-task InstallNugetPackages -depends Init {
-	Write-Host "Looking for packages.config files..."
-	
-	$packageConfigs = Get-ChildItem -path "$baseDir" -recurse -include packages.config | where {$_ -notmatch 'obj'}
-	$packageConfigs | % {
-		$configFile = $_.FullName
-		$directory = $_.Directory
-		$installDir = "$directory\..\packages\"
+task UpdateNugetPackageVersion {
+    
+    echo $Version
+    
+    dir $outputDir -recurse -include *.nuspec | % {
+		$nuspecfile = $_.FullName
 		
-		Write-Host "Installing packages for $configFile"
 		
-		if(!(Test-Path $installDir)){
-			Create-Directory $installDir
-		}
-		
-		$installDir = Resolve-Path $installDir
-		exec { &$nugetExec install $configFile -o "$installDir\" }
+		[xml]$content = Get-Content $nuspecfile
+		$content.package.metadata.version = $Version
+
+        foreach( $dependency in $content.package.metadata.dependencies.dependency) { 
+            if($dependency.Id.StartsWith("EzBus")){
+                $dependency.version = "[" + $Version + "]";
+            } 
+        }
+
+        $content.save($nuspecfile)
 	}
+
 }
 
-task CreateNugetPackages{
+task CreateNugetPackages -depends UpdateNugetPackageVersion {
 	dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
 		

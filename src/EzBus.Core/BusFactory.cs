@@ -10,6 +10,7 @@ namespace EzBus.Core
         private Host host;
         private ISendingChannel sendingChannel;
         private ISubscriptionStorage subscriptionStorage;
+        private readonly IMessageChannelResolver messageChannelResolver = new MessageChannelResolver();
 
         public IBus Start()
         {
@@ -22,12 +23,13 @@ namespace EzBus.Core
 
         private void GetSendingChannel()
         {
-            sendingChannel = MessageChannelResolver.GetSendingChannel();
+            
+            sendingChannel = messageChannelResolver.GetSendingChannel();
         }
 
         private void StartHost()
         {
-            host = new Host(config);
+            host = new Host(config,messageChannelResolver);
             host.Start();
         }
 

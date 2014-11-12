@@ -5,6 +5,7 @@ namespace EzBus.Core
     public class HostConfig
     {
         public IObjectFactory ObjectFactory { get; private set; }
+        
         public int WorkerThreads { get; private set; }
         public int NumberOfRetrys { get; private set; }
 
