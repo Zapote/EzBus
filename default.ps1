@@ -111,15 +111,18 @@ task UpdateNugetPackageVersion {
     echo "Updating packages to version $Version"
     dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
-		echo $nuspecfile
+		
 		[xml]$content = Get-Content $nuspecfile
 		$content.package.metadata.version = $Version
-
-        foreach( $dependency in $content.package.metadata.dependencies.dependency) { 
-            if($dependency.Id.StartsWith("EzBus")){
-                $dependency.version = "[" + $Version + "]";
-            } 
-        }
+			
+		if($content.package.metadata.dependencies -ne $null){
+			echo "has dep"
+			foreach($dependency in $content.package.metadata.dependencies.dependency) { 
+				if($dependency.Id.StartsWith("EzBus")){
+					$dependency.version = "[" + $Version + "]";
+				} 
+			}
+		}
 
         $content.save($nuspecfile)
 	}
