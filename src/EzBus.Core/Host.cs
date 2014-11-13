@@ -79,7 +79,7 @@ namespace EzBus.Core
                     message = messageSerializer.Deserialize(e.Message.BodyStream, messageType);
                 }
 
-                log.DebugFormat("Invoking handler: {0}", handlerType.Name);
+                log.DebugFormat("Invoking handler {0}", handlerType.Name);
 
                 var result = InvokeHandler(handlerType, message);
 
