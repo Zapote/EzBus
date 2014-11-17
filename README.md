@@ -93,7 +93,7 @@ public class CoreRegistry : ServiceRegistry
         // Always unique instance
         Register<IFoo, Foo>().As.Unique();
         
-        // Singleton
+        // Singelton
         Register<IBar, Bar>().As.Singelton();
     }
 }
@@ -108,7 +108,7 @@ public class UnitOfWorkMessageFilter : IMessageFilter
 {
   private IUnitOfWork unitOfWork;
 
-  public MyMessageFilter(IUnitOfWork unitOfWork)
+  public UnitOfWorkMessageFilter(IUnitOfWork unitOfWork)
   {
     this.unitOfWork = unitOfWork;   
   }
