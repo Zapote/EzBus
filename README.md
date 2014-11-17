@@ -53,6 +53,7 @@ add endpoints that you want to receive messages from.
 
 #### Handle your message
 
+##### Handler class
 ```C#
 public class TextMessageHandler : IHandle<TextMessage>
 {
@@ -62,4 +63,69 @@ public class TextMessageHandler : IHandle<TextMessage>
   }
 }
 ```
+#### Constructur/Dependency injection in handler
 
+##### Handler code
+
+```C#
+public class TextMessageHandler : IHandle<TextMessage>
+{
+  private IDependencyService dependencyService;
+  
+  public TextMessageHandler(IDependencyService dependencyService)
+  {
+    this.dependencyService = dependencyService;
+  }
+  ...
+}
+```
+
+##### ServiceRegistry
+Derive from class ServiceRegistry and register dependencies in contructor. This class will be activated on startup.
+```C#
+public class CoreRegistry : ServiceRegistry
+{
+    public CoreRegistry()
+    {
+        // Per message scoped
+        Register<IDependencyService, DependencyService>();
+        
+        // Always unique instance
+        Register<IFoo, Foo>().As.Unique();
+        
+        // Singleton
+        Register<IBar, Bar>().As.Singelton();
+    }
+}
+```
+
+#### Message Filter
+
+##### Can be used for a UnitOfWork for example. 
+
+```C#
+public class UnitOfWorkMessageFilter : IMessageFilter
+{
+  private IUnitOfWork unitOfWork;
+
+  public MyMessageFilter(IUnitOfWork unitOfWork)
+  {
+    this.unitOfWork = unitOfWork;   
+  }
+
+  public void Before()
+  {
+    unitOfWork.Start();
+  }
+
+  public void After()
+  {
+    unitOfWork.Commit();
+  }
+
+  public void OnError(Exception ex)
+  {
+    unitOfWork.Rollback();
+  }
+}
+```
