@@ -101,7 +101,9 @@ public class CoreRegistry : ServiceRegistry
 
 #### Message Filter
 
-##### Can be used for a UnitOfWork for example. 
+The "Before" method is called before the message is handled and the "After" method is called right after the message is handled. If an error occurs the "OnError" method is called with the given exception.
+
+Can be used for a UnitOfWork for example. 
 
 ```C#
 public class UnitOfWorkMessageFilter : IMessageFilter
