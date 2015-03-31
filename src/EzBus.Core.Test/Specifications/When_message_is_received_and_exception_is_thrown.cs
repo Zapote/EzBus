@@ -11,11 +11,12 @@ namespace EzBus.Core.Test.Specifications
         private FakeMessageChannel messageChannel;
         private Host host;
         private IBus bus;
-        private static int retries;
+        private static int retries = 0;
 
         protected override void Given()
         {
             retries = 0;
+
             FakeMessageChannel.Reset();
             messageChannel = new FakeMessageChannel();
             bus = new CoreBus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());

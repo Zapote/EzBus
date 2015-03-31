@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AssemblyScannerTest.cs" />
     <Compile Include="Logging\TraceLoggerTest.cs" />
+    <Compile Include="TestHelpers\FailingMessage.cs" />
     <Compile Include="TestHelpers\FakeMessageChannelResolver.cs" />
     <Compile Include="Specifications\SpecificationBase.cs" />
     <Compile Include="Specifications\BusSpecificationBase.cs" />

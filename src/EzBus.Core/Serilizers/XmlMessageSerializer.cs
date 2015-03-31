@@ -104,6 +104,7 @@ namespace EzBus.Core.Serilizers
             catch (Exception ex)
             {
                 log.Fatal("Failed to deserialize message!", ex);
+                throw;
             }
 
             return instance;

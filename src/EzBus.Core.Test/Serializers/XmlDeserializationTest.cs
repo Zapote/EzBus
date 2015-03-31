@@ -48,6 +48,12 @@ namespace EzBus.Core.Test.Serializers
         }
 
         [Test]
+        public void NullableIntValue_should_be_set()
+        {
+            Assert.That(message.NullableIntValue, Is.Null);
+        }
+
+        [Test]
         public void Collection_should_be_set()
         {
             Assert.That(message.DataCollection.Count(), Is.EqualTo(2));

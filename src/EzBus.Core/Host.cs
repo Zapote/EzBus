@@ -1,5 +1,4 @@
-﻿using System.Runtime.Remoting.Messaging;
-using EzBus.Core.Resolvers;
+﻿using EzBus.Core.Resolvers;
 using EzBus.Core.Serilizers;
 using EzBus.Logging;
 using EzBus.Serilizers;
@@ -157,8 +156,6 @@ namespace EzBus.Core
                 exception = exception.InnerException;
                 level++;
             }
-
-            log.Debug(endpointErrorName);
 
             sendingChannel.Send(new EndpointAddress(endpointErrorName), message);
         }

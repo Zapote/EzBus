@@ -27,19 +27,45 @@ namespace EzBus.Core.Serilizers
                 {typeof (Byte), s => XmlConvert.ToByte(s)},
                 {typeof (String), s => s},
                 {typeof (Guid), s => XmlConvert.ToGuid(s)},
+                {
+                    typeof (short?), s =>
+                    {
+                        short i;
+                        if (Int16.TryParse(s, out i)) return i;
+                        return null;
+                    }
+                },
+                {
+                    typeof (int?), s =>
+                    {
+                        int i;
+                        if (Int32.TryParse(s, out i)) return i;
+                        return null;
+                    }
+                },
+                {
+                    typeof (long?), s =>
+                    {
+                        long i;
+                        if (Int64.TryParse(s, out i)) return i;
+                        return null;
+                    }
+                },
             };
         }
 
-        public static object Convert(object o, Type convertTo)
+        public static object Convert(object obj, Type convertTo)
         {
             if (convertTo.IsEnum)
             {
-                return Enum.Parse(convertTo, o.ToString());
+                return Enum.Parse(convertTo, obj.ToString());
             }
 
             if (!typeConvertActions.ContainsKey(convertTo))
                 throw new SerializationException(string.Format("Cannot deserialize type: {0}", convertTo.Name));
-            return typeConvertActions[convertTo](o.ToString());
+
+            var value = obj == null ? string.Empty : obj.ToString();
+            return typeConvertActions[convertTo](value);
         }
     }
 }

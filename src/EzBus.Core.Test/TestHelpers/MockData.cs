@@ -1,4 +1,4 @@
-    namespace EzBus.Core.Test.TestHelpers
+namespace EzBus.Core.Test.TestHelpers
 {
     public class MockData
     {

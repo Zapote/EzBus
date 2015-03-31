@@ -13,9 +13,4 @@
         public MockData MockData { get; protected set; }
         public MockEnum MockEnum { get; protected set; }
     }
-
-    public class FailingMessage
-    {
-
-    }
 }

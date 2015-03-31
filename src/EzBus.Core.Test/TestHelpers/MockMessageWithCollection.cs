@@ -18,6 +18,8 @@ namespace EzBus.Core.Test.TestHelpers
             set { dataCollection = new List<MockData>(value); }
         }
 
+        public int? NullableIntValue { get; set; }
+
         public void AddData(MockData data)
         {
             dataCollection.Add(data);

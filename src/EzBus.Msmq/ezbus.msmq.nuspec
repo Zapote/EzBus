@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>EzBus.Msmq</id>
-    <version>0.9.2</version>
+    <version>0.9.3</version>
     <authors>Zapote</authors>
     <owners>Zapote</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
