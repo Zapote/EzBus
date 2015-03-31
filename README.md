@@ -53,6 +53,7 @@ add endpoints that you want to receive messages from.
 
 #### Handle your message
 
+##### Handler class
 ```C#
 public class TextMessageHandler : IHandle<TextMessage>
 {
@@ -62,4 +63,71 @@ public class TextMessageHandler : IHandle<TextMessage>
   }
 }
 ```
+#### Constructur/Dependency injection in handler
 
+##### Handler code
+
+```C#
+public class TextMessageHandler : IHandle<TextMessage>
+{
+  private IDependencyService dependencyService;
+  
+  public TextMessageHandler(IDependencyService dependencyService)
+  {
+    this.dependencyService = dependencyService;
+  }
+  ...
+}
+```
+
+##### ServiceRegistry
+Derive from class ServiceRegistry and register dependencies in contructor. This class will be activated on startup.
+```C#
+public class CoreRegistry : ServiceRegistry
+{
+    public CoreRegistry()
+    {
+        // Per message scoped
+        Register<IDependencyService, DependencyService>();
+        
+        // Always unique instance
+        Register<IFoo, Foo>().As.Unique();
+        
+        // Singelton
+        Register<IBar, Bar>().As.Singelton();
+    }
+}
+```
+
+#### Message Filter
+
+The "Before" method is called before the message is handled and the "After" method is called right after the message is handled. If an error occurs the "OnError" method is called with the given exception.
+
+Can be used for a UnitOfWork for example. 
+
+```C#
+public class UnitOfWorkMessageFilter : IMessageFilter
+{
+  private IUnitOfWork unitOfWork;
+
+  public UnitOfWorkMessageFilter(IUnitOfWork unitOfWork)
+  {
+    this.unitOfWork = unitOfWork;   
+  }
+
+  public void Before()
+  {
+    unitOfWork.Start();
+  }
+
+  public void After()
+  {
+    unitOfWork.Commit();
+  }
+
+  public void OnError(Exception ex)
+  {
+    unitOfWork.Rollback();
+  }
+}
+```
