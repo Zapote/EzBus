@@ -1,5 +1,5 @@
 ﻿properties { 
-  $Version = "0.9.3"
+  $Version = "0.9.4"
   $TargetFramework = "net-4.0"
 } 
 

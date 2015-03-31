@@ -13,7 +13,7 @@
     <projectUrl>https://github.com/zapote/ezbus</projectUrl>
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus msmq</tags>
     <dependencies>
-      <dependency id="EzBus"  version="[0.9.2]"/>
+      <dependency id="EzBus"  version="[0.9.4]"/>
     </dependencies>
   </metadata>
   <files>
