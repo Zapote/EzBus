@@ -1,8 +1,7 @@
-﻿using EzBus.Core;
+﻿using System.Web.Mvc;
 using EzBus.Samples.Messages;
-using System.Web.Mvc;
 
-namespace EzBus.Samples.WebClient.Controllers
+namespace EzBus.Samples.Msmq.WebClient.Controllers
 {
     public class HomeController : Controller
     {

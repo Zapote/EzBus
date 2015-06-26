@@ -1,7 +1,6 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
-namespace EzBus.Samples.WebClient
+namespace EzBus.Samples.Msmq.WebClient
 {
     public class FilterConfig
     {

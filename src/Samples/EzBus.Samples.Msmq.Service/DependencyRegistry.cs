@@ -1,12 +1,13 @@
 ﻿using EzBus.Core.Builders;
+using EzBus.Samples.Msmq.Service.Fwk;
 
-namespace EzBus.Samples.Service
+namespace EzBus.Samples.Msmq.Service
 {
     public class DependencyRegistry : ServiceRegistry
     {
         public DependencyRegistry()
         {
-            Register<IOtherDependency, OtherDependency>().As.Singelton();
+            Register<IClientGreeter, ClientGreeter>().As.Singelton();
         }
     }
 }

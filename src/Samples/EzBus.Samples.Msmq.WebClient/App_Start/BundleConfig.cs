@@ -1,7 +1,6 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
-namespace EzBus.Samples.WebClient
+namespace EzBus.Samples.Msmq.WebClient
 {
     public class BundleConfig
     {
