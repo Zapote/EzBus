@@ -9,7 +9,7 @@
     <description>WindowsAzure ServiceBus transport for EzBus</description>
     <releaseNotes>None</releaseNotes>
     <copyright>Copyright 2015</copyright>
-    <iconUrl>http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ZAPOTE_IKON_GAPPS_LOGO.png</iconUrl>
+    <iconUrl>http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ezbus-logo-128x128.png</iconUrl>
     <projectUrl>https://github.com/zapote/ezbus</projectUrl>
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus azure</tags>
     <dependencies>
