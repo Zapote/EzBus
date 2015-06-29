@@ -34,17 +34,19 @@ namespace EzBus.Msmq
                 Id = true,
                 CorrelationId = true,
                 Extension = true,
-                AppSpecific = true
+                AppSpecific = true,
             };
 
             inputQueue.ReceiveCompleted += OnReceiveCompleted;
-            inputQueue.BeginReceive();
+            inputQueue.PeekCompleted += OnPeekCompleted;
+            inputQueue.BeginPeek();
         }
 
         public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
 
         private void OnReceiveCompleted(object sender, ReceiveCompletedEventArgs e)
         {
+
             var m = inputQueue.EndReceive(e.AsyncResult);
 
             if (OnMessageReceived != null)
@@ -56,6 +58,33 @@ namespace EzBus.Msmq
             }
 
             inputQueue.BeginReceive();
+        }
+
+        private void OnPeekCompleted(object sender, PeekCompletedEventArgs e)
+        {
+            if (OnMessageReceived == null) return;
+
+            var transaction = new MessageQueueTransaction();
+            transaction.Begin();
+
+            try
+            {
+                var queueMessage = inputQueue.Receive(transaction);
+                var headers = GetMessageHeaders(queueMessage);
+                var message = new ChannelMessage(queueMessage.BodyStream);
+                message.AddHeader(headers);
+                OnMessageReceived(this, new MessageReceivedEventArgs { Message = message });
+                transaction.Commit();
+            }
+            catch (Exception)
+            {
+                transaction.Abort();
+                throw;
+            }
+            finally
+            {
+                inputQueue.BeginPeek();
+            }
         }
 
         private static MessageHeader[] GetMessageHeaders(Message m)

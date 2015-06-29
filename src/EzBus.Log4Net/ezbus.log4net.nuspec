@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>EzBus.Log4Net</id>
-    <version>0.9.4</version>
+    <version>0.0.0</version>
     <authors>Zapote</authors>
     <owners>Zapote</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,7 +13,7 @@
     <projectUrl>https://github.com/zapote/ezbus</projectUrl>
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus log4net logging</tags>
     <dependencies>
-      <dependency id="EzBus"  version="[0.9.4]"/>
+      <dependency id="EzBus"  version="[0.0.0]"/>
       <dependency id="log4net"  version="2.0.3"/>
     </dependencies>
   </metadata>

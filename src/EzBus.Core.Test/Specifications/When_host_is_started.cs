@@ -16,8 +16,7 @@ namespace EzBus.Core.Test.Specifications
             HostLogManager.Configure(new TraceLoggerFactory(), LogLevel.All);
             var hostConfig = new HostConfig();
             hostConfig.ObjectFactory.Register<ISubscriptionStorage>(new InMemorySubscriptionStorage(), LifeCycle.Unique);
-            var host = new Host(hostConfig, new FakeMessageChannelResolver());
-
+            var host = new Host(hostConfig);
             host.Start();
         }
 

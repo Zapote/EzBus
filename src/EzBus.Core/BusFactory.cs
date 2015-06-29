@@ -4,39 +4,12 @@ using EzBus.Logging;
 
 namespace EzBus.Core
 {
-    public class BusFactory : IBusStarter
+    public class BusFactory : IBusFactory
     {
-        private readonly HostConfig config = new HostConfig();
-        private Host host;
-        private ISendingChannel sendingChannel;
-        private ISubscriptionStorage subscriptionStorage;
-        private readonly IMessageChannelResolver messageChannelResolver = new MessageChannelResolver();
-
         public IBus Start()
         {
-            GetSendingChannel();
             ConfigureLogging();
-            ConfigureSubscriptionStorage();
-            StartHost();
             return CreateBus();
-        }
-
-        private void GetSendingChannel()
-        {
-            
-            sendingChannel = messageChannelResolver.GetSendingChannel();
-        }
-
-        private void StartHost()
-        {
-            host = new Host(config,messageChannelResolver);
-            host.Start();
-        }
-
-        private void ConfigureSubscriptionStorage()
-        {
-            subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
-            config.ObjectFactory.Register(subscriptionStorage, LifeCycle.Singleton);
         }
 
         private static void ConfigureLogging()
@@ -45,8 +18,10 @@ namespace EzBus.Core
             HostLogManager.Configure(loggerFactory, LogLevel.Debug);
         }
 
-        private CoreBus CreateBus()
+        private static CoreBus CreateBus()
         {
+            var subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
+            var sendingChannel = new ChannelResolver().GetSendingChannel();
             return new CoreBus(sendingChannel, new ConfigurableMessageRouting(), subscriptionStorage);
         }
     }

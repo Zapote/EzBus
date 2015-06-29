@@ -1,5 +1,5 @@
 ﻿properties { 
-  $Version = "0.9.4"
+  $Version = "1.0.0"
   $TargetFramework = "net-4.0"
 } 
 
@@ -111,7 +111,6 @@ task UpdateNugetPackageVersion {
     echo "Updating packages to version $Version"
     dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
-		
 		[xml]$content = Get-Content $nuspecfile
 		$content.package.metadata.version = $Version
 			
@@ -121,8 +120,9 @@ task UpdateNugetPackageVersion {
 					$dependency.version = "[" + $Version + "]";
 				} 
 			}
-			$content.save($nuspecfile)
 		}
+		
+		$content.save($nuspecfile)
 	}
 
 }

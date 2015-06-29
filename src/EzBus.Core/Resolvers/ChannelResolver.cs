@@ -3,18 +3,12 @@ using System.Linq;
 
 namespace EzBus.Core.Resolvers
 {
-    public interface IMessageChannelResolver
-    {
-        ISendingChannel GetSendingChannel();
-        IReceivingChannel GetReceivingChannel();
-    }
-
-    internal class MessageChannelResolver : IMessageChannelResolver
+    internal class ChannelResolver
     {
         private static Type sendingChannelType;
         private static Type receivingChannelType;
 
-        static MessageChannelResolver()
+        static ChannelResolver()
         {
             ResolveTypes();
         }

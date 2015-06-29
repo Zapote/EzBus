@@ -15,8 +15,14 @@ namespace EzBus.Core
             channelMessage.AddHeader("MessageType", messageType.FullName);
             channelMessage.AddHeader("UserPrincipal", Environment.UserName);
             channelMessage.AddHeader("SendingMachine", Environment.MachineName);
-            channelMessage.AddHeader("SendingModule", Assembly.GetCallingAssembly().ManifestModule.Assembly.FullName);
+            channelMessage.AddHeader("SendingModule", ResolveAssemblyFullName());
             return channelMessage;
+        }
+
+        private static string ResolveAssemblyFullName()
+        {
+            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly();
+            return assembly.ManifestModule.Assembly.FullName;
         }
     }
 }

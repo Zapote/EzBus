@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Diagnostics;
 using EzBus.Samples.Messages;
 
-namespace EzBus.Samples.Msmq.Client
+namespace EzBus.Samples.ServiceBus.Client
 {
-    public class Program
+    class Program
     {
         static void Main(string[] args)
         {
             Bus.Start();
-
-            Console.Title = "EzBus.Samples.Msmq.Client";
+            Console.Title = "EzBus.Samples.ServiceBus.Client";
             var loop = true;
-
             while (loop)
             {
-                Bus.Send(new SayHello("Msmq Client"));
+                Bus.Send(new SayHello("Azure ServiceBus Client"));
                 Console.WriteLine("Message sent! Press Enter to send again");
                 var keyInfo = Console.ReadKey();
                 loop = keyInfo.Key == ConsoleKey.Enter;

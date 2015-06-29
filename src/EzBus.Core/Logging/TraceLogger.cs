@@ -15,6 +15,7 @@ namespace EzBus.Core.Logging
             this.name = name;
         }
 
+        public bool IsVerboseEnabled { get { return level <= LogLevel.Verbose && LoggingOn(); } }
         public bool IsDebugEnabled { get { return level <= LogLevel.Debug && LoggingOn(); } }
         public bool IsInfoEnabled { get { return level <= LogLevel.Info && LoggingOn(); } }
         public bool IsWarnEnabled { get { return level <= LogLevel.Warn && LoggingOn(); } }
@@ -24,6 +25,12 @@ namespace EzBus.Core.Logging
         private bool LoggingOn()
         {
             return level != LogLevel.Off;
+        }
+
+        public void Verbose(object message)
+        {
+            if (!IsVerboseEnabled) return;
+            WriteLog(message, LogLevel.Verbose);
         }
 
         public void Debug(object message)
@@ -56,6 +63,11 @@ namespace EzBus.Core.Logging
             WriteLog(message, LogLevel.Fatal, ConsoleColor.Red);
         }
 
+        public void Verbose(object message, Exception t)
+        {
+            VerboseFormat("{0} {1}", message, t);
+        }
+
         public void Debug(object message, Exception t)
         {
             DebugFormat("{0} {1}", message, t);
@@ -79,6 +91,11 @@ namespace EzBus.Core.Logging
         public void Fatal(object message, Exception t)
         {
             FatalFormat("{0} {1}", message, t);
+        }
+
+        public void VerboseFormat(string format, params object[] args)
+        {
+            Verbose(string.Format(format, args));
         }
 
         public void DebugFormat(string format, params object[] args)

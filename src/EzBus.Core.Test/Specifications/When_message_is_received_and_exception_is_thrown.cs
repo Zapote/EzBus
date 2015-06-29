@@ -24,7 +24,7 @@ namespace EzBus.Core.Test.Specifications
             config.SetNumberOfRetrys(2);
             config.ObjectFactory.Register<ISubscriptionStorage>(new InMemorySubscriptionStorage(), LifeCycle.Unique);
 
-            host = new Host(config, new FakeMessageChannelResolver());
+            host = new Host(config);
             host.Start();
 
             HostLogManager.SetLogLevel(LogLevel.Off);

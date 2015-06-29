@@ -13,5 +13,10 @@ namespace EzBus.Core
         {
             return t.Namespace != null && t.Namespace.Equals("EzBus.Core");
         }
+
+        public static string GetAssemblyName(this object obj)
+        {
+            return obj.GetType().Assembly.GetName().Name;
+        }
     }
 }

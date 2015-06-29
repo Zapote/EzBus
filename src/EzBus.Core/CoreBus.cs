@@ -16,6 +16,7 @@ namespace EzBus.Core
             if (sendingChannel == null) throw new ArgumentNullException("sendingChannel");
             if (messageRouting == null) throw new ArgumentNullException("messageRouting");
             if (subscriptionStorage == null) throw new ArgumentNullException("subscriptionStorage");
+
             this.sendingChannel = sendingChannel;
             this.messageRouting = messageRouting;
             this.subscriptionStorage = subscriptionStorage;
@@ -24,7 +25,7 @@ namespace EzBus.Core
 
         public void Send(object message)
         {
-            var assemblyName = message.GetType().Assembly.GetName().Name;
+            var assemblyName = message.GetAssemblyName();
             var address = messageRouting.GetRoute(assemblyName, message.GetType().FullName);
             Send(address, message);
         }

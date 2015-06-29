@@ -11,11 +11,17 @@ namespace EzBus.Logging
 
         private NullLogger() { }
 
+        public bool IsVerboseEnabled { get; private set; }
         public bool IsDebugEnabled { get; private set; }
         public bool IsInfoEnabled { get; private set; }
         public bool IsWarnEnabled { get; private set; }
         public bool IsErrorEnabled { get; private set; }
         public bool IsFatalEnabled { get; private set; }
+
+        public void Verbose(object message)
+        {
+
+        }
 
         public void Debug(object message)
         {
@@ -38,6 +44,10 @@ namespace EzBus.Logging
         {
         }
 
+        public void Verbose(object message, Exception t)
+        {
+        }
+
         public void Debug(object message, Exception t)
         {
         }
@@ -55,6 +65,10 @@ namespace EzBus.Logging
         }
 
         public void Fatal(object message, Exception t)
+        {
+        }
+
+        public void VerboseFormat(string format, params object[] args)
         {
         }
 

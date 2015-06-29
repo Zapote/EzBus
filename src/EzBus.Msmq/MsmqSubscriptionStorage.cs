@@ -11,15 +11,14 @@ namespace EzBus.Msmq
         private EndpointAddress storageAddress;
         private MessageQueue storageQueue;
 
-        public void Initialize(EndpointAddress inputAddress)
+        public void Initialize(string endpointName)
         {
-            var inputQueueName = inputAddress.QueueName;
-            storageAddress = new EndpointAddress(inputQueueName + ".subscriptions");
+            storageAddress = new EndpointAddress(endpointName + ".subscriptions");
 
             if (!MsmqUtilities.QueueExists(storageAddress)) return;
 
             subscriptions.Clear();
-         
+
             GetQueue();
 
             foreach (var message in storageQueue.GetAllMessages())
@@ -33,7 +32,7 @@ namespace EzBus.Msmq
         private void GetQueue()
         {
             storageQueue = MsmqUtilities.GetQueue(storageAddress);
-            storageQueue.Formatter = new XmlMessageFormatter(new[] {typeof (MsmqSubscriptionStorageItem)});
+            storageQueue.Formatter = new XmlMessageFormatter(new[] { typeof(MsmqSubscriptionStorageItem) });
         }
 
         public void Store(string endpoint, Type messageType)
@@ -41,6 +40,7 @@ namespace EzBus.Msmq
             if (IsSubcriber(endpoint, messageType)) return;
 
             CreateQueueIfNotExists();
+            GetQueue();
 
             var item = new MsmqSubscriptionStorageItem
             {
@@ -66,16 +66,15 @@ namespace EzBus.Msmq
 
         private void CreateQueueIfNotExists()
         {
-            if (MsmqUtilities.GetQueue(storageAddress) == null)
-            {
-                MsmqUtilities.CreateQueue(storageAddress);
-                GetQueue();
-            }
+            if (MsmqUtilities.QueueExists(storageAddress)) return;
+            MsmqUtilities.CreateQueue(storageAddress);
         }
 
         public IEnumerable<string> GetSubscribersEndpoints(Type messageType)
         {
-            return subscriptions.Where(x => x.MessageType == messageType || x.MessageType == null).Select(x => x.Endpoint);
+            return subscriptions
+                .Where(x => x.MessageType == messageType || x.MessageType == null)
+                .Select(x => x.Endpoint);
         }
     }
 }

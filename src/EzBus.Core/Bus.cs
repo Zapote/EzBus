@@ -2,19 +2,22 @@
 using EzBus.Core;
 
 // ReSharper disable once CheckNamespace
-public class Bus
+public static class Bus
 {
-    private static IBus bus;
+    private static readonly IBus bus;
+    private static Host host;
 
     static Bus()
     {
-        Start();
+        if (bus != null) return;
+        var busStarter = new BusFactory();
+        bus = busStarter.Start();
     }
 
     public static void Start()
     {
-        if (bus != null) return;
-        bus = new BusFactory().Start();
+        host = new HostFactory().Build();
+        host.Start();
     }
 
     public static void Send(object message)

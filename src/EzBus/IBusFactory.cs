@@ -1,6 +1,6 @@
 ﻿namespace EzBus
 {
-    public interface IBusStarter
+    public interface IBusFactory
     {
         IBus Start();
     }

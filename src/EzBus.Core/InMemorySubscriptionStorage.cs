@@ -8,7 +8,7 @@ namespace EzBus.Core
     {
         private readonly static List<Subscription> subscriptions = new List<Subscription>();
 
-        public void Initialize(string inputAddress)
+        public void Initialize(string endpointName)
         {
 
         }
@@ -16,18 +16,13 @@ namespace EzBus.Core
         public void Store(string endpoint, Type messageType)
         {
             var existing = subscriptions.FirstOrDefault(x => x.Endpoint == endpoint);
-            
+
             if (existing != null)
             {
                 subscriptions.Remove(existing);
             }
-            
+
             subscriptions.Add(new Subscription { Endpoint = endpoint, MessageType = messageType });
-        }
-
-        public void Initialize(EndpointAddress inputAddress)
-        {
-
         }
 
         public IEnumerable<string> GetSubscribersEndpoints(Type messageType)

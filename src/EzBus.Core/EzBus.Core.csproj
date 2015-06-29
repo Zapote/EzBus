@@ -49,12 +49,13 @@
     <Compile Include="CoreBus.cs" />
     <Compile Include="ChannelMessageFactory.cs" />
     <Compile Include="Bus.cs" />
+    <Compile Include="HostFactory.cs" />
     <Compile Include="InMemoryMessageChannel.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="Logging\TraceLoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Resolvers\LoggerFactoryResolver.cs" />
-    <Compile Include="Resolvers\MessageChannelResolver.cs" />
+    <Compile Include="Resolvers\ChannelResolver.cs" />
     <Compile Include="ChannelTypes.cs" />
     <Compile Include="Config\DestinationCollection.cs" />
     <Compile Include="Config\DestinationElement.cs" />

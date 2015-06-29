@@ -10,7 +10,7 @@ namespace EzBus.Core
 {
     public class Host
     {
-        private readonly IMessageChannelResolver messageChannelResolver;
+        private readonly ChannelResolver channelResolver = new ChannelResolver();
         private static readonly ILogger log = HostLogManager.GetLogger(typeof(Host));
         private readonly IObjectFactory objectFactory;
         private ISubscriptionStorage subscriptionStorage;
@@ -22,43 +22,41 @@ namespace EzBus.Core
         private readonly int workerThreads;
         private readonly int numberOfRetrys;
 
-        public Host(HostConfig hostConfig, IMessageChannelResolver messageChannelResolver)
+        public Host(HostConfig hostConfig)
         {
             if (hostConfig == null) throw new ArgumentNullException("hostConfig");
-            if (messageChannelResolver == null) throw new ArgumentNullException("messageChannelResolver");
-            this.messageChannelResolver = messageChannelResolver;
 
             objectFactory = hostConfig.ObjectFactory;
             workerThreads = hostConfig.WorkerThreads;
             numberOfRetrys = hostConfig.NumberOfRetrys;
 
-            sendingChannel = messageChannelResolver.GetSendingChannel();
+            sendingChannel = channelResolver.GetSendingChannel();
 
             endpointName = CreateEndpointName();
             endpointErrorName = string.Format("{0}.error", endpointName);
+
+            handlerCache.Prime();
         }
 
         public void Start()
         {
-            log.Debug("Starting Ezbus Host");
-
-            handlerCache.Prime();
             if (handlerCache.NumberOfEntries == 0) return;
 
+            log.Verbose("Starting Ezbus Host");
+
             subscriptionStorage = (ISubscriptionStorage)objectFactory.CreateInstance(typeof(ISubscriptionStorage));
-            subscriptionStorage.Initialize(new EndpointAddress(endpointName));
+            subscriptionStorage.Initialize(endpointName);
+
             objectFactory.Initialize();
 
             for (var i = 0; i < workerThreads; i++)
             {
-                var receivingChannel = messageChannelResolver.GetReceivingChannel();
-                receivingChannel.Initialize(new EndpointAddress(endpointName), new EndpointAddress(endpointErrorName));
+                var receivingChannel = channelResolver.GetReceivingChannel();
                 receivingChannel.OnMessageReceived += OnMessageReceived;
+                receivingChannel.Initialize(new EndpointAddress(endpointName), new EndpointAddress(endpointErrorName));
             }
 
             SendSubscriptionMessages();
-
-            log.Debug("EzBus host started");
         }
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -78,7 +76,7 @@ namespace EzBus.Core
                     message = messageSerializer.Deserialize(e.Message.BodyStream, messageType);
                 }
 
-                log.DebugFormat("Invoking handler {0}", handlerType.Name);
+                log.VerboseFormat("Invoking handler {0}", handlerType.Name);
 
                 var result = InvokeHandler(handlerType, message);
 
@@ -139,7 +137,7 @@ namespace EzBus.Core
 
                 var destination = EndpointAddress.Parse(subscription.Endpoint);
 
-                log.DebugFormat("Subscribing to: {0}", destination);
+                log.VerboseFormat("Subscribing to: {0}", destination);
                 sendingChannel.Send(destination, ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, messageSerializer));
             }
         }

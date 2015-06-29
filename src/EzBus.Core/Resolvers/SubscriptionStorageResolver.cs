@@ -6,7 +6,7 @@ namespace EzBus.Core.Resolvers
     internal class SubscriptionStorageResolver
     {
         private static Type subscriptionsStorageType = typeof(InMemorySubscriptionStorage);
-
+        private static ISubscriptionStorage instance;
         static SubscriptionStorageResolver()
         {
             ResolveTypes();
@@ -16,8 +16,7 @@ namespace EzBus.Core.Resolvers
         {
             var assemblyScanner = new AssemblyScanner();
             var types = assemblyScanner.FindTypes<ISubscriptionStorage>();
-            if (types.Length == 0) return;
-            if (types.Length == 1 && types[0].IsLocal())
+            if (types.Length <= 1 && types[0].IsLocal())
             {
                 return;
             }
@@ -27,7 +26,7 @@ namespace EzBus.Core.Resolvers
 
         public static ISubscriptionStorage GetSubscriptionStorage()
         {
-            return subscriptionsStorageType.CreateInstance() as ISubscriptionStorage;
+            return instance ?? (instance = subscriptionsStorageType.CreateInstance() as ISubscriptionStorage);
         }
     }
 }

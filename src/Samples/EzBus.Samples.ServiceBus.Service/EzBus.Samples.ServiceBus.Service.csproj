@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{91338A38-F313-4CCC-BE41-D012E74A917C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EzBus</RootNamespace>
-    <AssemblyName>EzBus</AssemblyName>
+    <RootNamespace>EzBus.Samples.ServiceBus.Service</RootNamespace>
+    <AssemblyName>EzBus.Samples.ServiceBus.Service</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,46 +21,52 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EndpointAddress.cs" />
-    <Compile Include="IAssemblyScanner.cs" />
-    <Compile Include="IBus.cs" />
-    <Compile Include="IBusFactory.cs" />
-    <Compile Include="IHandle.cs" />
-    <Compile Include="IMessageFilter.cs" />
-    <Compile Include="IObjectFactory.cs" />
-    <Compile Include="IReceivingChannel.cs" />
-    <Compile Include="ISendingChannel.cs" />
-    <Compile Include="ChannelMessage.cs" />
-    <Compile Include="ISubscriptionStorage.cs" />
-    <Compile Include="LifeCycle.cs" />
-    <Compile Include="Logging\HostLogManager.cs" />
-    <Compile Include="Logging\HostLogManagerConfig.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\LoggerFactory.cs" />
-    <Compile Include="Logging\LogLevel.cs" />
-    <Compile Include="Logging\NullLogger.cs" />
-    <Compile Include="MessageHeader.cs" />
-    <Compile Include="MessageReceivedEventArgs.cs" />
+    <Compile Include="Handlers\SayHelloHandler.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serilizers\IMessageSerilizer.cs" />
-    <Compile Include="SubscriptionMessage.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EzBus.Core\EzBus.Core.csproj">
+      <Project>{4142F834-AC35-4E99-9932-291805075F80}</Project>
+      <Name>EzBus.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EzBus.WindowsAzure.ServiceBus\EzBus.WindowsAzure.ServiceBus.csproj">
+      <Project>{93bdc306-7416-47ef-abb8-6e692e689c01}</Project>
+      <Name>EzBus.WindowsAzure.ServiceBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EzBus\EzBus.csproj">
+      <Project>{31bb0ddf-dced-49d0-8fc8-0d8ac396dd7b}</Project>
+      <Name>EzBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EzBus.Samples.Messages\EzBus.Samples.Messages.csproj">
+      <Project>{7AFF69F7-6271-425F-B725-CEF40051F772}</Project>
+      <Name>EzBus.Samples.Messages</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

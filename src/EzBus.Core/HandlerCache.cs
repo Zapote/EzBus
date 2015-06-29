@@ -20,7 +20,7 @@ namespace EzBus.Core
                     MessageType = messageType
                 }));
 
-            log.DebugFormat("Handler '{0}' for message '{1}' added to cache", handlerType.FullName, messageType.FullName);
+            log.VerboseFormat("Handler '{0}' for message '{1}' added to cache", handlerType.FullName, messageType.FullName);
         }
 
         public IEnumerable<HandlerInfo> GetHandlerInfo(string messageTypeName)
@@ -39,24 +39,20 @@ namespace EzBus.Core
             var scanner = new AssemblyScanner();
             var handlerTypes = scanner.FindTypes(typeof(IHandle<>));
 
-            if (NoCustomHandlersFound(handlerTypes))
-            {
-                log.Debug("No custom handlers found.");
-            }
-
             foreach (var handlerType in handlerTypes)
             {
                 Add(handlerType);
             }
         }
 
-        private static bool NoCustomHandlersFound(IList<Type> handlerTypes)
+        public bool HasCustomHandlers()
         {
-            if (handlerTypes.Count == 0)
+            if (handlers.Count == 0)
             {
                 return true;
             }
-            return handlerTypes.Count == 1 && handlerTypes[0] == typeof(SubscriptionMessageHandler);
+
+            return handlers.Count == 1 && handlers[0].Value.HandlerType == typeof(SubscriptionMessageHandler);
         }
 
         public int NumberOfEntries

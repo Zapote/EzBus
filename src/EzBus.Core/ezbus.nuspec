@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>EzBus</id>
-    <version>0.9.4</version>
+    <version>0.0.0</version>
     <authors>Erik Lindström</authors>
     <owners>Zapote</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
