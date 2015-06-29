@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace EzBus.Core.Resolvers
 {
-    internal static class MessageFilterResolver
+    public static class MessageFilterResolver
     {
         private static readonly List<Type> filterTypes = new List<Type>();
 

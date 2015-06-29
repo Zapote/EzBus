@@ -68,6 +68,7 @@
     <Compile Include="Builders\LightInjectObjectFactory.cs" />
     <Compile Include="Builders\LightInject.cs" />
     <Compile Include="Resolvers\MessageFilterResolver.cs" />
+    <Compile Include="Resolvers\ObjectFactoryResolver.cs" />
     <Compile Include="Routing\DestinationMissingException.cs" />
     <Compile Include="HostConfig.cs" />
     <Compile Include="Host.cs" />

@@ -10,7 +10,6 @@ namespace EzBus.Core
 {
     public class Host
     {
-        private readonly ChannelResolver channelResolver = new ChannelResolver();
         private static readonly ILogger log = HostLogManager.GetLogger(typeof(Host));
         private readonly IObjectFactory objectFactory;
         private ISubscriptionStorage subscriptionStorage;
@@ -26,11 +25,12 @@ namespace EzBus.Core
         {
             if (hostConfig == null) throw new ArgumentNullException("hostConfig");
 
-            objectFactory = hostConfig.ObjectFactory;
             workerThreads = hostConfig.WorkerThreads;
             numberOfRetrys = hostConfig.NumberOfRetrys;
 
-            sendingChannel = channelResolver.GetSendingChannel();
+            objectFactory = ObjectFactoryResolver.GetObjectFactory();
+
+            sendingChannel = ChannelResolver.GetSendingChannel();
 
             endpointName = CreateEndpointName();
             endpointErrorName = string.Format("{0}.error", endpointName);
@@ -51,7 +51,7 @@ namespace EzBus.Core
 
             for (var i = 0; i < workerThreads; i++)
             {
-                var receivingChannel = channelResolver.GetReceivingChannel();
+                var receivingChannel = ChannelResolver.GetReceivingChannel();
                 receivingChannel.OnMessageReceived += OnMessageReceived;
                 receivingChannel.Initialize(new EndpointAddress(endpointName), new EndpointAddress(endpointErrorName));
             }
@@ -104,9 +104,10 @@ namespace EzBus.Core
                     var handler = objectFactory.CreateInstance(handlerType);
                     messageFilters = MessageFilterResolver.GetMessageFilters(objectFactory);
 
-                    messageFilters.Apply(x => x.Before());
+                    var isLocalMessage = message.GetType().IsLocal();
+                    if (!isLocalMessage) messageFilters.Apply(x => x.Before());
                     methodInfo.Invoke(handler, new[] { message });
-                    messageFilters.Apply(x => x.After());
+                    if (!isLocalMessage) messageFilters.Apply(x => x.After());
 
                     break;
                 }
@@ -161,7 +162,7 @@ namespace EzBus.Core
         private string CreateEndpointName()
         {
             var entryAssembly = Assembly.GetEntryAssembly();
-            if (entryAssembly == null) return GetType().Assembly.GetName().Name;
+            if (entryAssembly == null) return this.GetAssemblyName();
             return entryAssembly.GetName().Name;
         }
     }

@@ -5,7 +5,7 @@ using EzBus.Logging;
 
 namespace EzBus.Core.Resolvers
 {
-    internal class LoggerFactoryResolver
+    public static class LoggerFactoryResolver
     {
         private static Type loggerFactoryType;
 

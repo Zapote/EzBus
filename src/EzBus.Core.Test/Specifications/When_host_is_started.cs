@@ -1,4 +1,5 @@
 using EzBus.Core.Logging;
+using EzBus.Core.Resolvers;
 using EzBus.Core.Test.TestHelpers;
 using EzBus.Logging;
 using NUnit.Framework;
@@ -14,8 +15,11 @@ namespace EzBus.Core.Test.Specifications
         {
             FakeMessageChannel.Reset();
             HostLogManager.Configure(new TraceLoggerFactory(), LogLevel.All);
+
+            var objectFactory = ObjectFactoryResolver.GetObjectFactory();
+            objectFactory.Register<ISubscriptionStorage, InMemorySubscriptionStorage>(LifeCycle.Unique);
+
             var hostConfig = new HostConfig();
-            hostConfig.ObjectFactory.Register<ISubscriptionStorage>(new InMemorySubscriptionStorage(), LifeCycle.Unique);
             var host = new Host(hostConfig);
             host.Start();
         }

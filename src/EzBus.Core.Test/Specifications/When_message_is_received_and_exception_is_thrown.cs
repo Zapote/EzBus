@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.Core.Resolvers;
 using EzBus.Core.Test.TestHelpers;
 using EzBus.Logging;
 using NUnit.Framework;
@@ -17,12 +18,15 @@ namespace EzBus.Core.Test.Specifications
         {
             retries = 0;
 
+            var objectFactory = ObjectFactoryResolver.GetObjectFactory();
+            objectFactory.Register<ISubscriptionStorage, InMemorySubscriptionStorage>(LifeCycle.Unique);
+
             FakeMessageChannel.Reset();
             messageChannel = new FakeMessageChannel();
+            
             bus = new CoreBus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());
             var config = new HostConfig();
             config.SetNumberOfRetrys(2);
-            config.ObjectFactory.Register<ISubscriptionStorage>(new InMemorySubscriptionStorage(), LifeCycle.Unique);
 
             host = new Host(config);
             host.Start();

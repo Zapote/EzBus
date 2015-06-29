@@ -8,10 +8,7 @@ namespace EzBus.Core
     {
         private readonly static List<Subscription> subscriptions = new List<Subscription>();
 
-        public void Initialize(string endpointName)
-        {
-
-        }
+        public void Initialize(string endpointName) { }
 
         public void Store(string endpoint, Type messageType)
         {

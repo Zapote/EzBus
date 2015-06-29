@@ -3,10 +3,11 @@ using System.Linq;
 
 namespace EzBus.Core.Resolvers
 {
-    internal class SubscriptionStorageResolver
+    internal static class SubscriptionStorageResolver
     {
         private static Type subscriptionsStorageType = typeof(InMemorySubscriptionStorage);
         private static ISubscriptionStorage instance;
+        
         static SubscriptionStorageResolver()
         {
             ResolveTypes();

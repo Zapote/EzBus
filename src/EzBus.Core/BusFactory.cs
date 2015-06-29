@@ -8,8 +8,16 @@ namespace EzBus.Core
     {
         public IBus Start()
         {
+            RegisterSubscriptionStorage();
             ConfigureLogging();
             return CreateBus();
+        }
+
+        private static void RegisterSubscriptionStorage()
+        {
+            var subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
+            var objectFactory = ObjectFactoryResolver.GetObjectFactory();
+            objectFactory.Register(subscriptionStorage, LifeCycle.Singleton);
         }
 
         private static void ConfigureLogging()
@@ -21,7 +29,7 @@ namespace EzBus.Core
         private static CoreBus CreateBus()
         {
             var subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
-            var sendingChannel = new ChannelResolver().GetSendingChannel();
+            var sendingChannel = ChannelResolver.GetSendingChannel();
             return new CoreBus(sendingChannel, new ConfigurableMessageRouting(), subscriptionStorage);
         }
     }
