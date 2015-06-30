@@ -84,7 +84,7 @@ public class TextMessageHandler : IHandle<TextMessage>
 ```
 
 ##### ServiceRegistry
-Derive from class ServiceRegistry and register dependencies in contructor. This class will be activated on startup.
+Derive from class ServiceRegistry and register dependencies in constructor. This class will be activated on startup.
 ```C#
 public class CoreRegistry : ServiceRegistry
 {
