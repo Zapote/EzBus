@@ -7,7 +7,7 @@ namespace EzBus.Samples.Msmq.Service
     {
         public DependencyRegistry()
         {
-            Register<IClientGreeter, ClientGreeter>().As.Singelton();
+            Register<IClientGreeter, ClientGreeter>().As.Singleton();
         }
     }
 }

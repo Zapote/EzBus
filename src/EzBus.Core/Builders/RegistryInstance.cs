@@ -14,7 +14,7 @@ namespace EzBus.Core.Builders
         public Type Service { get; private set; }
         public LifeCycle LifeCycle { get; private set; }
 
-        public void Singelton()
+        public void Singleton()
         {
             LifeCycle = LifeCycle.Singleton;
         }
