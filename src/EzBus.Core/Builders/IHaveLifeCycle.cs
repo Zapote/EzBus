@@ -2,7 +2,7 @@
 {
     public interface IHaveLifeCycle
     {
-        void Singelton();
+        void Singleton();
         void Unique();
     }
 }
