@@ -8,10 +8,13 @@ EzBus - Messaging made easy!
 For MSMQ transport:<br/>
 nuget Install-package EzBus.Msmq
 
+For Azure ServiceBus transport:<br/>
+nuget Install-package EzBus.WindowsAzure.ServiceBus
+
 #### Send your message
 
 ```C#
-Bus.Send("ez.service.queue", new TextMessage { Text = "Hello EzBus" });
+Bus.Send("My.Service", new TextMessage { Text = "Hello EzBus" });
 ```
 
 Configure destinations in app.config:
@@ -22,7 +25,7 @@ Configure destinations in app.config:
   </configSections>
 
    <destinations>
-    <add assembly="EzBus.Messages" endpoint="ez.service.queue"/>
+    <add assembly="Business.Messages" endpoint="My.Service"/>
   </destinations>
 ```
 ```C#
@@ -35,7 +38,7 @@ Bus.Send(new TextMessage { Text = "Hello EzBus" });
 Bus.Publish(new TextMessage { Text = "Hello EzBus" });
 ```
 
-#### Subscribe to messages
+#### Subscribe to published messages
 
 in app.config:
 
@@ -45,7 +48,7 @@ in app.config:
   </configSections>
 
   <subscriptions>
-    <add endpoint="EzBus.Samples.Service"/>
+    <add endpoint="My.Service"/>
   </subscriptions>
 ```
 
@@ -93,8 +96,8 @@ public class CoreRegistry : ServiceRegistry
         // Always unique instance
         Register<IFoo, Foo>().As.Unique();
         
-        // Singelton
-        Register<IBar, Bar>().As.Singelton();
+        // Singleton
+        Register<IBar, Bar>().As.Singleton();
     }
 }
 ```
