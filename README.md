@@ -5,10 +5,10 @@ EzBus - Messaging made easy!
 
 #### Install via NuGet
 
-For MSMQ transport:<br/>
+For <b>Msmq</b> transport:<br/>
 nuget Install-package EzBus.Msmq
 
-For Azure ServiceBus transport:<br/>
+For <b>Azure ServiceBus</b> transport:<br/>
 nuget Install-package EzBus.WindowsAzure.ServiceBus
 
 #### Send your message
