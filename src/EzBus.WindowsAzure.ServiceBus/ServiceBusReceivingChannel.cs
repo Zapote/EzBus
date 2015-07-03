@@ -11,30 +11,16 @@ namespace EzBus.WindowsAzure.ServiceBus
     {
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
-            var queueName = inputAddress.QueueName;
-            var queueClient = QueueClient.Create(queueName);
+            QueueUtilities.CreateQueue(inputAddress.QueueName);
+
+            var inputQueueClient = QueueClient.Create(inputAddress.QueueName);
             var options = new OnMessageOptions
             {
                 AutoComplete = false,
                 AutoRenewTimeout = TimeSpan.FromMinutes(1),
                 MaxConcurrentCalls = 1
             };
-
-            var connectionString = ConnectionStringHelper.GetServiceBusConnectionString();
-            var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
-
-            if (!namespaceManager.QueueExists(queueName))
-            {
-                var qd = new QueueDescription(queueName)
-                {
-                    MaxSizeInMegabytes = 5120,
-                    DefaultMessageTimeToLive = new TimeSpan(0, 1, 0)
-                };
-
-                namespaceManager.CreateQueue(qd);
-            }
-
-            queueClient.OnMessage(OnMessage, options);
+            inputQueueClient.OnMessage(OnMessage, options);
         }
 
         private void OnMessage(BrokeredMessage message)
@@ -54,7 +40,7 @@ namespace EzBus.WindowsAzure.ServiceBus
             }
             catch (Exception ex)
             {
-                message.Abandon();
+                message.DeadLetter();
                 throw;
             }
         }
