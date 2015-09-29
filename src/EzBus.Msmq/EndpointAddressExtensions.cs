@@ -8,7 +8,7 @@ namespace EzBus.Msmq
 
         public static string GetQueueName(this EndpointAddress address)
         {
-            if (address == null) throw new ArgumentNullException("address");
+            if (address == null) throw new ArgumentNullException(nameof(address));
 
             var machineName = address.MachineName;
 
@@ -17,12 +17,12 @@ namespace EzBus.Msmq
                 machineName = Environment.MachineName;
             }
 
-            return string.Format(@"{0}\private$\{1}", machineName, address.QueueName);
+            return $@"{machineName}\private$\{address.QueueName}";
         }
 
         public static string GetQueuePath(this EndpointAddress address)
         {
-            return string.Format("{0}{1}", directPrefix, GetQueueName(address));
+            return $"{directPrefix}{GetQueueName(address)}";
         }
     }
 }

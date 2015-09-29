@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus", "EzBus\EzBus.csproj", "{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.ServiceBus.Client", "Samples\EzBus.Samples.ServiceBus.Client\EzBus.Samples.ServiceBus.Client.csproj", "{852FAF6F-77F0-4C4B-A81D-449EDDE51ABA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.ServiceBus.Service", "Samples\EzBus.Samples.ServiceBus.Service\EzBus.Samples.ServiceBus.Service.csproj", "{91338A38-F313-4CCC-BE41-D012E74A917C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.RabbitMQ", "EzBus.RabbitMQ\EzBus.RabbitMQ.csproj", "{B90B1E65-C582-48B2-B0E4-273CAB986F3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{91338A38-F313-4CCC-BE41-D012E74A917C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91338A38-F313-4CCC-BE41-D012E74A917C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91338A38-F313-4CCC-BE41-D012E74A917C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B90B1E65-C582-48B2-B0E4-273CAB986F3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B90B1E65-C582-48B2-B0E4-273CAB986F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B90B1E65-C582-48B2-B0E4-273CAB986F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B90B1E65-C582-48B2-B0E4-273CAB986F3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

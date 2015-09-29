@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using EzBus.Core.Utils;
 
 namespace EzBus.Core.Resolvers
 {
@@ -30,7 +31,6 @@ namespace EzBus.Core.Resolvers
             var sendingChannels = assemblyScanner.FindTypes<ISendingChannel>();
             sendingChannelType = sendingChannels.LastOrDefault(type => !type.IsLocal()) ??
                                  typeof(InMemoryMessageChannel);
-
 
             var receivingChannels = assemblyScanner.FindTypes<IReceivingChannel>();
             receivingChannelType = receivingChannels.LastOrDefault(t => !t.IsLocal()) ??

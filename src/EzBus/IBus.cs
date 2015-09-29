@@ -1,4 +1,6 @@
-﻿namespace EzBus
+﻿using System.Threading.Tasks;
+
+namespace EzBus
 {
     public interface IBus
     {

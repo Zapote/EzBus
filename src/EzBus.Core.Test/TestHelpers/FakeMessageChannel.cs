@@ -13,10 +13,6 @@ namespace EzBus.Core.Test.TestHelpers
         {
             sentDestinations.Clear();
             sentDestinations = new List<EndpointAddress>();
-        }
-
-        public FakeMessageChannel()
-        {
             InnerMessageHandler = null;
         }
 
@@ -26,7 +22,7 @@ namespace EzBus.Core.Test.TestHelpers
             sentDestinations.Add(destination);
             if (destination.QueueName.EndsWith("error")) return;
 
-            if (InnerMessageHandler != null) InnerMessageHandler(this, new MessageReceivedEventArgs
+            InnerMessageHandler?.Invoke(this, new MessageReceivedEventArgs
             {
                 Message = channelMessage
             });
@@ -49,13 +45,7 @@ namespace EzBus.Core.Test.TestHelpers
             }
         }
 
-        public static EndpointAddress LastSentDestination
-        {
-            get
-            {
-                return sentDestinations.LastOrDefault();
-            }
-        }
+        public static EndpointAddress LastSentDestination => sentDestinations.LastOrDefault();
 
         public static IEnumerable<EndpointAddress> GetSentDestinations()
         {

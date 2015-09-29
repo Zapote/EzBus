@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -41,7 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyScanner.cs" />
+    <Compile Include="Resolvers\ResolverBase.cs" />
+    <Compile Include="Resolvers\SubscriptionManagerResolver.cs" />
+    <Compile Include="Subscription\ISubscriptionManager.cs" />
+    <Compile Include="Subscription\SubscriptionManager.cs" />
+    <Compile Include="Utils\AssemblyScanner.cs" />
     <Compile Include="Builders\IHaveLifeCycle.cs" />
     <Compile Include="Builders\IConfigureLifeCycle.cs" />
     <Compile Include="Builders\IServiceRegistry.cs" />
@@ -51,7 +55,7 @@
     <Compile Include="Bus.cs" />
     <Compile Include="HostFactory.cs" />
     <Compile Include="InMemoryMessageChannel.cs" />
-    <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="Utils\IEnumerableExtensions.cs" />
     <Compile Include="Logging\TraceLoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Resolvers\LoggerFactoryResolver.cs" />
@@ -63,7 +67,7 @@
     <Compile Include="Config\SubscriptionCollection.cs" />
     <Compile Include="Config\SubscriptionElement.cs" />
     <Compile Include="Config\SubscriptionSection.cs" />
-    <Compile Include="InMemorySubscriptionStorage.cs" />
+    <Compile Include="Subscription\InMemorySubscriptionStorage.cs" />
     <Compile Include="InvokationResult.cs" />
     <Compile Include="Builders\LightInjectObjectFactory.cs" />
     <Compile Include="Builders\LightInject.cs" />
@@ -79,14 +83,14 @@
     <Compile Include="Routing\IMessageRouting.cs" />
     <Compile Include="Routing\MessageRoutingException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serilizers\TypeExtensions.cs" />
-    <Compile Include="Serilizers\XmlMessageSerializer.cs" />
-    <Compile Include="Serilizers\XmlValueConverter.cs" />
+    <Compile Include="Serializers\TypeExtensions.cs" />
+    <Compile Include="Serializers\XmlMessageSerializer.cs" />
+    <Compile Include="Serializers\XmlValueConverter.cs" />
     <Compile Include="Builders\ServiceRegistry.cs" />
-    <Compile Include="Subscription.cs" />
+    <Compile Include="Subscription\Subscriber.cs" />
     <Compile Include="SubscriptionMessageHandler.cs" />
     <Compile Include="Resolvers\SubscriptionStorageResolver.cs" />
-    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="Utils\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EzBus\EzBus.csproj">

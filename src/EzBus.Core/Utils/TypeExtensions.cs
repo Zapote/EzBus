@@ -1,6 +1,6 @@
 using System;
 
-namespace EzBus.Core
+namespace EzBus.Core.Utils
 {
     public static class TypeExtensions
     {

@@ -1,6 +1,7 @@
-﻿using NUnit.Framework;
+﻿using EzBus.Core.Utils;
+using NUnit.Framework;
 
-namespace EzBus.Core.Test
+namespace EzBus.Core.Test.Utils
 {
     [TestFixture]
     public class TypeExtensionsTest

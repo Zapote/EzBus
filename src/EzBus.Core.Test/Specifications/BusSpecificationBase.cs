@@ -1,3 +1,4 @@
+using EzBus.Core.Subscription;
 using EzBus.Core.Test.TestHelpers;
 
 namespace EzBus.Core.Test.Specifications

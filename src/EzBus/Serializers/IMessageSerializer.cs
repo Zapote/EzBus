@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace EzBus.Serilizers
+namespace EzBus.Serializers
 {
-    public interface IMessageSerilizer
+    public interface IMessageSerializer
     {
         Stream Serialize(object obj);
         object Deserialize(Stream messageStream, Type messageType);

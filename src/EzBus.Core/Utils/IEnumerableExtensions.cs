@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EzBus.Core
+namespace EzBus.Core.Utils
 {
     public static class IEnumerableExtensions
     {

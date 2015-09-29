@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Web;
 using EzBus.Logging;
 
-namespace EzBus.Core
+namespace EzBus.Core.Utils
 {
     public class AssemblyScanner : IAssemblyScanner
     {

@@ -13,9 +13,6 @@ namespace EzBus.Core.Builders
             return registryInstance;
         }
 
-        public IEnumerable<RegistryInstance> Instances
-        {
-            get { return instances; }
-        }
+        public IEnumerable<RegistryInstance> Instances => instances;
     }
 }

@@ -1,33 +1,18 @@
 ﻿using System;
 using System.Linq;
+using EzBus.Core.Subscription;
+using EzBus.Core.Utils;
 
 namespace EzBus.Core.Resolvers
 {
-    internal static class SubscriptionStorageResolver
+    internal class SubscriptionStorageResolver : ResolverBase<ISubscriptionStorage, InMemorySubscriptionStorage>
     {
-        private static Type subscriptionsStorageType = typeof(InMemorySubscriptionStorage);
-        private static ISubscriptionStorage instance;
-        
-        static SubscriptionStorageResolver()
-        {
-            ResolveTypes();
-        }
-
-        private static void ResolveTypes()
-        {
-            var assemblyScanner = new AssemblyScanner();
-            var types = assemblyScanner.FindTypes<ISubscriptionStorage>();
-            if (types.Length <= 1 && types[0].IsLocal())
-            {
-                return;
-            }
-
-            subscriptionsStorageType = types.Last(x => !x.IsLocal());
-        }
+        private static readonly SubscriptionStorageResolver instance = new SubscriptionStorageResolver();
+        private static ISubscriptionStorage storage;
 
         public static ISubscriptionStorage GetSubscriptionStorage()
         {
-            return instance ?? (instance = subscriptionsStorageType.CreateInstance() as ISubscriptionStorage);
+            return storage ?? (storage = instance.GetInstance());
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using EzBus.Logging;
-using EzBus.Serilizers;
 using System;
 using System.Collections;
 using System.Globalization;
@@ -8,10 +7,11 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Linq;
+using EzBus.Serializers;
 
 namespace EzBus.Core.Serilizers
 {
-    public class XmlMessageSerializer : IMessageSerilizer
+    public class XmlMessageSerializer : IMessageSerializer
     {
         private static readonly ILogger log = HostLogManager.GetLogger(typeof(XmlMessageSerializer));
 

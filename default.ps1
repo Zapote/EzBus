@@ -32,10 +32,10 @@ task InitEnvironment{
 			$netfxInstallroot =	Get-RegistryValue 'HKLM:\SOFTWARE\Microsoft\.NETFramework\' 'InstallRoot' 
 			$netfxCurrent = $netfxInstallroot + "v4.0.30319"
 			$script:msBuild = $netfxCurrent + "\msbuild.exe"
+			$script:msBuild = "C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe"
 			
 			echo ".Net 4.0 build requested - $script:msBuild" 
 
-			$script:msBuildTargetFramework ="/p:TargetFrameworkVersion=v4.0 /ToolsVersion:4.0"
 			$script:nunitTargetFramework = "/framework=4.0";
 			$script:isEnvironmentInitialized = $true
 		}
@@ -90,6 +90,8 @@ task CompileMain -depends init {
 		$targetDir = "$outputDir\$solutionName\"
 		
 		Create-Directory $targetDir
+		
+		write-host $script:msBuild
 		
 		exec { &$script:msBuild $solutionFile /p:OutDir="$targetDir\" /p:Configuration=Release }
 	}

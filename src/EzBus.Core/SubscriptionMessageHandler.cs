@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.Core.Resolvers;
 
 namespace EzBus.Core
 {
@@ -6,12 +7,11 @@ namespace EzBus.Core
     {
         private readonly ISubscriptionStorage subscriptionStorage;
 
-        public SubscriptionMessageHandler(ISubscriptionStorage subscriptionStorage)
+        public SubscriptionMessageHandler()
         {
-            if (subscriptionStorage == null) throw new ArgumentNullException("subscriptionStorage");
-            this.subscriptionStorage = subscriptionStorage;
+            subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
         }
-
+        
         public void Handle(SubscriptionMessage message)
         {
             subscriptionStorage.Store(message.Endpoint, null);

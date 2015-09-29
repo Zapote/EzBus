@@ -50,8 +50,9 @@ namespace EzBus.Msmq
 
             using (var tx = new MessageQueueTransaction())
             {
+                var msg = new Message(item) { Label = item.Endpoint };
                 tx.Begin();
-                storageQueue.Send(item, tx);
+                storageQueue.Send(msg, tx);
                 tx.Commit();
             }
 

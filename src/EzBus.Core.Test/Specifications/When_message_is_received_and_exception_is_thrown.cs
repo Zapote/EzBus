@@ -1,5 +1,6 @@
 ﻿using System;
 using EzBus.Core.Resolvers;
+using EzBus.Core.Subscription;
 using EzBus.Core.Test.TestHelpers;
 using EzBus.Logging;
 using NUnit.Framework;
@@ -12,14 +13,14 @@ namespace EzBus.Core.Test.Specifications
         private FakeMessageChannel messageChannel;
         private Host host;
         private IBus bus;
-        private static int retries = 0;
+        private static int retries;
 
         protected override void Given()
         {
             retries = 0;
 
             var objectFactory = ObjectFactoryResolver.GetObjectFactory();
-            objectFactory.Register<ISubscriptionStorage, InMemorySubscriptionStorage>(LifeCycle.Unique);
+            objectFactory.Initialize();
 
             FakeMessageChannel.Reset();
             messageChannel = new FakeMessageChannel();

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using EzBus.Core.Builders.LightInject;
+using EzBus.Core.Utils;
+using AssemblyScanner = EzBus.Core.Utils.AssemblyScanner;
 
 namespace EzBus.Core.Builders
 {

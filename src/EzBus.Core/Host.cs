@@ -1,10 +1,10 @@
 ﻿using EzBus.Core.Resolvers;
 using EzBus.Core.Serilizers;
 using EzBus.Logging;
-using EzBus.Serilizers;
 using System;
 using System.Linq;
-using System.Reflection;
+using EzBus.Core.Utils;
+using EzBus.Serializers;
 
 namespace EzBus.Core
 {
@@ -12,9 +12,8 @@ namespace EzBus.Core
     {
         private static readonly ILogger log = HostLogManager.GetLogger(typeof(Host));
         private readonly IObjectFactory objectFactory;
-        private ISubscriptionStorage subscriptionStorage;
         private readonly ISendingChannel sendingChannel;
-        private readonly IMessageSerilizer messageSerializer = new XmlMessageSerializer();
+        private readonly IMessageSerializer messageSerializer = new XmlMessageSerializer();
         private readonly HandlerCache handlerCache = new HandlerCache();
         private readonly string endpointName;
         private readonly string endpointErrorName;
@@ -23,17 +22,15 @@ namespace EzBus.Core
 
         public Host(HostConfig hostConfig)
         {
-            if (hostConfig == null) throw new ArgumentNullException("hostConfig");
+            if (hostConfig == null) throw new ArgumentNullException(nameof(hostConfig));
 
             workerThreads = hostConfig.WorkerThreads;
             numberOfRetrys = hostConfig.NumberOfRetrys;
+            endpointName = hostConfig.EndpointName;
+            endpointErrorName = $"{endpointName}.error";
 
             objectFactory = ObjectFactoryResolver.GetObjectFactory();
-
             sendingChannel = ChannelResolver.GetSendingChannel();
-
-            endpointName = CreateEndpointName();
-            endpointErrorName = string.Format("{0}.error", endpointName);
 
             handlerCache.Prime();
         }
@@ -44,10 +41,10 @@ namespace EzBus.Core
 
             log.Verbose("Starting Ezbus Host");
 
-            subscriptionStorage = (ISubscriptionStorage)objectFactory.CreateInstance(typeof(ISubscriptionStorage));
-            subscriptionStorage.Initialize(endpointName);
-
             objectFactory.Initialize();
+
+            var subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
+            subscriptionStorage.Initialize(endpointName);
 
             for (var i = 0; i < workerThreads; i++)
             {
@@ -56,7 +53,7 @@ namespace EzBus.Core
                 receivingChannel.Initialize(new EndpointAddress(endpointName), new EndpointAddress(endpointErrorName));
             }
 
-            SendSubscriptionMessages();
+            Subscribe();
         }
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -125,22 +122,10 @@ namespace EzBus.Core
             return new InvokationResult(success, exception);
         }
 
-        private void SendSubscriptionMessages()
+        private void Subscribe()
         {
-            var subscriptions = Config.SubscriptionSection.Section.Subscriptions;
-
-            foreach (Config.SubscriptionElement subscription in subscriptions)
-            {
-                var subscriptionMessage = new SubscriptionMessage
-                {
-                    Endpoint = string.Format("{0}@{1}", endpointName, Environment.MachineName)
-                };
-
-                var destination = EndpointAddress.Parse(subscription.Endpoint);
-
-                log.VerboseFormat("Subscribing to: {0}", destination);
-                sendingChannel.Send(destination, ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, messageSerializer));
-            }
+            var subscriptionManager = SubscriptionManagerResolver.GetSubscriptionManager();
+            subscriptionManager.Subscribe(endpointName);
         }
 
         private void PlaceMessageOnErrorQueue(ChannelMessage message, Exception exception)
@@ -149,21 +134,14 @@ namespace EzBus.Core
 
             while (exception != null)
             {
-                var headerName = string.Format("ErrorMessage L{0}", level);
-                var value = string.Format("{0}: {1}", DateTime.Now, exception.Message);
+                var headerName = $"ErrorMessage L{level}";
+                var value = $"{DateTime.Now}: {exception.Message}";
                 message.AddHeader(headerName, value);
                 exception = exception.InnerException;
                 level++;
             }
 
             sendingChannel.Send(new EndpointAddress(endpointErrorName), message);
-        }
-
-        private string CreateEndpointName()
-        {
-            var entryAssembly = Assembly.GetEntryAssembly();
-            if (entryAssembly == null) return this.GetAssemblyName();
-            return entryAssembly.GetName().Name;
         }
     }
 }

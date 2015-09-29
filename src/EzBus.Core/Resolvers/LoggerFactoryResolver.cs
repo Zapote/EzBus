@@ -1,29 +1,18 @@
 using System;
 using System.Linq;
 using EzBus.Core.Logging;
+using EzBus.Core.Utils;
 using EzBus.Logging;
 
 namespace EzBus.Core.Resolvers
 {
-    public static class LoggerFactoryResolver
+    public class LoggerFactoryResolver : ResolverBase<LoggerFactory, TraceLoggerFactory>
     {
-        private static Type loggerFactoryType;
-
-        static LoggerFactoryResolver()
-        {
-            ResolveTypes();
-        }
-
-        private static void ResolveTypes()
-        {
-            var scanner = new AssemblyScanner();
-            var foundTypes = scanner.FindTypes<LoggerFactory>();
-            loggerFactoryType = foundTypes.LastOrDefault(x => !x.IsLocal()) ?? typeof(TraceLoggerFactory);
-        }
+        private static readonly LoggerFactoryResolver instance = new LoggerFactoryResolver();
 
         public static LoggerFactory GetLoggerFactory()
         {
-            return loggerFactoryType.CreateInstance() as LoggerFactory;
+            return instance.GetInstance();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using EzBus.Core.Routing;
 using EzBus.Core.Serilizers;
+using EzBus.Core.Utils;
 
 namespace EzBus.Core
 {
@@ -13,13 +14,14 @@ namespace EzBus.Core
 
         public CoreBus(ISendingChannel sendingChannel, IMessageRouting messageRouting, ISubscriptionStorage subscriptionStorage)
         {
-            if (sendingChannel == null) throw new ArgumentNullException("sendingChannel");
-            if (messageRouting == null) throw new ArgumentNullException("messageRouting");
-            if (subscriptionStorage == null) throw new ArgumentNullException("subscriptionStorage");
+            if (sendingChannel == null) throw new ArgumentNullException(nameof(sendingChannel));
+            if (messageRouting == null) throw new ArgumentNullException(nameof(messageRouting));
+            if (subscriptionStorage == null) throw new ArgumentNullException(nameof(subscriptionStorage));
 
             this.sendingChannel = sendingChannel;
             this.messageRouting = messageRouting;
             this.subscriptionStorage = subscriptionStorage;
+
             serializer = new XmlMessageSerializer();
         }
 

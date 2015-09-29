@@ -1,16 +1,16 @@
 using System;
 using System.Reflection;
-using EzBus.Serilizers;
+using EzBus.Serializers;
 
 namespace EzBus.Core
 {
     public class ChannelMessageFactory
     {
-        public static ChannelMessage CreateChannelMessage(object message, IMessageSerilizer messageSerilizer)
+        public static ChannelMessage CreateChannelMessage(object message, IMessageSerializer messageSerializer)
         {
-            if (messageSerilizer == null) throw new ArgumentNullException("messageSerilizer");
+            if (messageSerializer == null) throw new ArgumentNullException("messageSerializer");
             var messageType = message.GetType();
-            var stream = messageSerilizer.Serialize(message);
+            var stream = messageSerializer.Serialize(message);
             var channelMessage = new ChannelMessage(stream);
             channelMessage.AddHeader("MessageType", messageType.FullName);
             channelMessage.AddHeader("UserPrincipal", Environment.UserName);

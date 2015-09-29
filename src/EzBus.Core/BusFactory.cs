@@ -8,7 +8,7 @@ namespace EzBus.Core
     {
         public IBus Start()
         {
-            RegisterSubscriptionStorage();
+            // RegisterSubscriptionStorage();
             ConfigureLogging();
             return CreateBus();
         }

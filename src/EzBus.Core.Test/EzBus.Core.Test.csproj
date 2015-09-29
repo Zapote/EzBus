@@ -45,7 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyScannerTest.cs" />
+    <Compile Include="Resolvers\SubscriptionManagerResolverTest.cs" />
+    <Compile Include="Utils\AssemblyScannerTest.cs" />
     <Compile Include="Logging\TraceLoggerTest.cs" />
     <Compile Include="Resolvers\ChannelResolverTest.cs" />
     <Compile Include="Resolvers\LoggerFactoryResolverTest.cs" />
@@ -77,7 +78,7 @@
     <Compile Include="TestHelpers\MockEnum.cs" />
     <Compile Include="TestHelpers\MockMessage.cs" />
     <Compile Include="TestHelpers\MockMessageWithCollection.cs" />
-    <Compile Include="TypeExtensionsTest.cs" />
+    <Compile Include="Utils\TypeExtensionsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

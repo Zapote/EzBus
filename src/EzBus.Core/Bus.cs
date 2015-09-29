@@ -1,4 +1,5 @@
-﻿using EzBus;
+﻿using System.Threading.Tasks;
+using EzBus;
 using EzBus.Core;
 
 // ReSharper disable once CheckNamespace
@@ -10,8 +11,8 @@ public static class Bus
     static Bus()
     {
         if (bus != null) return;
-        var busStarter = new BusFactory();
-        bus = busStarter.Start();
+        var factory = new BusFactory();
+        bus = factory.Start();
     }
 
     public static void Start()
@@ -25,14 +26,29 @@ public static class Bus
         bus.Send(message);
     }
 
+    public static async Task SendAsync(object message)
+    {
+        await Task.Factory.StartNew(() => bus.Send(message));
+    }
+
     public static void Send(string destination, object message)
     {
         bus.Send(destination, message);
     }
 
+    public static async Task SendAsync(string destination, object message)
+    {
+        await Task.Factory.StartNew(() => bus.Send(destination, message));
+    }
+
     public static void Publish(object message)
     {
         bus.Publish(message);
+    }
+
+    public static async Task PublishAsync(object message)
+    {
+        await Task.Factory.StartNew(() => bus.Publish(message));
     }
 }
 

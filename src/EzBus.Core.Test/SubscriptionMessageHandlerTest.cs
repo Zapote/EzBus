@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using EzBus.Core.Subscription;
 using NUnit.Framework;
 
 namespace EzBus.Core.Test
@@ -13,7 +14,7 @@ namespace EzBus.Core.Test
         [SetUp]
         public void TestSetup()
         {
-            handler = new SubscriptionMessageHandler(subscriptionStorage);
+            handler = new SubscriptionMessageHandler();
         }
 
         [Test]
@@ -22,6 +23,7 @@ namespace EzBus.Core.Test
             handler.Handle(new SubscriptionMessage { Endpoint = endpoint });
 
             var actual = subscriptionStorage.GetSubscribersEndpoints(null).Last();
+
             Assert.That(actual, Is.EqualTo(endpoint));
         }
     }
