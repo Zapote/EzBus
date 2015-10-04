@@ -1,28 +1,29 @@
 ﻿using System;
-using EzBus.Logging;
 using log4net;
+using log4net.Core;
 
 namespace EzBus.Log4Net
 {
-    public class Log4NetLogger : ILogger
+    public class Log4NetLogger : Logging.ILogger
     {
         private readonly ILog log;
 
         public Log4NetLogger(ILog log)
         {
-            if (log == null) throw new ArgumentNullException("log");
+            if (log == null) throw new ArgumentNullException(nameof(log));
             this.log = log;
         }
 
-        public bool IsVerboseEnabled { get { return false; } }
-        public bool IsDebugEnabled { get { return log.IsDebugEnabled; } }
-        public bool IsInfoEnabled { get { return log.IsInfoEnabled; } }
-        public bool IsWarnEnabled { get { return log.IsWarnEnabled; } }
-        public bool IsErrorEnabled { get { return log.IsErrorEnabled; } }
-        public bool IsFatalEnabled { get { return log.IsFatalEnabled; } }
+        public bool IsVerboseEnabled => log.Logger.IsEnabledFor(Level.Verbose);
+        public bool IsDebugEnabled => log.IsDebugEnabled;
+        public bool IsInfoEnabled => log.IsInfoEnabled;
+        public bool IsWarnEnabled => log.IsWarnEnabled;
+        public bool IsErrorEnabled => log.IsErrorEnabled;
+        public bool IsFatalEnabled => log.IsFatalEnabled;
 
         public void Verbose(object message)
         {
+            log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, Level.Verbose, message, null);
         }
 
         public void Debug(object message)
@@ -50,7 +51,10 @@ namespace EzBus.Log4Net
             log.Fatal(message);
         }
 
-        public void Verbose(object message, Exception t) { }
+        public void Verbose(object message, Exception t)
+        {
+            log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, Level.Verbose, message, t);
+        }
 
         public void Debug(object message, Exception t)
         {
@@ -77,7 +81,11 @@ namespace EzBus.Log4Net
             log.Fatal(message, t);
         }
 
-        public void VerboseFormat(string format, params object[] args) { }
+        public void VerboseFormat(string format, params object[] args)
+        {
+            var message = string.Format(format, args);
+            log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, Level.Verbose, message, null);
+        }
 
         public void DebugFormat(string format, params object[] args)
         {

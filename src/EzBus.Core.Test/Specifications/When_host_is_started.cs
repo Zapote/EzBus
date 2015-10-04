@@ -15,7 +15,7 @@ namespace EzBus.Core.Test.Specifications
         protected override void When()
         {
             FakeMessageChannel.Reset();
-            HostLogManager.Configure(new TraceLoggerFactory(), LogLevel.All);
+            LogManager.Configure(new TraceLoggerFactory(), LogLevel.All);
 
             var objectFactory = ObjectFactoryResolver.GetObjectFactory();
             objectFactory.Register<ISubscriptionStorage, InMemorySubscriptionStorage>(LifeCycle.Unique);

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace EzBus.Core
 {
-    public class InMemoryMessageChannel : ISendingChannel, IReceivingChannel
+    public class InMemoryMessageChannel : ISendingChannel, IReceivingChannel, IPublishingChannel
     {
         private static List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
         private static event EventHandler<MessageReceivedEventArgs> InnerMessageHandler;
@@ -26,7 +26,7 @@ namespace EzBus.Core
             sentDestinations.Add(destination);
             if (destination.QueueName.EndsWith("error")) return;
 
-            if (InnerMessageHandler != null) InnerMessageHandler(this, new MessageReceivedEventArgs
+            InnerMessageHandler?.Invoke(this, new MessageReceivedEventArgs
             {
                 Message = channelMessage
             });
@@ -49,17 +49,21 @@ namespace EzBus.Core
             }
         }
 
-        public static EndpointAddress LastSentDestination
-        {
-            get
-            {
-                return sentDestinations.LastOrDefault();
-            }
-        }
+        public static EndpointAddress LastSentDestination => sentDestinations.LastOrDefault();
 
         public static IEnumerable<EndpointAddress> GetSentDestinations()
         {
             return sentDestinations;
+        }
+
+        public void Publish(ChannelMessage channelMessage)
+        {
+            channelMessage.BodyStream.Seek(0, 0);
+
+            InnerMessageHandler?.Invoke(this, new MessageReceivedEventArgs
+            {
+                Message = channelMessage
+            });
         }
     }
 }

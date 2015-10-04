@@ -1,6 +1,6 @@
 ﻿namespace EzBus.Logging
 {
-    public class HostLogManagerConfig
+    public class LogManagerConfig
     {
         public LoggerFactory Factory { get; set; }
         public LogLevel LogLevel { get; set; }

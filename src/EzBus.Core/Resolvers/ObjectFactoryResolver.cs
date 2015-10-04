@@ -1,14 +1,13 @@
-﻿using EzBus.Core.Builders;
-
-namespace EzBus.Core.Resolvers
+﻿namespace EzBus.Core.Resolvers
 {
-    public class ObjectFactoryResolver
+    public class ObjectFactoryResolver : ResolverBase<IObjectFactory>
     {
-        private static IObjectFactory instance;
+        private static readonly ObjectFactoryResolver resolver = new ObjectFactoryResolver();
+        private static IObjectFactory factoryInstance;
 
         public static IObjectFactory GetObjectFactory()
         {
-            return instance ?? (instance = new LightInjectObjectFactory());
+            return factoryInstance ?? (factoryInstance = resolver.GetInstance());
         }
     }
 }

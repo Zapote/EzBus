@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using EzBus.Core.Serilizers;
+using EzBus.Core.Serializers;
 using EzBus.Core.Test.TestHelpers;
 using NUnit.Framework;
 

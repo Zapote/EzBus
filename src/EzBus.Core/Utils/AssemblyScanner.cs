@@ -9,7 +9,7 @@ namespace EzBus.Core.Utils
 {
     public class AssemblyScanner : IAssemblyScanner
     {
-        private static readonly ILogger log = HostLogManager.GetLogger(typeof(AssemblyScanner));
+        private static readonly ILogger log = LogManager.GetLogger(typeof(AssemblyScanner));
         private static readonly List<string> assemblyFiles = new List<string>();
         private static bool directoryScanned;
 
@@ -49,7 +49,7 @@ namespace EzBus.Core.Utils
                 }
                 catch (Exception ex)
                 {
-                    log.Error(string.Format("Failed to scan assemby: {0}", file), ex);
+                    log.Error($"Failed to scan assemby: {file}", ex);
                 }
 
             }
@@ -71,7 +71,7 @@ namespace EzBus.Core.Utils
             else
             {
                 var executingAssembly = Assembly.GetExecutingAssembly();
-                directory = Path.GetDirectoryName(executingAssembly.Location) ?? "\\.";
+                directory = Path.GetDirectoryName(executingAssembly.Location) ?? @"\.";
             }
 
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));

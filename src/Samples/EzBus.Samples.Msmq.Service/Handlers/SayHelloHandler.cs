@@ -12,7 +12,7 @@ namespace EzBus.Samples.Msmq.Service.Handlers
 
         public SayHelloHandler(IClientGreeter clientGreeter)
         {
-            if (clientGreeter == null) throw new ArgumentNullException("clientGreeter");
+            if (clientGreeter == null) throw new ArgumentNullException(nameof(clientGreeter));
             this.clientGreeter = clientGreeter;
         }
 

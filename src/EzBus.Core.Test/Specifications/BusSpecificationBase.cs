@@ -8,13 +8,11 @@ namespace EzBus.Core.Test.Specifications
         protected CoreBus bus;
         protected InMemoryMessageChannel messageChannel;
         protected readonly FakeMessageRouting messageRouting = new FakeMessageRouting();
-        protected InMemorySubscriptionStorage subscriptionStorage;
 
         protected override void Given()
         {
             messageChannel = new InMemoryMessageChannel();
-            subscriptionStorage = new InMemorySubscriptionStorage();
-            bus = new CoreBus(messageChannel, messageRouting, subscriptionStorage);
+            bus = new CoreBus(messageChannel, messageChannel, messageRouting);
         }
     }
 }

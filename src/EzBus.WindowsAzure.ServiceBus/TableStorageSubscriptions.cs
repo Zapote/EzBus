@@ -9,7 +9,7 @@ namespace EzBus.WindowsAzure.ServiceBus
 {
     public class AzureTableSubscriptionstorage : ISubscriptionStorage
     {
-        private static readonly ILogger log = HostLogManager.GetLogger(typeof(AzureTableSubscriptionstorage));
+        private static readonly ILogger log = LogManager.GetLogger(typeof(AzureTableSubscriptionstorage));
         private CloudTable table;
         private bool tableCreated;
 

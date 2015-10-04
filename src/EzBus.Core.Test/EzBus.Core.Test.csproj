@@ -64,7 +64,6 @@
     <Compile Include="Specifications\SpecificationAttribute.cs" />
     <Compile Include="Specifications\ThenAttribute.cs" />
     <Compile Include="Specifications\When_host_is_started.cs" />
-    <Compile Include="SubscriptionMessageHandlerTest.cs" />
     <Compile Include="TestHelpers\FakeMessageChannel.cs" />
     <Compile Include="TestHelpers\FakeMessageRouting.cs" />
     <Compile Include="MessageRoutingTest.cs" />

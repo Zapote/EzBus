@@ -14,12 +14,14 @@ namespace EzBus.Samples.Msmq.Client
 
             while (loop)
             {
-                Bus.SendAsync(new SayHello("Msmq Client")).ContinueWith(r => Console.WriteLine("message sent {0}", r.Status));
+                Bus.SendAsync(new SayHello("Msmq Client")).ContinueWith(result =>
+                {
+                    Console.WriteLine($"Message sent with status: {result.Status}");
+                    Console.WriteLine("Press Enter to send again");
+                });
 
-                Console.WriteLine("Press Enter to send again");
                 var keyInfo = Console.ReadKey();
                 loop = keyInfo.Key == ConsoleKey.Enter;
-
             }
         }
     }

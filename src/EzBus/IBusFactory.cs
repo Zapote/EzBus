@@ -2,6 +2,6 @@
 {
     public interface IBusFactory
     {
-        IBus Start();
+        IBus Build();
     }
 }

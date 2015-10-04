@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using EzBus;
 using EzBus.Core;
+using EzBus.Core.Resolvers;
+using EzBus.Logging;
 
 // ReSharper disable once CheckNamespace
 public static class Bus
@@ -11,8 +13,11 @@ public static class Bus
     static Bus()
     {
         if (bus != null) return;
+
         var factory = new BusFactory();
-        bus = factory.Start();
+        bus = factory.Build();
+
+        ConfigureLogging();
     }
 
     public static void Start()
@@ -49,6 +54,12 @@ public static class Bus
     public static async Task PublishAsync(object message)
     {
         await Task.Factory.StartNew(() => bus.Publish(message));
+    }
+
+    private static void ConfigureLogging()
+    {
+        var loggerFactory = LoggerFactoryResolver.GetLoggerFactory();
+        LogManager.Configure(loggerFactory, LogLevel.Debug);
     }
 }
 

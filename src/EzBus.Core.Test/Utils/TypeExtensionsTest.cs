@@ -15,7 +15,6 @@ namespace EzBus.Core.Test.Utils
         [Test]
         public void IsLocal_returns_true_when_type_from_EzBus_Core()
         {
-            Assert.That(GetType().IsLocal(), Is.False);
             Assert.That(typeof(CoreBus).IsLocal(), Is.True);
         }
     }

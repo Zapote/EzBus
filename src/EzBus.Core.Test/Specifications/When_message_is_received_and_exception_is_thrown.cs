@@ -24,15 +24,15 @@ namespace EzBus.Core.Test.Specifications
 
             FakeMessageChannel.Reset();
             messageChannel = new FakeMessageChannel();
-            
-            bus = new CoreBus(messageChannel, new FakeMessageRouting(), new InMemorySubscriptionStorage());
+
+            bus = new CoreBus(messageChannel, messageChannel, new FakeMessageRouting());
             var config = new HostConfig();
             config.SetNumberOfRetrys(2);
 
             host = new Host(config);
             host.Start();
 
-            HostLogManager.SetLogLevel(LogLevel.Off);
+            LogManager.SetLogLevel(LogLevel.Off);
         }
 
         protected override void When()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace EzBus
 {
+    [Obsolete("Should be in each transport instead")]
     public interface ISubscriptionStorage
     {
         void Initialize(string endpointName);

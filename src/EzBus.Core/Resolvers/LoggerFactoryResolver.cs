@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
-using EzBus.Core.Logging;
 using EzBus.Core.Utils;
 using EzBus.Logging;
 
 namespace EzBus.Core.Resolvers
 {
-    public class LoggerFactoryResolver : ResolverBase<LoggerFactory, TraceLoggerFactory>
+    public class LoggerFactoryResolver : ResolverBase<LoggerFactory>
     {
         private static readonly LoggerFactoryResolver instance = new LoggerFactoryResolver();
 

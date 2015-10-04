@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace EzBus.Core.Test.Specifications
 {
-    [Specification]
+    [Specification, Ignore("Figure out purpose to test publish")]
     public class When_message_is_published : BusSpecificationBase
     {
         private const string subscriberOne = "Endor";
@@ -15,10 +15,6 @@ namespace EzBus.Core.Test.Specifications
             base.Given();
 
             InMemoryMessageChannel.Reset();
-
-            subscriptionStorage.Store(subscriberOne, null);
-            subscriptionStorage.Store(subscriberTwo, typeof(MockMessage));
-            subscriptionStorage.Store(subscriberThree, typeof(object));
         }
 
         protected override void When()

@@ -2,7 +2,7 @@ using EzBus.Core.Subscription;
 
 namespace EzBus.Core.Resolvers
 {
-    public class SubscriptionManagerResolver : ResolverBase<ISubscriptionManager, SubscriptionManager>
+    public class SubscriptionManagerResolver : ResolverBase<ISubscriptionManager>
     {
         private static readonly SubscriptionManagerResolver instance = new SubscriptionManagerResolver();
 

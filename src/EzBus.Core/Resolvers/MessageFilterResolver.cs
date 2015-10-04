@@ -27,4 +27,27 @@ namespace EzBus.Core.Resolvers
             return filterTypes.Select(x => (IMessageFilter)objectFactory.CreateInstance(x)).ToArray();
         }
     }
+
+    public static class StartupTaskResolver
+    {
+        private static readonly List<Type> startupTaskTypes = new List<Type>();
+
+        static StartupTaskResolver()
+        {
+            ResolveTypes();
+        }
+
+        private static void ResolveTypes()
+        {
+            var scanner = new AssemblyScanner();
+            var foundType = scanner.FindTypes<IStartupTask>();
+            startupTaskTypes.Clear();
+            startupTaskTypes.AddRange(foundType);
+        }
+
+        public static IStartupTask[] GetStartupTasks()
+        {
+            return startupTaskTypes.Select(x => (IStartupTask)x.CreateInstance()).ToArray();
+        }
+    }
 }

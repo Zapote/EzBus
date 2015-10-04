@@ -4,9 +4,8 @@ using EzBus.Core.Utils;
 
 namespace EzBus.Core.Resolvers
 {
-    public abstract class ResolverBase<TInterface, TDefault>
+    public abstract class ResolverBase<TInterface>
         where TInterface : class
-        where TDefault : TInterface
     {
         protected Type resolvedType;
 
@@ -14,12 +13,8 @@ namespace EzBus.Core.Resolvers
         {
             var assemblyScanner = new AssemblyScanner();
             var types = assemblyScanner.FindTypes<TInterface>();
-            if (types.Length <= 1 && types[0].IsLocal())
-            {
-                resolvedType = typeof(TDefault);
-            }
+            resolvedType = types.All(x => x.IsLocal()) ? types.Last() : types.Last(x => !x.IsLocal());
 
-            resolvedType = types.Last(x => !x.IsLocal());
         }
         protected TInterface GetInstance()
         {

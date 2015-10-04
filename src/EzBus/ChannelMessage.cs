@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace EzBus
 {
@@ -14,10 +15,7 @@ namespace EzBus
 
         public Stream BodyStream { get; private set; }
 
-        public IEnumerable<MessageHeader> Headers
-        {
-            get { return headers; }
-        }
+        public IEnumerable<MessageHeader> Headers => headers;
 
         public void AddHeader(string name, string value)
         {
@@ -27,6 +25,12 @@ namespace EzBus
         public void AddHeader(params MessageHeader[] headerparams)
         {
             headers.AddRange(headerparams);
+        }
+
+        public string GetHeader(string name)
+        {
+            var header = headers.FirstOrDefault(x => x.Name == name);
+            return header == null ? string.Empty : header.Value;
         }
     }
 }

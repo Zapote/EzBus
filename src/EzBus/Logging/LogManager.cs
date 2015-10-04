@@ -2,7 +2,7 @@
 
 namespace EzBus.Logging
 {
-    public class HostLogManager
+    public class LogManager
     {
         private static LoggerFactory loggerFactory;
         private static LogLevel logLevel;
@@ -15,6 +15,11 @@ namespace EzBus.Logging
         public static ILogger GetLogger(Type type)
         {
             return GetLogger(type.Name);
+        }
+
+        public static ILogger GetLogger<T>()
+        {
+            return GetLogger(typeof(T).Name);
         }
 
         public static void SetLogLevel(LogLevel level)

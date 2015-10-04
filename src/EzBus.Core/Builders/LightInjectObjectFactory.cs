@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using EzBus.Core.Builders.LightInject;
 using EzBus.Core.Utils;
-using AssemblyScanner = EzBus.Core.Utils.AssemblyScanner;
 
 namespace EzBus.Core.Builders
 {
@@ -18,7 +17,7 @@ namespace EzBus.Core.Builders
 
         public void Initialize()
         {
-            var registryTypes = new AssemblyScanner().FindTypes<ServiceRegistry>();
+            var registryTypes = new Utils.AssemblyScanner().FindTypes<ServiceRegistry>();
 
             foreach (var type in registryTypes)
             {

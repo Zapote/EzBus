@@ -1,33 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Messaging;
 
 namespace EzBus.Msmq
 {
-    public class MsmqSubscriptionStorage : ISubscriptionStorage
+    public class MsmqSubscriptionStorage : IStartupTask
     {
-        private readonly List<MsmqSubscriptionStorageItem> subscriptions = new List<MsmqSubscriptionStorageItem>();
-        private EndpointAddress storageAddress;
+        private static readonly List<MsmqSubscriptionStorageItem> subscriptions = new List<MsmqSubscriptionStorageItem>();
+        private static EndpointAddress storageAddress;
         private MessageQueue storageQueue;
-
-        public void Initialize(string endpointName)
-        {
-            storageAddress = new EndpointAddress(endpointName + ".subscriptions");
-
-            if (!MsmqUtilities.QueueExists(storageAddress)) return;
-
-            subscriptions.Clear();
-
-            GetQueue();
-
-            foreach (var message in storageQueue.GetAllMessages())
-            {
-                var item = message.Body as MsmqSubscriptionStorageItem;
-                if (item == null) continue;
-                subscriptions.Add(item);
-            }
-        }
 
         private void GetQueue()
         {
@@ -35,7 +16,7 @@ namespace EzBus.Msmq
             storageQueue.Formatter = new XmlMessageFormatter(new[] { typeof(MsmqSubscriptionStorageItem) });
         }
 
-        public void Store(string endpoint, Type messageType)
+        public void Store(string endpoint, string messageType)
         {
             if (IsSubcriber(endpoint, messageType)) return;
 
@@ -59,23 +40,41 @@ namespace EzBus.Msmq
             subscriptions.Add(item);
         }
 
-        private bool IsSubcriber(string endpoint, Type messageType)
+        private bool IsSubcriber(string endpoint, string messageType)
         {
             var result = subscriptions.Where(x => x.Endpoint == endpoint).ToList();
-            return result.Any(x => x.MessageType == null) || result.Any(x => x.MessageType == messageType);
+            return result.Any(x => string.IsNullOrEmpty(x.MessageType)) || result.Any(x => x.MessageType == messageType);
         }
 
-        private void CreateQueueIfNotExists()
+        private static void CreateQueueIfNotExists()
         {
             if (MsmqUtilities.QueueExists(storageAddress)) return;
             MsmqUtilities.CreateQueue(storageAddress);
         }
 
-        public IEnumerable<string> GetSubscribersEndpoints(Type messageType)
+        public IEnumerable<string> GetSubscribersEndpoints(string messageType)
         {
             return subscriptions
-                .Where(x => x.MessageType == messageType || x.MessageType == null)
+                .Where(x => x.MessageType == messageType || string.IsNullOrEmpty(x.MessageType))
                 .Select(x => x.Endpoint);
+        }
+
+        void IStartupTask.Run(IHostConfig config)
+        {
+            storageAddress = new EndpointAddress($"{config.EndpointName}.subscriptions");
+
+            if (!MsmqUtilities.QueueExists(storageAddress)) return;
+
+            subscriptions.Clear();
+
+            GetQueue();
+
+            foreach (var message in storageQueue.GetAllMessages())
+            {
+                var item = message.Body as MsmqSubscriptionStorageItem;
+                if (item == null) continue;
+                subscriptions.Add(item);
+            }
         }
     }
 }

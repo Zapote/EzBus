@@ -1,28 +1,29 @@
 ﻿using System;
+using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
-using EzBus.Core.Serilizers;
 using EzBus.Core.Utils;
+using EzBus.Serializers;
 
 namespace EzBus.Core
 {
     public class CoreBus : IBus
     {
         private readonly ISendingChannel sendingChannel;
+        private readonly IPublishingChannel publishingChannel;
         private readonly IMessageRouting messageRouting;
-        private readonly ISubscriptionStorage subscriptionStorage;
-        private readonly XmlMessageSerializer serializer;
+        private readonly IMessageSerializer serializer;
 
-        public CoreBus(ISendingChannel sendingChannel, IMessageRouting messageRouting, ISubscriptionStorage subscriptionStorage)
+        public CoreBus(ISendingChannel sendingChannel, IPublishingChannel publishingChannel, IMessageRouting messageRouting)
         {
             if (sendingChannel == null) throw new ArgumentNullException(nameof(sendingChannel));
             if (messageRouting == null) throw new ArgumentNullException(nameof(messageRouting));
-            if (subscriptionStorage == null) throw new ArgumentNullException(nameof(subscriptionStorage));
+            if (publishingChannel == null) throw new ArgumentNullException(nameof(publishingChannel));
 
             this.sendingChannel = sendingChannel;
             this.messageRouting = messageRouting;
-            this.subscriptionStorage = subscriptionStorage;
+            this.publishingChannel = publishingChannel;
 
-            serializer = new XmlMessageSerializer();
+            serializer = MessageSerlializerResolver.GetSerializer();
         }
 
         public void Send(object message)
@@ -36,18 +37,14 @@ namespace EzBus.Core
         {
             var channelMessage = ChannelMessageFactory.CreateChannelMessage(message, serializer);
             var destination = EndpointAddress.Parse(destinationQueue);
-            channelMessage.AddHeader("Destination", destination.ToString());
+            channelMessage.AddHeader(MessageHeaders.Destination, destination.ToString());
             sendingChannel.Send(destination, channelMessage);
         }
 
         public void Publish(object message)
         {
-            var endpoints = subscriptionStorage.GetSubscribersEndpoints(message.GetType());
-
-            foreach (var endpoint in endpoints)
-            {
-                Send(endpoint, message);
-            }
+            var channelMessage = ChannelMessageFactory.CreateChannelMessage(message, serializer);
+            publishingChannel.Publish(channelMessage);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace EzBus.Samples.Msmq.Client.Handlers
     {
         public void Handle(Greeting greeting)
         {
-            Console.WriteLine("I am greeted! {0}", greeting.Message);
+            Console.WriteLine($"I am greeted! { greeting.Message}");
         }
     }
 }

@@ -1,5 +1,10 @@
-﻿using System.Messaging;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Messaging;
 using System.Security.Principal;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace EzBus.Msmq
 {
@@ -9,7 +14,7 @@ namespace EzBus.Msmq
         {
             var name = address.GetQueueName();
             var queue = MessageQueue.Create(name, isTransactional);
-            SetPermissions(queue);
+            SetQueuePermissions(queue);
             return queue;
         }
 
@@ -26,7 +31,42 @@ namespace EzBus.Msmq
             return MessageQueue.Exists(name) ? new MessageQueue(path, QueueAccessMode.SendAndReceive) : null;
         }
 
-        private static void SetPermissions(MessageQueue queue)
+        public static void WriteMessage(EndpointAddress destination, ChannelMessage channelMessage)
+        {
+            var queueName = destination.GetQueueName();
+            var queuePath = destination.GetQueuePath();
+
+            if (!MessageQueue.Exists(queueName)) throw new Exception($"Destination {destination} does not exist.");
+
+            var destinationQueue = new MessageQueue(queuePath);
+
+            var queueMessage = new Message
+            {
+                BodyStream = channelMessage.BodyStream,
+                Label = channelMessage.Headers.First().Value,
+                Extension = ConvertHeaders(channelMessage)
+            };
+
+            using (var tx = new MessageQueueTransaction())
+            {
+                tx.Begin();
+                destinationQueue.Send(queueMessage, tx);
+                tx.Commit();
+            }
+        }
+
+        private static byte[] ConvertHeaders(ChannelMessage message)
+        {
+            var xmlSerializer = new XmlSerializer(typeof(MessageHeader[]));
+            var textWriter = new StringWriter();
+            xmlSerializer.Serialize(textWriter, message.Headers.ToArray());
+            var xml = textWriter.ToString();
+            textWriter.Close();
+            var encoding = new UTF8Encoding();
+            return encoding.GetBytes(xml);
+        }
+
+        private static void SetQueuePermissions(MessageQueue queue)
         {
             var admins = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null).Translate(typeof(NTAccount)).ToString();
             var everyone = new SecurityIdentifier(WellKnownSidType.WorldSid, null).Translate(typeof(NTAccount)).ToString();

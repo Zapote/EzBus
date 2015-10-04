@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace EzBus.Core.Test.TestHelpers
 {
-    public class FakeMessageChannel : ISendingChannel, IReceivingChannel
+    public class FakeMessageChannel : ISendingChannel, IReceivingChannel, IPublishingChannel
     {
         private static List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
         private static event EventHandler<MessageReceivedEventArgs> InnerMessageHandler;
@@ -50,6 +50,11 @@ namespace EzBus.Core.Test.TestHelpers
         public static IEnumerable<EndpointAddress> GetSentDestinations()
         {
             return sentDestinations;
+        }
+
+        public void Publish(ChannelMessage channelMessage)
+        {
+            throw new NotImplementedException();
         }
     }
 }

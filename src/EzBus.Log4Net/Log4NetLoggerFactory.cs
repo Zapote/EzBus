@@ -1,5 +1,5 @@
 ﻿using EzBus.Logging;
-using log4net;
+using LogManager = log4net.LogManager;
 
 namespace EzBus.Log4Net
 {

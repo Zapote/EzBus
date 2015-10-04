@@ -3,7 +3,7 @@ using EzBus.Core.Utils;
 
 namespace EzBus.Core
 {
-    public class HostConfig
+    public class HostConfig : IHostConfig
     {
         public HostConfig()
         {

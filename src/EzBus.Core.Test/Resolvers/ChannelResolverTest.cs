@@ -10,14 +10,14 @@ namespace EzBus.Core.Test.Resolvers
         [Test]
         public void Receiving_channel_should_be_FakeMessageChannel()
         {
-            var channel = ChannelResolver.GetReceivingChannel();
+            var channel = ReceivingChannelResolver.GetChannel();
             Assert.That(channel, Is.InstanceOf<FakeMessageChannel>());
         }
 
         [Test]
         public void Sending_channel_should_be_FakeMessageChannel()
         {
-            var channel = ChannelResolver.GetSendingChannel();
+            var channel = SendingChannelResolver.GetChannel();
             Assert.That(channel, Is.InstanceOf<FakeMessageChannel>());
         }
     }

@@ -8,7 +8,7 @@ namespace EzBus.Core
 {
     public class HandlerCache
     {
-        private static readonly ILogger log = HostLogManager.GetLogger(typeof(HandlerCache));
+        private static readonly ILogger log = LogManager.GetLogger(typeof(HandlerCache));
         private readonly List<KeyValuePair<string, HandlerInfo>> handlers = new List<KeyValuePair<string, HandlerInfo>>();
 
         public void Add(Type handlerType)
@@ -48,17 +48,9 @@ namespace EzBus.Core
 
         public bool HasCustomHandlers()
         {
-            if (handlers.Count == 0)
-            {
-                return true;
-            }
-
-            return handlers.Count == 1 && handlers[0].Value.HandlerType == typeof(SubscriptionMessageHandler);
+            return handlers.Count(x => !x.Value.HandlerType.IsLocal()) == 0;
         }
 
-        public int NumberOfEntries
-        {
-            get { return handlers.Count; }
-        }
+        public int NumberOfEntries => handlers.Count;
     }
 }

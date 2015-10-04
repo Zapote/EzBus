@@ -1,14 +1,14 @@
 ﻿using System;
 using EzBus.Core.Resolvers;
-using EzBus.Core.Serilizers;
+using EzBus.Core.Serializers;
 using EzBus.Logging;
 
 namespace EzBus.Core.Subscription
 {
     public class SubscriptionManager : ISubscriptionManager
     {
-        private static readonly ILogger log = HostLogManager.GetLogger(typeof(SubscriptionManager));
-        public void Subscribe(string endpointName)
+        private static readonly ILogger log = LogManager.GetLogger(typeof(SubscriptionManager));
+        public void Subscribe(string subscribingEndpointName)
         {
             var subscriptions = Config.SubscriptionSection.Section.Subscriptions;
 
@@ -16,7 +16,7 @@ namespace EzBus.Core.Subscription
             {
                 var subscriptionMessage = new SubscriptionMessage
                 {
-                    Endpoint = $"{endpointName}@{Environment.MachineName}"
+                    Endpoint = $"{subscribingEndpointName}@{Environment.MachineName}"
                 };
 
                 var destination = EndpointAddress.Parse(subscription.Endpoint);
@@ -24,7 +24,7 @@ namespace EzBus.Core.Subscription
                 log.VerboseFormat("Subscribing to: {0}", destination);
 
                 var serializer = new XmlMessageSerializer();
-                var sendingChannel = ChannelResolver.GetSendingChannel();
+                var sendingChannel = SendingChannelResolver.GetChannel();
                 sendingChannel.Send(destination, ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, serializer));
             }
         }

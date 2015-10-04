@@ -1,5 +1,4 @@
 ﻿using EzBus.Core.Resolvers;
-using EzBus.Core.Serilizers;
 using EzBus.Logging;
 using System;
 using System.Linq;
@@ -10,49 +9,34 @@ namespace EzBus.Core
 {
     public class Host
     {
-        private static readonly ILogger log = HostLogManager.GetLogger(typeof(Host));
+        private readonly HostConfig config;
+        private static readonly ILogger log = LogManager.GetLogger<Host>();
         private readonly IObjectFactory objectFactory;
         private readonly ISendingChannel sendingChannel;
-        private readonly IMessageSerializer messageSerializer = new XmlMessageSerializer();
+        private readonly IMessageSerializer messageSerializer;
         private readonly HandlerCache handlerCache = new HandlerCache();
-        private readonly string endpointName;
         private readonly string endpointErrorName;
-        private readonly int workerThreads;
-        private readonly int numberOfRetrys;
 
-        public Host(HostConfig hostConfig)
+        public Host(HostConfig config)
         {
-            if (hostConfig == null) throw new ArgumentNullException(nameof(hostConfig));
-
-            workerThreads = hostConfig.WorkerThreads;
-            numberOfRetrys = hostConfig.NumberOfRetrys;
-            endpointName = hostConfig.EndpointName;
-            endpointErrorName = $"{endpointName}.error";
+            if (config == null) throw new ArgumentNullException(nameof(config));
+            this.config = config;
+            endpointErrorName = $"{config.EndpointName}.error";
 
             objectFactory = ObjectFactoryResolver.GetObjectFactory();
-            sendingChannel = ChannelResolver.GetSendingChannel();
-
-            handlerCache.Prime();
+            sendingChannel = SendingChannelResolver.GetChannel();
+            messageSerializer = MessageSerlializerResolver.GetSerializer();
         }
 
         public void Start()
         {
-            if (handlerCache.NumberOfEntries == 0) return;
+            if (!LoadHandlers()) return;
 
             log.Verbose("Starting Ezbus Host");
 
             objectFactory.Initialize();
-
-            var subscriptionStorage = SubscriptionStorageResolver.GetSubscriptionStorage();
-            subscriptionStorage.Initialize(endpointName);
-
-            for (var i = 0; i < workerThreads; i++)
-            {
-                var receivingChannel = ChannelResolver.GetReceivingChannel();
-                receivingChannel.OnMessageReceived += OnMessageReceived;
-                receivingChannel.Initialize(new EndpointAddress(endpointName), new EndpointAddress(endpointErrorName));
-            }
-
+            TaskRunner.RunStartupTasks(config);
+            CreateListeningWorkers();
             Subscribe();
         }
 
@@ -88,7 +72,7 @@ namespace EzBus.Core
         {
             var success = true;
             Exception exception = null;
-
+            var numberOfRetrys = config.NumberOfRetrys;
             for (var i = 0; i < numberOfRetrys; i++)
             {
                 var methodInfo = handlerType.GetMethod("Handle", new[] { message.GetType() });
@@ -122,10 +106,30 @@ namespace EzBus.Core
             return new InvokationResult(success, exception);
         }
 
+        private void CreateListeningWorkers()
+        {
+            for (var i = 0; i < config.WorkerThreads; i++)
+            {
+                var receivingChannel = ReceivingChannelResolver.GetChannel();
+                receivingChannel.OnMessageReceived += OnMessageReceived;
+                receivingChannel.Initialize(new EndpointAddress(config.EndpointName), new EndpointAddress(endpointErrorName));
+            }
+        }
+
+        private bool LoadHandlers()
+        {
+            handlerCache.Prime();
+
+            if (handlerCache.NumberOfEntries > 0) return true;
+
+            log.Warn("No handlers found. Host will not be started.");
+            return false;
+        }
+
         private void Subscribe()
         {
             var subscriptionManager = SubscriptionManagerResolver.GetSubscriptionManager();
-            subscriptionManager.Subscribe(endpointName);
+            subscriptionManager.Subscribe(config.EndpointName);
         }
 
         private void PlaceMessageOnErrorQueue(ChannelMessage message, Exception exception)
@@ -134,7 +138,7 @@ namespace EzBus.Core
 
             while (exception != null)
             {
-                var headerName = $"ErrorMessage L{level}";
+                var headerName = $"EzBus.ErrorMessage L{level}";
                 var value = $"{DateTime.Now}: {exception.Message}";
                 message.AddHeader(headerName, value);
                 exception = exception.InnerException;

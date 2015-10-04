@@ -10,11 +10,11 @@ namespace EzBus.Samples.Msmq.Service.Fwk
             Id = Guid.NewGuid();
         }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
 
         public void GreetClient(string name)
         {
-            Bus.Publish(new Greeting(string.Format("Welcome {0}!", name)));
+            Bus.Publish(new Greeting($"Welcome {name}!"));
         }
     }
 }

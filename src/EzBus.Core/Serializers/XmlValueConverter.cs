@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml;
 
-namespace EzBus.Core.Serilizers
+namespace EzBus.Core.Serializers
 {
     public class XmlValueConverter
     {
