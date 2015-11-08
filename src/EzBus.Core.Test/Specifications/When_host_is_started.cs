@@ -17,11 +17,11 @@ namespace EzBus.Core.Test.Specifications
             FakeMessageChannel.Reset();
             LogManager.Configure(new TraceLoggerFactory(), LogLevel.All);
 
-            var objectFactory = ObjectFactoryResolver.GetObjectFactory();
+            var objectFactory = ObjectFactoryResolver.Get();
             objectFactory.Register<ISubscriptionStorage, InMemorySubscriptionStorage>(LifeCycle.Unique);
 
             var hostConfig = new HostConfig();
-            var host = new Host(hostConfig);
+            var host = new Host(hostConfig, objectFactory);
             host.Start();
         }
 

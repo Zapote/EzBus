@@ -9,13 +9,15 @@ namespace EzBus.Core
         {
             NumberOfRetrys = 5;
             WorkerThreads = 1;
-            EndpointName = CreateEndpointName();
+            CreateEndpointNames();
         }
 
         public int WorkerThreads { get; private set; }
         public int NumberOfRetrys { get; private set; }
 
-        public string EndpointName { get; private set; }
+        public string EndpointName { get; set; }
+        public string ErrorEndpointName { get; set; }
+
 
         public void SetNumberOfWorkerThreads(int threads)
         {
@@ -27,11 +29,16 @@ namespace EzBus.Core
             NumberOfRetrys = value;
         }
 
-        private string CreateEndpointName()
+        private void CreateEndpointNames()
         {
             var entryAssembly = Assembly.GetEntryAssembly();
-            if (entryAssembly == null) return this.GetAssemblyName();
-            return entryAssembly.GetName().Name;
+            var assemblyName = this.GetAssemblyName();
+            if (entryAssembly != null)
+            {
+                assemblyName = entryAssembly.GetName().Name;
+            }
+            EndpointName = assemblyName;
+            ErrorEndpointName = $"{assemblyName}.error";
         }
     }
 }

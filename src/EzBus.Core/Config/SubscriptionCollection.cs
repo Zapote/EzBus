@@ -1,11 +1,14 @@
 ﻿using System.Configuration;
+using EzBus.Config;
 
 namespace EzBus.Core.Config
 {
+
+
     [ConfigurationCollection(typeof(DestinationElement), AddItemName = "add", CollectionType = ConfigurationElementCollectionType.BasicMap)]
-    public class SubscriptionCollection : ConfigurationElementCollection
+    public class SubscriptionCollection : ConfigurationElementCollection, ISubscriptionCollection
     {
-        public SubscriptionElement this[int index]
+        public ISubscription this[int index]
         {
             get { return (SubscriptionElement)BaseGet(index); }
             set
@@ -13,7 +16,7 @@ namespace EzBus.Core.Config
                 if (BaseGet(index) != null)
                     BaseRemoveAt(index);
 
-                BaseAdd(index, value);
+                BaseAdd(index, (SubscriptionElement)value);
             }
         }
 

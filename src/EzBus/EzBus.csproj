@@ -37,6 +37,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\IDestination.cs" />
+    <Compile Include="Config\IDestinationCollection.cs" />
+    <Compile Include="Config\ISubscription.cs" />
+    <Compile Include="Config\ISubscriptionCollection.cs" />
     <Compile Include="EndpointAddress.cs" />
     <Compile Include="IAssemblyScanner.cs" />
     <Compile Include="IBus.cs" />
@@ -49,6 +53,7 @@
     <Compile Include="IReceivingChannel.cs" />
     <Compile Include="ISendingChannel.cs" />
     <Compile Include="ChannelMessage.cs" />
+    <Compile Include="ISubscriptionManager.cs" />
     <Compile Include="ISubscriptionStorage.cs" />
     <Compile Include="LifeCycle.cs" />
     <Compile Include="Logging\LogManager.cs" />

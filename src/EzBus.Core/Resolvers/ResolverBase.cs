@@ -16,6 +16,7 @@ namespace EzBus.Core.Resolvers
             resolvedType = types.All(x => x.IsLocal()) ? types.Last() : types.Last(x => !x.IsLocal());
 
         }
+
         protected TInterface GetInstance()
         {
             return resolvedType.CreateInstance() as TInterface;

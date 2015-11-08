@@ -14,13 +14,8 @@ namespace EzBus.Core
         public void Add(Type handlerType)
         {
             var messageType = GetMessageType(handlerType);
-            handlers.Add(new KeyValuePair<string, HandlerInfo>(messageType.FullName,
-                new HandlerInfo
-                {
-                    HandlerType = handlerType,
-                    MessageType = messageType
-                }));
-
+            var handlerInfo = new HandlerInfo(handlerType, messageType);
+            handlers.Add(new KeyValuePair<string, HandlerInfo>(messageType.FullName, handlerInfo));
             log.VerboseFormat("Handler '{0}' for message '{1}' added to cache", handlerType.FullName, messageType.FullName);
         }
 

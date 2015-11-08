@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using EzBus.Samples.Messages;
+using EzBus.Samples.Messages.Commands;
 
 namespace EzBus.Samples.Msmq.WebClient.Controllers
 {
@@ -13,10 +14,7 @@ namespace EzBus.Samples.Msmq.WebClient.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-            Bus.Send(new SayHello("f")
-            {
-
-            });
+            Bus.Send(new CreateOrder());
             return View();
         }
 

@@ -1,8 +1,11 @@
 ﻿using System.Configuration;
+using EzBus.Config;
 
 namespace EzBus.Core.Config
 {
-    public class DestinationElement : ConfigurationElement
+
+
+    public class DestinationElement : ConfigurationElement, IDestination
     {
         [ConfigurationProperty("assembly", DefaultValue = "", IsRequired = true)]
         public string Assembly
@@ -27,7 +30,7 @@ namespace EzBus.Core.Config
 
         public override string ToString()
         {
-            return string.IsNullOrEmpty(Message) ? Assembly : string.Format("{0}, {1}", Assembly, Message);
+            return string.IsNullOrEmpty(Message) ? Assembly : $"{Assembly}, {Message}";
         }
     }
 }

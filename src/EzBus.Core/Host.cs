@@ -1,7 +1,9 @@
 ﻿using EzBus.Core.Resolvers;
 using EzBus.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using EzBus.Core.Config;
 using EzBus.Core.Utils;
 using EzBus.Serializers;
 
@@ -15,17 +17,16 @@ namespace EzBus.Core
         private readonly ISendingChannel sendingChannel;
         private readonly IMessageSerializer messageSerializer;
         private readonly HandlerCache handlerCache = new HandlerCache();
-        private readonly string endpointErrorName;
 
-        public Host(HostConfig config)
+        public Host(HostConfig config, IObjectFactory objectFactory)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
+            if (objectFactory == null) throw new ArgumentNullException(nameof(objectFactory));
             this.config = config;
-            endpointErrorName = $"{config.EndpointName}.error";
+            this.objectFactory = objectFactory;
 
-            objectFactory = ObjectFactoryResolver.GetObjectFactory();
-            sendingChannel = SendingChannelResolver.GetChannel();
-            messageSerializer = MessageSerlializerResolver.GetSerializer();
+            sendingChannel = objectFactory.GetInstance<ISendingChannel>();
+            messageSerializer = objectFactory.GetInstance<IMessageSerializer>();
         }
 
         public void Start()
@@ -36,6 +37,7 @@ namespace EzBus.Core
 
             objectFactory.Initialize();
             TaskRunner.RunStartupTasks(config);
+
             CreateListeningWorkers();
             Subscribe();
         }
@@ -82,7 +84,7 @@ namespace EzBus.Core
 
                 try
                 {
-                    var handler = objectFactory.CreateInstance(handlerType);
+                    var handler = objectFactory.GetInstance(handlerType);
                     messageFilters = MessageFilterResolver.GetMessageFilters(objectFactory);
 
                     var isLocalMessage = message.GetType().IsLocal();
@@ -110,9 +112,11 @@ namespace EzBus.Core
         {
             for (var i = 0; i < config.WorkerThreads; i++)
             {
-                var receivingChannel = ReceivingChannelResolver.GetChannel();
+                var receivingChannel = objectFactory.GetInstance<IReceivingChannel>();
                 receivingChannel.OnMessageReceived += OnMessageReceived;
-                receivingChannel.Initialize(new EndpointAddress(config.EndpointName), new EndpointAddress(endpointErrorName));
+                var endpointAddress = new EndpointAddress(config.EndpointName);
+                var errorEndpointAddress = new EndpointAddress(config.ErrorEndpointName);
+                receivingChannel.Initialize(endpointAddress, errorEndpointAddress);
             }
         }
 
@@ -129,6 +133,7 @@ namespace EzBus.Core
         private void Subscribe()
         {
             var subscriptionManager = SubscriptionManagerResolver.GetSubscriptionManager();
+            subscriptionManager.Initialize(SubscriptionSection.Section.Subscriptions);
             subscriptionManager.Subscribe(config.EndpointName);
         }
 
@@ -145,7 +150,8 @@ namespace EzBus.Core
                 level++;
             }
 
-            sendingChannel.Send(new EndpointAddress(endpointErrorName), message);
+            var endpointAddress = new EndpointAddress(config.ErrorEndpointName);
+            sendingChannel.Send(endpointAddress, message);
         }
     }
 }

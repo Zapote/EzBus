@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EzBus.Core.Builders
 {
@@ -6,9 +7,14 @@ namespace EzBus.Core.Builders
     {
         private readonly IList<RegistryInstance> instances = new List<RegistryInstance>();
 
-        protected IConfigureLifeCycle Register<TService, TImplementation>() where TImplementation : TService
+        protected ILifeCycleConfiguration Register<TService, TImplementation>() where TImplementation : TService
         {
-            var registryInstance = new RegistryInstance(typeof(TService), typeof(TImplementation));
+            return Register(typeof(TService), typeof(TImplementation));
+        }
+
+        protected ILifeCycleConfiguration Register(Type serviceType, Type implementationType)
+        {
+            var registryInstance = new RegistryInstance(serviceType, implementationType);
             instances.Add(registryInstance);
             return registryInstance;
         }

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EzBus.RabbitMQ</RootNamespace>
     <AssemblyName>EzBus.RabbitMQ</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,6 +36,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,9 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RabbitMQReceivingChannel.cs" />
-    <Compile Include="RabbitMQSendingChannel.cs" />
+    <Compile Include="ChannelFactory.cs" />
+    <Compile Include="Channels\RabbitMQChannel.cs" />
+    <Compile Include="Channels\RabbitMQPublishingChannel.cs" />
+    <Compile Include="Channels\RabbitMQReceivingChannel.cs" />
+    <Compile Include="Channels\RabbitMQSendingChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StreamExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EzBus\EzBus.csproj">

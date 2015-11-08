@@ -10,7 +10,7 @@ namespace EzBus.Core.Test
         [Test]
         public void Can_create_object_with_default_constructor()
         {
-            var obj = new LightInjectObjectFactory().CreateInstance(typeof(BarHandler));
+            var obj = new LightInjectObjectFactory().GetInstance(typeof(BarHandler));
 
             Assert.That(obj, Is.Not.Null);
         }

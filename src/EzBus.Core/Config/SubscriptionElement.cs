@@ -1,8 +1,9 @@
 ﻿using System.Configuration;
+using EzBus.Config;
 
 namespace EzBus.Core.Config
 {
-    public class SubscriptionElement : ConfigurationElement
+    public class SubscriptionElement : ConfigurationElement, ISubscription
     {
         [ConfigurationProperty("endpoint", DefaultValue = "", IsRequired = true)]
         public string Endpoint

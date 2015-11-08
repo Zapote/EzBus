@@ -15,14 +15,15 @@ namespace EzBus.Core
             channelMessage.AddHeader(MessageHeaders.MessageType, messageType.FullName);
             channelMessage.AddHeader(MessageHeaders.UserPrincipal, Environment.UserName);
             channelMessage.AddHeader(MessageHeaders.SendingMachine, Environment.MachineName);
-            channelMessage.AddHeader(MessageHeaders.SendingModule, ResolveAssemblyFullName());
+            channelMessage.AddHeader(MessageHeaders.SendingModule, ResolveAssemblyName());
             return channelMessage;
         }
 
-        private static string ResolveAssemblyFullName()
+        private static string ResolveAssemblyName()
         {
             var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly();
-            return assembly.ManifestModule.Assembly.FullName;
+            var moduleName = assembly.ManifestModule.Assembly.GetName().Name;
+            return moduleName;
         }
     }
 }

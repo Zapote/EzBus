@@ -1,13 +1,20 @@
-﻿namespace EzBus.Core.Resolvers
-{
-    public class ObjectFactoryResolver : ResolverBase<IObjectFactory>
-    {
-        private static readonly ObjectFactoryResolver resolver = new ObjectFactoryResolver();
-        private static IObjectFactory factoryInstance;
+﻿using EzBus.Core.Utils;
 
-        public static IObjectFactory GetObjectFactory()
+namespace EzBus.Core.Resolvers
+{
+    public class ObjectFactoryResolver
+    {
+        private static IObjectFactory instance;
+
+        public static IObjectFactory Get()
         {
-            return factoryInstance ?? (factoryInstance = resolver.GetInstance());
+            if (instance != null) return instance;
+
+            var type = TypeResolver.Get<IObjectFactory>();
+            instance = (IObjectFactory)type.CreateInstance();
+            instance.Initialize();
+
+            return instance;
         }
     }
 }

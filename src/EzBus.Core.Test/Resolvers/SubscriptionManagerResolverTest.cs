@@ -12,7 +12,7 @@ namespace EzBus.Core.Test.Resolvers
         public void Resolved_instance_should_be_SubscriptionManager()
         {
             var instance = SubscriptionManagerResolver.GetSubscriptionManager();
-            Assert.That(instance, Is.InstanceOf<SubscriptionManager>());
+            Assert.That(instance, Is.InstanceOf<DefaultSubscriptionManager>());
         }
     }
 }

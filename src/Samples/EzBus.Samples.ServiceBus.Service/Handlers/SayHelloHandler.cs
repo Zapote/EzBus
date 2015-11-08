@@ -1,14 +1,15 @@
 ﻿using System;
-using EzBus.Samples.Messages;
+using EzBus.Samples.Messages.Commands;
+using EzBus.Samples.Messages.Events;
 
 namespace EzBus.Samples.ServiceBus.Service.Handlers
 {
-    public class SayHelloHandler : IHandle<SayHello>
+    public class CreateOrderHandler : IHandle<CreateOrder>
     {
-        public void Handle(SayHello message)
+        public void Handle(CreateOrder message)
         {
-            Console.WriteLine("{0} says hello", message.Name);
-            Bus.Publish(new Greeting("Welcome " + message.Name));
+            Console.WriteLine("Order created {0}", message.OrderId);
+            Bus.Publish(new OrderCreated(message.OrderId, 1));
         }
     }
 }

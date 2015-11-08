@@ -5,14 +5,20 @@ using System.Messaging;
 using System.Security.Principal;
 using System.Text;
 using System.Xml.Serialization;
+using EzBus.Logging;
 
 namespace EzBus.Msmq
 {
     public class MsmqUtilities
     {
+        private static readonly ILogger log = LogManager.GetLogger("Ezbus.Msmq");
+
         public static MessageQueue CreateQueue(EndpointAddress address, bool isTransactional = true)
         {
             var name = address.GetQueueName();
+
+            log.Info($"Creating queue {name}");
+
             var queue = MessageQueue.Create(name, isTransactional);
             SetQueuePermissions(queue);
             return queue;
@@ -36,7 +42,7 @@ namespace EzBus.Msmq
             var queueName = destination.GetQueueName();
             var queuePath = destination.GetQueuePath();
 
-            if (!MessageQueue.Exists(queueName)) throw new Exception($"Destination {destination} does not exist.");
+            if (!MessageQueue.Exists(queueName)) throw new InvalidOperationException($"Destination {destination} does not exist.");
 
             var destinationQueue = new MessageQueue(queuePath);
 

@@ -40,7 +40,7 @@ namespace EzBus.Msmq
             subscriptions.Add(item);
         }
 
-        private bool IsSubcriber(string endpoint, string messageType)
+        private static bool IsSubcriber(string endpoint, string messageType)
         {
             var result = subscriptions.Where(x => x.Endpoint == endpoint).ToList();
             return result.Any(x => string.IsNullOrEmpty(x.MessageType)) || result.Any(x => x.MessageType == messageType);
@@ -61,7 +61,7 @@ namespace EzBus.Msmq
 
         void IStartupTask.Run(IHostConfig config)
         {
-            storageAddress = new EndpointAddress($"{config.EndpointName}.subscriptions");
+            storageAddress = new EndpointAddress($"{config.ErrorEndpointName}.subscriptions");
 
             if (!MsmqUtilities.QueueExists(storageAddress)) return;
 

@@ -14,10 +14,10 @@ public static class Bus
     {
         if (bus != null) return;
 
+        ConfigureLogging();
+
         var factory = new BusFactory();
         bus = factory.Build();
-
-        ConfigureLogging();
     }
 
     public static void Start()

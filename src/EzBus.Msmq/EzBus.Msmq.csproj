@@ -36,13 +36,14 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EndpointAddressExtensions.cs" />
-    <Compile Include="MsmqPublishingChannel.cs" />
-    <Compile Include="MsmqReceivingChannel.cs" />
-    <Compile Include="MsmqSendingChannel.cs" />
+    <Compile Include="Channels\MsmqPublishingChannel.cs" />
+    <Compile Include="Channels\MsmqReceivingChannel.cs" />
+    <Compile Include="Channels\MsmqSendingChannel.cs" />
     <Compile Include="MsmqSubscriptionStorage.cs" />
     <Compile Include="MsmqSubscriptionStorageItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,6 +2,6 @@
 {
     public enum LifeCycle
     {
-        Default, Singleton, Unique
+        PerScope, Singleton, Unique
     }
 }

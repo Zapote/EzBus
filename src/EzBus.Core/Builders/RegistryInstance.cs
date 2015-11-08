@@ -2,7 +2,7 @@
 
 namespace EzBus.Core.Builders
 {
-    public class RegistryInstance : IHaveLifeCycle, IConfigureLifeCycle
+    public class RegistryInstance : ILifeCycle, ILifeCycleConfiguration
     {
         public RegistryInstance(Type service, Type implementation)
         {
@@ -24,9 +24,6 @@ namespace EzBus.Core.Builders
             LifeCycle = LifeCycle.Unique;
         }
 
-        public IHaveLifeCycle As
-        {
-            get { return this; }
-        }
+        public ILifeCycle As => this;
     }
 }

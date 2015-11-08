@@ -1,5 +1,6 @@
 ﻿using System;
 using EzBus.Samples.Messages;
+using EzBus.Samples.Messages.Commands;
 
 namespace EzBus.Samples.Msmq.Client
 {
@@ -12,17 +13,21 @@ namespace EzBus.Samples.Msmq.Client
             Console.Title = "EzBus.Samples.Msmq.Client";
             var loop = true;
 
-            while (loop)
+            Bus.SendAsync(new CreateOrder()).ContinueWith(result =>
             {
-                Bus.SendAsync(new SayHello("Msmq Client")).ContinueWith(result =>
-                {
-                    Console.WriteLine($"Message sent with status: {result.Status}");
-                    Console.WriteLine("Press Enter to send again");
-                });
+                Console.WriteLine($"Message sent! Task status: {result.Status}");
+                Console.WriteLine("Press Enter to send again");
+            });
 
-                var keyInfo = Console.ReadKey();
-                loop = keyInfo.Key == ConsoleKey.Enter;
-            }
+            //while (loop)
+            //{
+              
+
+            // //   var keyInfo = Console.ReadKey();
+            //   // loop = keyInfo.Key == ConsoleKey.Enter;
+            //}
+
+            Console.ReadKey();
         }
     }
 }

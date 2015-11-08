@@ -41,18 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreRegistry.cs" />
     <Compile Include="HostConfig.cs" />
     <Compile Include="Resolvers\MessageSerlializerResolver.cs" />
     <Compile Include="Resolvers\ReceivingChannelResolver.cs" />
     <Compile Include="Resolvers\ResolverBase.cs" />
     <Compile Include="Resolvers\SendingChannelResolver.cs" />
     <Compile Include="Resolvers\SubscriptionManagerResolver.cs" />
-    <Compile Include="Subscription\ISubscriptionManager.cs" />
-    <Compile Include="Subscription\SubscriptionManager.cs" />
+    <Compile Include="Resolvers\TypeResolver.cs" />
+    <Compile Include="Subscription\DefaultSubscriptionManager.cs" />
     <Compile Include="TaskRunner.cs" />
     <Compile Include="Utils\AssemblyScanner.cs" />
-    <Compile Include="Builders\IHaveLifeCycle.cs" />
-    <Compile Include="Builders\IConfigureLifeCycle.cs" />
+    <Compile Include="Builders\ILifeCycle.cs" />
+    <Compile Include="Builders\ILifeCycleConfiguration.cs" />
     <Compile Include="Builders\IServiceRegistry.cs" />
     <Compile Include="Builders\RegistryInstance.cs" />
     <Compile Include="CoreBus.cs" />

@@ -14,12 +14,12 @@ namespace EzBus.Logging
 
         public static ILogger GetLogger(Type type)
         {
-            return GetLogger(type.Name);
+            return GetLogger(type.FullName);
         }
 
         public static ILogger GetLogger<T>()
         {
-            return GetLogger(typeof(T).Name);
+            return GetLogger(typeof(T));
         }
 
         public static void SetLogLevel(LogLevel level)

@@ -24,7 +24,7 @@ namespace EzBus.Core.Resolvers
 
         public static IMessageFilter[] GetMessageFilters(IObjectFactory objectFactory)
         {
-            return filterTypes.Select(x => (IMessageFilter)objectFactory.CreateInstance(x)).ToArray();
+            return filterTypes.Select(x => (IMessageFilter)objectFactory.GetInstance(x)).ToArray();
         }
     }
 

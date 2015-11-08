@@ -19,8 +19,7 @@ namespace EzBus.Core.Test.Specifications
         {
             retries = 0;
 
-            var objectFactory = ObjectFactoryResolver.GetObjectFactory();
-            objectFactory.Initialize();
+            var objectFactory = ObjectFactoryResolver.Get();
 
             FakeMessageChannel.Reset();
             messageChannel = new FakeMessageChannel();
@@ -29,7 +28,7 @@ namespace EzBus.Core.Test.Specifications
             var config = new HostConfig();
             config.SetNumberOfRetrys(2);
 
-            host = new Host(config);
+            host = new Host(config, objectFactory);
             host.Start();
 
             LogManager.SetLogLevel(LogLevel.Off);

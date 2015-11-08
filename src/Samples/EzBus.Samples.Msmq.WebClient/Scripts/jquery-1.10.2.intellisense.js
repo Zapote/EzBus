@@ -115,7 +115,7 @@ intellisense.annotate(jQuery, {
   'error': function() {
     /// <signature>
     ///   <summary>Takes a string and throws an exception containing it.</summary>
-    ///   <param name="message" type="String">The message to send out.</param>
+    ///   <param name="OrderId" type="String">The OrderId to send out.</param>
     /// </signature>
   },
   'extend': function() {

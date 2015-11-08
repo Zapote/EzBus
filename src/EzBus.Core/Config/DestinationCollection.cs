@@ -1,11 +1,12 @@
 ﻿using System.Configuration;
+using EzBus.Config;
 
 namespace EzBus.Core.Config
 {
     [ConfigurationCollection(typeof(DestinationElement), AddItemName = "add", CollectionType = ConfigurationElementCollectionType.BasicMap)]
-    public class DestinationCollection : ConfigurationElementCollection
+    public class DestinationCollection : ConfigurationElementCollection, IDestinationCollection
     {
-        public DestinationElement this[int index]
+        public IDestination this[int index]
         {
             get { return (DestinationElement)BaseGet(index); }
             set
@@ -13,7 +14,7 @@ namespace EzBus.Core.Config
                 if (BaseGet(index) != null)
                     BaseRemoveAt(index);
 
-                BaseAdd(index, value);
+                BaseAdd(index, (DestinationElement)value);
             }
         }
 

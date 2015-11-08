@@ -42,8 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Greeting.cs" />
-    <Compile Include="SayHello.cs" />
+    <Compile Include="Commands\CreateOrder.cs" />
+    <Compile Include="Events\OrderCreated.cs" />
+    <Compile Include="Commands\PlaceOrder.cs" />
+    <Compile Include="Events\OrderPlaced.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
