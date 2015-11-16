@@ -23,7 +23,7 @@ namespace EzBus.Core
             this.messageRouting = messageRouting;
             this.publishingChannel = publishingChannel;
 
-            serializer = MessageSerlializerResolver.GetSerializer();
+            serializer = ObjectFactoryResolver.Get().GetInstance<IMessageSerializer>();
         }
 
         public void Send(object message)

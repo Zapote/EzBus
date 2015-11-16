@@ -10,11 +10,10 @@ namespace EzBus.Core.Resolvers
 
         public static LoggerFactory GetLoggerFactory()
         {
-            if (instance != null) return instance;
-
             lock (syncRoot)
             {
-                var loggerFactoryType = TypeResolver.Get<LoggerFactory>();
+                if (instance != null) return instance;
+                var loggerFactoryType = TypeResolver.GetType<LoggerFactory>();
                 instance = (LoggerFactory)loggerFactoryType.CreateInstance();
             }
 

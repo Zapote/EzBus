@@ -1,6 +1,5 @@
 ﻿using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
-using EzBus.Logging;
 
 namespace EzBus.Core
 {
@@ -13,8 +12,9 @@ namespace EzBus.Core
 
         private static CoreBus CreateBus()
         {
-            var sendingChannel = SendingChannelResolver.GetChannel();
-            var publishingChannel = PublishingChannelResolver.GetChannel();
+            var objectFactory = ObjectFactoryResolver.Get();
+            var sendingChannel = objectFactory.GetInstance<ISendingChannel>();
+            var publishingChannel = objectFactory.GetInstance<IPublishingChannel>();
             return new CoreBus(sendingChannel, publishingChannel, new ConfigurableMessageRouting());
         }
     }

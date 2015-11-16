@@ -10,7 +10,7 @@ namespace EzBus.Core.Resolvers
         private static readonly IDictionary<Type, Type> resolvedTypes = new Dictionary<Type, Type>();
         private static readonly AssemblyScanner assemblyScanner = new AssemblyScanner();
 
-        public static Type Get<TInterface>()
+        public static Type GetType<TInterface>()
         {
             var typeToResolve = typeof(TInterface);
 

@@ -45,12 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Resolvers\SubscriptionManagerResolverTest.cs" />
     <Compile Include="Utils\AssemblyScannerTest.cs" />
     <Compile Include="Logging\TraceLoggerTest.cs" />
-    <Compile Include="Resolvers\ChannelResolverTest.cs" />
     <Compile Include="Resolvers\LoggerFactoryResolverTest.cs" />
-    <Compile Include="Resolvers\MessageFilterResolverTest.cs" />
     <Compile Include="TestHelpers\FailingMessage.cs" />
     <Compile Include="Specifications\SpecificationBase.cs" />
     <Compile Include="Specifications\BusSpecificationBase.cs" />
@@ -58,12 +55,11 @@
     <Compile Include="Specifications\When_message_is_sent.cs" />
     <Compile Include="Config\DestinationSectionConfigTest.cs" />
     <Compile Include="Config\SubscriptionsSectionConfigTest.cs" />
-    <Compile Include="DefaultObjectFactoryTest.cs" />
+    <Compile Include="ObjectFactory\LightInjectObjectFactoryTest.cs" />
     <Compile Include="Specifications\When_message_is_received_and_exception_is_thrown.cs" />
     <Compile Include="Specifications\GivenAttribute.cs" />
     <Compile Include="Specifications\SpecificationAttribute.cs" />
     <Compile Include="Specifications\ThenAttribute.cs" />
-    <Compile Include="Specifications\When_host_is_started.cs" />
     <Compile Include="TestHelpers\FakeMessageChannel.cs" />
     <Compile Include="TestHelpers\FakeMessageRouting.cs" />
     <Compile Include="MessageRoutingTest.cs" />

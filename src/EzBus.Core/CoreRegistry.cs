@@ -1,5 +1,7 @@
-﻿using EzBus.Core.Builders;
+﻿using EzBus.Config;
+using EzBus.Core.Config;
 using EzBus.Core.Resolvers;
+using EzBus.ObjectFactory;
 using EzBus.Serializers;
 
 namespace EzBus.Core
@@ -8,27 +10,34 @@ namespace EzBus.Core
     {
         public CoreRegistry()
         {
-            RegisterSendingChannel();
-            RegisterReceivingChannel();
+            RegisterChannels();
             RegisterMessageSerializer();
+            RegisterSubscriptions();
+            RegisterHostConfig();
         }
 
-        private void RegisterSendingChannel()
+        private void RegisterChannels()
         {
-            var type = TypeResolver.Get<ISendingChannel>();
-            Register(typeof(ISendingChannel), type).As.Singleton();
-        }
-
-        private void RegisterReceivingChannel()
-        {
-            var type = TypeResolver.Get<IReceivingChannel>();
-            Register(typeof(IReceivingChannel), type).As.Unique();
+            Register(typeof(ISendingChannel), TypeResolver.GetType<ISendingChannel>()).As.Singleton();
+            Register(typeof(IReceivingChannel), TypeResolver.GetType<IReceivingChannel>()).As.Unique();
+            Register(typeof(IPublishingChannel), TypeResolver.GetType<IPublishingChannel>()).As.Unique();
         }
 
         private void RegisterMessageSerializer()
         {
-            var type = TypeResolver.Get<IMessageSerializer>();
+            var type = TypeResolver.GetType<IMessageSerializer>();
             Register(typeof(IMessageSerializer), type).As.Singleton();
+        }
+
+        private void RegisterSubscriptions()
+        {
+            var subscriptions = SubscriptionSection.Section.Subscriptions;
+            RegisterInstance(typeof(ISubscriptionCollection), subscriptions);
+        }
+
+        private void RegisterHostConfig()
+        {
+            RegisterInstance(typeof(IHostConfig), new HostConfig());
         }
     }
 }

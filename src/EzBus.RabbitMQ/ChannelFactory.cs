@@ -1,45 +1,40 @@
 using System.Configuration;
-using EzBus.Config;
 using EzBus.Logging;
 using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ
 {
-    class ConnectionBuilder
+    internal class ChannelFactory : IChannelFactory
     {
-        private static readonly ILogger log = LogManager.GetLogger<ConnectionBuilder>();
-        private static readonly string hostUri;
+        private static readonly ILogger log = LogManager.GetLogger<ChannelFactory>();
+        private readonly string hostUri;
+        private IConnection connection;
 
-        static ConnectionBuilder()
+        public ChannelFactory()
         {
-
             hostUri = ConfigurationManager.AppSettings["HostUri"];
             if (string.IsNullOrEmpty(hostUri))
             {
                 hostUri = "amqp://localhost";
                 log.Debug($"HostUri not found in AppSettings. Defaulting to {hostUri}");
             }
+
+            CreateConnection();
         }
 
-        public static IConnection GetConnection()
+        public IModel GetChannel()
+        {
+            return connection.CreateModel();
+        }
+
+        private void CreateConnection()
         {
             var factory = new ConnectionFactory
             {
-                Uri = hostUri
+                Uri = hostUri,
+                AutomaticRecoveryEnabled = true
             };
-
-            log.Debug($"Connecting to RabbitMQ Broker");
-            return factory.CreateConnection();
+            connection = factory.CreateConnection();
         }
-    }
-
-    public class SubscriptionManager : ISubscriptionManager
-    {
-        public void Initialize(ISubscriptionCollection subscriptions)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Subscribe(string subscribingEndpointName) { }
     }
 }

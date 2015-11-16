@@ -1,6 +1,5 @@
 ﻿using System;
 using EzBus.Core.Resolvers;
-using EzBus.Core.Subscription;
 using EzBus.Core.Test.TestHelpers;
 using EzBus.Logging;
 using NUnit.Framework;

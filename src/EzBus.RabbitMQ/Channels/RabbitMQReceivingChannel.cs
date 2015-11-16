@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace EzBus.RabbitMQ.Channels
@@ -8,6 +9,10 @@ namespace EzBus.RabbitMQ.Channels
     public class RabbitMQReceivingChannel : RabbitMQChannel, IReceivingChannel
     {
         private EventingBasicConsumer consumer;
+
+        public RabbitMQReceivingChannel(IChannelFactory channelFactory) : base(channelFactory)
+        {
+        }
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
@@ -39,5 +44,7 @@ namespace EzBus.RabbitMQ.Channels
         }
 
         public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
+
+
     }
 }

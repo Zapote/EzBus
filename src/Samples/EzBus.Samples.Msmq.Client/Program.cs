@@ -13,19 +13,16 @@ namespace EzBus.Samples.Msmq.Client
             Console.Title = "EzBus.Samples.Msmq.Client";
             var loop = true;
 
-            Bus.SendAsync(new CreateOrder()).ContinueWith(result =>
+            while (loop)
             {
-                Console.WriteLine($"Message sent! Task status: {result.Status}");
+                Bus.Send(new CreateOrder());
+
+                Console.WriteLine("CreateOrder sent.");
                 Console.WriteLine("Press Enter to send again");
-            });
 
-            //while (loop)
-            //{
-              
-
-            // //   var keyInfo = Console.ReadKey();
-            //   // loop = keyInfo.Key == ConsoleKey.Enter;
-            //}
+                var keyInfo = Console.ReadKey();
+                loop = keyInfo.Key == ConsoleKey.Enter;
+            }
 
             Console.ReadKey();
         }

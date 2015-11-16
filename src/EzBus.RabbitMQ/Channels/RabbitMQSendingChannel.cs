@@ -1,7 +1,13 @@
-﻿namespace EzBus.RabbitMQ.Channels
+﻿using RabbitMQ.Client;
+
+namespace EzBus.RabbitMQ.Channels
 {
     public class RabbitMQSendingChannel : RabbitMQChannel, ISendingChannel
     {
+        public RabbitMQSendingChannel(IChannelFactory channelFactory) : base(channelFactory)
+        {
+        }
+
         public void Send(EndpointAddress destination, ChannelMessage channelMessage)
         {
             DeclareQueuePassive(destination.QueueName);

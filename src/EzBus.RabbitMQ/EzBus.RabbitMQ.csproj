@@ -47,12 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChannelFactory.cs" />
+    <Compile Include="CoreRegistry.cs" />
     <Compile Include="Channels\RabbitMQChannel.cs" />
     <Compile Include="Channels\RabbitMQPublishingChannel.cs" />
     <Compile Include="Channels\RabbitMQReceivingChannel.cs" />
     <Compile Include="Channels\RabbitMQSendingChannel.cs" />
+    <Compile Include="IChannelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamExtensions.cs" />
+    <Compile Include="SubscriptionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EzBus\EzBus.csproj">

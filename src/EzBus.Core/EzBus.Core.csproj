@@ -43,21 +43,11 @@
   <ItemGroup>
     <Compile Include="CoreRegistry.cs" />
     <Compile Include="HostConfig.cs" />
-    <Compile Include="Resolvers\MessageSerlializerResolver.cs" />
-    <Compile Include="Resolvers\ReceivingChannelResolver.cs" />
     <Compile Include="Resolvers\ResolverBase.cs" />
-    <Compile Include="Resolvers\SendingChannelResolver.cs" />
-    <Compile Include="Resolvers\SubscriptionManagerResolver.cs" />
     <Compile Include="Resolvers\TypeResolver.cs" />
-    <Compile Include="Subscription\DefaultSubscriptionManager.cs" />
     <Compile Include="TaskRunner.cs" />
     <Compile Include="Utils\AssemblyScanner.cs" />
-    <Compile Include="Builders\ILifeCycle.cs" />
-    <Compile Include="Builders\ILifeCycleConfiguration.cs" />
-    <Compile Include="Builders\IServiceRegistry.cs" />
-    <Compile Include="Builders\RegistryInstance.cs" />
     <Compile Include="CoreBus.cs" />
-    <Compile Include="ChannelMessageFactory.cs" />
     <Compile Include="Bus.cs" />
     <Compile Include="HostFactory.cs" />
     <Compile Include="InMemoryMessageChannel.cs" />
@@ -65,7 +55,6 @@
     <Compile Include="Logging\TraceLoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Resolvers\LoggerFactoryResolver.cs" />
-    <Compile Include="Resolvers\PublishingChannelResolver.cs" />
     <Compile Include="ChannelTypes.cs" />
     <Compile Include="Config\DestinationCollection.cs" />
     <Compile Include="Config\DestinationElement.cs" />
@@ -73,11 +62,9 @@
     <Compile Include="Config\SubscriptionCollection.cs" />
     <Compile Include="Config\SubscriptionElement.cs" />
     <Compile Include="Config\SubscriptionSection.cs" />
-    <Compile Include="Subscription\InMemorySubscriptionStorage.cs" />
     <Compile Include="InvokationResult.cs" />
-    <Compile Include="Builders\LightInjectObjectFactory.cs" />
-    <Compile Include="Builders\LightInject.cs" />
-    <Compile Include="Resolvers\MessageFilterResolver.cs" />
+    <Compile Include="ObjectFactory\LightInjectObjectFactory.cs" />
+    <Compile Include="ObjectFactory\LightInject.cs" />
     <Compile Include="Resolvers\ObjectFactoryResolver.cs" />
     <Compile Include="Routing\DestinationMissingException.cs" />
     <Compile Include="Host.cs" />
@@ -90,9 +77,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\XmlMessageSerializer.cs" />
     <Compile Include="Serializers\XmlValueConverter.cs" />
-    <Compile Include="Builders\ServiceRegistry.cs" />
-    <Compile Include="Subscription\Subscriber.cs" />
-    <Compile Include="Resolvers\SubscriptionStorageResolver.cs" />
     <Compile Include="Utils\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

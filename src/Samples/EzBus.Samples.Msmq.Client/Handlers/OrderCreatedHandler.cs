@@ -10,7 +10,7 @@ namespace EzBus.Samples.Msmq.Client.Handlers
 
         public void Handle(OrderCreated message)
         {
-            log.Debug($"Order { message.OrderNumber} successfully!");
+            log.Debug($"Order { message.OrderNumber} successfully created!");
             log.Debug("Placing order");
 
             Bus.Send(new PlaceOrder(message.OrderId));

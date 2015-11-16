@@ -28,7 +28,7 @@ namespace EzBus.Core
         {
             NumberOfRetrys = value;
         }
-
+        
         private void CreateEndpointNames()
         {
             var entryAssembly = Assembly.GetEntryAssembly();

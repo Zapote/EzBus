@@ -59,7 +59,6 @@ namespace EzBus.Core.Utils
 
         private static void LoadAssemblyFiles()
         {
-
             if (directoryScanned) return;
             string directory;
             var httpContext = HttpContext.Current;

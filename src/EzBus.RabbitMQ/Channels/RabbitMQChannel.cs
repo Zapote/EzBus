@@ -9,10 +9,10 @@ namespace EzBus.RabbitMQ.Channels
     {
         protected readonly IModel channel;
 
-        protected RabbitMQChannel()
+        protected RabbitMQChannel(IChannelFactory channelFactory)
         {
-            var connection = ConnectionBuilder.GetConnection();
-            channel = connection.CreateModel();
+            if (channel == null) throw new ArgumentNullException(nameof(channel));
+            this.channel = channelFactory.GetChannel();
         }
 
         protected IBasicProperties ConstructHeaders(ChannelMessage channelMessage)

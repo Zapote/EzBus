@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace EzBus.Core
 {
+    //TODO: Move to separate project
     public class InMemoryMessageChannel : ISendingChannel, IReceivingChannel, IPublishingChannel
     {
         private static List<EndpointAddress> sentDestinations = new List<EndpointAddress>();

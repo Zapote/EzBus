@@ -1,5 +1,6 @@
 ﻿using System;
 using EzBus.Core.Resolvers;
+using EzBus.Core.Utils;
 using EzBus.Logging;
 
 namespace EzBus.Core
@@ -8,17 +9,19 @@ namespace EzBus.Core
     {
         private static readonly ILogger log = LogManager.GetLogger<TaskRunner>();
 
-        public static void RunStartupTasks(IHostConfig config)
+        public static void RunStartupTasks()
         {
-            var startupTasks = StartupTaskResolver.GetStartupTasks();
-            foreach (var task in startupTasks)
+            var objectFactory = ObjectFactoryResolver.Get();
+            var startupTasks = new AssemblyScanner().FindTypes<IStartupTask>();
+            foreach (var taskType in startupTasks)
             {
-                var taskName = task.GetType().Name;
+                var taskName = taskType.Name;
 
                 try
                 {
                     log.Verbose($"Running task {taskName}");
-                    task.Run(config);
+                    var task = (IStartupTask)objectFactory.GetInstance(taskType);
+                    task.Run();
                 }
                 catch (Exception ex)
                 {

@@ -1,10 +1,8 @@
-﻿using EzBus.Core.Resolvers;
-using EzBus.Logging;
+﻿using EzBus.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using EzBus.Core.Config;
 using EzBus.Core.Utils;
+using EzBus.ObjectFactory;
 using EzBus.Serializers;
 
 namespace EzBus.Core
@@ -36,10 +34,10 @@ namespace EzBus.Core
             log.Verbose("Starting Ezbus Host");
 
             objectFactory.Initialize();
-            TaskRunner.RunStartupTasks(config);
+
+            TaskRunner.RunStartupTasks();
 
             CreateListeningWorkers();
-            Subscribe();
         }
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs e)
@@ -85,7 +83,7 @@ namespace EzBus.Core
                 try
                 {
                     var handler = objectFactory.GetInstance(handlerType);
-                    messageFilters = MessageFilterResolver.GetMessageFilters(objectFactory);
+                    messageFilters = objectFactory.GetInstances<IMessageFilter>().ToArray();
 
                     var isLocalMessage = message.GetType().IsLocal();
                     if (!isLocalMessage) messageFilters.Apply(x => x.Before());
@@ -128,13 +126,6 @@ namespace EzBus.Core
 
             log.Warn("No handlers found. Host will not be started.");
             return false;
-        }
-
-        private void Subscribe()
-        {
-            var subscriptionManager = SubscriptionManagerResolver.GetSubscriptionManager();
-            subscriptionManager.Initialize(SubscriptionSection.Section.Subscriptions);
-            subscriptionManager.Subscribe(config.EndpointName);
         }
 
         private void PlaceMessageOnErrorQueue(ChannelMessage message, Exception exception)

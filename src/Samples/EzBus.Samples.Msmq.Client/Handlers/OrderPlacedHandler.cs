@@ -11,8 +11,6 @@ namespace EzBus.Samples.Msmq.Client.Handlers
         public void Handle(OrderPlaced message)
         {
             log.Debug($"Order { message.OrderId} placed!");
-
-            Bus.Send(new CreateOrder());
         }
     }
 }

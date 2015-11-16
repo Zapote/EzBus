@@ -1,4 +1,4 @@
-﻿using EzBus.Core.Builders;
+﻿using EzBus.ObjectFactory;
 using EzBus.Samples.Msmq.Service.Fwk;
 
 namespace EzBus.Samples.Msmq.Service
