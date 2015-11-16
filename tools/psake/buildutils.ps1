@@ -81,16 +81,12 @@ function Ilmerge($key, $directory, $name, $assemblies, $attributeAssembly, $exte
     Get-ChildItem "$directory\temp_merge\**" -Include *.$extension, *.pdb, *.xml | Copy-Item -Destination $directory
     Remove-Item "$directory\temp_merge" -Recurse -ErrorAction SilentlyContinue
 }
-  
+ 
 function Get-Hg-Commit{
 	$hgSum = hg log -l 1 -M
-	
-	if($hgSum.length -eq $null) {
-		return "";
-	
-	}
 	return $hgSum[0].Replace("changeset:","").Trim(" ")
 }
+ 
 function Generate-Assembly-Info
 {
 param(
@@ -101,9 +97,10 @@ param(
 	[string]$product, 
 	[string]$copyright, 
 	[string]$version,
+	[string]$informationalVersion,
 	[string]$file = $(throw "file is a required parameter.")
 )
-  #$commit = Get-Hg-Commit
+  $commit = "N/A"
   $asmInfo = "using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -117,7 +114,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProductAttribute(""$product"")]
 [assembly: AssemblyCopyrightAttribute(""$copyright"")]
 [assembly: AssemblyVersionAttribute(""$version"")]
-[assembly: AssemblyInformationalVersionAttribute(""$version"")]
+[assembly: AssemblyInformationalVersionAttribute(""$informationalVersion"")]
 [assembly: AssemblyFileVersionAttribute(""$version"")]
 [assembly: AssemblyDelaySignAttribute(false)]
 "
