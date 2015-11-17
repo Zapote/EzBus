@@ -14,6 +14,7 @@ namespace EzBus.Core
             RegisterMessageSerializer();
             RegisterSubscriptions();
             RegisterHostConfig();
+            RegisterHandlerCache();
         }
 
         private void RegisterChannels()
@@ -38,6 +39,11 @@ namespace EzBus.Core
         private void RegisterHostConfig()
         {
             RegisterInstance(typeof(IHostConfig), new HostConfig());
+        }
+
+        private void RegisterHandlerCache()
+        {
+            Register(typeof(IHandlerCache), typeof(HandlerCache)).As.Singleton();
         }
     }
 }

@@ -3496,8 +3496,7 @@ namespace EzBus.Core.ObjectFactory.LightInject
                 var serviceEmitter = GetEmitMethod(serviceType, serviceName);
                 if (serviceEmitter == null && throwError)
                 {
-                    throw new InvalidOperationException(
-                        string.Format("Unable to resolve type: {0}, service name: {1}", serviceType, serviceName));
+                    throw new InvalidOperationException($"Unable to resolve type: {serviceType}, service name: {serviceName}");
                 }
 
                 if (serviceEmitter != null)
@@ -3509,9 +3508,7 @@ namespace EzBus.Core.ObjectFactory.LightInject
                     catch (InvalidOperationException ex)
                     {
                         dependencyStack.Clear();
-                        throw new InvalidOperationException(
-                            string.Format("Unable to resolve type: {0}, service name: {1}", serviceType, serviceName),
-                            ex);
+                        throw new InvalidOperationException(string.Format("Unable to resolve type: {0}, service name: {1}", serviceType, serviceName), ex);
                     }
                 }
 

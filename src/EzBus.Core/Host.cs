@@ -14,7 +14,7 @@ namespace EzBus.Core
         private readonly IObjectFactory objectFactory;
         private readonly ISendingChannel sendingChannel;
         private readonly IMessageSerializer messageSerializer;
-        private readonly HandlerCache handlerCache = new HandlerCache();
+        private readonly IHandlerCache handlerCache;
 
         public Host(HostConfig config, IObjectFactory objectFactory)
         {
@@ -25,6 +25,7 @@ namespace EzBus.Core
 
             sendingChannel = objectFactory.GetInstance<ISendingChannel>();
             messageSerializer = objectFactory.GetInstance<IMessageSerializer>();
+            handlerCache = objectFactory.GetInstance<IHandlerCache>();
         }
 
         public void Start()
@@ -32,8 +33,6 @@ namespace EzBus.Core
             if (!LoadHandlers()) return;
 
             log.Verbose("Starting Ezbus Host");
-
-            objectFactory.Initialize();
 
             TaskRunner.RunStartupTasks();
 

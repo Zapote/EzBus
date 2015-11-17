@@ -45,13 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Specifications\When_then_host_starts.cs" />
+    <Compile Include="TestHelpers\StartupTaskOne.cs" />
+    <Compile Include="TestHelpers\StartupTaskTwo.cs" />
     <Compile Include="Utils\AssemblyScannerTest.cs" />
     <Compile Include="Logging\TraceLoggerTest.cs" />
     <Compile Include="Resolvers\LoggerFactoryResolverTest.cs" />
     <Compile Include="TestHelpers\FailingMessage.cs" />
     <Compile Include="Specifications\SpecificationBase.cs" />
     <Compile Include="Specifications\BusSpecificationBase.cs" />
-    <Compile Include="Specifications\When_message_is_published.cs" />
     <Compile Include="Specifications\When_message_is_sent.cs" />
     <Compile Include="Config\DestinationSectionConfigTest.cs" />
     <Compile Include="Config\SubscriptionsSectionConfigTest.cs" />

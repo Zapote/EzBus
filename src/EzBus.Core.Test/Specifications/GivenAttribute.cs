@@ -2,5 +2,5 @@ using NUnit.Framework;
 
 namespace EzBus.Core.Test.Specifications
 {
-    public class GivenAttribute : SetUpAttribute { }
+    public class GivenAttribute : TestFixtureSetUpAttribute { }
 }

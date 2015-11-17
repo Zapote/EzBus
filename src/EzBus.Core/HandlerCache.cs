@@ -6,7 +6,7 @@ using EzBus.Logging;
 
 namespace EzBus.Core
 {
-    public class HandlerCache
+    public class HandlerCache : IHandlerCache
     {
         private static readonly ILogger log = LogManager.GetLogger(typeof(HandlerCache));
         private readonly List<KeyValuePair<string, HandlerInfo>> handlers = new List<KeyValuePair<string, HandlerInfo>>();
@@ -30,10 +30,17 @@ namespace EzBus.Core
             return handlerInterface.GetGenericArguments()[0];
         }
 
+        private void Clear()
+        {
+            handlers.Clear();
+        }
+
         public void Prime()
         {
             var scanner = new AssemblyScanner();
             var handlerTypes = scanner.FindTypes(typeof(IHandle<>));
+
+            Clear();
 
             foreach (var handlerType in handlerTypes)
             {

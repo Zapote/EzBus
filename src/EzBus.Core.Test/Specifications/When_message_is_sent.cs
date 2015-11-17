@@ -8,15 +8,15 @@ namespace EzBus.Core.Test.Specifications
     {
         private const string expectedDestination = "Endor";
 
-        protected override void When()
-        {
-            bus.Send(new MockMessage("Foo"));
-        }
-
         protected override void Given()
         {
             base.Given();
             messageRouting.AddRoute(typeof(MockMessage).Assembly.GetName().Name, typeof(MockMessage).FullName, expectedDestination);
+        }
+
+        protected override void When()
+        {
+            bus.Send(new MockMessage("Foo"));
         }
 
         [Then]
