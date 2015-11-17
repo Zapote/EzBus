@@ -16,7 +16,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="EzBus.dll" target="lib\net40" />
-    <file src="EzBus.Core.dll" target="lib\net40" />
+    <file src="EzBus.dll" target="lib\net45" />
+    <file src="EzBus.Core.dll" target="lib\net45" />
   </files>
 </package>

@@ -1,9 +1,4 @@
-﻿properties { 
-  $Version = "1.0.1"
-  $TargetFramework = "net-4.0"
-} 
-
-$baseDir  = resolve-path .
+﻿$baseDir  = resolve-path .
 $buildDir = "$baseDir\build" 
 $toolsDir = "$baseDir\Tools"
 $outputDir = "$buildDir\Output"
@@ -12,6 +7,7 @@ $releaseDir = "$buildDir\Release"
 $nunitexec = "$toolsDir\nunit-2.6.3\nunit-console.exe"
 $zipExec = "$toolsDir\zip\7za.exe"
 $nugetExec = "$toolsDir\nuget\nuget.exe"
+$gitVersionExec = "$toolsDir\gitversion\GitVersion.exe"
 include $toolsDir\psake\buildutils.ps1
 
 task default -depends DoRelease
@@ -27,53 +23,50 @@ task Clean{
 
 task InitEnvironment{
 	if($script:isEnvironmentInitialized -ne $true){
-		if ($TargetFramework -eq "net-4.0"){
-			$netfxInstallroot ="" 
-			$netfxInstallroot =	Get-RegistryValue 'HKLM:\SOFTWARE\Microsoft\.NETFramework\' 'InstallRoot' 
-			$netfxCurrent = $netfxInstallroot + "v4.0.30319"
-			$script:msBuild = $netfxCurrent + "\msbuild.exe"
-			$script:msBuild = "C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe"
-			
-			echo ".Net 4.0 build requested - $script:msBuild" 
-
-			$script:nunitTargetFramework = "/framework=4.0";
-			$script:isEnvironmentInitialized = $true
-		}
+		$script:msBuild = "C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe"	
+		echo ".Net 4.0 build requested - $script:msBuild" 
 	}
 }
 
 task Init -depends InitEnvironment, Clean, DetectOperatingSystemArchitecture {   	
 	write-host "Creating build directory at the follwing path $buildDir"
-	Delete-Directory $buildDir
+	
 	Create-Directory $buildDir
-	Delete-Directory $releaseDir
 	Create-Directory $releaseDir
-	Delete-Directory $artifactsDir
 	Create-Directory $artifactsDir
 	
-	$script:Version = $ProductVersion
 	$currentDirectory = Resolve-Path .
 	
 	write-host "Current Directory: $currentDirectory" 
  }
+
+task GitVersion{
+	$script:gitVersionInfo = ( &$gitVersionExec | Out-String | ConvertFrom-Json)
+}
  
-task GenerateAssemblyInfo{
+task GenerateAssemblyInfo -depends GitVersion{
+	
+	$version = $script:gitVersionInfo.AssemblySemVer
+	$informationalVersion = $gitVersionInfo.InformationalVersion
+	
 	$assemblyInfoDirs = Get-ChildItem -path "$baseDir" -recurse -include "*.csproj" | % {
 		$propDir = $_.DirectoryName + "\Properties"
 		Create-Directory $propDir
 		
+		$name = $_.Basename
+		
 		Generate-Assembly-Info `
 		-file "$propDir\AssemblyInfo.cs" `
-		-title "$name $version" `
+		-title "$name" `
 		-description "" `
 		-company "Zapote" `
-		-product "$name $version" `
-		-version $Version `
-		-copyright "Zapote" `
+		-version $version `
+		-informationalVersion "$informationalVersion" `
+		-copyright "None ©" `
 	}
 }
 
-task CompileMain -depends init { 
+task CompileMain -depends Init { 
 	Delete-Directory $outputDir
 	Create-Directory $outputDir
 
@@ -114,12 +107,13 @@ task UpdateNugetPackageVersion {
     dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
 		[xml]$content = Get-Content $nuspecfile
-		$content.package.metadata.version = $Version
+		$version = $script:gitVersionInfo.NuGetVersion
+		$content.package.metadata.version = $version
 			
 		if($content.package.metadata.dependencies.dependency -ne $null){
 			foreach($dependency in $content.package.metadata.dependencies.dependency) { 
 				if($dependency.Id.StartsWith("EzBus")){
-					$dependency.version = "[" + $Version + "]";
+					$dependency.version = "[" + $version + "]";
 				} 
 			}
 		}
@@ -129,12 +123,13 @@ task UpdateNugetPackageVersion {
 
 }
 
-task CreateNugetPackages -depends UpdateNugetPackageVersion {
+task CreateNugetPackages -depends UpdateNugetPackageVersion{
+    
 	dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
 		
 		[xml]$content = Get-Content $nuspecfile
-		$packageVersion = $content.package.metadata.version
+		$packageVersion = $script:gitVersionInfo.NuGetVersion
 				
         exec { &$nugetExec pack $nuspecfile -OutputDirectory $artifactsDir -Version $packageVersion }
 	}

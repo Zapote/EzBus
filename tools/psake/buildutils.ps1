@@ -67,30 +67,9 @@ function IsWow64{
     }
 }
  
- $ilMergeExec = ".\tools\IlMerge\ilmerge.exe"
-function Ilmerge($key, $directory, $name, $assemblies, $attributeAssembly, $extension, $ilmergeTargetframework, $logFileName, $excludeFilePath){    
-	
-    new-item -path $directory -name "temp_merge" -type directory -ErrorAction SilentlyContinue
-	
-	if($attributeAssembly -ne ""){
-    	&$ilMergeExec /keyfile:$key /out:"$directory\temp_merge\$name.$extension" /log:$logFileName /internalize:$excludeFilePath /attr:$attributeAssembly $ilmergeTargetframework $assemblies
-	}
-	else{
-		&$ilMergeExec /keyfile:$key /out:"$directory\temp_merge\$name.$extension" /log:$logFileName /internalize:$excludeFilePath $ilmergeTargetframework $assemblies
-	}
-    Get-ChildItem "$directory\temp_merge\**" -Include *.$extension, *.pdb, *.xml | Copy-Item -Destination $directory
-    Remove-Item "$directory\temp_merge" -Recurse -ErrorAction SilentlyContinue
-}
- 
-function Get-Hg-Commit{
-	$hgSum = hg log -l 1 -M
-	return $hgSum[0].Replace("changeset:","").Trim(" ")
-}
- 
 function Generate-Assembly-Info
 {
 param(
-	[string]$clsCompliant = "true",
 	[string]$title, 
 	[string]$description, 
 	[string]$company, 
@@ -103,20 +82,18 @@ param(
   $commit = "N/A"
   $asmInfo = "using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: CLSCompliantAttribute($clsCompliant )]
-[assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyTitleAttribute(""$title"")]
-[assembly: AssemblyDescriptionAttribute(""$description"")]
-[assembly: AssemblyCompanyAttribute(""$company"")]
-[assembly: AssemblyProductAttribute(""$product"")]
-[assembly: AssemblyCopyrightAttribute(""$copyright"")]
-[assembly: AssemblyVersionAttribute(""$version"")]
-[assembly: AssemblyInformationalVersionAttribute(""$informationalVersion"")]
-[assembly: AssemblyFileVersionAttribute(""$version"")]
-[assembly: AssemblyDelaySignAttribute(false)]
+[assembly: ComVisible(false)]
+[assembly: AssemblyTitle(""$title"")]
+[assembly: AssemblyDescription(""$description"")]
+[assembly: AssemblyCompany(""$company"")]
+[assembly: AssemblyProduct(""$product"")]
+[assembly: AssemblyCopyright(""$copyright"")]
+[assembly: AssemblyVersion(""$version"")]
+[assembly: AssemblyInformationalVersion(""$informationalVersion"")]
+[assembly: AssemblyFileVersion(""$version"")]
+[assembly: AssemblyDelaySign(false)]
 "
 
 	$dir = [System.IO.Path]::GetDirectoryName($file)
@@ -125,7 +102,7 @@ using System.Runtime.InteropServices;
 		Write-Host "Creating directory $dir"
 		[System.IO.Directory]::CreateDirectory($dir)
 	}
-	Write-Host "Generating assembly info file: $file"
+	
 	Write-Output $asmInfo > $file
 }
 
