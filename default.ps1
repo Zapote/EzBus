@@ -99,7 +99,8 @@ task Test -depends CompileMain{
 	
 	$testAssemblies = @()
 	$testAssemblies += Get-ChildItem -path "$outputDir" -recurse -include *.Test.dll
-	exec {&$nunitexec $testAssemblies $script:nunitTargetFramework /xml="$buildDir\TestReports\TestResults.xml" /noshadow /nologo } 
+	$targetFramework = "/framework=4.5";
+	exec {&$nunitexec $testAssemblies $targetFramework /xml="$buildDir\TestReports\TestResults.xml" /noshadow /nologo } 
 } 
 
 task UpdateNugetPackageVersion {
