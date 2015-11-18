@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <package >
   <metadata>
-    <id>EzBus.Msmq</id>
+    <id>EzBus.Newtonsoft.Json.NET</id>
     <version>0.0.0</version>
     <authors>Zapote</authors>
     <owners>Zapote</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Msmq transport for EzBus</description>
+    <description>Json.NET Message Serializer for EzBus</description>
     <releaseNotes>None</releaseNotes>
     <iconUrl>http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ezbus-logo-128x128.png</iconUrl>
     <projectUrl>https://github.com/zapote/ezbus</projectUrl>
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus msmq</tags>
     <dependencies>
-      <dependency id="EzBus" version="[2,3)"/>
+      <dependency id="Newtonsoft.Json" version="[7.0.1,8)"/>
     </dependencies>
   </metadata>
   <files>
-    <file src="EzBus.Msmq.dll" target="lib\net45" />
+    <file src="EzBus.dll" target="lib\net45" />
   </files>
 </package>

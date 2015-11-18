@@ -55,6 +55,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="EzBus.Newtonsoft.Json.NET.nuspec">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

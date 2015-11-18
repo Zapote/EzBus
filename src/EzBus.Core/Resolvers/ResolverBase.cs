@@ -14,7 +14,6 @@ namespace EzBus.Core.Resolvers
             var assemblyScanner = new AssemblyScanner();
             var types = assemblyScanner.FindTypes<TInterface>();
             resolvedType = types.All(x => x.IsLocal()) ? types.Last() : types.Last(x => !x.IsLocal());
-
         }
 
         protected TInterface GetInstance()

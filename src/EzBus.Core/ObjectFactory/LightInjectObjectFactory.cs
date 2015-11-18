@@ -21,11 +21,6 @@ namespace EzBus.Core.ObjectFactory
             return container.GetInstance<T>();
         }
 
-        public IEnumerable<object> GetInstances(Type type)
-        {
-            return container.GetAllInstances(type);
-        }
-
         public IEnumerable<T> GetInstances<T>() where T : class
         {
             return container.GetAllInstances<T>();
@@ -50,22 +45,6 @@ namespace EzBus.Core.ObjectFactory
                     container.RegisterInstance(instance.Service, instance.Instance);
                 }
             }
-        }
-
-        public void Register<TService, TImplementation>(LifeCycle lifeCycle = LifeCycle.PerScope) where TImplementation : TService
-        {
-            Register(typeof(TService), typeof(TImplementation), lifeCycle);
-        }
-
-        public void Register<TService>(Type implementationType, LifeCycle lifeCycle = LifeCycle.PerScope)
-        {
-            Register(typeof(TService), implementationType, lifeCycle);
-        }
-
-        public void Register<TService>(TService instance, LifeCycle lifeCycle = LifeCycle.PerScope)
-        {
-            var lifetime = lifeCycleToLifeTime[lifeCycle]();
-            container.Register(f => instance, lifetime);
         }
 
         public void Register(Type serviceType, Type implementationType, LifeCycle lifeCycle = LifeCycle.PerScope)

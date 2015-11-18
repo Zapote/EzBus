@@ -1,6 +1,7 @@
 ﻿using EzBus.Config;
 using EzBus.Core.Config;
 using EzBus.Core.Resolvers;
+using EzBus.Core.Utils;
 using EzBus.ObjectFactory;
 using EzBus.Serializers;
 
@@ -15,6 +16,7 @@ namespace EzBus.Core
             RegisterSubscriptions();
             RegisterHostConfig();
             RegisterHandlerCache();
+            RegisterMessageFilters();
         }
 
         private void RegisterChannels()
@@ -44,6 +46,16 @@ namespace EzBus.Core
         private void RegisterHandlerCache()
         {
             Register(typeof(IHandlerCache), typeof(HandlerCache)).As.Singleton();
+        }
+
+        private void RegisterMessageFilters()
+        {
+            var assemblyScanner = new AssemblyScanner();
+            var types = assemblyScanner.FindTypes<IMessageFilter>();
+            foreach (var type in types)
+            {
+                Register(typeof(IMessageFilter), type);
+            }
         }
     }
 }

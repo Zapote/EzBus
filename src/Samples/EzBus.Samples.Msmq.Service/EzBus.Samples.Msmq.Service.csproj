@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DependencyRegistry.cs" />
+    <Compile Include="Fwk\CustomerMessageFilter.cs" />
     <Compile Include="Fwk\IOrderNumberGenerator.cs" />
     <Compile Include="Fwk\OrderNumberGenerator.cs" />
     <Compile Include="Handlers\PlaceOrderHandler.cs" />
@@ -76,10 +77,6 @@
     <ProjectReference Include="..\..\EzBus.Msmq\EzBus.Msmq.csproj">
       <Project>{3f5d0c34-372d-49cd-a591-cfd59471eda2}</Project>
       <Name>EzBus.Msmq</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EzBus.Newtonsoft.Json.NET\EzBus.Newtonsoft.Json.NET.csproj">
-      <Project>{e0ad4b53-c683-46a7-9d65-56f750c20af5}</Project>
-      <Name>EzBus.Newtonsoft.Json.NET</Name>
     </ProjectReference>
     <ProjectReference Include="..\EzBus.Samples.Messages\EzBus.Samples.Messages.csproj">
       <Project>{7AFF69F7-6271-425F-B725-CEF40051F772}</Project>

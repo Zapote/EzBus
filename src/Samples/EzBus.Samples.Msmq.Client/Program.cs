@@ -15,10 +15,13 @@ namespace EzBus.Samples.Msmq.Client
 
             while (loop)
             {
-                Bus.Send(new CreateOrder());
+                var createOrder = new CreateOrder();
 
-                Console.WriteLine("CreateOrder sent.");
-                Console.WriteLine("Press Enter to send again");
+                Console.WriteLine("Creating order.");
+                Bus.Send(createOrder);
+
+                Console.WriteLine("Placing order.");
+                Bus.Send(new PlaceOrder(createOrder.OrderId));
 
                 var keyInfo = Console.ReadKey();
                 loop = keyInfo.Key == ConsoleKey.Enter;

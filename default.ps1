@@ -42,6 +42,8 @@ task Init -depends InitEnvironment, Clean, DetectOperatingSystemArchitecture {
 
 task GitVersion{
 	$script:gitVersionInfo = ( &$gitVersionExec | Out-String | ConvertFrom-Json)
+	$buildVersion = $script:gitVersionInfo.LegacySemVer 
+	Write-Host "##teamcity[buildNumber '$buildVersion']"
 }
  
 task GenerateAssemblyInfo -depends GitVersion{
@@ -70,8 +72,6 @@ task CompileMain -depends Init {
 	Delete-Directory $outputDir
 	Create-Directory $outputDir
 
-	Write-Host "Compiling version: $Version"
-
 	$toExclude = @();
 	$toExclude = "*nobuild.sln"
 	
@@ -84,9 +84,7 @@ task CompileMain -depends Init {
 		
 		Create-Directory $targetDir
 		
-		write-host $script:msBuild
-		
-		exec { &$script:msBuild $solutionFile /p:OutDir="$targetDir\" /p:Configuration=Release }
+		exec { &$script:msBuild $solutionFile /p:OutDir="$targetDir\" /p:Configuration=Release /v:q}
 	}
 }
 
@@ -103,29 +101,7 @@ task Test -depends CompileMain{
 	exec {&$nunitexec $testAssemblies $targetFramework /xml="$buildDir\TestReports\TestResults.xml" /noshadow /nologo } 
 } 
 
-task UpdateNugetPackageVersion {
-    echo "Updating packages to version $Version"
-    dir $outputDir -recurse -include *.nuspec | % {
-		$nuspecfile = $_.FullName
-		[xml]$content = Get-Content $nuspecfile
-		$version = $script:gitVersionInfo.NuGetVersion
-		$content.package.metadata.version = $version
-			
-		if($content.package.metadata.dependencies.dependency -ne $null){
-			foreach($dependency in $content.package.metadata.dependencies.dependency) { 
-				if($dependency.Id.StartsWith("EzBus")){
-					$dependency.version = "[" + $version + "]";
-				} 
-			}
-		}
-		
-		$content.save($nuspecfile)
-	}
-
-}
-
-task CreateNugetPackages -depends UpdateNugetPackageVersion{
-    
+task CreateNugetPackages {
 	dir $outputDir -recurse -include *.nuspec | % {
 		$nuspecfile = $_.FullName
 		
