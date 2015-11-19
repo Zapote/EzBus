@@ -5,7 +5,7 @@ using System.Messaging;
 
 namespace EzBus.Msmq.Subscription
 {
-    public class MsmqSubscriptionStorage : IMsmqSubscriptionStorage
+    public class MsmqSubscriptionStorage : ISubscriptionStorage
     {
         private readonly IHostConfig hostConfig;
         private static readonly List<MsmqSubscriptionStorageItem> subscriptions = new List<MsmqSubscriptionStorageItem>();
@@ -16,6 +16,8 @@ namespace EzBus.Msmq.Subscription
         {
             if (hostConfig == null) throw new ArgumentNullException(nameof(hostConfig));
             this.hostConfig = hostConfig;
+
+            Initialize();
         }
 
         private void GetQueue()
@@ -67,7 +69,7 @@ namespace EzBus.Msmq.Subscription
                 .Select(x => x.Endpoint);
         }
 
-        public void Initialize()
+        private void Initialize()
         {
             storageAddress = new EndpointAddress($"{hostConfig.EndpointName}.subscriptions");
 

@@ -36,7 +36,7 @@ namespace EzBus.WindowsAzure.ServiceBus.Channels
 
                 message.Complete();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 message.DeadLetter();
                 throw;
@@ -48,8 +48,8 @@ namespace EzBus.WindowsAzure.ServiceBus.Channels
             var headers = new List<MessageHeader>();
             foreach (var prop in m.Properties)
             {
-                var value = prop.Value == null ? string.Empty : prop.Value.ToString();
-                headers.Add(new MessageHeader { Name = prop.Key, Value = value });
+                var value = prop.Value?.ToString() ?? string.Empty;
+                headers.Add(new MessageHeader(prop.Key, value));
             }
             return headers.ToArray();
         }

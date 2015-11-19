@@ -2,8 +2,14 @@
 {
     public class MessageHeader
     {
-        public string Name { get; set; }
-        public string Value { get; set; }
+        public MessageHeader(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
+
+        public string Name { get; }
+        public string Value { get; }
 
         public override string ToString()
         {

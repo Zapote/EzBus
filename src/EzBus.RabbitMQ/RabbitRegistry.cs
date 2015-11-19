@@ -2,9 +2,9 @@
 
 namespace EzBus.RabbitMQ
 {
-    public class CoreRegistry : ServiceRegistry
+    public class RabbitRegistry : ServiceRegistry
     {
-        public CoreRegistry()
+        public RabbitRegistry()
         {
             Register<IChannelFactory, ChannelFactory>().As.Singleton();
         }

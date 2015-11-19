@@ -16,7 +16,7 @@ namespace EzBus.RabbitMQ
             if (string.IsNullOrEmpty(hostUri))
             {
                 hostUri = "amqp://localhost";
-                log.Debug($"HostUri not found in AppSettings. Defaulting to {hostUri}");
+                log.Warn($"HostUri not found in AppSettings. Defaulting to {hostUri}");
             }
 
             CreateConnection();

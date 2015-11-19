@@ -2,10 +2,9 @@ using System.Collections.Generic;
 
 namespace EzBus.Msmq.Subscription
 {
-    public interface IMsmqSubscriptionStorage
+    public interface ISubscriptionStorage
     {
         void Store(string endpoint, string messageType);
         IEnumerable<string> GetSubscribers(string messageType);
-        void Initialize();
     }
 }

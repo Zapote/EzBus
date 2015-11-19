@@ -1,6 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
 
-namespace EzBus.WindowsAzure.ServiceBus
+namespace EzBus.WindowsAzure.ServiceBus.Subscription
 {
     public class SubscriptionEntity : TableEntity
     {

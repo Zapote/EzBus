@@ -40,18 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreRegistry.cs" />
+    <Compile Include="MsmqRegistry.cs" />
     <Compile Include="EndpointAddressExtensions.cs" />
     <Compile Include="Channels\MsmqPublishingChannel.cs" />
     <Compile Include="Channels\MsmqReceivingChannel.cs" />
     <Compile Include="Channels\MsmqSendingChannel.cs" />
-    <Compile Include="Subscription\IMsmqSubscriptionStorage.cs" />
+    <Compile Include="Subscription\ISubscriptionStorage.cs" />
     <Compile Include="Subscription\MsmqSubscriptionStorage.cs" />
     <Compile Include="Subscription\MsmqSubscriptionStorageItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MsmqUtilities.cs" />
     <Compile Include="Subscription\SubscriptionManager.cs" />
-    <Compile Include="Subscription\SubscriptionManagerStartup.cs" />
     <Compile Include="Subscription\SubscriptionMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>

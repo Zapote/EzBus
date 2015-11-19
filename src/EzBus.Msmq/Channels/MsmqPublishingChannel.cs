@@ -6,18 +6,18 @@ namespace EzBus.Msmq.Channels
 {
     public class MsmqPublishingChannel : MsmqSendingChannel, IPublishingChannel
     {
-        private readonly IMsmqSubscriptionStorage msmqSubscriptionStorage;
+        private readonly ISubscriptionStorage subscriptionStorage;
 
-        public MsmqPublishingChannel(IMsmqSubscriptionStorage msmqSubscriptionStorage)
+        public MsmqPublishingChannel(ISubscriptionStorage subscriptionStorage)
         {
-            if (msmqSubscriptionStorage == null) throw new ArgumentNullException(nameof(msmqSubscriptionStorage));
-            this.msmqSubscriptionStorage = msmqSubscriptionStorage;
+            if (subscriptionStorage == null) throw new ArgumentNullException(nameof(subscriptionStorage));
+            this.subscriptionStorage = subscriptionStorage;
         }
 
         public void Publish(ChannelMessage channelMessage)
         {
             var messageType = channelMessage.GetHeader(MessageHeaders.MessageType);
-            var endpoints = msmqSubscriptionStorage.GetSubscribers(messageType);
+            var endpoints = subscriptionStorage.GetSubscribers(messageType);
 
             foreach (var destination in endpoints.Select(EndpointAddress.Parse))
             {

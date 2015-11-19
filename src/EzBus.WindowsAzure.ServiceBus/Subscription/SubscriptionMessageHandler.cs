@@ -1,4 +1,4 @@
-﻿namespace EzBus.WindowsAzure.ServiceBus
+﻿namespace EzBus.WindowsAzure.ServiceBus.Subscription
 {
     public class SubscriptionMessageHandler : IHandle<SubscriptionMessage>
     {

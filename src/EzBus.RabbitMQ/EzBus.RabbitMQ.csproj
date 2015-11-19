@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChannelFactory.cs" />
-    <Compile Include="CoreRegistry.cs" />
+    <Compile Include="RabbitRegistry.cs" />
     <Compile Include="Channels\RabbitMQChannel.cs" />
     <Compile Include="Channels\RabbitMQPublishingChannel.cs" />
     <Compile Include="Channels\RabbitMQReceivingChannel.cs" />
