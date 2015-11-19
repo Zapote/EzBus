@@ -19,13 +19,13 @@ namespace EzBus.Core
 
                 try
                 {
-                    log.Verbose($"Running task {taskName}");
+                    log.Info($"Running StartupTask {taskName}");
                     var task = (IStartupTask)objectFactory.GetInstance(taskType);
                     task.Run();
                 }
                 catch (Exception ex)
                 {
-                    log.Error($"Failed to run startup task: {taskName}", ex);
+                    log.Error($"Failed to run StartupTask: {taskName}", ex);
                 }
             }
         }

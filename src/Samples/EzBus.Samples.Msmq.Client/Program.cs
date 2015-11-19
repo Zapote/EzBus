@@ -1,5 +1,4 @@
 ﻿using System;
-using EzBus.Samples.Messages;
 using EzBus.Samples.Messages.Commands;
 
 namespace EzBus.Samples.Msmq.Client
