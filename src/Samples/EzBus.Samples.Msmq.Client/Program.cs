@@ -7,6 +7,9 @@ namespace EzBus.Samples.Msmq.Client
     {
         static void Main(string[] args)
         {
+            Bus.Configure()
+                .WorkerThreads(3);
+
             Bus.Start();
 
             Console.Title = "EzBus.Samples.Msmq.Client";

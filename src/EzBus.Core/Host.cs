@@ -9,14 +9,14 @@ namespace EzBus.Core
 {
     public class Host
     {
-        private readonly HostConfig config;
+        private readonly IHostConfig config;
         private static readonly ILogger log = LogManager.GetLogger<Host>();
         private readonly IObjectFactory objectFactory;
         private readonly ISendingChannel sendingChannel;
         private readonly IMessageSerializer messageSerializer;
         private readonly IHandlerCache handlerCache;
 
-        public Host(HostConfig config, IObjectFactory objectFactory)
+        public Host(IHostConfig config, IObjectFactory objectFactory)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
             if (objectFactory == null) throw new ArgumentNullException(nameof(objectFactory));

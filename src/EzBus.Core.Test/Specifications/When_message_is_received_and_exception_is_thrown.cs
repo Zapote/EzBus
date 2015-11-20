@@ -24,8 +24,7 @@ namespace EzBus.Core.Test.Specifications
             messageChannel = new FakeMessageChannel();
 
             bus = new CoreBus(messageChannel, messageChannel, new FakeMessageRouting());
-            var config = new HostConfig();
-            config.SetNumberOfRetrys(2);
+            var config = new HostConfig { NumberOfRetrys = 2 };
 
             host = new Host(config, objectFactory);
             host.Start();

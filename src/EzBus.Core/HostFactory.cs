@@ -4,9 +4,8 @@ namespace EzBus.Core
 {
     public class HostFactory
     {
-        public Host Build()
+        public Host Build(IHostConfig hostConfig)
         {
-            var hostConfig = new HostConfig();
             var objectFactory = ObjectFactoryResolver.Get();
             return new Host(hostConfig, objectFactory);
         }

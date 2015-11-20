@@ -12,23 +12,12 @@ namespace EzBus.Core
             CreateEndpointNames();
         }
 
-        public int WorkerThreads { get; private set; }
-        public int NumberOfRetrys { get; private set; }
+        public int WorkerThreads { get; set; }
+        public int NumberOfRetrys { get; set; }
 
         public string EndpointName { get; set; }
         public string ErrorEndpointName { get; set; }
 
-
-        public void SetNumberOfWorkerThreads(int threads)
-        {
-            WorkerThreads = threads;
-        }
-
-        public void SetNumberOfRetrys(int value)
-        {
-            NumberOfRetrys = value;
-        }
-        
         private void CreateEndpointNames()
         {
             var entryAssembly = Assembly.GetEntryAssembly();
