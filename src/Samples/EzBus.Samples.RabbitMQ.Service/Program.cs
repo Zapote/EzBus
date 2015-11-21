@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EzBus.Samples.Messages;
+﻿using System;
 
 namespace EzBus.Samples.RabbitMQ.Service
 {
@@ -10,6 +6,7 @@ namespace EzBus.Samples.RabbitMQ.Service
     {
         static void Main(string[] args)
         {
+            Console.Title = "RabbitMQ.Service";
             Bus.Start();
         }
     }

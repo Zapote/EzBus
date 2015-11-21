@@ -30,7 +30,7 @@ namespace EzBus.Core
 
         public void Start()
         {
-            if (!LoadHandlers()) return;
+            if (!PrimeHandlerCache()) return;
 
             log.Verbose("Starting Ezbus Host");
 
@@ -117,7 +117,7 @@ namespace EzBus.Core
             }
         }
 
-        private bool LoadHandlers()
+        private bool PrimeHandlerCache()
         {
             handlerCache.Prime();
 

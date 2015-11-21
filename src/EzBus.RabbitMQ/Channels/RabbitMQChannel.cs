@@ -11,8 +11,8 @@ namespace EzBus.RabbitMQ.Channels
 
         protected RabbitMQChannel(IChannelFactory channelFactory)
         {
-            if (channel == null) throw new ArgumentNullException(nameof(channel));
-            this.channel = channelFactory.GetChannel();
+            if (channelFactory == null) throw new ArgumentNullException(nameof(channelFactory));
+            channel = channelFactory.GetChannel();
         }
 
         protected IBasicProperties ConstructHeaders(ChannelMessage channelMessage)

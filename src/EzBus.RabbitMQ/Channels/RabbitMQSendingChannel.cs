@@ -4,7 +4,8 @@ namespace EzBus.RabbitMQ.Channels
 {
     public class RabbitMQSendingChannel : RabbitMQChannel, ISendingChannel
     {
-        public RabbitMQSendingChannel(IChannelFactory channelFactory) : base(channelFactory)
+        public RabbitMQSendingChannel(IChannelFactory channelFactory) 
+            : base(channelFactory)
         {
         }
 

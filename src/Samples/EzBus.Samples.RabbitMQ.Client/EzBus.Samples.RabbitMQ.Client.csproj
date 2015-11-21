@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrderCreated.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,6 +59,10 @@
     <ProjectReference Include="..\..\EzBus.RabbitMQ\EzBus.RabbitMQ.csproj">
       <Project>{b90b1e65-c582-48b2-b0e4-273cab986f3f}</Project>
       <Name>EzBus.RabbitMQ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EzBus\EzBus.csproj">
+      <Project>{31bb0ddf-dced-49d0-8fc8-0d8ac396dd7b}</Project>
+      <Name>EzBus</Name>
     </ProjectReference>
     <ProjectReference Include="..\EzBus.Samples.Messages\EzBus.Samples.Messages.csproj">
       <Project>{7AFF69F7-6271-425F-B725-CEF40051F772}</Project>
