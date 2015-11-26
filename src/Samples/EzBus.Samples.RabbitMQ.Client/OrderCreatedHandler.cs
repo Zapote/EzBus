@@ -7,7 +7,7 @@ namespace EzBus.Samples.RabbitMQ.Client
     {
         public void Handle(OrderCreated message)
         {
-            Console.WriteLine($"Order created: {message.OrderNumber}");
+            Console.WriteLine($"{DateTime.Now.ToLocalTime()}: Order created: {message.OrderNumber}");
         }
     }
 }

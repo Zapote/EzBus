@@ -4,9 +4,12 @@ namespace EzBus.RabbitMQ.Channels
 {
     public class RabbitMQSendingChannel : RabbitMQChannel, ISendingChannel
     {
-        public RabbitMQSendingChannel(IChannelFactory channelFactory) 
+        private readonly IModel channel;
+
+        public RabbitMQSendingChannel(IChannelFactory channelFactory)
             : base(channelFactory)
         {
+            channel = channelFactory.GetChannel();
         }
 
         public void Send(EndpointAddress destination, ChannelMessage channelMessage)
@@ -14,8 +17,8 @@ namespace EzBus.RabbitMQ.Channels
             DeclareQueuePassive(destination.QueueName);
             var properties = ConstructHeaders(channelMessage);
             var body = channelMessage.BodyStream.ToByteArray();
-            channel.BasicPublish(exchange: "",
-                                 routingKey: destination.QueueName,
+            channel.BasicPublish(string.Empty,
+                                 destination.QueueName,
                                  basicProperties: properties,
                                  body: body,
                                  mandatory: true);

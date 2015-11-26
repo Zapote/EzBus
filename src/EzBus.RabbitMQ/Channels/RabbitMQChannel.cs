@@ -20,6 +20,7 @@ namespace EzBus.RabbitMQ.Channels
             var properties = channel.CreateBasicProperties();
 
             properties.ClearHeaders();
+            properties.Persistent = true;
             properties.Headers = new Dictionary<string, object>();
             foreach (var header in channelMessage.Headers)
             {
@@ -47,6 +48,16 @@ namespace EzBus.RabbitMQ.Channels
                 string message = $"Queue '{queueName}' does not exist or is not currently available.";
                 throw new InvalidOperationException(message, ex);
             }
+        }
+
+        protected void DeclareExchange(string exchange, string type = "fanout", bool durable = true)
+        {
+            channel.ExchangeDeclare(exchange, type, true);
+        }
+
+        protected void BindQueue(string queueName, string exchange = "")
+        {
+            channel.QueueBind(queueName, exchange.ToLower(), string.Empty);
         }
     }
 }

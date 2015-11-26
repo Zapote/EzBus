@@ -4,15 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BC243DBA-B6AE-4441-ABE6-BDBEF314288C}</ProjectGuid>
+    <ProjectGuid>{AEBBC921-0152-4AC1-B1ED-AA8872216980}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EzBus.Samples.RabbitMQ.Client</RootNamespace>
-    <AssemblyName>EzBus.Samples.RabbitMQ.Client</AssemblyName>
+    <RootNamespace>EzBus.Samples.RabbitMQ.PlaceOrderService</RootNamespace>
+    <AssemblyName>EzBus.Samples.RabbitMQ.PlaceOrderService</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -44,8 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OrderCreatedHandler.cs" />
-    <Compile Include="OrderPlacedHandler.cs" />
+    <Compile Include="PlaceOrderHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,7 +59,7 @@
       <Name>EzBus.RabbitMQ</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\EzBus\EzBus.csproj">
-      <Project>{31bb0ddf-dced-49d0-8fc8-0d8ac396dd7b}</Project>
+      <Project>{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}</Project>
       <Name>EzBus</Name>
     </ProjectReference>
     <ProjectReference Include="..\EzBus.Samples.Messages\EzBus.Samples.Messages.csproj">

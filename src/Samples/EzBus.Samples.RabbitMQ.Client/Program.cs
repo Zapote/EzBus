@@ -14,7 +14,9 @@ namespace EzBus.Samples.RabbitMQ.Client
 
             while (loop)
             {
-                Bus.Send("EzBus.Samples.RabbitMQ.Service", new CreateOrder());
+                var createOrderCommand = new CreateOrder();
+                Bus.Send("EzBus.Samples.RabbitMQ.Service", createOrderCommand);
+                Bus.Send("EzBus.Samples.RabbitMQ.PlaceOrderService", new PlaceOrder(createOrderCommand.OrderId));
                 var keyInfo = Console.ReadKey();
                 loop = keyInfo.Key == ConsoleKey.Enter;
             }

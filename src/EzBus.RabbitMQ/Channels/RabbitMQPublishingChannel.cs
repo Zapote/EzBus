@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ.Channels
@@ -17,7 +16,7 @@ namespace EzBus.RabbitMQ.Channels
 
         public void Publish(ChannelMessage channelMessage)
         {
-            var exchange = hostConfig.EndpointName;
+            var exchange = hostConfig.EndpointName.ToLower();
             var properties = ConstructHeaders(channelMessage);
             var body = channelMessage.BodyStream.ToByteArray();
             channel.BasicPublish(exchange, string.Empty, properties, body);
