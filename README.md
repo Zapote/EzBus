@@ -56,7 +56,15 @@ add endpoints that you want to receive messages from.
 
 #### Handle your message
 
+
 ##### Handler class
+
+At startup of your application, start the bus:
+
+```C#
+Bus.Start();
+```
+
 ```C#
 public class TextMessageHandler : IHandle<TextMessage>
 {
