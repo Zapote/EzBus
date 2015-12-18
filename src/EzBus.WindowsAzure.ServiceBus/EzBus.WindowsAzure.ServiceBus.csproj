@@ -75,12 +75,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionStringHelper.cs" />
+    <Compile Include="ServiceBusRegistry.cs" />
     <Compile Include="Subscription\ISubscriptionStorage.cs" />
     <Compile Include="QueueUtilities.cs" />
     <Compile Include="Channels\ServiceBusPublishingChannel.cs" />
     <Compile Include="Channels\ServiceBusReceivingChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Channels\ServiceBusSendingChannel.cs" />
+    <Compile Include="Subscription\ServiceBusSubscriptionManager.cs" />
     <Compile Include="Subscription\SubscriptionEntity.cs" />
     <Compile Include="Subscription\SubscriptionMessageHandler.cs" />
     <Compile Include="Subscription\AzureTableSubscriptionStorage.cs" />

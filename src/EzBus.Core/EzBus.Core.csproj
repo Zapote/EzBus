@@ -56,7 +56,6 @@
     <Compile Include="Logging\TraceLoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Resolvers\LoggerFactoryResolver.cs" />
-    <Compile Include="ChannelTypes.cs" />
     <Compile Include="Config\DestinationCollection.cs" />
     <Compile Include="Config\DestinationElement.cs" />
     <Compile Include="Config\DestinationSection.cs" />
