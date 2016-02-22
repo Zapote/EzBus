@@ -42,7 +42,6 @@ task Init -depends InitEnvironment, Clean, DetectOperatingSystemArchitecture {
 
 task GitVersion{
 	$script:gitVersionInfo = ( &$gitVersionExec | Out-String | ConvertFrom-Json)
-	write-host $script:gitVersionInfo
 	$buildVersion = $script:gitVersionInfo.NuGetVersion 
 	Write-Host "##teamcity[buildNumber '$buildVersion']"
 }

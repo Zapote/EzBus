@@ -7,7 +7,7 @@ namespace EzBus.Samples.Msmq.Client.Handlers
     {
         public void Handle(OrderCreated message)
         {
-            Console.WriteLine($"Order { message.OrderId } successfully created with number { message.OrderNumber }!");
+            Console.WriteLine($"Order { message.OrderId } created with number { message.OrderNumber }!");
         }
     }
 }

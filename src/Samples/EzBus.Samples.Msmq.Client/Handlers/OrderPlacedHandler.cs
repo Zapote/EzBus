@@ -7,7 +7,7 @@ namespace EzBus.Samples.Msmq.Client.Handlers
     {
         public void Handle(OrderPlaced message)
         {
-            Console.WriteLine($"Order { message.OrderId} placed!");
+            Console.WriteLine($"Order {message.OrderId} placed!");
         }
     }
 }

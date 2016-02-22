@@ -60,18 +60,9 @@ namespace EzBus.Core.Utils
         private static void LoadAssemblyFiles()
         {
             if (directoryScanned) return;
-            string directory;
-            var httpContext = HttpContext.Current;
+            var http = HttpContext.Current;
 
-            if (httpContext != null)
-            {
-                directory = httpContext.Server.MapPath("/bin");
-            }
-            else
-            {
-                var executingAssembly = Assembly.GetExecutingAssembly();
-                directory = Path.GetDirectoryName(executingAssembly.Location) ?? @"\.";
-            }
+            var directory = http == null ? AppDomain.CurrentDomain.BaseDirectory : http.Server.MapPath("/bin");
 
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));

@@ -37,29 +37,14 @@ public static class Bus
         bus.Send(message);
     }
 
-    public static async Task SendAsync(object message)
-    {
-        await Task.Factory.StartNew(() => bus.Send(message));
-    }
-
     public static void Send(string destination, object message)
     {
         bus.Send(destination, message);
     }
 
-    public static async Task SendAsync(string destination, object message)
-    {
-        await Task.Factory.StartNew(() => bus.Send(destination, message));
-    }
-
     public static void Publish(object message)
     {
         bus.Publish(message);
-    }
-
-    public static async Task PublishAsync(object message)
-    {
-        await Task.Factory.StartNew(() => bus.Publish(message));
     }
 
     private static void ConfigureLogging()
