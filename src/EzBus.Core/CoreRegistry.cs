@@ -1,6 +1,7 @@
 ﻿using EzBus.Config;
 using EzBus.Core.Config;
 using EzBus.Core.Resolvers;
+using EzBus.Core.Routing;
 using EzBus.Core.Utils;
 using EzBus.ObjectFactory;
 using EzBus.Serializers;
@@ -11,12 +12,20 @@ namespace EzBus.Core
     {
         public CoreRegistry()
         {
+            RegisterBus();
             RegisterChannels();
             RegisterMessageSerializer();
             RegisterSubscriptions();
             RegisterHostConfig();
             RegisterHandlerCache();
             RegisterMessageFilters();
+            RegisterTaskRunner();
+        }
+
+        private void RegisterBus()
+        {
+            Register<IMessageRouting, ConfigurableMessageRouting>().As.Singleton();
+            Register<IBus, CoreBus>().As.Singleton();
         }
 
         private void RegisterChannels()
@@ -46,6 +55,11 @@ namespace EzBus.Core
         private void RegisterHandlerCache()
         {
             Register(typeof(IHandlerCache), typeof(HandlerCache)).As.Singleton();
+        }
+
+        private void RegisterTaskRunner()
+        {
+            Register<ITaskRunner, TaskRunner>().As.Singleton();
         }
 
         private void RegisterMessageFilters()

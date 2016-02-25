@@ -44,7 +44,6 @@
     <Compile Include="CoreRegistry.cs" />
     <Compile Include="HostConfig.cs" />
     <Compile Include="IHandlerCache.cs" />
-    <Compile Include="Resolvers\ResolverBase.cs" />
     <Compile Include="Resolvers\TypeResolver.cs" />
     <Compile Include="TaskRunner.cs" />
     <Compile Include="Utils\AssemblyScanner.cs" />
@@ -63,9 +62,8 @@
     <Compile Include="Config\SubscriptionElement.cs" />
     <Compile Include="Config\SubscriptionSection.cs" />
     <Compile Include="InvokationResult.cs" />
-    <Compile Include="ObjectFactory\LightInjectObjectFactory.cs" />
+    <Compile Include="ObjectFactory\DefaultObjectFactory.cs" />
     <Compile Include="ObjectFactory\LightInject.cs" />
-    <Compile Include="Resolvers\ObjectFactoryResolver.cs" />
     <Compile Include="Routing\DestinationMissingException.cs" />
     <Compile Include="Host.cs" />
     <Compile Include="BusFactory.cs" />

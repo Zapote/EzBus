@@ -2,17 +2,25 @@
 using EzBus.Core.Resolvers;
 using EzBus.Core.Utils;
 using EzBus.Logging;
+using EzBus.ObjectFactory;
 
 namespace EzBus.Core
 {
-    public class TaskRunner
+    public class TaskRunner : ITaskRunner
     {
         private static readonly ILogger log = LogManager.GetLogger<TaskRunner>();
+        private readonly IObjectFactory objectFactory;
 
-        public static void RunStartupTasks()
+        public TaskRunner(IObjectFactory objectFactory)
         {
-            var objectFactory = ObjectFactoryResolver.Get();
+            if (objectFactory == null) throw new ArgumentNullException(nameof(objectFactory));
+            this.objectFactory = objectFactory;
+        }
+
+        public void RunStartupTasks()
+        {
             var startupTasks = new AssemblyScanner().FindTypes<IStartupTask>();
+
             foreach (var taskType in startupTasks)
             {
                 var taskName = taskType.Name;

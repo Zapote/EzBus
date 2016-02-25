@@ -47,6 +47,7 @@
     <Compile Include="IBus.cs" />
     <Compile Include="IBusFactory.cs" />
     <Compile Include="IHandle.cs" />
+    <Compile Include="ITaskRunner.cs" />
     <Compile Include="ObjectFactory\IHandleScopes.cs" />
     <Compile Include="IHostConfig.cs" />
     <Compile Include="IMessageFilter.cs" />

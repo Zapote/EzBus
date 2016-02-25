@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.Core.ObjectFactory;
 using EzBus.Core.Resolvers;
 using EzBus.Core.Test.TestHelpers;
 using EzBus.Logging;
@@ -18,7 +19,8 @@ namespace EzBus.Core.Test.Specifications
         {
             retries = 0;
 
-            var objectFactory = ObjectFactoryResolver.Get();
+            var objectFactory = new DefaultObjectFactory();
+            objectFactory.Initialize();
 
             FakeMessageChannel.Reset();
             messageChannel = new FakeMessageChannel();

@@ -3508,7 +3508,7 @@ namespace EzBus.Core.ObjectFactory.LightInject
                     catch (InvalidOperationException ex)
                     {
                         dependencyStack.Clear();
-                        throw new InvalidOperationException(string.Format("Unable to resolve type: {0}, service name: {1}", serviceType, serviceName), ex);
+                        throw new InvalidOperationException($"Unable to resolve type: {serviceType}, service name: {serviceName}", ex);
                     }
                 }
 

@@ -6,10 +6,12 @@ using EzBus.ObjectFactory;
 
 namespace EzBus.Core.ObjectFactory
 {
-    public class LightInjectObjectFactory : IObjectFactory
+    public class DefaultObjectFactory : IObjectFactory
     {
         private readonly IServiceContainer container = new ServiceContainer();
         private Scope scope;
+
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public object GetInstance(Type type)
         {
@@ -45,6 +47,8 @@ namespace EzBus.Core.ObjectFactory
                     container.RegisterInstance(instance.Service, instance.Instance);
                 }
             }
+
+            container.RegisterInstance(typeof(IObjectFactory), this);
         }
 
         public void Register(Type serviceType, Type implementationType, LifeCycle lifeCycle = LifeCycle.PerScope)

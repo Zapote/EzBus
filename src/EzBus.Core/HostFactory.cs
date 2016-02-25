@@ -1,12 +1,11 @@
-﻿using EzBus.Core.Resolvers;
+﻿using EzBus.ObjectFactory;
 
 namespace EzBus.Core
 {
     public class HostFactory
     {
-        public Host Build(IHostConfig hostConfig)
+        public Host Build(IHostConfig hostConfig, IObjectFactory objectFactory)
         {
-            var objectFactory = ObjectFactoryResolver.Get();
             return new Host(hostConfig, objectFactory);
         }
     }

@@ -8,18 +8,18 @@ namespace EzBus.Core.Test.ObjectFactory
     [TestFixture]
     public class LightInjectObjectFactoryTest
     {
-        private LightInjectObjectFactory lightInjectObjectFactory;
+        private DefaultObjectFactory defaultObjectFactory;
 
         [SetUp]
         public void TestSetup()
         {
-            lightInjectObjectFactory = new LightInjectObjectFactory();
+            defaultObjectFactory = new DefaultObjectFactory();
         }
 
         [Test]
         public void Can_create_object_with_default_constructor()
         {
-            var obj = lightInjectObjectFactory.GetInstance(typeof(A));
+            var obj = defaultObjectFactory.GetInstance(typeof(A));
 
             Assert.That(obj, Is.Not.Null);
         }
@@ -27,7 +27,7 @@ namespace EzBus.Core.Test.ObjectFactory
         [Test]
         public void Can_create_object_with_di_constructor()
         {
-            var obj = lightInjectObjectFactory.GetInstance<B>();
+            var obj = defaultObjectFactory.GetInstance<B>();
 
             Assert.That(obj, Is.Not.Null);
         }
@@ -35,16 +35,16 @@ namespace EzBus.Core.Test.ObjectFactory
         [Test]
         public void Gets_same_object_within_scope()
         {
-            lightInjectObjectFactory.Register(typeof(IA), typeof(A));
+            defaultObjectFactory.Register(typeof(IA), typeof(A));
 
-            lightInjectObjectFactory.BeginScope();
-            var first = lightInjectObjectFactory.GetInstance<IA>();
-            var second = lightInjectObjectFactory.GetInstance<IA>();
-            lightInjectObjectFactory.EndScope();
+            defaultObjectFactory.BeginScope();
+            var first = defaultObjectFactory.GetInstance<IA>();
+            var second = defaultObjectFactory.GetInstance<IA>();
+            defaultObjectFactory.EndScope();
 
-            lightInjectObjectFactory.BeginScope();
-            var third = lightInjectObjectFactory.GetInstance<IA>();
-            lightInjectObjectFactory.EndScope();
+            defaultObjectFactory.BeginScope();
+            var third = defaultObjectFactory.GetInstance<IA>();
+            defaultObjectFactory.EndScope();
 
             Assert.That(first.Id, Is.EqualTo(second.Id));
             Assert.That(first.Id, Is.Not.EqualTo(third.Id));
@@ -53,12 +53,12 @@ namespace EzBus.Core.Test.ObjectFactory
         [Test]
         public void Gets_different_objects_within_scope_when_registered_unique()
         {
-            lightInjectObjectFactory.Register(typeof(IA), typeof(A), LifeCycle.Unique);
+            defaultObjectFactory.Register(typeof(IA), typeof(A), LifeCycle.Unique);
 
-            lightInjectObjectFactory.BeginScope();
-            var first = lightInjectObjectFactory.GetInstance<IA>();
-            var second = lightInjectObjectFactory.GetInstance<IA>();
-            lightInjectObjectFactory.EndScope();
+            defaultObjectFactory.BeginScope();
+            var first = defaultObjectFactory.GetInstance<IA>();
+            var second = defaultObjectFactory.GetInstance<IA>();
+            defaultObjectFactory.EndScope();
 
             Assert.That(first.Id, Is.Not.EqualTo(second.Id));
         }

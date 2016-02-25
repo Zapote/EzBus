@@ -34,7 +34,8 @@ namespace EzBus.Core
 
             log.Verbose("Starting Ezbus Host");
 
-            TaskRunner.RunStartupTasks();
+            var taskRunner = objectFactory.GetInstance<ITaskRunner>();
+            taskRunner.RunStartupTasks();
 
             CreateListeningWorkers();
         }

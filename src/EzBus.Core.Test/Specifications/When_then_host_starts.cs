@@ -10,14 +10,14 @@ namespace EzBus.Core.Test.Specifications
     public class When_then_host_starts : SpecificationBase
     {
         private Host host;
-        private IObjectFactory objectFactory;
+        private readonly IObjectFactory objectFactory = new DefaultObjectFactory();
 
         protected override void Given()
         {
             StartupTaskOne.HasStarted = false;
             StartupTaskTwo.HasStarted = false;
 
-            objectFactory = ObjectFactoryResolver.Get();
+            objectFactory.Initialize();
             host = new Host(new HostConfig(), objectFactory);
         }
 

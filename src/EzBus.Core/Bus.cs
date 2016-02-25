@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
-using EzBus;
+﻿using EzBus;
 using EzBus.Core;
+using EzBus.Core.ObjectFactory;
 using EzBus.Core.Resolvers;
 using EzBus.Logging;
+using EzBus.ObjectFactory;
 
 // ReSharper disable once CheckNamespace
 public static class Bus
@@ -10,20 +11,22 @@ public static class Bus
     private static readonly IBus bus;
     private static Host host;
     private static readonly HostCustomization hostCustomization = new HostCustomization();
+    private static DefaultObjectFactory objectFactory;
 
     static Bus()
     {
         if (bus != null) return;
 
         ConfigureLogging();
+        objectFactory = new DefaultObjectFactory();
+        objectFactory.Initialize();
 
-        var factory = new BusFactory();
-        bus = factory.Build();
+        bus = objectFactory.GetInstance<IBus>();
     }
 
     public static void Start()
     {
-        host = new HostFactory().Build(hostCustomization.HostConfig);
+        host = new HostFactory().Build(hostCustomization.HostConfig, objectFactory);
         host.Start();
     }
 
@@ -55,11 +58,12 @@ public static class Bus
 
     public class HostCustomization
     {
-        public IHostConfig HostConfig { get; set; }
+        public IHostConfig HostConfig { get; }
+        public IObjectFactory ObjectFactory { get; }
 
         public HostCustomization()
         {
-            HostConfig = ObjectFactoryResolver.Get().GetInstance<IHostConfig>();
+            HostConfig = new HostConfig();
         }
 
         public HostCustomization WorkerThreads(int workerThreads)
