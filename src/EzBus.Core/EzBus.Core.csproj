@@ -66,7 +66,6 @@
     <Compile Include="ObjectFactory\LightInject.cs" />
     <Compile Include="Routing\DestinationMissingException.cs" />
     <Compile Include="Host.cs" />
-    <Compile Include="BusFactory.cs" />
     <Compile Include="HandlerCache.cs" />
     <Compile Include="HandlerInfo.cs" />
     <Compile Include="Routing\ConfigurableMessageRouting.cs" />
