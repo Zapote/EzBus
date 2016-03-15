@@ -12,7 +12,7 @@
     <projectUrl>https://github.com/zapote/ezbus</projectUrl>
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus azure</tags>
     <dependencies>
-      <dependency id="EzBus" version="[2,3)"/>
+      <dependency id="EzBus" version="[2.0.0-v2-0001,3)"/>
       <dependency id="Microsoft.WindowsAzure.ConfigurationManager"  version="3.1.0"/>
       <dependency id="WindowsAzure.ServiceBus" version="3.1.5"/>
       <dependency id="WindowsAzure.Storage" version="6.2.0"/>
