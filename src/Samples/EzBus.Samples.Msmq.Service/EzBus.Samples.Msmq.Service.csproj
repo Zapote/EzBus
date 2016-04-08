@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DependencyRegistry.cs" />
-    <Compile Include="Fwk\CustomerMessageFilter.cs" />
+    <Compile Include="Fwk\MetricsMiddleware.cs" />
     <Compile Include="Fwk\IOrderNumberGenerator.cs" />
     <Compile Include="Fwk\OrderNumberGenerator.cs" />
     <Compile Include="Handlers\PlaceOrderHandler.cs" />

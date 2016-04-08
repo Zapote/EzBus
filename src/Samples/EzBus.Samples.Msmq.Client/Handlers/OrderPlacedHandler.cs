@@ -1,5 +1,4 @@
 ﻿using System;
-using EzBus.Samples.Messages.Events;
 
 namespace EzBus.Samples.Msmq.Client.Handlers
 {
@@ -9,5 +8,10 @@ namespace EzBus.Samples.Msmq.Client.Handlers
         {
             Console.WriteLine($"Order {message.OrderId} placed!");
         }
+    }
+
+    public class OrderPlaced
+    {
+        public Guid OrderId { get; set; }
     }
 }

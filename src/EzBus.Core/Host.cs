@@ -1,6 +1,7 @@
 ﻿using EzBus.Logging;
 using System;
 using System.Linq;
+using EzBus.Core.Middleware;
 using EzBus.Core.Utils;
 using EzBus.ObjectFactory;
 using EzBus.Serializers;
@@ -73,30 +74,37 @@ namespace EzBus.Core
             var success = true;
             Exception exception = null;
             var numberOfRetrys = config.NumberOfRetrys;
+
             for (var i = 0; i < numberOfRetrys; i++)
             {
                 var methodInfo = handlerType.GetMethod("Handle", new[] { message.GetType() });
-                var messageFilters = new IMessageFilter[0];
+                var middlewares = new IMiddleware[0];
 
                 objectFactory.BeginScope();
 
                 try
                 {
                     var handler = objectFactory.GetInstance(handlerType);
-                    messageFilters = objectFactory.GetInstances<IMessageFilter>().ToArray();
+                    middlewares = objectFactory.GetInstances<IMiddleware>().ToArray();
 
                     var isLocalMessage = message.GetType().IsLocal();
-                    if (!isLocalMessage) messageFilters.Apply(x => x.Before());
-                    methodInfo.Invoke(handler, new[] { message });
-                    if (!isLocalMessage) messageFilters.Apply(x => x.After());
 
+                    Action next = () => methodInfo.Invoke(handler, new[] { message });
+
+                    if (isLocalMessage)
+                    {
+                        next();
+                        break;
+                    }
+
+                    new MiddlewareInvoker(middlewares).Invoke(message, next);
                     break;
                 }
                 catch (Exception ex)
                 {
                     log.Error(string.Format("Attempt {1}: Failed to handle message '{0}'.", message.GetType().Name, i + 1), ex.InnerException);
                     success = false;
-                    messageFilters.Apply(x => x.OnError(ex.InnerException));
+                    middlewares.Apply(x => x.OnError(ex.InnerException));
                     exception = ex.InnerException;
                 }
 

@@ -65,10 +65,10 @@ namespace EzBus.Core
         private void RegisterMessageFilters()
         {
             var assemblyScanner = new AssemblyScanner();
-            var types = assemblyScanner.FindTypes<IMessageFilter>();
+            var types = assemblyScanner.FindTypes<IMiddleware>();
             foreach (var type in types)
             {
-                Register(typeof(IMessageFilter), type);
+                Register(typeof(IMiddleware), type);
             }
         }
     }

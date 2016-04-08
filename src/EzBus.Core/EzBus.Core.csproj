@@ -44,6 +44,7 @@
     <Compile Include="CoreRegistry.cs" />
     <Compile Include="HostConfig.cs" />
     <Compile Include="IHandlerCache.cs" />
+    <Compile Include="Middleware\MiddlewareInvoker.cs" />
     <Compile Include="Resolvers\TypeResolver.cs" />
     <Compile Include="TaskRunner.cs" />
     <Compile Include="Utils\AssemblyScanner.cs" />

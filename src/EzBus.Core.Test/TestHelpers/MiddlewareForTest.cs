@@ -2,18 +2,16 @@
 
 namespace EzBus.Core.Test.TestHelpers
 {
-    public class MessageFilterForTest : IMessageFilter
+    public class MiddlewareForTest : IMiddleware
     {
-        public void Before()
+        public void Invoke(object message, Action next)
         {
-        }
 
-        public void After()
-        {
         }
 
         public void OnError(Exception ex)
         {
+
         }
     }
 }

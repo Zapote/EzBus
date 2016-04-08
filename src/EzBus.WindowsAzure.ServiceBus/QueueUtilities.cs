@@ -16,7 +16,13 @@ namespace EzBus.WindowsAzure.ServiceBus
             var qd = new QueueDescription(queueName)
             {
                 MaxSizeInMegabytes = 5120,
-                DefaultMessageTimeToLive = new TimeSpan(0, 1, 0)
+                DefaultMessageTimeToLive = TimeSpan.FromDays(14),
+                LockDuration = TimeSpan.FromSeconds(30),
+                RequiresDuplicateDetection = true,
+                DuplicateDetectionHistoryTimeWindow = TimeSpan.FromMinutes(10),
+                MaxDeliveryCount = 6,
+                RequiresSession = false,
+                SupportOrdering = true
             };
 
             namespaceManager.CreateQueue(qd);

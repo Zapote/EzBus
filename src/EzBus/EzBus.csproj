@@ -49,7 +49,7 @@
     <Compile Include="ITaskRunner.cs" />
     <Compile Include="ObjectFactory\IHandleScopes.cs" />
     <Compile Include="IHostConfig.cs" />
-    <Compile Include="IMessageFilter.cs" />
+    <Compile Include="IMiddleware.cs" />
     <Compile Include="ObjectFactory\ILifeCycle.cs" />
     <Compile Include="ObjectFactory\ILifeCycleConfiguration.cs" />
     <Compile Include="ObjectFactory\IObjectFactory.cs" />

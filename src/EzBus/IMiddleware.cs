@@ -2,10 +2,9 @@
 
 namespace EzBus
 {
-    public interface IMessageFilter
+    public interface IMiddleware
     {
-        void Before();
-        void After();
+        void Invoke(object message, Action next);
         void OnError(Exception ex);
     }
 }

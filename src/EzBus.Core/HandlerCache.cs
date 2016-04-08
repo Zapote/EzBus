@@ -21,7 +21,15 @@ namespace EzBus.Core
 
         public IEnumerable<HandlerInfo> GetHandlerInfo(string messageTypeName)
         {
-            return handlers.Where(x => x.Key == messageTypeName).Select(x => x.Value);
+            var className = messageTypeName.Split('.').Last();
+            var result = handlers.Where(x => x.Key == messageTypeName);
+
+            if (!result.Any())
+            {
+                result = handlers.Where(x => x.Key.EndsWith(className));
+            }
+
+            return result.Select(x => x.Value);
         }
 
         private static Type GetMessageType(Type handlerType)
