@@ -1,5 +1,6 @@
 ﻿using EzBus.Config;
 using EzBus.Core.Config;
+using EzBus.Core.Middleware;
 using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
 using EzBus.Core.Utils;
@@ -18,7 +19,7 @@ namespace EzBus.Core
             RegisterSubscriptions();
             RegisterHostConfig();
             RegisterHandlerCache();
-            RegisterMessageFilters();
+            RegisterMiddlewares();
             RegisterTaskRunner();
         }
 
@@ -54,7 +55,9 @@ namespace EzBus.Core
 
         private void RegisterHandlerCache()
         {
-            Register(typeof(IHandlerCache), typeof(HandlerCache)).As.Singleton();
+            var handlerCache = new HandlerCache();
+            handlerCache.Prime();
+            RegisterInstance(typeof(IHandlerCache), handlerCache);
         }
 
         private void RegisterTaskRunner()
@@ -62,13 +65,26 @@ namespace EzBus.Core
             Register<ITaskRunner, TaskRunner>().As.Singleton();
         }
 
-        private void RegisterMessageFilters()
+        private void RegisterMiddlewares()
         {
             var assemblyScanner = new AssemblyScanner();
             var types = assemblyScanner.FindTypes<IMiddleware>();
+
             foreach (var type in types)
             {
-                Register(typeof(IMiddleware), type);
+                if (type.IsInterface) continue;
+                if (type.ImplementsInterface(typeof(IPreMiddleware)))
+                {
+                    Register(typeof(IPreMiddleware), type).As.Singleton();
+                    continue;
+                }
+                if (type.ImplementsInterface(typeof(ISystemMiddleware)))
+                {
+                    Register(typeof(ISystemMiddleware), type).As.Singleton();
+                    continue;
+                }
+
+                Register(typeof(IMiddleware), type).As.Singleton();
             }
         }
     }

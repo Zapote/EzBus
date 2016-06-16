@@ -51,5 +51,11 @@ namespace EzBus.Core.Utils
             var list = (IList)Activator.CreateInstance(concreteType);
             return list;
         }
+
+        public static bool ImplementsInterface(this Type type, Type interfaceType)
+        {
+            var interfaces = type.GetInterfaces();
+            return interfaces.Any(t => t == interfaceType);
+        }
     }
 }

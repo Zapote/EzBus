@@ -1,34 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EzBus.Core.Middleware
 {
     public class MiddlewareInvoker
     {
-        private readonly IMiddleware[] middlewares;
+        private readonly Queue<IMiddleware> queue;
 
         public MiddlewareInvoker(IEnumerable<IMiddleware> middlewares)
         {
-            this.middlewares = middlewares.ToArray();
+            queue = new Queue<IMiddleware>(middlewares);
         }
 
-        public void Invoke(object message, Action next)
+        public void Invoke(MiddlewareContext context)
         {
-            InvokeNext(message, next, 0);
-        }
-
-        private void InvokeNext(object message, Action next, int index)
-        {
-            if (index == middlewares.Length)
-            {
-                next();
-                return;
-            }
-
-            InvokeNext(message, () => middlewares[index].Invoke(message, next), index + 1);
+            if (queue.Count == 0) return;
+            var mw = queue.Dequeue();
+            mw.Invoke(context, () => Invoke(context));
         }
     }
 }

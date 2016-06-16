@@ -46,9 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HandlerCacheTest.cs" />
+    <Compile Include="Specifications\When_message_is_received.cs" />
     <Compile Include="Specifications\When_then_host_starts.cs" />
     <Compile Include="TestHelpers\StartupTaskOne.cs" />
     <Compile Include="TestHelpers\StartupTaskTwo.cs" />
+    <Compile Include="TestHelpers\TestMessage.cs" />
     <Compile Include="Utils\AssemblyScannerTest.cs" />
     <Compile Include="Logging\TraceLoggerTest.cs" />
     <Compile Include="Resolvers\LoggerFactoryResolverTest.cs" />

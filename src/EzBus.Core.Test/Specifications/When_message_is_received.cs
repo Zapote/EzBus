@@ -1,6 +1,5 @@
 ﻿using System;
 using EzBus.Core.ObjectFactory;
-using EzBus.Core.Resolvers;
 using EzBus.Core.Test.TestHelpers;
 using EzBus.Logging;
 using NUnit.Framework;
@@ -8,12 +7,12 @@ using NUnit.Framework;
 namespace EzBus.Core.Test.Specifications
 {
     [Specification]
-    public class When_message_is_received_and_exception_is_thrown : SpecificationBase, IHandle<FailingMessage>
+    public class When_message_is_received : SpecificationBase, IHandle<TestMessage>
     {
         private FakeMessageChannel messageChannel;
         private Host host;
         private IBus bus;
-        private static int retries;
+        private static bool messageIsHandled;
 
         protected override void Given()
         {
@@ -31,26 +30,18 @@ namespace EzBus.Core.Test.Specifications
 
         protected override void When()
         {
-            bus.Send("Moon", new FailingMessage());
+            bus.Send("Moon", new TestMessage());
         }
 
-        [Test]
-        public void Message_should_be_retried_five_times()
+        [Then]
+        public void Message_is_handled()
         {
-            Assert.That(retries, Is.EqualTo(5));
+            Assert.That(messageIsHandled, Is.True);
         }
 
-        [Test]
-        [Ignore("Need implemenation in MW")]
-        public void Message_should_be_placed_on_error_queue()
+        public void Handle(TestMessage message)
         {
-            Assert.That(FakeMessageChannel.LastSentDestination.QueueName, Is.EqualTo("ezbus.core.error"));
-        }
-
-        public void Handle(FailingMessage message)
-        {
-            retries++;
-            throw new Exception("Testing error in handler.");
+            messageIsHandled = true;
         }
     }
 }

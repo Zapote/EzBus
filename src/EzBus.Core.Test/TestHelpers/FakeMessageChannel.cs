@@ -7,13 +7,12 @@ namespace EzBus.Core.Test.TestHelpers
     public class FakeMessageChannel : ISendingChannel, IReceivingChannel, IPublishingChannel
     {
         private static List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
-        private static event EventHandler<MessageReceivedEventArgs> InnerMessageHandler;
+        private static Action<ChannelMessage> onMessage;
 
-        public static void Reset()
+        public FakeMessageChannel()
         {
             sentDestinations.Clear();
             sentDestinations = new List<EndpointAddress>();
-            InnerMessageHandler = null;
         }
 
         public void Send(EndpointAddress destination, ChannelMessage channelMessage)
@@ -22,10 +21,7 @@ namespace EzBus.Core.Test.TestHelpers
             sentDestinations.Add(destination);
             if (destination.QueueName.EndsWith("error")) return;
 
-            InnerMessageHandler?.Invoke(this, new MessageReceivedEventArgs
-            {
-                Message = channelMessage
-            });
+            OnMessage(channelMessage);
         }
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
@@ -33,17 +29,7 @@ namespace EzBus.Core.Test.TestHelpers
 
         }
 
-        public event EventHandler<MessageReceivedEventArgs> OnMessageReceived
-        {
-            add
-            {
-                InnerMessageHandler += value;
-            }
-            remove
-            {
-                InnerMessageHandler -= value;
-            }
-        }
+        public Action<ChannelMessage> OnMessage { get { return onMessage; } set { onMessage = value; } }
 
         public static EndpointAddress LastSentDestination => sentDestinations.LastOrDefault();
 

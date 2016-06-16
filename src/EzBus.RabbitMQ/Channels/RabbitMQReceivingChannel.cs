@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using EzBus.Config;
-using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace EzBus.RabbitMQ.Channels
@@ -30,7 +28,7 @@ namespace EzBus.RabbitMQ.Channels
             consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, eventArgs) =>
             {
-                if (OnMessageReceived == null) return;
+                if (OnMessage == null) return;
 
                 var body = eventArgs.Body;
                 var message = new ChannelMessage(new MemoryStream(body));
@@ -41,11 +39,13 @@ namespace EzBus.RabbitMQ.Channels
                     message.AddHeader(header.Key, value);
                 }
 
-                OnMessageReceived(this, new MessageReceivedEventArgs { Message = message });
+                OnMessage(message);
             };
 
             channel.BasicConsume(inputAddress.QueueName, true, consumer);
         }
+
+        public Action<ChannelMessage> OnMessage { get; set; }
 
         private void BindSubscriptionExchanges(EndpointAddress inputAddress)
         {
@@ -55,7 +55,5 @@ namespace EzBus.RabbitMQ.Channels
                 BindQueue(inputAddress.QueueName, exchange);
             }
         }
-
-        public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
     }
 }

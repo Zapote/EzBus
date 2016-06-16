@@ -4,7 +4,7 @@ namespace EzBus
 {
     public interface IMiddleware
     {
-        void Invoke(object message, Action next);
+        void Invoke(MiddlewareContext context, Action next);
         void OnError(Exception ex);
     }
 }

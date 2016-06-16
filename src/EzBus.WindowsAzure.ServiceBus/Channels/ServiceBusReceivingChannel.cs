@@ -18,20 +18,22 @@ namespace EzBus.WindowsAzure.ServiceBus.Channels
                 AutoRenewTimeout = TimeSpan.FromMinutes(1),
                 MaxConcurrentCalls = 1
             };
-            inputQueueClient.OnMessage(OnMessage, options);
+            inputQueueClient.OnMessage(OnBrokeredMessage, options);
         }
 
-        private void OnMessage(BrokeredMessage message)
+        public Action<ChannelMessage> OnMessage { get; set; }
+
+        private void OnBrokeredMessage(BrokeredMessage message)
         {
             try
             {
-                if (OnMessageReceived != null)
+                if (OnMessage != null)
                 {
                     var headers = ResolveMessageHeaders(message);
                     var bodyStream = message.GetBody<Stream>();
                     var channelMessage = new ChannelMessage(bodyStream);
                     channelMessage.AddHeader(headers);
-                    OnMessageReceived(this, new MessageReceivedEventArgs { Message = channelMessage });
+                    OnMessage(channelMessage);
                 }
 
                 message.Complete();
@@ -53,7 +55,5 @@ namespace EzBus.WindowsAzure.ServiceBus.Channels
             }
             return headers.ToArray();
         }
-
-        public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
     }
 }

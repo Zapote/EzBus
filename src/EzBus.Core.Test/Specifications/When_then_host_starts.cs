@@ -38,7 +38,7 @@ namespace EzBus.Core.Test.Specifications
         {
             var handlerCache = objectFactory.GetInstance<IHandlerCache>();
 
-            Assert.That(handlerCache.NumberOfEntries, Is.EqualTo(3));
+            Assert.That(handlerCache.NumberOfEntries, Is.EqualTo(4));
         }
     }
 }

@@ -46,6 +46,7 @@
     <Compile Include="IAssemblyScanner.cs" />
     <Compile Include="IBus.cs" />
     <Compile Include="IHandle.cs" />
+    <Compile Include="MiddlewareContext.cs" />
     <Compile Include="ITaskRunner.cs" />
     <Compile Include="ObjectFactory\IHandleScopes.cs" />
     <Compile Include="IHostConfig.cs" />

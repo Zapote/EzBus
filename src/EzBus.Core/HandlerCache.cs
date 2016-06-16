@@ -16,17 +16,18 @@ namespace EzBus.Core
             var messageType = GetMessageType(handlerType);
             var handlerInfo = new HandlerInfo(handlerType, messageType);
             handlers.Add(new KeyValuePair<string, HandlerInfo>(messageType.FullName, handlerInfo));
-            log.VerboseFormat("Handler '{0}' for message '{1}' added to cache", handlerType.FullName, messageType.FullName);
+            log.Verbose($"Handler '{handlerType.FullName}' for message '{messageType.FullName}' added to cache");
         }
 
         public IEnumerable<HandlerInfo> GetHandlerInfo(string messageTypeName)
         {
-            var className = messageTypeName.Split('.').Last();
-            var result = handlers.Where(x => x.Key == messageTypeName);
+            var nameParts = messageTypeName.Split('.');
+            var className = nameParts.Last();
+            var result = handlers.Where(x => x.Key == messageTypeName).ToList();
 
             if (!result.Any())
             {
-                result = handlers.Where(x => x.Key.EndsWith(className));
+                result = handlers.Where(x => x.Key.EndsWith(className)).ToList();
             }
 
             return result.Select(x => x.Value);

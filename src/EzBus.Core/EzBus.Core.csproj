@@ -42,8 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreRegistry.cs" />
+    <Compile Include="HandlerInvoker.cs" />
     <Compile Include="HostConfig.cs" />
     <Compile Include="IHandlerCache.cs" />
+    <Compile Include="Middleware\HandleMessageMiddleware.cs" />
+    <Compile Include="Middleware\IPreMiddleware.cs" />
+    <Compile Include="Middleware\ISystemMiddleware.cs" />
+    <Compile Include="Middleware\MessageDeserilizationMiddleware.cs" />
     <Compile Include="Middleware\MiddlewareInvoker.cs" />
     <Compile Include="Resolvers\TypeResolver.cs" />
     <Compile Include="TaskRunner.cs" />
