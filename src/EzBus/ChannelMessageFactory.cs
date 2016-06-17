@@ -16,7 +16,7 @@ namespace EzBus
             channelMessage.AddHeader(MessageHeaders.UserPrincipal, Environment.UserName);
             channelMessage.AddHeader(MessageHeaders.SendingMachine, Environment.MachineName);
             channelMessage.AddHeader(MessageHeaders.SendingModule, ResolveAssemblyName());
-            channelMessage.AddHeader(MessageHeaders.TimeSent, DateTime.Now.ToString("O"));
+            channelMessage.AddHeader(MessageHeaders.TimeSent, DateTime.UtcNow.ToString("O"));
             return channelMessage;
         }
 

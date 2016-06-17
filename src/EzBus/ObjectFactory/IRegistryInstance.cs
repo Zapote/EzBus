@@ -6,6 +6,7 @@ namespace EzBus.ObjectFactory
     {
         Type Implementation { get; }
         Type Service { get; }
+        string ServiceName { get; }
         object Instance { get; }
         LifeCycle LifeCycle { get; }
     }

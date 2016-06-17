@@ -36,7 +36,7 @@ namespace EzBus.WindowsAzure.ServiceBus.Subscription
 
                 var destination = EndpointAddress.Parse(subscription.Endpoint);
 
-                log.VerboseFormat("Subscribing to: {0}", destination);
+                log.Verbose($"Subscribing to: {destination}");
 
                 var channelMessage = ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, messageSerializer);
                 var sendingChannel = new ServiceBusSendingChannel();

@@ -1,5 +1,4 @@
 ﻿using EzBus.Core.ObjectFactory;
-using EzBus.Core.Resolvers;
 using EzBus.Core.Test.TestHelpers;
 using EzBus.ObjectFactory;
 using NUnit.Framework;
@@ -18,7 +17,7 @@ namespace EzBus.Core.Test.Specifications
             StartupTaskTwo.HasStarted = false;
 
             objectFactory.Initialize();
-            host = new Host(new HostConfig(), objectFactory);
+            host = new Host(new TaskRunner(objectFactory));
         }
 
         protected override void When()
@@ -31,14 +30,6 @@ namespace EzBus.Core.Test.Specifications
         {
             Assert.That(StartupTaskOne.HasStarted, Is.True);
             Assert.That(StartupTaskTwo.HasStarted, Is.True);
-        }
-
-        [Then]
-        public void All_handlers_shall_be_loaded_in_cache()
-        {
-            var handlerCache = objectFactory.GetInstance<IHandlerCache>();
-
-            Assert.That(handlerCache.NumberOfEntries, Is.EqualTo(4));
         }
     }
 }

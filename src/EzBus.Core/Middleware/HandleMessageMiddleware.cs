@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using EzBus.Core.Utils;
 using EzBus.Logging;
 using EzBus.ObjectFactory;
 
@@ -39,7 +37,7 @@ namespace EzBus.Core.Middleware
 
                 if (!result.Success)
                 {
-                    //PlaceMessageOnErrorQueue(channelMessage, result.Exception.InnerException);
+                    throw result.Exception;
                 }
             }
 
@@ -66,6 +64,7 @@ namespace EzBus.Core.Middleware
                 {
                     var handler = objectFactory.GetInstance(handlerType);
                     methodInfo.Invoke(handler, new[] { message });
+                    success = true;
                     break;
                 }
                 catch (Exception ex)

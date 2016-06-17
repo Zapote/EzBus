@@ -14,7 +14,7 @@ namespace EzBus.Samples.Msmq.Service.Fwk
             sw.Start();
             next();
             sw.Stop();
-            logger.DebugFormat("Message {0} handled in {1} ms", context.Message.GetType(), sw.ElapsedMilliseconds);
+            logger.Debug($"Message {context.Message.GetType()} handled in {sw.ElapsedMilliseconds} ms");
         }
 
         public void OnError(Exception ex)

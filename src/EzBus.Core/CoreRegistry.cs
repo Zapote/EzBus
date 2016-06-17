@@ -75,16 +75,16 @@ namespace EzBus.Core
                 if (type.IsInterface) continue;
                 if (type.ImplementsInterface(typeof(IPreMiddleware)))
                 {
-                    Register(typeof(IPreMiddleware), type).As.Singleton();
+                    Register(typeof(IPreMiddleware), type, type.FullName).As.Singleton();
                     continue;
                 }
                 if (type.ImplementsInterface(typeof(ISystemMiddleware)))
                 {
-                    Register(typeof(ISystemMiddleware), type).As.Singleton();
+                    Register(typeof(ISystemMiddleware), type, type.FullName).As.Singleton();
                     continue;
                 }
 
-                Register(typeof(IMiddleware), type).As.Singleton();
+                Register(typeof(IMiddleware), type, type.FullName).As.Singleton();
             }
         }
     }

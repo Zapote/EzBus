@@ -80,36 +80,5 @@ namespace EzBus.Log4Net
         {
             log.Fatal(message, t);
         }
-
-        public void VerboseFormat(string format, params object[] args)
-        {
-            var message = string.Format(format, args);
-            log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, Level.Verbose, message, null);
-        }
-
-        public void DebugFormat(string format, params object[] args)
-        {
-            log.DebugFormat(format, args);
-        }
-
-        public void InfoFormat(string format, params object[] args)
-        {
-            log.InfoFormat(format, args);
-        }
-
-        public void WarnFormat(string format, params object[] args)
-        {
-            log.WarnFormat(format, args);
-        }
-
-        public void ErrorFormat(string format, params object[] args)
-        {
-            log.ErrorFormat(format, args);
-        }
-
-        public void FatalFormat(string format, params object[] args)
-        {
-            log.FatalFormat(format, args);
-        }
     }
 }

@@ -23,7 +23,7 @@ namespace EzBus.Core.Test.Specifications
             messageChannel = new FakeMessageChannel();
 
             bus = new CoreBus(messageChannel, messageChannel, new FakeMessageRouting());
-            host = new Host(new HostConfig(), objectFactory);
+            host = new Host(new TaskRunner(objectFactory));
             host.Start();
 
             LogManager.SetLogLevel(LogLevel.Off);
@@ -41,7 +41,6 @@ namespace EzBus.Core.Test.Specifications
         }
 
         [Test]
-        [Ignore("Need implemenation in MW")]
         public void Message_should_be_placed_on_error_queue()
         {
             Assert.That(FakeMessageChannel.LastSentDestination.QueueName, Is.EqualTo("ezbus.core.error"));

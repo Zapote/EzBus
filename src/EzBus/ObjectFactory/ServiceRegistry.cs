@@ -12,9 +12,9 @@ namespace EzBus.ObjectFactory
             return Register(typeof(TService), typeof(TImplementation));
         }
 
-        protected ILifeCycleConfiguration Register(Type serviceType, Type implementationType)
+        protected ILifeCycleConfiguration Register(Type serviceType, Type implementationType, string serviceName = null)
         {
-            var registryInstance = new RegistryInstance(serviceType, implementationType);
+            var registryInstance = new RegistryInstance(serviceType, implementationType, serviceName);
             instances.Add(registryInstance);
             return registryInstance;
         }

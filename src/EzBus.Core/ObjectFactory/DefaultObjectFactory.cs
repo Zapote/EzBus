@@ -40,7 +40,13 @@ namespace EzBus.Core.ObjectFactory
                 {
                     if (instance.Instance == null)
                     {
-                        Register(instance.Service, instance.Implementation, instance.LifeCycle);
+                        if (instance.ServiceName == null)
+                        {
+                            Register(instance.Service, instance.Implementation, instance.LifeCycle);
+                            continue;
+                        }
+
+                        Register(instance.Service, instance.Implementation, instance.ServiceName, instance.LifeCycle);
                         continue;
                     }
 
@@ -55,6 +61,12 @@ namespace EzBus.Core.ObjectFactory
         {
             var lifetime = lifeCycleToLifeTime[lifeCycle]();
             container.Register(serviceType, implementationType, lifetime);
+        }
+
+        public void Register(Type serviceType, Type implementationType, string serviceName, LifeCycle lifeCycle = LifeCycle.PerScope)
+        {
+            var lifetime = lifeCycleToLifeTime[lifeCycle]();
+            container.Register(serviceType, implementationType, serviceName, lifetime);
         }
 
         public void BeginScope()

@@ -11,7 +11,7 @@ public static class Bus
     private static readonly IBus bus;
     private static Host host;
     private static readonly HostCustomization hostCustomization = new HostCustomization();
-    private static DefaultObjectFactory objectFactory;
+    private static readonly DefaultObjectFactory objectFactory;
 
     static Bus()
     {
@@ -26,7 +26,7 @@ public static class Bus
 
     public static void Start()
     {
-        host = new HostFactory().Build(hostCustomization.HostConfig, objectFactory);
+        host = new HostFactory().Build(objectFactory.GetInstance<ITaskRunner>());
         host.Start();
     }
 
