@@ -67,15 +67,15 @@ namespace EzBus.Core.Test.Serializers
         [Test]
         public void Message_with_collection_is_serialized_correct()
         {
-            var message = new MockMessageWithCollection("");
-            message.AddData(new MockData { IntValue = 1 });
-            message.AddData(new MockData { IntValue = 2 });
+            var message = new TestMessageWithCollection("");
+            message.AddData(new TestMessageData { IntValue = 1 });
+            message.AddData(new TestMessageData { IntValue = 2 });
 
             result = serializer.Serialize(message);
             var xDoc = XDocument.Load(result);
 
             if (xDoc.Root == null) Assert.Fail("Document should not be null");
-            Assert.That(xDoc.Root.Name.LocalName, Is.EqualTo("MockMessageWithCollection"));
+            Assert.That(xDoc.Root.Name.LocalName, Is.EqualTo("TestMessageWithCollection"));
             Assert.That(xDoc.Root.Descendants().First().Name.LocalName, Is.EqualTo("DataCollection"));
         }
 
@@ -84,7 +84,7 @@ namespace EzBus.Core.Test.Serializers
         {
             const string stringValue = "First_section_is_generic_for_assembly text";
             const int intValue = 1;
-            var message = new MockMessage(stringValue) { MockData = { IntValue = intValue } };
+            var message = new TestMessage(stringValue) { TestMessageData = { IntValue = intValue } };
 
             var xDoc = Serialize(message);
 

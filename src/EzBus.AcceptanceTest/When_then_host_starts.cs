@@ -1,9 +1,11 @@
-﻿using EzBus.Core.ObjectFactory;
-using EzBus.Core.Test.TestHelpers;
+﻿using EzBus.AcceptanceTest.Specifications;
+using EzBus.AcceptanceTest.TestHelpers;
+using EzBus.Core;
+using EzBus.Core.ObjectFactory;
 using EzBus.ObjectFactory;
 using NUnit.Framework;
 
-namespace EzBus.Core.Test.Specifications
+namespace EzBus.AcceptanceTest
 {
     [Specification]
     public class When_then_host_starts : SpecificationBase

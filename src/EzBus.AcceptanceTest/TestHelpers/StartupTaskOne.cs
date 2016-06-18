@@ -1,6 +1,6 @@
-﻿namespace EzBus.Core.Test.TestHelpers
+﻿namespace EzBus.AcceptanceTest.TestHelpers
 {
-    public class StartupTaskTwo : IStartupTask
+    public class StartupTaskOne : IStartupTask
     {
         public static bool HasStarted { get; set; }
 

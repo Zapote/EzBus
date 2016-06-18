@@ -1,6 +1,6 @@
 ﻿namespace EzBus.Core.Test.TestHelpers
 {
-    public enum MockEnum
+    public enum TestEnum
     {
         Foo, Bar
     }

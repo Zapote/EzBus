@@ -18,19 +18,19 @@ namespace EzBus.Core.Test
         [Test]
         public void Handler_info_is_returned_when_using_only_class_name()
         {
-            var handlerInfo = handlerCache.GetHandlerInfo("MockMessage").Single();
+            var handlerInfo = handlerCache.GetHandlerInfo("TestMessage").Single();
 
             Assert.That(handlerInfo.HandlerType, Is.EqualTo(typeof(BarHandler)));
-            Assert.That(handlerInfo.MessageType, Is.EqualTo(typeof(MockMessage)));
+            Assert.That(handlerInfo.MessageType, Is.EqualTo(typeof(TestMessage)));
         }
 
         [Test]
         public void Handler_info_is_returned_when_using_full_name()
         {
-            var handlerInfo = handlerCache.GetHandlerInfo("EzBus.Core.Test.TestHelpers.MockMessage").Single();
+            var handlerInfo = handlerCache.GetHandlerInfo("EzBus.Core.Test.TestHelpers.TestMessage").Single();
 
             Assert.That(handlerInfo.HandlerType, Is.EqualTo(typeof(BarHandler)));
-            Assert.That(handlerInfo.MessageType, Is.EqualTo(typeof(MockMessage)));
+            Assert.That(handlerInfo.MessageType, Is.EqualTo(typeof(TestMessage)));
         }
 
         [Test]

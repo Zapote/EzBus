@@ -1,6 +1,6 @@
 namespace EzBus.Core.Test.TestHelpers
 {
-    public class MockData
+    public class TestMessageData
     {
         public int IntValue { get; set; }
     }

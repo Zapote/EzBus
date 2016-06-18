@@ -1,4 +1,4 @@
-namespace EzBus.Core.Test.Specifications
+namespace EzBus.AcceptanceTest.Specifications
 {
     [Specification]
     public abstract class SpecificationBase

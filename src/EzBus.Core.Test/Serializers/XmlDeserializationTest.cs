@@ -9,7 +9,7 @@ namespace EzBus.Core.Test.Serializers
     public class XmlDeserializationTest
     {
         private XmlMessageSerializer serializer;
-        private MockMessageWithCollection message;
+        private TestMessageWithCollection message;
         private const string stringValue = "FooBar";
         private const int mockDataIntValue = int.MaxValue;
 
@@ -17,16 +17,16 @@ namespace EzBus.Core.Test.Serializers
         public void FixtureSetup()
         {
             serializer = new XmlMessageSerializer();
-            var serializationMessage = new MockMessageWithCollection(stringValue)
+            var serializationMessage = new TestMessageWithCollection(stringValue)
             {
-                MockData = { IntValue = mockDataIntValue }
+                TestMessageData = { IntValue = mockDataIntValue }
             };
 
-            serializationMessage.AddData(new MockData { IntValue = 1 });
-            serializationMessage.AddData(new MockData { IntValue = 2 });
+            serializationMessage.AddData(new TestMessageData { IntValue = 1 });
+            serializationMessage.AddData(new TestMessageData { IntValue = 2 });
 
             var xml = serializer.Serialize(serializationMessage);
-            message = serializer.Deserialize(xml, typeof(MockMessageWithCollection)) as MockMessageWithCollection;
+            message = serializer.Deserialize(xml, typeof(TestMessageWithCollection)) as TestMessageWithCollection;
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace EzBus.Core.Test.Serializers
         [Test]
         public void IntValue_should_be_set()
         {
-            Assert.That(message.MockData.IntValue, Is.EqualTo(mockDataIntValue));
+            Assert.That(message.TestMessageData.IntValue, Is.EqualTo(mockDataIntValue));
         }
 
         [Test]

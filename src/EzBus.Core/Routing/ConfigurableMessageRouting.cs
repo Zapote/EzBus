@@ -17,7 +17,7 @@ namespace EzBus.Core.Routing
 
                 if (routingTable.ContainsKey(key))
                 {
-                    throw new MessageRoutingException(string.Format("Multiple setup for {0}", destination));
+                    throw new MessageRoutingException($"Multiple setup for {destination}");
                 }
 
                 routingTable.Add(key, destination.Endpoint);
@@ -27,8 +27,7 @@ namespace EzBus.Core.Routing
         private static int CreateKey(string assembly, string messageType)
         {
             return string.IsNullOrWhiteSpace(messageType) ?
-                assembly.GetHashCode() :
-                string.Format("{0}::{1}", assembly, messageType).GetHashCode();
+                assembly.GetHashCode() : $"{assembly}::{messageType}".GetHashCode();
         }
 
         public string GetRoute(string asssemblyName, string messageType)

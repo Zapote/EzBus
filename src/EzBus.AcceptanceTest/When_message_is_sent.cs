@@ -1,7 +1,9 @@
-﻿using EzBus.Core.Test.TestHelpers;
+﻿using EzBus.AcceptanceTest.Specifications;
+using EzBus.AcceptanceTest.TestHelpers;
+using EzBus.Core;
 using NUnit.Framework;
 
-namespace EzBus.Core.Test.Specifications
+namespace EzBus.AcceptanceTest
 {
     [Specification]
     public class When_message_is_sent : BusSpecificationBase
@@ -11,18 +13,18 @@ namespace EzBus.Core.Test.Specifications
         protected override void Given()
         {
             base.Given();
-            messageRouting.AddRoute(typeof(MockMessage).Assembly.GetName().Name, typeof(MockMessage).FullName, expectedDestination);
+            messageRouting.AddRoute(typeof(TestMessage).Assembly.GetName().Name, typeof(TestMessage).FullName, expectedDestination);
         }
 
         protected override void When()
         {
-            bus.Send(new MockMessage("Foo"));
+            bus.Send(new TestMessage());
         }
 
         [Then]
         public void Then_the_message_should_end_up_in_correct_destination()
         {
-            Assert.That(InMemoryMessageChannel.LastSentDestination, Is.EqualTo(EndpointAddress.Parse(expectedDestination)));
+            Assert.That(FakeMessageChannel.LastSentDestination, Is.EqualTo(EndpointAddress.Parse(expectedDestination)));
         }
     }
 }

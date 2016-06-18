@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace EzBus.Core.Test.Specifications
+namespace EzBus.AcceptanceTest.Specifications
 {
     public class GivenAttribute : TestFixtureSetUpAttribute { }
 }

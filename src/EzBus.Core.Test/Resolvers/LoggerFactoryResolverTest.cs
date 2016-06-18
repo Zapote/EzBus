@@ -8,7 +8,7 @@ namespace EzBus.Core.Test.Resolvers
     public class LoggerFactoryResolverTest
     {
         [Test]
-        public void Receiving_channel_should_be_FakeMessageChannel()
+        public void LoggerFactory_should_be_TraceLoggerFactory()
         {
             var loggerFactory = LoggerFactoryResolver.GetLoggerFactory();
             Assert.That(loggerFactory, Is.InstanceOf<TraceLoggerFactory>());
