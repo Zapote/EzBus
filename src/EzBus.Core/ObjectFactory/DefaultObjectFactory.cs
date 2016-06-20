@@ -69,6 +69,11 @@ namespace EzBus.Core.ObjectFactory
             container.Register(serviceType, implementationType, serviceName, lifetime);
         }
 
+        public void RegisterInstance(Type serviceType, object instance)
+        {
+            container.RegisterInstance(serviceType, instance);
+        }
+
         public void BeginScope()
         {
             scope = container.BeginScope();

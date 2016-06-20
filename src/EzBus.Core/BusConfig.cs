@@ -3,9 +3,9 @@ using EzBus.Core.Utils;
 
 namespace EzBus.Core
 {
-    public class HostConfig : IHostConfig
+    public class BusConfig : IBusConfig
     {
-        public HostConfig()
+        public BusConfig()
         {
             NumberOfRetrys = 5;
             WorkerThreads = 1;
@@ -14,7 +14,6 @@ namespace EzBus.Core
 
         public int WorkerThreads { get; set; }
         public int NumberOfRetrys { get; set; }
-
         public string EndpointName { get; set; }
         public string ErrorEndpointName { get; set; }
 

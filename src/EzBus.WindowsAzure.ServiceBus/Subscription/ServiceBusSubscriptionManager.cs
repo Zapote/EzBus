@@ -11,21 +11,21 @@ namespace EzBus.WindowsAzure.ServiceBus.Subscription
         private static readonly ILogger log = LogManager.GetLogger(typeof(ServiceBusSubscriptionManager));
         private readonly ISubscriptionCollection subscriptions;
         private readonly IMessageSerializer messageSerializer;
-        private readonly IHostConfig hostConfig;
+        private readonly IBusConfig busConfig;
 
-        public ServiceBusSubscriptionManager(ISubscriptionCollection subscriptions, IMessageSerializer messageSerializer, IHostConfig hostConfig)
+        public ServiceBusSubscriptionManager(ISubscriptionCollection subscriptions, IMessageSerializer messageSerializer, IBusConfig busConfig)
         {
             if (subscriptions == null) throw new ArgumentNullException(nameof(subscriptions));
             if (messageSerializer == null) throw new ArgumentNullException(nameof(messageSerializer));
-            if (hostConfig == null) throw new ArgumentNullException(nameof(hostConfig));
+            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
             this.subscriptions = subscriptions;
             this.messageSerializer = messageSerializer;
-            this.hostConfig = hostConfig;
+            this.busConfig = busConfig;
         }
 
         public void Run()
         {
-            var endpointName = hostConfig.EndpointName;
+            var endpointName = busConfig.EndpointName;
 
             foreach (ISubscription subscription in subscriptions)
             {

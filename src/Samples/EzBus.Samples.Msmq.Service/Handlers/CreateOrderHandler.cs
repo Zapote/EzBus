@@ -20,15 +20,6 @@ namespace EzBus.Samples.Msmq.Service.Handlers
         public void Handle(CreateOrder message)
         {
             log.Debug($"Generating number for order: {message.OrderId}");
-
-            var a = new Random((int)DateTime.Now.Ticks);
-
-            if (a.Next(0, 5) == 3)
-            {
-                throw new Exception("Error creating order");
-            }
-
-
             var orderNumber = orderNumberGenerator.GenerateNumber(message.OrderId);
             Bus.Publish(new OrderCreated(message.OrderId, orderNumber));
         }

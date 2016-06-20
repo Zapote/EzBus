@@ -12,16 +12,16 @@ namespace EzBus.WindowsAzure.ServiceBus.Subscription
         private static readonly ILogger log = LogManager.GetLogger(typeof(AzureTableSubscriptionStorage));
         private readonly CloudTable table;
 
-        public AzureTableSubscriptionStorage(IHostConfig hostConfig)
+        public AzureTableSubscriptionStorage(IBusConfig busConfig)
         {
-            if (hostConfig == null) throw new ArgumentNullException(nameof(hostConfig));
+            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
 
             var cs = ConnectionStringHelper.GetStorageConnectionString();
             if (string.IsNullOrEmpty(cs)) return;
 
             var account = CloudStorageAccount.Parse(cs);
             var tableClient = account.CreateCloudTableClient();
-            var tableName = hostConfig.EndpointName.Replace(".", "");
+            var tableName = busConfig.EndpointName.Replace(".", "");
             table = tableClient.GetTableReference(tableName);
         }
 

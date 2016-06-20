@@ -1,7 +1,5 @@
 ﻿using EzBus.Logging;
 using System;
-using EzBus.ObjectFactory;
-using EzBus.Serializers;
 
 namespace EzBus.Core
 {
@@ -9,7 +7,6 @@ namespace EzBus.Core
     {
         private readonly ITaskRunner taskRunner;
         private static readonly ILogger log = LogManager.GetLogger<Host>();
-        private readonly IObjectFactory objectFactory;
 
         public Host(ITaskRunner taskRunner)
         {

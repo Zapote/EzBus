@@ -7,15 +7,15 @@ namespace EzBus.Core
 {
     public class WorkerStartupTask : IStartupTask
     {
-        private readonly IHostConfig hostConfig;
+        private readonly IBusConfig busConfig;
         private readonly IObjectFactory objectFactory;
         private List<IMiddleware> middlewares;
 
-        public WorkerStartupTask(IHostConfig hostConfig, IObjectFactory objectFactory)
+        public WorkerStartupTask(IBusConfig busConfig, IObjectFactory objectFactory)
         {
-            if (hostConfig == null) throw new ArgumentNullException(nameof(hostConfig));
+            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
             if (objectFactory == null) throw new ArgumentNullException(nameof(objectFactory));
-            this.hostConfig = hostConfig;
+            this.busConfig = busConfig;
             this.objectFactory = objectFactory;
         }
 
@@ -23,12 +23,12 @@ namespace EzBus.Core
         {
             LoadMiddlewares();
 
-            for (var i = 0; i < hostConfig.WorkerThreads; i++)
+            for (var i = 0; i < busConfig.WorkerThreads; i++)
             {
                 var receivingChannel = objectFactory.GetInstance<IReceivingChannel>();
                 receivingChannel.OnMessage = OnMessageReceived;
-                var endpointAddress = new EndpointAddress(hostConfig.EndpointName);
-                var errorEndpointAddress = new EndpointAddress(hostConfig.ErrorEndpointName);
+                var endpointAddress = new EndpointAddress(busConfig.EndpointName);
+                var errorEndpointAddress = new EndpointAddress(busConfig.ErrorEndpointName);
                 receivingChannel.Initialize(endpointAddress, errorEndpointAddress);
             }
         }

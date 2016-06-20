@@ -17,7 +17,6 @@ namespace EzBus.Core
             RegisterChannels();
             RegisterMessageSerializer();
             RegisterSubscriptions();
-            RegisterHostConfig();
             RegisterHandlerCache();
             RegisterMiddlewares();
             RegisterTaskRunner();
@@ -46,11 +45,6 @@ namespace EzBus.Core
         {
             var subscriptions = SubscriptionSection.Section.Subscriptions;
             RegisterInstance(typeof(ISubscriptionCollection), subscriptions);
-        }
-
-        private void RegisterHostConfig()
-        {
-            RegisterInstance(typeof(IHostConfig), new HostConfig());
         }
 
         private void RegisterHandlerCache()

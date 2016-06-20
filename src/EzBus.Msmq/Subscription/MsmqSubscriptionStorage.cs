@@ -7,15 +7,15 @@ namespace EzBus.Msmq.Subscription
 {
     public class MsmqSubscriptionStorage : ISubscriptionStorage
     {
-        private readonly IHostConfig hostConfig;
+        private readonly IBusConfig busConfig;
         private static readonly List<MsmqSubscriptionStorageItem> subscriptions = new List<MsmqSubscriptionStorageItem>();
         private static EndpointAddress storageAddress;
         private MessageQueue storageQueue;
 
-        public MsmqSubscriptionStorage(IHostConfig hostConfig)
+        public MsmqSubscriptionStorage(IBusConfig busConfig)
         {
-            if (hostConfig == null) throw new ArgumentNullException(nameof(hostConfig));
-            this.hostConfig = hostConfig;
+            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
+            this.busConfig = busConfig;
 
             Initialize();
         }
@@ -71,7 +71,7 @@ namespace EzBus.Msmq.Subscription
 
         private void Initialize()
         {
-            storageAddress = new EndpointAddress($"{hostConfig.EndpointName}.subscriptions");
+            storageAddress = new EndpointAddress($"{busConfig.EndpointName}.subscriptions");
 
             if (!MsmqUtilities.QueueExists(storageAddress)) return;
 

@@ -9,16 +9,16 @@ namespace EzBus.Core.Middleware
         private static readonly ILogger log = LogManager.GetLogger<HandleMessageMiddleware>();
         private readonly IHandlerCache handlerCache;
         private readonly IObjectFactory objectFactory;
-        private readonly IHostConfig hostConfig;
+        private readonly IBusConfig busConfig;
 
-        public HandleMessageMiddleware(IHandlerCache handlerCache, IObjectFactory objectFactory, IHostConfig hostConfig)
+        public HandleMessageMiddleware(IHandlerCache handlerCache, IObjectFactory objectFactory, IBusConfig busConfig)
         {
             if (handlerCache == null) throw new ArgumentNullException(nameof(handlerCache));
             if (objectFactory == null) throw new ArgumentNullException(nameof(objectFactory));
-            if (hostConfig == null) throw new ArgumentNullException(nameof(hostConfig));
+            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
             this.handlerCache = handlerCache;
             this.objectFactory = objectFactory;
-            this.hostConfig = hostConfig;
+            this.busConfig = busConfig;
         }
 
         public void Invoke(MiddlewareContext context, Action next)
@@ -54,7 +54,7 @@ namespace EzBus.Core.Middleware
             var success = true;
             Exception exception = null;
 
-            for (var i = 0; i < hostConfig.NumberOfRetrys; i++)
+            for (var i = 0; i < busConfig.NumberOfRetrys; i++)
             {
                 var methodInfo = handlerType.GetMethod("Handle", new[] { message.GetType() });
 

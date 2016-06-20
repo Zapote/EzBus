@@ -5,20 +5,15 @@ namespace EzBus.Samples.Msmq.Client
 {
     public class Program
     {
-        public static class IHostCustomizationExt
-        {
-            // public static void UseStructureMap(this IHostCustomization )
-        }
-
         static void Main(string[] args)
         {
             Console.Title = "EzBus.Samples.Msmq.Client";
 
-            Bus.Configure()
-                .WorkerThreads(3);
-            //UseStructureMap(new Container);
-
-            Bus.Start();
+            Bus.Start(x =>
+            {
+                x.EndpointName = "Lajka";
+                x.ErrorEndpointName = "Lajka.error";
+            });
 
             var loop = true;
 

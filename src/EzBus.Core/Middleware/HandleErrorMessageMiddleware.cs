@@ -5,15 +5,15 @@ namespace EzBus.Core.Middleware
     internal class HandleErrorMessageMiddleware : ISystemMiddleware
     {
         private readonly ISendingChannel sendingChannel;
-        private readonly IHostConfig hostConfig;
+        private readonly IBusConfig busConfig;
         private ChannelMessage channelMessage;
 
-        public HandleErrorMessageMiddleware(ISendingChannel sendingChannel, IHostConfig hostConfig)
+        public HandleErrorMessageMiddleware(ISendingChannel sendingChannel, IBusConfig busConfig)
         {
             if (sendingChannel == null) throw new ArgumentNullException(nameof(sendingChannel));
-            if (hostConfig == null) throw new ArgumentNullException(nameof(hostConfig));
+            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
             this.sendingChannel = sendingChannel;
-            this.hostConfig = hostConfig;
+            this.busConfig = busConfig;
         }
 
         public void Invoke(MiddlewareContext context, Action next)
@@ -35,7 +35,7 @@ namespace EzBus.Core.Middleware
                 level++;
             }
 
-            var endpointAddress = new EndpointAddress(hostConfig.ErrorEndpointName);
+            var endpointAddress = new EndpointAddress(busConfig.ErrorEndpointName);
             sendingChannel.Send(endpointAddress, channelMessage);
         }
     }

@@ -49,7 +49,7 @@
     <Compile Include="MiddlewareContext.cs" />
     <Compile Include="ITaskRunner.cs" />
     <Compile Include="ObjectFactory\IHandleScopes.cs" />
-    <Compile Include="IHostConfig.cs" />
+    <Compile Include="IBusConfig.cs" />
     <Compile Include="IMiddleware.cs" />
     <Compile Include="ObjectFactory\ILifeCycle.cs" />
     <Compile Include="ObjectFactory\ILifeCycleConfiguration.cs" />

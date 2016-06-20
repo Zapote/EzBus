@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreRegistry.cs" />
-    <Compile Include="HostConfig.cs" />
+    <Compile Include="BusConfig.cs" />
     <Compile Include="IHandlerCache.cs" />
     <Compile Include="Middleware\HandleErrorMessageMiddleware.cs" />
     <Compile Include="Middleware\HandleMessageMiddleware.cs" />
@@ -55,7 +55,6 @@
     <Compile Include="Utils\AssemblyScanner.cs" />
     <Compile Include="CoreBus.cs" />
     <Compile Include="Bus.cs" />
-    <Compile Include="HostFactory.cs" />
     <Compile Include="InMemoryMessageChannel.cs" />
     <Compile Include="Utils\IEnumerableExtensions.cs" />
     <Compile Include="Logging\TraceLoggerFactory.cs" />

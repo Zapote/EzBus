@@ -1,4 +1,5 @@
-﻿using EzBus;
+﻿using System;
+using EzBus;
 using EzBus.Core;
 using EzBus.Core.ObjectFactory;
 using EzBus.Core.Resolvers;
@@ -8,31 +9,18 @@ using EzBus.ObjectFactory;
 // ReSharper disable once CheckNamespace
 public static class Bus
 {
-    private static readonly IBus bus;
-    private static Host host;
-    private static readonly HostCustomization hostCustomization = new HostCustomization();
-    private static readonly DefaultObjectFactory objectFactory;
+    private static readonly IObjectFactory objectFactory = new DefaultObjectFactory();
+    private static readonly IBusConfig busConfig = new BusConfig();
+    private static IBus bus;
 
-    static Bus()
+    public static void Start(Action<IBusConfig> configAction = null)
     {
-        if (bus != null) return;
-
-        ConfigureLogging();
-        objectFactory = new DefaultObjectFactory();
         objectFactory.Initialize();
 
-        bus = objectFactory.GetInstance<IBus>();
-    }
-
-    public static void Start()
-    {
-        host = new HostFactory().Build(objectFactory.GetInstance<ITaskRunner>());
-        host.Start();
-    }
-
-    public static HostCustomization Configure()
-    {
-        return hostCustomization;
+        ConfigureLogging();
+        SetupBusConfig(configAction);
+        CreateBus();
+        StartHost();
     }
 
     public static void Send(object message)
@@ -56,39 +44,21 @@ public static class Bus
         LogManager.Configure(loggerFactory, LogLevel.Debug);
     }
 
-    public class HostCustomization
+    private static void SetupBusConfig(Action<IBusConfig> configAction)
     {
-        public IHostConfig HostConfig { get; }
-        public IObjectFactory ObjectFactory { get; }
+        configAction?.Invoke(busConfig);
+        objectFactory.RegisterInstance(typeof(IBusConfig), busConfig);
+    }
 
-        public HostCustomization()
-        {
-            HostConfig = new HostConfig();
-        }
+    private static void CreateBus()
+    {
+        bus = objectFactory.GetInstance<IBus>();
+    }
 
-        public HostCustomization WorkerThreads(int workerThreads)
-        {
-            HostConfig.WorkerThreads = workerThreads;
-            return this;
-        }
-
-        public HostCustomization NumberOfRetrys(int numberOfRetrys)
-        {
-            HostConfig.NumberOfRetrys = numberOfRetrys;
-            return this;
-        }
-
-        public HostCustomization EndpointName(string endpointName)
-        {
-            HostConfig.EndpointName = endpointName;
-            return this;
-        }
-
-        public HostCustomization ErrorEndpointName(string errorEndpointName)
-        {
-            HostConfig.ErrorEndpointName = errorEndpointName;
-            return this;
-        }
+    private static void StartHost()
+    {
+        var host = objectFactory.GetInstance<Host>();
+        host.Start();
     }
 }
 

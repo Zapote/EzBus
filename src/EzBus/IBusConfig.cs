@@ -1,6 +1,6 @@
 ﻿namespace EzBus
 {
-    public interface IHostConfig
+    public interface IBusConfig
     {
         int WorkerThreads { get; set; }
         int NumberOfRetrys { get; set; }

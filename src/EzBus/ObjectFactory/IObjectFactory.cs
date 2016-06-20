@@ -9,5 +9,8 @@ namespace EzBus.ObjectFactory
         T GetInstance<T>() where T : class;
         IEnumerable<T> GetInstances<T>() where T : class;
         void Initialize();
+        void Register(Type serviceType, Type implementationType, LifeCycle lifeCycle = LifeCycle.PerScope);
+        void Register(Type serviceType, Type implementationType, string serviceName, LifeCycle lifeCycle = LifeCycle.PerScope);
+        void RegisterInstance(Type serviceType, object instance);
     }
 }
