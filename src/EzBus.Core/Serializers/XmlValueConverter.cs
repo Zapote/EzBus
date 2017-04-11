@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+using System.Reflection;
 using System.Xml;
 
 namespace EzBus.Core.Serializers
@@ -13,25 +13,25 @@ namespace EzBus.Core.Serializers
         {
             typeConvertActions = new Dictionary<Type, Func<string, object>>
             {
-                {typeof (Int16), s => XmlConvert.ToInt16(s)},
-                {typeof (Int32), s => XmlConvert.ToInt32(s)},
-                {typeof (Int64), s => XmlConvert.ToInt64(s)},
-                {typeof (UInt16), s => XmlConvert.ToUInt16(s)},
-                {typeof (UInt32), s => XmlConvert.ToUInt32(s)},
-                {typeof (UInt64), s => XmlConvert.ToUInt64(s)},
-                {typeof (Boolean), s => XmlConvert.ToBoolean(s.ToLower())},
-                {typeof (Double), s => XmlConvert.ToDouble(s)},
-                {typeof (Decimal), s => XmlConvert.ToDecimal(s)},
+                {typeof (short), s => XmlConvert.ToInt16(s)},
+                {typeof (int), s => XmlConvert.ToInt32(s)},
+                {typeof (long), s => XmlConvert.ToInt64(s)},
+                {typeof (ushort), s => XmlConvert.ToUInt16(s)},
+                {typeof (uint), s => XmlConvert.ToUInt32(s)},
+                {typeof (ulong), s => XmlConvert.ToUInt64(s)},
+                {typeof (bool), s => XmlConvert.ToBoolean(s.ToLower())},
+                {typeof (double), s => XmlConvert.ToDouble(s)},
+                {typeof (decimal), s => XmlConvert.ToDecimal(s)},
                 {typeof (DateTime), s => XmlConvert.ToDateTime(s, XmlDateTimeSerializationMode.Unspecified)},
                 {typeof (TimeSpan), s => XmlConvert.ToTimeSpan(s)},
-                {typeof (Byte), s => XmlConvert.ToByte(s)},
-                {typeof (String), s => s},
+                {typeof (byte), s => XmlConvert.ToByte(s)},
+                {typeof (string), s => s},
                 {typeof (Guid), s => XmlConvert.ToGuid(s)},
                 {
                     typeof (short?), s =>
                     {
                         short i;
-                        if (Int16.TryParse(s, out i)) return i;
+                        if (short.TryParse(s, out i)) return i;
                         return null;
                     }
                 },
@@ -39,7 +39,7 @@ namespace EzBus.Core.Serializers
                     typeof (int?), s =>
                     {
                         int i;
-                        if (Int32.TryParse(s, out i)) return i;
+                        if (int.TryParse(s, out i)) return i;
                         return null;
                     }
                 },
@@ -47,7 +47,7 @@ namespace EzBus.Core.Serializers
                     typeof (long?), s =>
                     {
                         long i;
-                        if (Int64.TryParse(s, out i)) return i;
+                        if (long.TryParse(s, out i)) return i;
                         return null;
                     }
                 },
@@ -56,7 +56,7 @@ namespace EzBus.Core.Serializers
 
         public static object Convert(object obj, Type convertTo)
         {
-            if (convertTo.IsEnum)
+            if (convertTo.GetTypeInfo().IsEnum)
             {
                 return Enum.Parse(convertTo, obj.ToString());
             }

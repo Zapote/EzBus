@@ -1,26 +1,32 @@
 ﻿using System;
 using EzBus;
 using EzBus.Core;
-using EzBus.Core.ObjectFactory;
 using EzBus.Core.Resolvers;
 using EzBus.Logging;
 using EzBus.ObjectFactory;
+using EzBus.Utils;
 
 // ReSharper disable once CheckNamespace
 public static class Bus
 {
-    private static readonly IObjectFactory objectFactory = new DefaultObjectFactory();
     private static readonly IBusConfig busConfig = new BusConfig();
+    private static IObjectFactory objectFactory;
     private static IBus bus;
 
     public static void Start(Action<IBusConfig> configAction = null)
     {
-        objectFactory.Initialize();
-
+        InitializeObjectFactory();
         ConfigureLogging();
         SetupBusConfig(configAction);
         CreateBus();
         StartHost();
+    }
+
+    private static void InitializeObjectFactory()
+    {
+        var objectFactoryType = TypeResolver.GetType<IObjectFactory>();
+        objectFactory = (IObjectFactory)objectFactoryType.CreateInstance();
+        objectFactory.Initialize();
     }
 
     public static void Send(object message)

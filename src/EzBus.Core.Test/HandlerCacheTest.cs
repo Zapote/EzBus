@@ -1,6 +1,7 @@
-﻿using System.Linq;
-using EzBus.Core.Test.TestHelpers;
+﻿using EzBus.Core.Test.TestHelpers;
 using NUnit.Framework;
+using System.Linq;
+using EzBus.Core;
 
 namespace EzBus.Core.Test
 {
@@ -9,7 +10,7 @@ namespace EzBus.Core.Test
     {
         private readonly HandlerCache handlerCache = new HandlerCache();
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetup()
         {
             handlerCache.Prime();
@@ -18,19 +19,23 @@ namespace EzBus.Core.Test
         [Test]
         public void Handler_info_is_returned_when_using_only_class_name()
         {
-            var handlerInfo = handlerCache.GetHandlerInfo("TestMessage").Single();
+            const string messageTypeName = "TestMessage";
 
-            Assert.That(handlerInfo.HandlerType, Is.EqualTo(typeof(BarHandler)));
-            Assert.That(handlerInfo.MessageType, Is.EqualTo(typeof(TestMessage)));
+            var handlerInfo = handlerCache.GetHandlerInfo(messageTypeName).Single();
+
+            Assert.That(handlerInfo.HandlerType.Name, Is.EqualTo("BarHandler"));
+            Assert.That(handlerInfo.MessageType.Name, Is.EqualTo(messageTypeName));
         }
 
         [Test]
         public void Handler_info_is_returned_when_using_full_name()
         {
-            var handlerInfo = handlerCache.GetHandlerInfo("EzBus.Core.Test.TestHelpers.TestMessage").Single();
+            const string messageTypeName = "EzBus.Core.Test.TestHelpers.TestMessage";
 
-            Assert.That(handlerInfo.HandlerType, Is.EqualTo(typeof(BarHandler)));
-            Assert.That(handlerInfo.MessageType, Is.EqualTo(typeof(TestMessage)));
+            var handlerInfo = handlerCache.GetHandlerInfo(messageTypeName).Single();
+
+            Assert.That(handlerInfo.HandlerType.Name, Is.EqualTo("BarHandler"));
+            Assert.That(handlerInfo.MessageType.FullName, Is.EqualTo(messageTypeName));
         }
 
         [Test]

@@ -1,4 +1,4 @@
-﻿using EzBus.Core.Utils;
+﻿using EzBus.Utils;
 using NUnit.Framework;
 
 namespace EzBus.Core.Test.Utils

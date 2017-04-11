@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using EzBus.Core.Utils;
+using EzBus.Utils;
 
 namespace EzBus.Core
 {

@@ -1,0 +1,9 @@
+#:C:\Development\git\EzBus\src\EzBus\EzBus.xproj
+#:C:\Development\git\EzBus\src\EzBus.Core\EzBus.Core.xproj
+C:\Development\git\EzBus\src\EzBus.Core\EzBus.Core.xproj|C:\Development\git\EzBus\src\EzBus\EzBus.xproj
+#:C:\Development\git\EzBus\src\EzBus.AcceptanceTest\EzBus.AcceptanceTest.xproj
+C:\Development\git\EzBus\src\EzBus.AcceptanceTest\EzBus.AcceptanceTest.xproj|C:\Development\git\EzBus\src\EzBus.Core\EzBus.Core.xproj
+C:\Development\git\EzBus\src\EzBus.Core\EzBus.Core.xproj|C:\Development\git\EzBus\src\EzBus\EzBus.xproj
+#:C:\Development\git\EzBus\src\EzBus.Core.Test\EzBus.Core.Test.xproj
+C:\Development\git\EzBus\src\EzBus.Core.Test\EzBus.Core.Test.xproj|C:\Development\git\EzBus\src\EzBus.Core\EzBus.Core.xproj
+C:\Development\git\EzBus\src\EzBus.Core\EzBus.Core.xproj|C:\Development\git\EzBus\src\EzBus\EzBus.xproj

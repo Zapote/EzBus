@@ -3,12 +3,11 @@ using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Linq;
-using EzBus.Core.Utils;
 using EzBus.Logging;
 using EzBus.Serializers;
+using EzBus.Utils;
 
 namespace EzBus.Core.Serializers
 {
@@ -59,7 +58,7 @@ namespace EzBus.Core.Serializers
 
             if (objType.IsClass())
             {
-                var properties = objType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                var properties = objType.GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
                 foreach (var pi in properties)
                 {
@@ -111,9 +110,9 @@ namespace EzBus.Core.Serializers
             return instance;
         }
 
-        private static void WriteToInstance(object instance, IReflect type, XContainer xContainer)
+        private static void WriteToInstance(object instance, Type type, XContainer xContainer)
         {
-            foreach (var pi in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var pi in type.GetTypeInfo().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 var propertyType = pi.PropertyType;
 
@@ -141,9 +140,9 @@ namespace EzBus.Core.Serializers
                     if (current == null) return;
                     var itemType = typeof(object);
 
-                    if (propertyType.IsGenericType)
+                    if (propertyType.GetTypeInfo().IsGenericType)
                     {
-                        itemType = propertyType.GetGenericArguments()[0];
+                        itemType = propertyType.GetTypeInfo().GetGenericArguments()[0];
                     }
 
                     var list = itemType.CreateGenericList();
@@ -159,5 +158,27 @@ namespace EzBus.Core.Serializers
                 }
             }
         }
+
+        private static class FormatterServices
+        {
+            private static readonly Func<Type, object> getUninitializedObjectDelegate = (Func<Type, object>)
+                typeof(string).GetTypeInfo().Assembly
+                    .GetType("System.Runtime.Serialization.FormatterServices")
+                    .GetTypeInfo()
+                    .GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
+                    .CreateDelegate(typeof(Func<Type, object>));
+
+            public static object GetUninitializedObject(Type type)
+            {
+                if (type == null)
+                {
+                    throw new ArgumentNullException(nameof(type));
+                }
+
+                return getUninitializedObjectDelegate(type);
+            }
+        }
     }
+
+
 }

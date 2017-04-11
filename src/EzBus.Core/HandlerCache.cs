@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EzBus.Core.Utils;
 using EzBus.Logging;
+using EzBus.Utils;
+using AssemblyScanner = EzBus.Core.Utils.AssemblyScanner;
 
 namespace EzBus.Core
 {

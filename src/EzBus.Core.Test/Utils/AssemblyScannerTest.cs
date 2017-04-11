@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using EzBus.Core.Test.TestHelpers;
-using EzBus.Core.Utils;
+using EzBus.Utils;
 using NUnit.Framework;
 
 namespace EzBus.Core.Test.Utils
@@ -13,11 +13,11 @@ namespace EzBus.Core.Test.Utils
         [Test]
         public void Scanner_should_find_all_handlers_types()
         {
-            var handlers = scanner.FindTypes(typeof(IHandle<>));
+            var handlerTypes = scanner.FindTypes(typeof(IHandle<>));
 
-            Assert.That(handlers.Count(), Is.GreaterThanOrEqualTo(2));
-            Assert.That(handlers, Contains.Item(typeof(BarHandler)));
-            Assert.That(handlers, Contains.Item(typeof(FooHandler)));
+            Assert.That(handlerTypes.Count(), Is.GreaterThanOrEqualTo(2));
+            Assert.That(handlerTypes.Select(x => x.FullName), Contains.Item(typeof(BarHandler).FullName));
+            Assert.That(handlerTypes.Select(x => x.FullName), Contains.Item(typeof(FooHandler).FullName));
         }
 
         [Test]
@@ -26,7 +26,6 @@ namespace EzBus.Core.Test.Utils
             var handlers = scanner.FindTypes(typeof(IReceivingChannel));
 
             Assert.That(handlers.Length, Is.GreaterThanOrEqualTo(1));
-            Assert.That(handlers, Contains.Item(typeof(InMemoryMessageChannel)));
         }
     }
 }

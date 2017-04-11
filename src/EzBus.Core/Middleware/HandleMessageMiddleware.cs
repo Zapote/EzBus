@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using EzBus.Logging;
 using EzBus.ObjectFactory;
 
@@ -58,8 +59,6 @@ namespace EzBus.Core.Middleware
             {
                 var methodInfo = handlerType.GetMethod("Handle", new[] { message.GetType() });
 
-                objectFactory.BeginScope();
-
                 try
                 {
                     var handler = objectFactory.GetInstance(handlerType);
@@ -73,8 +72,6 @@ namespace EzBus.Core.Middleware
                     success = false;
                     exception = ex.InnerException;
                 }
-
-                objectFactory.EndScope();
             }
 
             return new InvokationResult(success, exception);

@@ -1,0 +1,28 @@
+﻿{
+  "ezbus": {
+    "endpointName": "ezbus.endpoint",
+    "destinations": [
+      {
+        "namespace": "acme.commands",
+        "endpoint": "acme.endpoint"
+      },
+      {
+        "namespace": "globex.commands",
+        "endpoint": "globex.endpoint"
+      },
+      {
+        "namespace": "globex.commands",
+        "message": "placeorder",
+        "endpoint": "globex.endpoint.fastlane"
+      }
+    ],
+    "subscriptions": [
+      {
+        "endpoint": "globex.endpoint"
+      },
+      {
+        "endpoint": "acme.endpoint"
+      }
+    ]
+  }
+}

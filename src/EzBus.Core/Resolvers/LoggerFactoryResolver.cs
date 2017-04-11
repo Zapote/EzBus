@@ -1,5 +1,5 @@
-using EzBus.Core.Utils;
 using EzBus.Logging;
+using EzBus.Utils;
 
 namespace EzBus.Core.Resolvers
 {

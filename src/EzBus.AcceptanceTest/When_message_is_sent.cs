@@ -1,4 +1,5 @@
-﻿using EzBus.AcceptanceTest.Specifications;
+﻿using System.Reflection;
+using EzBus.AcceptanceTest.Specifications;
 using EzBus.AcceptanceTest.TestHelpers;
 using EzBus.Core;
 using NUnit.Framework;
@@ -13,7 +14,7 @@ namespace EzBus.AcceptanceTest
         protected override void Given()
         {
             base.Given();
-            messageRouting.AddRoute(typeof(TestMessage).Assembly.GetName().Name, typeof(TestMessage).FullName, expectedDestination);
+            messageRouting.AddRoute(typeof(TestMessage).GetTypeInfo().Assembly.GetName().Name, typeof(TestMessage).FullName, expectedDestination);
         }
 
         protected override void When()

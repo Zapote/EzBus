@@ -13,7 +13,7 @@ namespace EzBus.Core.Test.Serializers
         private const string stringValue = "FooBar";
         private const int mockDataIntValue = int.MaxValue;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetup()
         {
             serializer = new XmlMessageSerializer();

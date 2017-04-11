@@ -1,11 +1,10 @@
-﻿using EzBus.Config;
-using EzBus.Core.Config;
-using EzBus.Core.Middleware;
+﻿using EzBus.Core.Middleware;
 using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
-using EzBus.Core.Utils;
 using EzBus.ObjectFactory;
 using EzBus.Serializers;
+using EzBus.Utils;
+using AssemblyScanner = EzBus.Core.Utils.AssemblyScanner;
 
 namespace EzBus.Core
 {
@@ -13,6 +12,7 @@ namespace EzBus.Core
     {
         public CoreRegistry()
         {
+            RegisterHost();
             RegisterBus();
             RegisterChannels();
             RegisterMessageSerializer();
@@ -20,6 +20,12 @@ namespace EzBus.Core
             RegisterHandlerCache();
             RegisterMiddlewares();
             RegisterTaskRunner();
+            RegisterStartupTasks();
+        }
+
+        private void RegisterHost()
+        {
+            Register<Host, Host>().As.Singleton();
         }
 
         private void RegisterBus()
@@ -43,8 +49,9 @@ namespace EzBus.Core
 
         private void RegisterSubscriptions()
         {
-            var subscriptions = SubscriptionSection.Section.Subscriptions;
-            RegisterInstance(typeof(ISubscriptionCollection), subscriptions);
+            //TODO Fix 
+            //var subscriptions = SubscriptionSection.Section.Subscriptions;
+            //RegisterInstance(typeof(ISubscriptionCollection), subscriptions);
         }
 
         private void RegisterHandlerCache()
@@ -66,19 +73,31 @@ namespace EzBus.Core
 
             foreach (var type in types)
             {
-                if (type.IsInterface) continue;
+                if (type.IsInterface()) continue;
                 if (type.ImplementsInterface(typeof(IPreMiddleware)))
                 {
-                    Register(typeof(IPreMiddleware), type, type.FullName).As.Singleton();
+                    Register(typeof(IPreMiddleware), type, type.FullName);
                     continue;
                 }
                 if (type.ImplementsInterface(typeof(ISystemMiddleware)))
                 {
-                    Register(typeof(ISystemMiddleware), type, type.FullName).As.Singleton();
+                    Register(typeof(ISystemMiddleware), type, type.FullName);
                     continue;
                 }
 
-                Register(typeof(IMiddleware), type, type.FullName).As.Singleton();
+                Register(typeof(IMiddleware), type, type.FullName);
+            }
+        }
+
+        private void RegisterStartupTasks()
+        {
+            var assemblyScanner = new AssemblyScanner();
+            var types = assemblyScanner.FindTypes<IStartupTask>();
+
+            foreach (var type in types)
+            {
+                if (type.IsInterface()) continue;
+                Register(typeof(IStartupTask), type, type.FullName);
             }
         }
     }

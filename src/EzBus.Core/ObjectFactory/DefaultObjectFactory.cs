@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using EzBus.Core.ObjectFactory.LightInject;
-using EzBus.Core.Utils;
 using EzBus.ObjectFactory;
+using EzBus.Utils;
+using LightInject;
 
 namespace EzBus.Core.ObjectFactory
 {
@@ -28,6 +28,21 @@ namespace EzBus.Core.ObjectFactory
             return container.GetAllInstances<T>();
         }
 
+        public IEnumerable<object> GetInstances(Type type) 
+        {
+            return container.GetAllInstances(type);
+        }
+
+        public object CreateInstance(Type type)
+        {
+            return container.Create(type);
+        }
+
+        public T CreateInstance<T>() where T : class
+        {
+            return container.Create<T>();
+        }
+
         public void Initialize()
         {
             var registryTypes = new Utils.AssemblyScanner().FindTypes<ServiceRegistry>();
@@ -50,11 +65,11 @@ namespace EzBus.Core.ObjectFactory
                         continue;
                     }
 
-                    container.RegisterInstance(instance.Service, instance.Instance);
+                    RegisterInstance(instance.Service, instance.Instance);
                 }
             }
 
-            container.RegisterInstance(typeof(IObjectFactory), this);
+            RegisterInstance(typeof(IObjectFactory), this);
         }
 
         public void Register(Type serviceType, Type implementationType, LifeCycle lifeCycle = LifeCycle.PerScope)

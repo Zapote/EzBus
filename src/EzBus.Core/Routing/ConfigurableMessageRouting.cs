@@ -9,11 +9,13 @@ namespace EzBus.Core.Routing
 
         public ConfigurableMessageRouting()
         {
-            var destinations = DestinationSection.Section.Destinations;
+            var config = EzBusConfig.GetConfig();
 
-            foreach (DestinationElement destination in destinations)
+            var destinations = config.Destinations;
+
+            foreach (var destination in destinations)
             {
-                var key = CreateKey(destination.Assembly, destination.Message);
+                var key = CreateKey(destination.Namespace, destination.Message);
 
                 if (routingTable.ContainsKey(key))
                 {
@@ -24,21 +26,24 @@ namespace EzBus.Core.Routing
             }
         }
 
-        private static int CreateKey(string assembly, string messageType)
+        public string GetRoute(string @namespace, string messageType)
         {
-            return string.IsNullOrWhiteSpace(messageType) ?
-                assembly.GetHashCode() : $"{assembly}::{messageType}".GetHashCode();
-        }
-
-        public string GetRoute(string asssemblyName, string messageType)
-        {
-            var specificKey = CreateKey(asssemblyName, messageType);
+            var specificKey = CreateKey(@namespace, messageType);
             if (routingTable.ContainsKey(specificKey)) return routingTable[specificKey];
 
-            var genericKey = CreateKey(asssemblyName, null);
+            var genericKey = CreateKey(@namespace, null);
             if (routingTable.ContainsKey(genericKey)) return routingTable[genericKey];
 
             throw new DestinationMissingException("No destination exists for " + messageType);
+        }
+
+        private static int CreateKey(string @namespace, string messageType)
+        {
+            @namespace = @namespace.ToLower();
+            messageType = messageType?.ToLower();
+
+            return string.IsNullOrWhiteSpace(messageType) ?
+                @namespace.ToLower().GetHashCode() : $"{@namespace}::{messageType}".GetHashCode();
         }
     }
 }

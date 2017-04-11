@@ -9,7 +9,6 @@ namespace EzBus.Core
     {
         private readonly IBusConfig busConfig;
         private readonly IObjectFactory objectFactory;
-        private List<IMiddleware> middlewares;
 
         public WorkerStartupTask(IBusConfig busConfig, IObjectFactory objectFactory)
         {
@@ -21,8 +20,6 @@ namespace EzBus.Core
 
         public void Run()
         {
-            LoadMiddlewares();
-
             for (var i = 0; i < busConfig.WorkerThreads; i++)
             {
                 var receivingChannel = objectFactory.GetInstance<IReceivingChannel>();
@@ -35,16 +32,23 @@ namespace EzBus.Core
 
         private void OnMessageReceived(ChannelMessage channelMessage)
         {
+            objectFactory.BeginScope();
+
+            var middlewares = LoadMiddlewares();
             var middlewareInvoker = new MiddlewareInvoker(middlewares);
             middlewareInvoker.Invoke(new MiddlewareContext(channelMessage));
+
+            objectFactory.EndScope();
         }
 
-        private void LoadMiddlewares()
+        private IEnumerable<IMiddleware> LoadMiddlewares()
         {
-            middlewares = new List<IMiddleware>();
+            var middlewares = new List<IMiddleware>();
             middlewares.AddRange(objectFactory.GetInstances<IPreMiddleware>());
             middlewares.AddRange(objectFactory.GetInstances<IMiddleware>());
             middlewares.AddRange(objectFactory.GetInstances<ISystemMiddleware>());
+
+            return middlewares;
         }
     }
 }

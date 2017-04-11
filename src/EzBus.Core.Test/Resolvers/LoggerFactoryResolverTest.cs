@@ -11,7 +11,8 @@ namespace EzBus.Core.Test.Resolvers
         public void LoggerFactory_should_be_TraceLoggerFactory()
         {
             var loggerFactory = LoggerFactoryResolver.GetLoggerFactory();
-            Assert.That(loggerFactory, Is.InstanceOf<TraceLoggerFactory>());
+
+            Assert.That(loggerFactory.GetType().FullName, Is.EqualTo(typeof(TraceLoggerFactory).FullName));
         }
     }
 }

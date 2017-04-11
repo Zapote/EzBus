@@ -1,8 +1,8 @@
 ﻿using System;
 using EzBus.Core.Resolvers;
-using EzBus.Core.Utils;
 using EzBus.Logging;
 using EzBus.ObjectFactory;
+using EzBus.Utils;
 
 namespace EzBus.Core
 {
@@ -19,21 +19,19 @@ namespace EzBus.Core
 
         public void RunStartupTasks()
         {
-            var startupTasks = new AssemblyScanner().FindTypes<IStartupTask>();
+            var startupTasks = objectFactory.GetInstances<IStartupTask>();
 
-            foreach (var taskType in startupTasks)
+            foreach (var task in startupTasks)
             {
-                var taskName = taskType.Name;
-
+                var taskName = task.GetType().Name;
                 try
                 {
                     log.Info($"Running StartupTask {taskName}");
-                    var task = (IStartupTask)objectFactory.GetInstance(taskType);
                     task.Run();
                 }
                 catch (Exception ex)
                 {
-                    log.Error($"Failed to run StartupTask: {taskName}", ex);
+                    log.Warn($"Failed to run StartupTask: {taskName}", ex);
                 }
             }
         }

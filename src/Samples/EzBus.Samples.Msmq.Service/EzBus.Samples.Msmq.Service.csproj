@@ -48,9 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DependencyRegistry.cs" />
-    <Compile Include="Fwk\MetricsMiddleware.cs" />
+    <Compile Include="Middlewares\MetricsMiddleware.cs" />
     <Compile Include="Fwk\IOrderNumberGenerator.cs" />
     <Compile Include="Fwk\OrderNumberGenerator.cs" />
+    <Compile Include="Middlewares\UnitOfWorkMiddleware.cs" />
     <Compile Include="Handlers\PlaceOrderHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

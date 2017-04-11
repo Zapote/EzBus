@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Samples.RabbitMQ.Plac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.AcceptanceTest", "EzBus.AcceptanceTest\EzBus.AcceptanceTest.csproj", "{977F73C0-E13C-441F-93E6-2052325A9201}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.StructureMap", "EzBus.StructureMap\EzBus.StructureMap.csproj", "{060BEE20-B4B6-467F-8DA0-E983123352A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,10 @@ Global
 		{977F73C0-E13C-441F-93E6-2052325A9201}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{977F73C0-E13C-441F-93E6-2052325A9201}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{977F73C0-E13C-441F-93E6-2052325A9201}.Release|Any CPU.Build.0 = Release|Any CPU
+		{060BEE20-B4B6-467F-8DA0-E983123352A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{060BEE20-B4B6-467F-8DA0-E983123352A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{060BEE20-B4B6-467F-8DA0-E983123352A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{060BEE20-B4B6-467F-8DA0-E983123352A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

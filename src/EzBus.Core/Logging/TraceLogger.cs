@@ -96,7 +96,7 @@ namespace EzBus.Core.Logging
         private void WriteLog(object message, LogLevel logLevel, ConsoleColor color = ConsoleColor.Gray)
         {
             Console.ForegroundColor = color;
-            Trace.WriteLine($"{DateTime.Now} [{System.Threading.Thread.CurrentThread.ManagedThreadId}] {logLevel} {name}: {message}");
+            //Trace.WriteLine($"{DateTime.Now} [{System.Threading.Thread.CurrentThread.ManagedThreadId}] {logLevel} {name}: {message}");
             Console.ResetColor();
         }
     }

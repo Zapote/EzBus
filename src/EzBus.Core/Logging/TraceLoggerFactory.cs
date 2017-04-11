@@ -7,7 +7,7 @@ namespace EzBus.Core.Logging
     {
         public TraceLoggerFactory()
         {
-            Trace.Listeners.Add(new ConsoleTraceListener());
+            //Trace.Listeners.Add(new ConsoleTraceListener());
         }
 
         public override ILogger CreateLogger(LogLevel level, string name)

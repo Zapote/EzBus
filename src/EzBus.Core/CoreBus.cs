@@ -1,8 +1,8 @@
 ﻿using System;
 using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
-using EzBus.Core.Utils;
 using EzBus.Serializers;
+using EzBus.Utils;
 
 namespace EzBus.Core
 {
