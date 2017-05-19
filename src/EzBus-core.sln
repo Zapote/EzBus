@@ -1,20 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4877DFCB-55AE-4FEB-B4F0-A6F1A0609CB3}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EzBus", "EzBus\EzBus.xproj", "{ECDE44BA-F44D-442A-B914-B7405EAFA69D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus", "EzBus\EzBus.csproj", "{ECDE44BA-F44D-442A-B914-B7405EAFA69D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EzBus.Core", "EzBus.Core\EzBus.Core.xproj", "{09EA7FC5-A6BE-4FC6-9AE3-4CB1134704FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.Core", "EzBus.Core\EzBus.Core.csproj", "{09EA7FC5-A6BE-4FC6-9AE3-4CB1134704FA}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EzBus.Core.Test", "EzBus.Core.Test\EzBus.Core.Test.xproj", "{A0AD14C9-0172-4CAD-8704-B8610B39DFE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.Core.Test", "EzBus.Core.Test\EzBus.Core.Test.csproj", "{A0AD14C9-0172-4CAD-8704-B8610B39DFE5}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EzBus.AcceptanceTest", "EzBus.AcceptanceTest\EzBus.AcceptanceTest.xproj", "{63769B5F-E76C-451C-B9A0-3FF1BE9D12CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.AcceptanceTest", "EzBus.AcceptanceTest\EzBus.AcceptanceTest.csproj", "{63769B5F-E76C-451C-B9A0-3FF1BE9D12CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
