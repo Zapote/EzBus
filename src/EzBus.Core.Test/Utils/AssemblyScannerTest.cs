@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using EzBus.Core.Test.TestHelpers;
-using EzBus.Utils;
+using EzBus.Core.Utils;
 using NUnit.Framework;
 
 namespace EzBus.Core.Test.Utils
