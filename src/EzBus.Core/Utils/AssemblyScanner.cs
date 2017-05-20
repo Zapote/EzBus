@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Loader;
 using EzBus.Logging;
 using EzBus.Utils;
@@ -32,7 +33,8 @@ namespace EzBus.Core.Utils
             {
                 try
                 {
-                    var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
+                    var fileInfo = new FileInfo(file);
+                    var assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, "")));
 
                     foreach (var type in assembly.GetTypes())
                     {

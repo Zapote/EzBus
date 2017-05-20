@@ -69,11 +69,6 @@ namespace EzBus.Utils
             return type.GetTypeInfo().GetInterface(name);
         }
 
-        public static bool IsAssignableFrom(this Type type, Type c)
-        {
-            return type.GetTypeInfo().IsAssignableFrom(c);
-        }
-
         public static MethodInfo GetMethod(this Type type, string name, Type[] types)
         {
             return type.GetTypeInfo().GetMethod(name, types);

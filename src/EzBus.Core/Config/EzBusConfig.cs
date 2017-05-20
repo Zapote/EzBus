@@ -10,9 +10,11 @@ namespace EzBus.Core.Config
 
         public static IEzBusConfig GetConfig()
         {
+            var currentDirectory = Directory.GetCurrentDirectory();
+
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("ezbus.config.json", true, true);
+                .SetBasePath(currentDirectory)
+                .AddJsonFile("ezbus.config.json", false, true);
 
             var cfg = builder.Build();
             var section = cfg.GetSection("ezbus");
