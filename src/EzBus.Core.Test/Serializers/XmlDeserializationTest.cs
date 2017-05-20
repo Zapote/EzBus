@@ -1,25 +1,22 @@
 ﻿using System.Linq;
 using EzBus.Core.Serializers;
 using EzBus.Core.Test.TestHelpers;
-using NUnit.Framework;
+using Xunit;
 
 namespace EzBus.Core.Test.Serializers
 {
-    [TestFixture]
     public class XmlDeserializationTest
     {
-        private XmlMessageSerializer serializer;
-        private TestMessageWithCollection message;
+        private readonly TestMessageWithCollection message;
         private const string stringValue = "FooBar";
-        private const int mockDataIntValue = int.MaxValue;
+        private const int intValue = int.MaxValue;
 
-        [OneTimeSetUp]
-        public void FixtureSetup()
+        public XmlDeserializationTest()
         {
-            serializer = new XmlMessageSerializer();
+            var serializer = new XmlMessageSerializer();
             var serializationMessage = new TestMessageWithCollection(stringValue)
             {
-                TestMessageData = { IntValue = mockDataIntValue }
+                TestMessageData = { IntValue = intValue }
             };
 
             serializationMessage.AddData(new TestMessageData { IntValue = 1 });
@@ -29,34 +26,34 @@ namespace EzBus.Core.Test.Serializers
             message = serializer.Deserialize(xml, typeof(TestMessageWithCollection)) as TestMessageWithCollection;
         }
 
-        [Test]
+        [Fact]
         public void Message_should_be_created()
         {
-            Assert.That(message, Is.Not.Null);
+            Assert.NotNull(message);
         }
 
-        [Test]
+        [Fact]
         public void StringValue_should_be_set()
         {
-            Assert.That(message.StringValue, Is.EqualTo(stringValue));
+            Assert.Equal(stringValue, message.StringValue);
         }
 
-        [Test]
+        [Fact]
         public void IntValue_should_be_set()
         {
-            Assert.That(message.TestMessageData.IntValue, Is.EqualTo(mockDataIntValue));
+            Assert.Equal(intValue, message.TestMessageData.IntValue);
         }
 
-        [Test]
+        [Fact]
         public void NullableIntValue_should_be_set()
         {
-            Assert.That(message.NullableIntValue, Is.Null);
+            Assert.Null(message.NullableIntValue);
         }
 
-        [Test]
+        [Fact]
         public void Collection_should_be_set()
         {
-            Assert.That(message.DataCollection.Count(), Is.EqualTo(2));
+            Assert.Equal(2, message.DataCollection.Count());
         }
     }
 }

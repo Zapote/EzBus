@@ -1,50 +1,38 @@
 ﻿using System;
-using System.IO;
 using EzBus.Core.Routing;
-using NUnit.Framework;
+using Xunit;
 
 namespace EzBus.Core.Test.Routing
 {
-    [TestFixture]
     public class ConfigurableMessageRoutingTest
     {
-        private static ConfigurableMessageRouting routing;
+        private static readonly ConfigurableMessageRouting routing = new ConfigurableMessageRouting();
 
-        [OneTimeSetUp]
-        public void TestFixtureSetup()
-        {
-            Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-            routing = new ConfigurableMessageRouting();
-        }
-
-        [Test]
+        [Fact]
         public void DestinationMissingException_should_be_thrown_when_missing_route()
         {
-            try
+            void GetRoute()
             {
                 routing.GetRoute("Unknown.Assembly", "UnknownMessage");
             }
-            catch (DestinationMissingException)
-            {
-                return;
-            }
-            Assert.Fail("DestinationMissingException should be thrown");
+
+            Assert.Throws<DestinationMissingException>((Action)GetRoute);
         }
 
-        [Test]
+        [Fact]
         public void Correct_route_should_be_resolved_when_only_namespace_configured()
         {
             var route = routing.GetRoute("Globex.Commands", "AnyMessage");
 
-            Assert.That(route, Is.EqualTo("globex.endpoint"));
+            Assert.Equal("globex.endpoint", route);
         }
 
-        [Test]
+        [Fact]
         public void Correct_route_should_be_resolved_when_namespace_and_message_type_configured()
         {
             var route = routing.GetRoute("Globex.Commands", "PlaceOrder");
 
-            Assert.That(route, Is.EqualTo("globex.endpoint.fastlane"));
+            Assert.Equal("globex.endpoint.fastlane", route);
         }
     }
 }

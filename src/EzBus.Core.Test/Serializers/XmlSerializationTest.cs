@@ -6,65 +6,64 @@ using System.Linq;
 using System.Xml.Linq;
 using EzBus.Core.Serializers;
 using EzBus.Core.Test.TestHelpers;
-using NUnit.Framework;
+using Xunit;
 
 namespace EzBus.Core.Test.Serializers
 {
-    [TestFixture]
     public class XmlSerializationTest
     {
         private readonly XmlMessageSerializer serializer = new XmlMessageSerializer();
         private Stream result;
 
-        [Test]
+        [Fact]
         public void DecimalIsSerializedCorrect()
         {
             const decimal elementValue = 1.0m;
 
             var xDoc = Serialize(elementValue);
 
-            if (xDoc.Root == null) Assert.Fail("Document should not be null");
-            Assert.That(xDoc.Root.Name.LocalName, Is.EqualTo(elementValue.GetType().Name));
-            Assert.That(xDoc.Descendants("Decimal").First().Value, Is.EqualTo(elementValue.ToString(CultureInfo.InvariantCulture)));
+            if (xDoc.Root == null) throw new Exception("Document should not be null");
+            Assert.Equal(elementValue.GetType().Name, xDoc.Root.Name.LocalName);
+            Assert.Equal(elementValue.ToString(CultureInfo.InvariantCulture), xDoc.Descendants("Decimal").First().Value);
         }
 
-        [Test]
+        [Fact]
         public void StringIsSerializedCorrect()
         {
             const string elementValue = "FooBar";
 
             var xDoc = Serialize(elementValue);
 
-            if (xDoc.Root == null) Assert.Fail("Document should not be null");
-            Assert.That(xDoc.Root.Name.LocalName, Is.EqualTo(elementValue.GetType().Name));
-            Assert.That(xDoc.Descendants("String").First().Value, Is.EqualTo(elementValue));
+            if (xDoc.Root == null) throw new Exception("Document should not be null");
+            Assert.Equal(elementValue.GetType().Name, xDoc.Root.Name.LocalName);
+            Assert.Equal(elementValue, xDoc.Descendants("String").First().Value);
         }
 
-        [Test]
+        [Fact]
         public void DateTimeIsSerializedCorrect()
         {
             var elementValue = new DateTime(2001, 12, 31, 22, 45, 30);
 
             var xDoc = Serialize(elementValue);
 
-            if (xDoc.Root == null) Assert.Fail("Document should not be null");
-            Assert.That(xDoc.Root.Name.LocalName, Is.EqualTo(elementValue.GetType().Name));
-            Assert.That(xDoc.Descendants("DateTime").First().Value, Is.EqualTo(elementValue.ToString(CultureInfo.InvariantCulture)));
+            if (xDoc.Root == null) throw new Exception("Document should not be null");
+            Assert.Equal(elementValue.GetType().Name, xDoc.Root.Name.LocalName);
+            Assert.Equal(elementValue.ToString(CultureInfo.InvariantCulture), xDoc.Descendants("DateTime").First().Value);
         }
 
-        [Test]
+        [Fact]
         public void Collection_is_serialized_correct()
         {
             IEnumerable<string> elementValue = new List<string> { "1", "2", "3" };
 
             var xDoc = Serialize(elementValue);
 
-            Assert.That(xDoc.Descendants("String").ElementAt(0).Value, Is.EqualTo("1"));
-            Assert.That(xDoc.Descendants("String").ElementAt(1).Value, Is.EqualTo("2"));
-            Assert.That(xDoc.Descendants("String").ElementAt(2).Value, Is.EqualTo("3"));
+            Assert.Equal("1", xDoc.Descendants("String").ElementAt(0).Value);
+            Assert.Equal("2", xDoc.Descendants("String").ElementAt(1).Value);
+            Assert.Equal("3", xDoc.Descendants("String").ElementAt(2).Value);
         }
 
-        [Test]
+        [Fact]
         public void Message_with_collection_is_serialized_correct()
         {
             var message = new TestMessageWithCollection("");
@@ -74,12 +73,12 @@ namespace EzBus.Core.Test.Serializers
             result = serializer.Serialize(message);
             var xDoc = XDocument.Load(result);
 
-            if (xDoc.Root == null) Assert.Fail("Document should not be null");
-            Assert.That(xDoc.Root.Name.LocalName, Is.EqualTo("TestMessageWithCollection"));
-            Assert.That(xDoc.Root.Descendants().First().Name.LocalName, Is.EqualTo("DataCollection"));
+            if (xDoc.Root == null) throw new Exception("Document should not be null");
+            Assert.Equal("TestMessageWithCollection", xDoc.Root.Name.LocalName);
+            Assert.Equal("DataCollection", xDoc.Root.Descendants().First().Name.LocalName);
         }
 
-        [Test]
+        [Fact]
         public void ComplexTypeIsSerializedCorrect()
         {
             const string stringValue = "First_section_is_generic_for_assembly text";
@@ -88,8 +87,8 @@ namespace EzBus.Core.Test.Serializers
 
             var xDoc = Serialize(message);
 
-            Assert.That(xDoc.Descendants("StringValue").ElementAt(0).Value, Is.EqualTo(stringValue));
-            Assert.That(xDoc.Descendants("IntValue").ElementAt(0).Value, Is.EqualTo(intValue.ToString(CultureInfo.InvariantCulture)));
+            Assert.Equal(stringValue, xDoc.Descendants("StringValue").ElementAt(0).Value);
+            Assert.Equal(intValue.ToString(CultureInfo.InvariantCulture), xDoc.Descendants("IntValue").ElementAt(0).Value);
         }
 
         private XDocument Serialize(object obj)

@@ -1,40 +1,36 @@
 ﻿using System;
 using EzBus.Core.ObjectFactory;
 using EzBus.ObjectFactory;
-using NUnit.Framework;
+using Xunit;
 
 namespace EzBus.Core.Test.ObjectFactory
 {
-    [TestFixture]
     public class LightInjectObjectFactoryTest
     {
-        private DefaultObjectFactory defaultObjectFactory;
+        private readonly DefaultObjectFactory defaultObjectFactory;
 
-        [SetUp]
-        public void TestSetup()
+        public LightInjectObjectFactoryTest()
         {
             defaultObjectFactory = new DefaultObjectFactory();
         }
 
-        [Test]
-        [Ignore("Must fix creation of object in factory")]
+        [Fact(Skip = "Enable object creation in LightInject")]
         public void Can_create_object_with_default_constructor()
         {
             var obj = defaultObjectFactory.GetInstance(typeof(A));
 
-            Assert.That(obj, Is.Not.Null);
+            //Assert.That(obj, Is.Not.Null);
         }
 
-        [Test]
-        [Ignore("Must fix creation of object in factory")]
+        [Fact(Skip = "Enable object creation in LightInject")]
         public void Can_create_object_with_di_constructor()
         {
             var obj = defaultObjectFactory.GetInstance<B>();
 
-            Assert.That(obj, Is.Not.Null);
+            //Assert.That(obj, Is.Not.Null);
         }
 
-        [Test]
+        [Fact]
         public void Gets_same_object_within_scope()
         {
             defaultObjectFactory.Register(typeof(IA), typeof(A));
@@ -48,11 +44,11 @@ namespace EzBus.Core.Test.ObjectFactory
             var third = defaultObjectFactory.GetInstance<IA>();
             defaultObjectFactory.EndScope();
 
-            Assert.That(first.Id, Is.EqualTo(second.Id));
-            Assert.That(first.Id, Is.Not.EqualTo(third.Id));
+            Assert.Equal(first.Id, second.Id);
+            Assert.NotEqual(first.Id, third.Id);
         }
 
-        [Test]
+        [Fact]
         public void Gets_different_objects_within_scope_when_registered_unique()
         {
             defaultObjectFactory.Register(typeof(IA), typeof(A), LifeCycle.Unique);
@@ -62,7 +58,7 @@ namespace EzBus.Core.Test.ObjectFactory
             var second = defaultObjectFactory.GetInstance<IA>();
             defaultObjectFactory.EndScope();
 
-            Assert.That(first.Id, Is.Not.EqualTo(second.Id));
+            Assert.NotEqual(first.Id, second.Id);
         }
 
         public interface IA
