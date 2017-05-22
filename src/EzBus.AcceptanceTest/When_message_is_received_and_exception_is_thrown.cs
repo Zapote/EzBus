@@ -1,16 +1,13 @@
 ﻿using System;
 using EzBus.AcceptanceTest.Specifications;
 using EzBus.AcceptanceTest.TestHelpers;
-using NUnit.Framework;
+using Xunit;
 
 namespace EzBus.AcceptanceTest
 {
-    [Specification]
-    public class When_message_is_received_and_exception_is_thrown : BusSpecificationBase, IHandle<FailingMessage>
+    public class When_message_is_received_and_exception_is_thrown : BusSpecificationBase
     {
-        private static int retries;
-
-        protected override void When()
+        public When_message_is_received_and_exception_is_thrown()
         {
             bus.Send("Moon", new FailingMessage());
         }
@@ -18,18 +15,23 @@ namespace EzBus.AcceptanceTest
         [Then]
         public void Message_should_be_retried_five_times()
         {
-            Assert.That(retries, Is.EqualTo(5));
+            Assert.Equal(5, FailingMessageHandler.Retries);
         }
 
         [Then]
         public void Message_should_be_placed_on_error_queue()
         {
-            Assert.That(FakeMessageChannel.LastSentDestination.QueueName, Is.EqualTo("ezbus.core.error"));
+            Assert.Equal("testhost.error", FakeMessageChannel.LastSentDestination.QueueName);
         }
+    }
+
+    public class FailingMessageHandler : IHandle<FailingMessage>
+    {
+        public static int Retries { get; private set; }
 
         public void Handle(FailingMessage message)
         {
-            retries++;
+            Retries++;
             throw new Exception("Testing error in handler.");
         }
     }

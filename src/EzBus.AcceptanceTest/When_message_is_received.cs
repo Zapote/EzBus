@@ -1,18 +1,12 @@
 ﻿using EzBus.AcceptanceTest.Specifications;
 using EzBus.AcceptanceTest.TestHelpers;
-using EzBus.Core;
-using EzBus.Core.ObjectFactory;
-using EzBus.Logging;
-using NUnit.Framework;
+using Xunit;
 
 namespace EzBus.AcceptanceTest
 {
-    [Specification]
-    public class When_message_is_received : BusSpecificationBase, IHandle<TestMessage>
+    public class When_message_is_received : BusSpecificationBase
     {
-        private static bool handled;
-
-        protected override void When()
+        public When_message_is_received()
         {
             bus.Send("Moon", new TestMessage());
         }
@@ -20,12 +14,17 @@ namespace EzBus.AcceptanceTest
         [Then]
         public void Message_is_handled()
         {
-            Assert.That(handled, Is.True);
+            Assert.True(TestMessageHandler.MessageIsHandled);
         }
+    }
+
+    public class TestMessageHandler : IHandle<TestMessage>
+    {
+        public static bool MessageIsHandled { get; private set; }
 
         public void Handle(TestMessage message)
         {
-            handled = true;
+            MessageIsHandled = true;
         }
     }
 }

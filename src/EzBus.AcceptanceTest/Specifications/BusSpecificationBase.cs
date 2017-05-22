@@ -5,16 +5,15 @@ using EzBus.Logging;
 
 namespace EzBus.AcceptanceTest.Specifications
 {
-    public abstract class BusSpecificationBase : SpecificationBase
+    public abstract class BusSpecificationBase
     {
         protected Host host;
+        protected FakeMessageChannel messageChannel = new FakeMessageChannel();
+        protected FakeMessageRouting messageRouting = new FakeMessageRouting();
         protected CoreBus bus;
-        protected FakeMessageChannel messageChannel;
-        protected readonly FakeMessageRouting messageRouting = new FakeMessageRouting();
 
-        protected override void Given()
+        protected BusSpecificationBase()
         {
-            messageChannel = new FakeMessageChannel();
             bus = new CoreBus(messageChannel, messageChannel, messageRouting);
 
             var objectFactory = new DefaultObjectFactory();
@@ -23,7 +22,7 @@ namespace EzBus.AcceptanceTest.Specifications
             host = objectFactory.GetInstance<Host>();
             host.Start();
 
-            LogManager.SetLogLevel(LogLevel.Off);
+            LogManager.SetLogLevel(LogLevel.Verbose);
         }
     }
 }

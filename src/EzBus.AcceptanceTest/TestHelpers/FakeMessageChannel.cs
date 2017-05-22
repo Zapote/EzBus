@@ -6,14 +6,8 @@ namespace EzBus.AcceptanceTest.TestHelpers
 {
     public class FakeMessageChannel : ISendingChannel, IReceivingChannel, IPublishingChannel
     {
-        private static List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
+        private static readonly List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
         private static Action<ChannelMessage> onMessage;
-
-        public FakeMessageChannel()
-        {
-            sentDestinations.Clear();
-            sentDestinations = new List<EndpointAddress>();
-        }
 
         public void Send(EndpointAddress destination, ChannelMessage channelMessage)
         {
@@ -29,9 +23,17 @@ namespace EzBus.AcceptanceTest.TestHelpers
 
         }
 
-        public Action<ChannelMessage> OnMessage { get { return onMessage; } set { onMessage = value; } }
+        public Action<ChannelMessage> OnMessage
+        {
+            get => onMessage; set => onMessage = value;
+        }
 
         public static EndpointAddress LastSentDestination => sentDestinations.LastOrDefault();
+
+        public static bool HasBeenSentToDestination(string destination)
+        {
+            return sentDestinations.Any(x => x.QueueName == destination);
+        }
 
         public static IEnumerable<EndpointAddress> GetSentDestinations()
         {

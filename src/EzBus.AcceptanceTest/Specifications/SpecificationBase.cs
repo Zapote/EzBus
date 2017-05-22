@@ -1,9 +1,12 @@
 namespace EzBus.AcceptanceTest.Specifications
 {
-    [Specification]
     public abstract class SpecificationBase
     {
-        [Given]
+        protected SpecificationBase()
+        {
+            Setup();
+        }
+
         public void Setup()
         {
             Given();
