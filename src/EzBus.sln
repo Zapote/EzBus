@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus", "EzBus\EzBus.csproj", "{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4877DFCB-55AE-4FEB-B4F0-A6F1A0609CB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Core", "EzBus.Core\EzBus.Core.csproj", "{4142F834-AC35-4E99-9932-291805075F80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus", "EzBus\EzBus.csproj", "{ECDE44BA-F44D-442A-B914-B7405EAFA69D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Core.Test", "EzBus.Core.Test\EzBus.Core.Test.csproj", "{D2770237-8F37-4EA0-8B1B-4629CF78C9DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.Core", "EzBus.Core\EzBus.Core.csproj", "{09EA7FC5-A6BE-4FC6-9AE3-4CB1134704FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.Core.Test", "EzBus.Core.Test\EzBus.Core.Test.csproj", "{A0AD14C9-0172-4CAD-8704-B8610B39DFE5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.AcceptanceTest", "EzBus.AcceptanceTest\EzBus.AcceptanceTest.csproj", "{63769B5F-E76C-451C-B9A0-3FF1BE9D12CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +19,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4142F834-AC35-4E99-9932-291805075F80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4142F834-AC35-4E99-9932-291805075F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4142F834-AC35-4E99-9932-291805075F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4142F834-AC35-4E99-9932-291805075F80}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2770237-8F37-4EA0-8B1B-4629CF78C9DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2770237-8F37-4EA0-8B1B-4629CF78C9DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2770237-8F37-4EA0-8B1B-4629CF78C9DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2770237-8F37-4EA0-8B1B-4629CF78C9DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECDE44BA-F44D-442A-B914-B7405EAFA69D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECDE44BA-F44D-442A-B914-B7405EAFA69D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECDE44BA-F44D-442A-B914-B7405EAFA69D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECDE44BA-F44D-442A-B914-B7405EAFA69D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09EA7FC5-A6BE-4FC6-9AE3-4CB1134704FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EA7FC5-A6BE-4FC6-9AE3-4CB1134704FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EA7FC5-A6BE-4FC6-9AE3-4CB1134704FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EA7FC5-A6BE-4FC6-9AE3-4CB1134704FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0AD14C9-0172-4CAD-8704-B8610B39DFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0AD14C9-0172-4CAD-8704-B8610B39DFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0AD14C9-0172-4CAD-8704-B8610B39DFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0AD14C9-0172-4CAD-8704-B8610B39DFE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63769B5F-E76C-451C-B9A0-3FF1BE9D12CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63769B5F-E76C-451C-B9A0-3FF1BE9D12CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63769B5F-E76C-451C-B9A0-3FF1BE9D12CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63769B5F-E76C-451C-B9A0-3FF1BE9D12CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
