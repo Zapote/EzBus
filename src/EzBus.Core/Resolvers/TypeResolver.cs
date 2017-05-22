@@ -23,6 +23,8 @@ namespace EzBus.Core.Resolvers
             var types = assemblyScanner.FindTypes<TInterface>();
             var resolvedType = types.All(x => x.IsLocal()) ? types.Last() : types.Last(x => !x.IsLocal());
 
+            if (resolvedTypes.ContainsKey(typeof(TInterface))) return resolvedType;
+
             resolvedTypes.Add(typeof(TInterface), resolvedType);
 
             return resolvedType;

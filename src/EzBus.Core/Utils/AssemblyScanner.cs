@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using EzBus.Logging;
 using EzBus.Utils;
 
@@ -63,12 +62,11 @@ namespace EzBus.Core.Utils
         private static void LoadAssemblyFiles()
         {
             if (directoryScanned) return;
+            directoryScanned = true;
 
             var directory = AppContext.BaseDirectory;
-
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
-            directoryScanned = true;
         }
     }
 }

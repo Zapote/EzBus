@@ -58,6 +58,12 @@ namespace EzBus.Utils
             return list;
         }
 
+        public static bool ImplementsInterface<T>(this Type type)
+        {
+            var interfaces = type.GetTypeInfo().GetInterfaces();
+            return interfaces.Any(t => t == typeof(T));
+        }
+
         public static bool ImplementsInterface(this Type type, Type interfaceType)
         {
             var interfaces = type.GetTypeInfo().GetInterfaces();

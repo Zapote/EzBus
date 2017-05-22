@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using EzBus.Core.Middleware;
 using EzBus.ObjectFactory;
+using EzBus.Utils;
 
 namespace EzBus.Core
 {
@@ -12,10 +14,8 @@ namespace EzBus.Core
 
         public WorkerStartupTask(IBusConfig busConfig, IObjectFactory objectFactory)
         {
-            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
-            if (objectFactory == null) throw new ArgumentNullException(nameof(objectFactory));
-            this.busConfig = busConfig;
-            this.objectFactory = objectFactory;
+            this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
+            this.objectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
         }
 
         public void Run()
@@ -44,10 +44,12 @@ namespace EzBus.Core
         private IEnumerable<IMiddleware> LoadMiddlewares()
         {
             var middlewares = new List<IMiddleware>();
-            middlewares.AddRange(objectFactory.GetInstances<IPreMiddleware>());
-            middlewares.AddRange(objectFactory.GetInstances<IMiddleware>());
-            middlewares.AddRange(objectFactory.GetInstances<ISystemMiddleware>());
-
+            var instances = objectFactory.GetInstances<IMiddleware>().ToList();
+            middlewares.AddRange(instances.Where(x => x.GetType().ImplementsInterface<IPreMiddleware>()));
+            middlewares.AddRange(instances.Where(x => x.GetType().ImplementsInterface<ISystemMiddleware>()));
+            middlewares.AddRange(objectFactory.GetInstances<IMiddleware>()
+                .Where(x => !x.GetType().ImplementsInterface<IPreMiddleware>()
+                            && !x.GetType().ImplementsInterface<ISystemMiddleware>()));
             return middlewares;
         }
     }

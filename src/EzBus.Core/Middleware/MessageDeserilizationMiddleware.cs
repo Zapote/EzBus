@@ -13,10 +13,8 @@ namespace EzBus.Core.Middleware
 
         public MessageDeserilizationMiddleware(IMessageSerializer messageSerializer, IHandlerCache handlerCache)
         {
-            if (messageSerializer == null) throw new ArgumentNullException(nameof(messageSerializer));
-            if (handlerCache == null) throw new ArgumentNullException(nameof(handlerCache));
-            this.messageSerializer = messageSerializer;
-            this.handlerCache = handlerCache;
+            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
+            this.handlerCache = handlerCache ?? throw new ArgumentNullException(nameof(handlerCache));
         }
 
         public void Invoke(MiddlewareContext context, Action next)

@@ -14,12 +14,9 @@ namespace EzBus.Core.Middleware
 
         public HandleMessageMiddleware(IHandlerCache handlerCache, IObjectFactory objectFactory, IBusConfig busConfig)
         {
-            if (handlerCache == null) throw new ArgumentNullException(nameof(handlerCache));
-            if (objectFactory == null) throw new ArgumentNullException(nameof(objectFactory));
-            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
-            this.handlerCache = handlerCache;
-            this.objectFactory = objectFactory;
-            this.busConfig = busConfig;
+            this.handlerCache = handlerCache ?? throw new ArgumentNullException(nameof(handlerCache));
+            this.objectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
+            this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
 
         public void Invoke(MiddlewareContext context, Action next)

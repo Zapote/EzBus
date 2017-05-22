@@ -10,8 +10,7 @@ namespace EzBus.Core
 
         public Host(ITaskRunner taskRunner)
         {
-            if (taskRunner == null) throw new ArgumentNullException(nameof(taskRunner));
-            this.taskRunner = taskRunner;
+            this.taskRunner = taskRunner ?? throw new ArgumentNullException(nameof(taskRunner));
         }
 
         public void Start()

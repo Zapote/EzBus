@@ -2,7 +2,7 @@
 
 namespace EzBus.Core.Middleware
 {
-    internal class HandleErrorMessageMiddleware : ISystemMiddleware
+    internal class HandleErrorMessageMiddleware : IPreMiddleware
     {
         private readonly ISendingChannel sendingChannel;
         private readonly IBusConfig busConfig;
@@ -10,10 +10,8 @@ namespace EzBus.Core.Middleware
 
         public HandleErrorMessageMiddleware(ISendingChannel sendingChannel, IBusConfig busConfig)
         {
-            if (sendingChannel == null) throw new ArgumentNullException(nameof(sendingChannel));
-            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
-            this.sendingChannel = sendingChannel;
-            this.busConfig = busConfig;
+            this.sendingChannel = sendingChannel ?? throw new ArgumentNullException(nameof(sendingChannel));
+            this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
 
         public void Invoke(MiddlewareContext context, Action next)
@@ -24,6 +22,8 @@ namespace EzBus.Core.Middleware
 
         public void OnError(Exception ex)
         {
+            if (channelMessage == null) throw new Exception("ChannelMessage is null!", ex);
+
             var level = 0;
 
             while (ex != null)

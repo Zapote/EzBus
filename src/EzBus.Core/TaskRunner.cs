@@ -13,8 +13,7 @@ namespace EzBus.Core
 
         public TaskRunner(IObjectFactory objectFactory)
         {
-            if (objectFactory == null) throw new ArgumentNullException(nameof(objectFactory));
-            this.objectFactory = objectFactory;
+            this.objectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
         }
 
         public void RunStartupTasks()

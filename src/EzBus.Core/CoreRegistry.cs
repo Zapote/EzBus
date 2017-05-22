@@ -16,10 +16,12 @@ namespace EzBus.Core
             RegisterBus();
             RegisterChannels();
             RegisterMessageSerializer();
+            RegisterMessageHandlers();
             RegisterSubscriptions();
             RegisterHandlerCache();
             RegisterMiddlewares();
             RegisterTaskRunner();
+            RegistertBusConfig();
             RegisterStartupTasks();
         }
 
@@ -45,6 +47,17 @@ namespace EzBus.Core
         {
             var type = TypeResolver.GetType<IMessageSerializer>();
             Register(typeof(IMessageSerializer), type).As.Singleton();
+        }
+
+        private void RegisterMessageHandlers()
+        {
+            var assemblyScanner = new AssemblyScanner();
+            var types = assemblyScanner.FindTypes<IMessageHandler>();
+            foreach (var type in types)
+            {
+                if (type.IsInterface()) continue;
+                Register(type, type, type.FullName);
+            }
         }
 
         private void RegisterSubscriptions()
@@ -89,6 +102,11 @@ namespace EzBus.Core
             }
         }
 
+        private void RegistertBusConfig()
+        {
+            Register(typeof(IBusConfig), typeof(BusConfig)).As.Singleton();
+        }
+
         private void RegisterStartupTasks()
         {
             var assemblyScanner = new AssemblyScanner();
@@ -97,7 +115,7 @@ namespace EzBus.Core
             foreach (var type in types)
             {
                 if (type.IsInterface()) continue;
-                Register(typeof(IStartupTask), type, type.FullName);
+                Register(typeof(IStartupTask), type, type.FullName).As.Singleton();
             }
         }
     }
