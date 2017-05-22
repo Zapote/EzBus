@@ -12,7 +12,7 @@ include $toolsDir\psake\buildutils.ps1
 
 task default -depends DoRelease
 
-task DoRelease -depends GenerateAssemblyInfo, Test, CreateNugetPackages{
+task DoRelease -depends Test, CreateNugetPackages{
 }
 
 task Clean{
@@ -21,14 +21,7 @@ task Clean{
 	}
 }
 
-task InitEnvironment{
-	if($script:isEnvironmentInitialized -ne $true){
-		$script:msBuild = "C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe"	
-		echo ".Net 4.0 build requested - $script:msBuild" 
-	}
-}
-
-task Init -depends InitEnvironment, Clean, DetectOperatingSystemArchitecture {   	
+task Init -depends Clean{   	
 	write-host "Creating build directory at the follwing path $buildDir"
 	
 	Create-Directory $buildDir
@@ -68,37 +61,27 @@ task GenerateAssemblyInfo -depends GitVersion{
 	}
 }
 
-task CompileMain -depends Init { 
+task Build -depends Init { 
 	Delete-Directory $outputDir
 	Create-Directory $outputDir
 
 	$toExclude = @();
 	$toExclude = "*nobuild.sln"
 	
-	$solutions = Get-ChildItem -path "$baseDir" -recurse -include *.sln -Exclude $toExclude
+	$solutions = Get-ChildItem -path "$baseDir" -recurse -include *EzBus-core.sln -Exclude $toExclude
 	$solutions | % {
 		$solutionFile = $_.FullName
 		$solutionName = $_.BaseName
-		$solutionDir = $_.Directory
-		$targetDir = "$outputDir\$solutionName\"
-		
-		Create-Directory $targetDir
-		
-		exec { &$script:msBuild $solutionFile /p:OutDir="$targetDir\" /p:Configuration=Release /v:q}
+		exec { dotnet build $solutionFile -c Release -v q}
 	}
 }
 
-task Test -depends CompileMain{	
-	if(Test-Path $buildDir\TestReports){
-		Delete-Directory $buildDir\TestReports
+task Test -depends Build{	
+	gci -path "$srcDir" -recurse -include *Test.csproj | % {
+		$projectFile = $_.FullName
+		$projectName = $_.BaseName
+		exec { dotnet test $projectFile -v q --no-build}
 	}
-	
-	Create-Directory $buildDir\TestReports
-	
-	$testAssemblies = @()
-	$testAssemblies += Get-ChildItem -path "$outputDir" -recurse -include *.Test.dll
-	$targetFramework = "/framework=4.5";
-	exec {&$nunitexec $testAssemblies $targetFramework /xml="$buildDir\TestReports\TestResults.xml" /noshadow /nologo } 
 } 
 
 task CreateNugetPackages {
