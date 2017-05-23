@@ -14,22 +14,6 @@ namespace EzBus.Core.Test.ObjectFactory
             defaultObjectFactory = new DefaultObjectFactory();
         }
 
-        [Fact(Skip = "Enable object creation in LightInject")]
-        public void Can_create_object_with_default_constructor()
-        {
-            var obj = defaultObjectFactory.GetInstance(typeof(A));
-
-            //Assert.That(obj, Is.Not.Null);
-        }
-
-        [Fact(Skip = "Enable object creation in LightInject")]
-        public void Can_create_object_with_di_constructor()
-        {
-            var obj = defaultObjectFactory.GetInstance<B>();
-
-            //Assert.That(obj, Is.Not.Null);
-        }
-
         [Fact]
         public void Gets_same_object_within_scope()
         {

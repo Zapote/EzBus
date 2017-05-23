@@ -1,12 +1,10 @@
 ﻿$baseDir  = resolve-path .
 $buildDir = "$baseDir\build" 
 $toolsDir = "$baseDir\Tools"
-$outputDir = "$buildDir\Output"
-$artifactsDir = "$buildDir\Artifacts"
-$releaseDir = "$buildDir\Release"
-$nunitexec = "$toolsDir\nunit-2.6.3\nunit-console.exe"
-$zipExec = "$toolsDir\zip\7za.exe"
-$nugetExec = "$toolsDir\nuget\nuget.exe"
+$outputDir = "$buildDir\output"
+$artifactsDir = "$buildDir\artifacts"
+$releaseDir = "$buildDir\release"
+$reportsDir = "$buildDir\reports"
 $gitVersionExec = "$toolsDir\gitversion\GitVersion.exe"
 include $toolsDir\psake\buildutils.ps1
 
@@ -65,23 +63,22 @@ task Build -depends Init {
 	Delete-Directory $outputDir
 	Create-Directory $outputDir
 
-	$toExclude = @();
-	$toExclude = "*nobuild.sln"
-	
-	$solutions = Get-ChildItem -path "$baseDir" -recurse -include *EzBus-core.sln -Exclude $toExclude
+	$solutions = Get-ChildItem -path "$baseDir" -recurse -include EzBus.sln
 	$solutions | % {
 		$solutionFile = $_.FullName
 		$solutionName = $_.BaseName
-		exec { dotnet build $solutionFile -c Release -v q}
+		
+		dotnet restore $solutionFile 
+		dotnet build $solutionFile -c Release -v q -o "$outputDir\$solutionName"
 	}
 }
 
 task Test -depends Build{	
-	gci -path "$srcDir" -recurse -include *Test.csproj | % {
-		$projectFile = $_.FullName
-		$projectName = $_.BaseName
-		exec { dotnet test $projectFile -v q --no-build}
-	}
+	Delete-Directory $reportsDir
+	Create-Directory $reportsDir
+	$tests = gci -path "$outputDir" -recurse -include *Test.dll 
+	$testReport = "$reportsDir\test-report.trx"
+	dotnet vstest $tests --"logger:trx;LogFileName=$testReport"
 } 
 
 task CreateNugetPackages {

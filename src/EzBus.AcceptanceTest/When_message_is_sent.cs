@@ -11,8 +11,8 @@ namespace EzBus.AcceptanceTest
 
         public When_message_is_sent()
         {
-            messageRouting.AddRoute(typeof(TestMessage).GetTypeInfo().Assembly.GetName().Name, typeof(TestMessage).FullName, expectedDestination);
-            bus.Send(new TestMessage());
+            messageRouting.AddRoute(typeof(ToBeReceivedMessage).GetTypeInfo().Assembly.GetName().Name, typeof(ToBeReceivedMessage).FullName, expectedDestination);
+            bus.Send(new ToBeReceivedMessage());
         }
 
         [Then]

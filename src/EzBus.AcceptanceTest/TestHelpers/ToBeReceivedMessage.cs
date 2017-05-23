@@ -2,7 +2,7 @@
 
 namespace EzBus.AcceptanceTest.TestHelpers
 {
-    public class TestMessage
+    public class ToBeReceivedMessage
     {
         public Guid Id { get; } = Guid.NewGuid();
     }

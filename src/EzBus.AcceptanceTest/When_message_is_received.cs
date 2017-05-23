@@ -8,21 +8,21 @@ namespace EzBus.AcceptanceTest
     {
         public When_message_is_received()
         {
-            bus.Send("Moon", new TestMessage());
+            bus.Send("Moon", new ToBeReceivedMessage());
         }
 
         [Then]
         public void Message_is_handled()
         {
-            Assert.True(TestMessageHandler.MessageIsHandled);
+            Assert.True(ToBeReceivedMessageMessageHandler.MessageIsHandled);
         }
     }
 
-    public class TestMessageHandler : IHandle<TestMessage>
+    public class ToBeReceivedMessageMessageHandler : IHandle<ToBeReceivedMessage>
     {
         public static bool MessageIsHandled { get; private set; }
 
-        public void Handle(TestMessage message)
+        public void Handle(ToBeReceivedMessage message)
         {
             MessageIsHandled = true;
         }

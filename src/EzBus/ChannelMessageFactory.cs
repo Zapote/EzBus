@@ -12,7 +12,8 @@ namespace EzBus
             var messageType = message.GetType();
             var stream = messageSerializer.Serialize(message);
             var channelMessage = new ChannelMessage(stream);
-            channelMessage.AddHeader(MessageHeaders.MessageType, messageType.FullName);
+            channelMessage.AddHeader(MessageHeaders.MessageFullname, messageType.FullName);
+            channelMessage.AddHeader(MessageHeaders.MessageName, messageType.Name);
             channelMessage.AddHeader(MessageHeaders.UserPrincipal, "TODO"); //TODO: get current user
             channelMessage.AddHeader(MessageHeaders.SendingMachine, Environment.MachineName);
             channelMessage.AddHeader(MessageHeaders.SendingModule, ResolveAssemblyName());

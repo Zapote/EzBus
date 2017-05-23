@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EzBus.Logging;
 using EzBus.Utils;
-using AssemblyScanner = EzBus.Core.Utils.AssemblyScanner;
+using EzBus.Core.Utils;
 
 namespace EzBus.Core
 {

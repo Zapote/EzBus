@@ -1,6 +1,4 @@
-﻿using EzBus.Core.Test.TestHelpers;
-using System.Linq;
-using EzBus.Core;
+﻿using System.Linq;
 using Xunit;
 
 namespace EzBus.Core.Test
@@ -8,7 +6,6 @@ namespace EzBus.Core.Test
     public class HandlerCacheTest
     {
         private readonly HandlerCache handlerCache = new HandlerCache();
-
 
         public HandlerCacheTest()
         {
@@ -20,7 +17,7 @@ namespace EzBus.Core.Test
         {
             const string messageTypeName = "TestMessage";
 
-            var handlerInfo = handlerCache.GetHandlerInfo(messageTypeName).Single();
+            var handlerInfo = handlerCache.GetHandlerInfo(messageTypeName).FirstOrDefault();
 
             Assert.Equal("BarHandler", handlerInfo.HandlerType.Name);
             Assert.Equal(messageTypeName, handlerInfo.MessageType.Name);

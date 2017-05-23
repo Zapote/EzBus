@@ -28,7 +28,7 @@ namespace EzBus.Core.ObjectFactory
             return container.GetAllInstances<T>();
         }
 
-        public IEnumerable<object> GetInstances(Type type) 
+        public IEnumerable<object> GetInstances(Type type)
         {
             return container.GetAllInstances(type);
         }
@@ -96,6 +96,7 @@ namespace EzBus.Core.ObjectFactory
 
         public void EndScope()
         {
+            if (scope == null) return;
             scope.Dispose();
             scope = null;
         }
