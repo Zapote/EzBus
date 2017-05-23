@@ -10,7 +10,7 @@ include $toolsDir\psake\buildutils.ps1
 
 task default -depends DoRelease
 
-task DoRelease -depends Test, CreateNugetPackages{
+task DoRelease -depends Test{
 }
 
 task Clean{
