@@ -8,10 +8,7 @@ $reportsDir = "$buildDir\reports"
 $gitVersionExec = "$toolsDir\gitversion\GitVersion.exe"
 include $toolsDir\psake\buildutils.ps1
 
-task default -depends DoRelease
-
-task DoRelease -depends Test{
-}
+task default -depends Init, BuildMain, Test
 
 task Clean{
 	if(Test-Path $buildDir){
@@ -59,26 +56,40 @@ task GenerateAssemblyInfo -depends GitVersion{
 	}
 }
 
-task Build -depends Init { 
+task BuildMain { 
 	Delete-Directory $outputDir
 	Create-Directory $outputDir
 
-	$solutions = Get-ChildItem -path "$baseDir" -recurse -include EzBus.sln
-	$solutions | % {
-		$solutionFile = $_.FullName
-		$solutionName = $_.BaseName
+	$projects = Get-ChildItem -path "$srcDir" -recurse -include *.csproj
+	$projects | % {
+		$projectFile = $_.FullName
+		$projectName = $_.BaseName
 		
-		dotnet restore $solutionFile 
-		dotnet build $solutionFile -c Release -v q -o "$outputDir\$solutionName"
+		[xml]$projectXml = Get-Content -Path $projectFile
+		$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFrameworks
+		$sdk = $projectXml.Project.Sdk
+		if(!$sdk){
+			continue
+		}
+		if(!$targetFrameworks){
+			$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFramework
+			
+		}
+	
+		$targetFrameworks.Split(";") | % {
+			$targetFramework = $_
+			exec { dotnet restore $projectFile --no-cache -v q }
+			exec { dotnet build $projectFile -c Release -v q -o "$outputDir\$projectName\$targetFramework" -f $targetFramework }
+		}
 	}
 }
 
-task Test -depends Build{	
+task Test {	
 	Delete-Directory $reportsDir
 	Create-Directory $reportsDir
 	$tests = gci -path "$outputDir" -recurse -include *Test.dll 
 	$testReport = "$reportsDir\test-report.trx"
-	dotnet vstest $tests --"logger:trx;LogFileName=$testReport"
+	exec { dotnet vstest $tests --"logger:trx;LogFileName=$testReport" }
 } 
 
 task CreateNugetPackages {
@@ -92,10 +103,3 @@ task CreateNugetPackages {
 	}
 }
 
-task DetectOperatingSystemArchitecture {
-	if (IsWow64 -eq $true)
-	{
-		$script:architecture = "x64"
-	}
-    echo "Machine Architecture is $script:architecture"
- }

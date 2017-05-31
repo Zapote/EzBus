@@ -29,7 +29,7 @@ namespace EzBus.Core.Test.TestHelpers
 
         }
 
-        public Action<ChannelMessage> OnMessage { get { return onMessage; } set { onMessage = value; } }
+        public Action<ChannelMessage> OnMessage { get => onMessage; set => onMessage = value; }
 
         public static EndpointAddress LastSentDestination => sentDestinations.LastOrDefault();
 
