@@ -9,16 +9,16 @@ namespace EzBus.Msmq.Subscription
     public class MsmqSubscriptionManager : IStartupTask
     {
         private static readonly ILogger log = LogManager.GetLogger(typeof(MsmqSubscriptionManager));
-        private readonly ISubscriptionCollection subscriptions;
+        private readonly IEzBusConfig config;
         private readonly IMessageSerializer messageSerializer;
         private readonly IBusConfig busConfig;
 
-        public MsmqSubscriptionManager(ISubscriptionCollection subscriptions, IMessageSerializer messageSerializer, IBusConfig busConfig)
+        public MsmqSubscriptionManager(IEzBusConfig config, IMessageSerializer messageSerializer, IBusConfig busConfig)
         {
-            if (subscriptions == null) throw new ArgumentNullException(nameof(subscriptions));
+            if (config == null) throw new ArgumentNullException(nameof(config));
             if (messageSerializer == null) throw new ArgumentNullException(nameof(messageSerializer));
             if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
-            this.subscriptions = subscriptions;
+            this.config = config;
             this.messageSerializer = messageSerializer;
             this.busConfig = busConfig;
         }
@@ -27,7 +27,7 @@ namespace EzBus.Msmq.Subscription
         {
             var endpointName = busConfig.EndpointName;
 
-            foreach (ISubscription subscription in subscriptions)
+            foreach (var subscription in config.Subscriptions)
             {
                 var subscriptionMessage = new SubscriptionMessage
                 {

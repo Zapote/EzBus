@@ -62,23 +62,29 @@ task Build -depends Init {
 		$projectName = $_.BaseName
 		
 		[xml]$projectXml = Get-Content -Path $projectFile
-		$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFrameworks
 		$sdk = $projectXml.Project.Sdk
-		if($sdk){
-	
+
+		if($sdk -eq "Microsoft.NET.Sdk"){
+			# multi targets
+			$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFrameworks
+		
+			# single targets
 			if(!$targetFrameworks){
 				$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFramework
 			}
-		
-			write-host "Build $projectName"
-
-			$targetFrameworks.Split(";") | % {
-				$targetFramework = $_
-				write-host "Building $projectName for $targetFramework"
-				dotnet restore $projectFile --no-cache -v q 
-				dotnet build $projectFile -c Release -o "$outputDir\$projectName\$targetFramework"  -f $targetFramework
-			}
+		} else {
+			$targetFrameworks = "net46"
 		}
+		
+		write-host "Build $projectName"
+
+		$targetFrameworks.Split(";") | % {
+			$targetFramework = $_
+			write-host "Building $projectName for $targetFramework"
+			dotnet restore $projectFile --no-cache -v q 
+			dotnet build $projectFile -c Release -o "$outputDir\$projectName\$targetFramework"  -f $targetFramework
+		}
+		
 	}
 
 	write-host "build done"

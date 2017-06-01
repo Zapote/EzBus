@@ -10,14 +10,13 @@ namespace EzBus.Msmq.Channels
 
         public MsmqPublishingChannel(ISubscriptionStorage subscriptionStorage)
         {
-            if (subscriptionStorage == null) throw new ArgumentNullException(nameof(subscriptionStorage));
-            this.subscriptionStorage = subscriptionStorage;
+            this.subscriptionStorage = subscriptionStorage ?? throw new ArgumentNullException(nameof(subscriptionStorage));
         }
 
         public void Publish(ChannelMessage channelMessage)
         {
-            var messageType = channelMessage.GetHeader(MessageHeaders.MessageType);
-            var endpoints = subscriptionStorage.GetSubscribers(messageType);
+            var messageName = channelMessage.GetHeader(MessageHeaders.MessageName);
+            var endpoints = subscriptionStorage.GetSubscribers(messageName);
 
             foreach (var destination in endpoints.Select(EndpointAddress.Parse))
             {

@@ -1,8 +1,9 @@
 ﻿using System;
 using log4net;
 using log4net.Core;
+using EzBus;
 
-namespace EzBus.Log4Net
+namespace EzBus.log4net
 {
     public class Log4NetLogger : Logging.ILogger
     {
@@ -23,7 +24,7 @@ namespace EzBus.Log4Net
 
         public void Verbose(object message)
         {
-            log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, Level.Verbose, message, null);
+            log.Logger.Log(System.Reflection.Assembly.GetEntryAssembly().GetType(), Level.Verbose, message, null);
         }
 
         public void Debug(object message)
@@ -53,7 +54,7 @@ namespace EzBus.Log4Net
 
         public void Verbose(object message, Exception t)
         {
-            log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, Level.Verbose, message, t);
+            log.Logger.Log(System.Reflection.Assembly.GetEntryAssembly().GetType(), Level.Verbose, message, t);
         }
 
         public void Debug(object message, Exception t)
