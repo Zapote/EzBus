@@ -8,7 +8,9 @@ $reportsDir = "$buildDir\reports"
 $gitVersionExec = "$toolsDir\gitversion\GitVersion.exe"
 include $toolsDir\psake\buildutils.ps1
 
-task default -depends Init, BuildMain, Test
+task default -depends DoRelease
+
+task DoRelease -depends Init, BuildMain, Test
 
 task Clean{
 	if(Test-Path $buildDir){
@@ -35,7 +37,6 @@ task GitVersion{
 }
  
 task GenerateAssemblyInfo -depends GitVersion{
-	
 	$version = $script:gitVersionInfo.AssemblySemVer
 	$informationalVersion = $gitVersionInfo.InformationalVersion
 	
@@ -76,10 +77,14 @@ task BuildMain {
 			
 		}
 	
+
+		exec { dotnet restore $projectFile --no-cache -v q }
+		exec { dotnet build $projectFile -c Release -v q -o "$outputDir\$projectName\$targetFramework"  }
+
 		$targetFrameworks.Split(";") | % {
 			$targetFramework = $_
-			exec { dotnet restore $projectFile --no-cache -v q }
-			exec { dotnet build $projectFile -c Release -v q -o "$outputDir\$projectName\$targetFramework" -f $targetFramework }
+			write-host "Building $projectName for $targetFramework"
+			
 		}
 	}
 }
