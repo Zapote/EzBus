@@ -10,18 +10,15 @@ include $toolsDir\psake\buildutils.ps1
 
 task default -depends DoRelease
 
-task DoRelease -depends Init, BuildMain, Test
+task DoRelease -depends Test
 
-task Clean{
-	if(Test-Path $buildDir){
-		Delete-Directory $buildDir	
-	}
-}
+task Init{   	
+	Delete-Directory $buildDir	
 
-task Init -depends Clean{   	
 	write-host "Creating build directory at the follwing path $buildDir"
-	
+
 	Create-Directory $buildDir
+	Create-Directory $outputDir
 	Create-Directory $releaseDir
 	Create-Directory $artifactsDir
 	
@@ -57,11 +54,9 @@ task GenerateAssemblyInfo -depends GitVersion{
 	}
 }
 
-task BuildMain { 
-	Delete-Directory $outputDir
-	Create-Directory $outputDir
-
+task Build -depends Init { 
 	$projects = Get-ChildItem -path "$srcDir" -recurse -include *.csproj
+	
 	$projects | % {
 		$projectFile = $_.FullName
 		$projectName = $_.BaseName
@@ -69,27 +64,27 @@ task BuildMain {
 		[xml]$projectXml = Get-Content -Path $projectFile
 		$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFrameworks
 		$sdk = $projectXml.Project.Sdk
-		if(!$sdk){
-			continue
-		}
-		if(!$targetFrameworks){
-			$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFramework
-			
-		}
+		if($sdk){
 	
+			if(!$targetFrameworks){
+				$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFramework
+			}
+		
+			write-host "Build $projectName"
 
-		exec { dotnet restore $projectFile --no-cache -v q }
-		exec { dotnet build $projectFile -c Release -v q -o "$outputDir\$projectName\$targetFramework"  }
-
-		$targetFrameworks.Split(";") | % {
-			$targetFramework = $_
-			write-host "Building $projectName for $targetFramework"
-			
+			$targetFrameworks.Split(";") | % {
+				$targetFramework = $_
+				write-host "Building $projectName for $targetFramework"
+				dotnet restore $projectFile --no-cache -v q 
+				dotnet build $projectFile -c Release -o "$outputDir\$projectName\$targetFramework"  -f $targetFramework
+			}
 		}
 	}
+
+	write-host "build done"
 }
 
-task Test {	
+task Test -depends Build {	
 	Delete-Directory $reportsDir
 	Create-Directory $reportsDir
 	$tests = gci -path "$outputDir" -recurse -include *Test.dll 
