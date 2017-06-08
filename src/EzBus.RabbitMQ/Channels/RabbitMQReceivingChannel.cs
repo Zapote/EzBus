@@ -1,0 +1,58 @@
+﻿using System;
+using System.IO;
+using System.Text;
+using EzBus.Config;
+using RabbitMQ.Client.Events;
+
+namespace EzBus.RabbitMQ.Channels
+{
+    public class RabbitMQReceivingChannel : RabbitMQChannel, IReceivingChannel
+    {
+        private readonly IEzBusConfig config;
+        private EventingBasicConsumer consumer;
+
+        public RabbitMQReceivingChannel(IChannelFactory channelFactory, IEzBusConfig config) : base(channelFactory)
+        {
+            this.config = config ?? throw new ArgumentNullException(nameof(config));
+        }
+
+        public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
+        {
+            DeclareQueue(inputAddress.QueueName);
+            DeclareQueue(errorAddress.QueueName);
+            DeclareExchange(inputAddress.QueueName);
+
+            BindSubscriptionExchanges(inputAddress);
+
+            consumer = new EventingBasicConsumer(channel);
+            consumer.Received += (model, eventArgs) =>
+            {
+                if (OnMessage == null) return;
+
+                var body = eventArgs.Body;
+                var message = new ChannelMessage(new MemoryStream(body));
+
+                foreach (var header in eventArgs.BasicProperties.Headers)
+                {
+                    var value = Encoding.UTF8.GetString((byte[])header.Value);
+                    message.AddHeader(header.Key, value);
+                }
+
+                OnMessage(message);
+            };
+
+            //channel.BasicConsume(inputAddress.QueueName, true, consumer,true,true);
+        }
+
+        public Action<ChannelMessage> OnMessage { get; set; }
+
+        private void BindSubscriptionExchanges(EndpointAddress inputAddress)
+        {
+            foreach (var subscription in config.Subscriptions)
+            {
+                var exchange = subscription.Endpoint;
+                BindQueue(inputAddress.QueueName, exchange);
+            }
+        }
+    }
+}

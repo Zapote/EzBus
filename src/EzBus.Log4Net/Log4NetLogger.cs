@@ -1,7 +1,6 @@
 ﻿using System;
 using log4net;
 using log4net.Core;
-using EzBus;
 
 namespace EzBus.log4net
 {
@@ -11,8 +10,7 @@ namespace EzBus.log4net
 
         public Log4NetLogger(ILog log)
         {
-            if (log == null) throw new ArgumentNullException(nameof(log));
-            this.log = log;
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         public bool IsVerboseEnabled => log.Logger.IsEnabledFor(Level.Verbose);

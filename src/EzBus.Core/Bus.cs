@@ -63,7 +63,7 @@ public static class Bus
 
     private static void StartHost()
     {
-        var host = objectFactory.GetInstance<Host>();
+        var host = objectFactory.GetInstance<BusStarter>();
         host.Start();
     }
 }

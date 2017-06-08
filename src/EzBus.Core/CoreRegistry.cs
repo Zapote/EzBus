@@ -27,7 +27,7 @@ namespace EzBus.Core
 
         private void RegisterHost()
         {
-            Register<Host, Host>().As.Singleton();
+            Register<BusStarter, BusStarter>().As.Singleton();
         }
 
         private void RegisterBus()

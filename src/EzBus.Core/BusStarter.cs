@@ -3,19 +3,19 @@ using System;
 
 namespace EzBus.Core
 {
-    public class Host
+    public class BusStarter
     {
         private readonly ITaskRunner taskRunner;
-        private static readonly ILogger log = LogManager.GetLogger<Host>();
+        private static readonly ILogger log = LogManager.GetLogger<BusStarter>();
 
-        public Host(ITaskRunner taskRunner)
+        public BusStarter(ITaskRunner taskRunner)
         {
             this.taskRunner = taskRunner ?? throw new ArgumentNullException(nameof(taskRunner));
         }
 
         public void Start()
         {
-            log.Verbose("Starting EzBus Host");
+            log.Verbose("Starting EzBus");
             taskRunner.RunStartupTasks();
         }
     }
