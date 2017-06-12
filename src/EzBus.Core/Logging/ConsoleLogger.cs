@@ -3,12 +3,12 @@ using EzBus.Logging;
 
 namespace EzBus.Core.Logging
 {
-    public class TraceLogger : ILogger
+    public class ConsoleLogger : ILogger
     {
         private readonly LogLevel level;
         private readonly string name;
 
-        public TraceLogger(LogLevel level, string name)
+        public ConsoleLogger(LogLevel level, string name)
         {
             this.level = level;
             this.name = name;
@@ -95,7 +95,7 @@ namespace EzBus.Core.Logging
         private void WriteLog(object message, LogLevel logLevel, ConsoleColor color = ConsoleColor.Gray)
         {
             Console.ForegroundColor = color;
-           // Trace.WriteLine($"{DateTime.Now} [{System.Threading.Thread.CurrentThread.ManagedThreadId}] {logLevel} {name}: {message}");
+            Console.WriteLine($"{DateTime.Now} [{System.Threading.Thread.CurrentThread.ManagedThreadId}] {logLevel} {name}: {message}");
             Console.ResetColor();
         }
     }

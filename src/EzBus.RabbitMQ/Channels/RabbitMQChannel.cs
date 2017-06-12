@@ -31,7 +31,7 @@ namespace EzBus.RabbitMQ.Channels
 
         protected void DeclareQueue(string queueName)
         {
-            channel.QueueDeclare(queueName, true, false, false, null);
+            channel.QueueDeclare(queueName, true, false, false);
         }
 
         protected void DeclareQueuePassive(string queueName)
@@ -56,7 +56,7 @@ namespace EzBus.RabbitMQ.Channels
 
         protected void BindQueue(string queueName, string exchange = "")
         {
-            channel.QueueBind(queueName, exchange.ToLower(), string.Empty, null);
+            channel.QueueBind(queueName, exchange.ToLower(), string.Empty);
         }
     }
 }

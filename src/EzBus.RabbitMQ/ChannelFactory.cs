@@ -11,7 +11,6 @@ namespace EzBus.RabbitMQ
 
         public ChannelFactory()
         {
-            // hostUri = ConfigurationManager.AppSettings["HostUri"];
             if (string.IsNullOrEmpty(hostUri))
             {
                 hostUri = "amqp://localhost";

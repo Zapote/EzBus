@@ -12,7 +12,7 @@ namespace EzBus.Core.Logging
 
         public override ILogger CreateLogger(LogLevel level, string name)
         {
-            return new TraceLogger(LogLevel.Debug, name);
+            return new ConsoleLogger(LogLevel.Debug, name);
         }
     }
 }

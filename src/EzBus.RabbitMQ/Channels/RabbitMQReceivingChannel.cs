@@ -28,20 +28,26 @@ namespace EzBus.RabbitMQ.Channels
             BindSubscriptionExchanges(inputAddress);
 
             consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, eventArgs) =>
+            consumer.Received += (model, ea) =>
             {
-                if (OnMessage == null) return;
+                if (OnMessage == null)
+                {
+                    channel.BasicAck(ea.DeliveryTag, false);
+                    return;
+                }
 
-                var body = eventArgs.Body;
+                var body = ea.Body;
                 var message = new ChannelMessage(new MemoryStream(body));
 
-                foreach (var header in eventArgs.BasicProperties.Headers)
+                foreach (var header in ea.BasicProperties.Headers)
                 {
                     var value = Encoding.UTF8.GetString((byte[])header.Value);
                     message.AddHeader(header.Key, value);
                 }
 
                 OnMessage(message);
+
+                channel.BasicAck(ea.DeliveryTag, false);
             };
 
             channel.BasicConsume(inputAddress.QueueName, false, string.Empty, false, false, null, consumer);

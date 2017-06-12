@@ -3,7 +3,7 @@ using System.IO;
 
 namespace EzBus.RabbitMQ
 {
-    static class StreamExtensions
+    internal static class StreamExtensions
     {
         public static byte[] ToByteArray(this Stream stream)
         {
