@@ -6,8 +6,6 @@ namespace DiceRoller.Client
     {
         static void Main(string[] args)
         {
-            
-
             Bus.Start();
 
             var keyInfo = new ConsoleKeyInfo();
@@ -18,8 +16,6 @@ namespace DiceRoller.Client
                 keyInfo = Console.ReadKey();
                 Bus.Send("DiceRoller.Service", new RollTheDice());
             }
-
-            
         }
     }
 }
