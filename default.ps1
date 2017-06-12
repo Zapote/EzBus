@@ -81,8 +81,8 @@ task Build -depends Init {
 		$targetFrameworks.Split(";") | % {
 			$targetFramework = $_
 			write-host "Building $projectName for $targetFramework"
-			dotnet restore $projectFile --no-cache -v q 
-			dotnet build $projectFile -c Release -o "$outputDir\$projectName\$targetFramework"  -f $targetFramework
+			exec { dotnet restore $projectFile --no-cache -v q }
+			exec { dotnet build $projectFile -c Release -o "$outputDir\$projectName\$targetFramework"  -f $targetFramework }
 		}
 		
 	}

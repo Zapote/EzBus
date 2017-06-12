@@ -4,11 +4,11 @@ using log4net.Core;
 
 namespace EzBus.log4net
 {
-    public class Log4NetLogger : Logging.ILogger
+    public class log4netLogger : Logging.ILogger
     {
         private readonly ILog log;
 
-        public Log4NetLogger(ILog log)
+        public log4netLogger(ILog log)
         {
             this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
@@ -22,7 +22,7 @@ namespace EzBus.log4net
 
         public void Verbose(object message)
         {
-            log.Logger.Log(System.Reflection.Assembly.GetEntryAssembly().GetType(), Level.Verbose, message, null);
+            Verbose(message, null);
         }
 
         public void Debug(object message)
