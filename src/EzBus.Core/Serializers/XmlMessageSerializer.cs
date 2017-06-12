@@ -71,7 +71,7 @@ namespace EzBus.Core.Serializers
             }
             else
             {
-                var text = string.Format(CultureInfo.InvariantCulture, "{0}", obj);
+                var text = string.Format("{0}", obj);
                 currentNode.AppendChild(xmlDocument.CreateTextNode(text));
             }
         }

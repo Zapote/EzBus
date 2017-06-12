@@ -14,9 +14,7 @@ namespace EzBus.Msmq.Subscription
 
         public MsmqSubscriptionStorage(IBusConfig busConfig)
         {
-            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
-            this.busConfig = busConfig;
-
+            this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
             Initialize();
         }
 

@@ -44,7 +44,7 @@ namespace EzBus.RabbitMQ.Channels
             {
                 if (ex.ShutdownReason.ReplyCode != 404) throw;
 
-                string message = $"Queue '{queueName}' does not exist or is not currently available.";
+                var message = $"Queue '{queueName}' does not exist or is not currently available.";
                 throw new InvalidOperationException(message, ex);
             }
         }
@@ -56,7 +56,7 @@ namespace EzBus.RabbitMQ.Channels
 
         protected void BindQueue(string queueName, string exchange = "")
         {
-            channel.QueueBind(queueName, exchange.ToLower(), string.Empty);
+            channel.QueueBind(queueName, exchange.ToLower(), string.Empty, null);
         }
     }
 }

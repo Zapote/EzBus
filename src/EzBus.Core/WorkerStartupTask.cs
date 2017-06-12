@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EzBus.Core.Middleware;
 using EzBus.ObjectFactory;
 using EzBus.Utils;
@@ -11,6 +12,7 @@ namespace EzBus.Core
     {
         private readonly IBusConfig busConfig;
         private readonly IObjectFactory objectFactory;
+        private readonly IList<IReceivingChannel> receivingChannels = new List<IReceivingChannel>();
 
         public WorkerStartupTask(IBusConfig busConfig, IObjectFactory objectFactory)
         {
@@ -22,11 +24,14 @@ namespace EzBus.Core
         {
             for (var i = 0; i < busConfig.WorkerThreads; i++)
             {
-                var receivingChannel = objectFactory.GetInstance<IReceivingChannel>();
-                receivingChannel.OnMessage = OnMessageReceived;
+                var rc = objectFactory.GetInstance<IReceivingChannel>();
                 var endpointAddress = new EndpointAddress(busConfig.EndpointName);
                 var errorEndpointAddress = new EndpointAddress(busConfig.ErrorEndpointName);
-                receivingChannel.Initialize(endpointAddress, errorEndpointAddress);
+
+                rc.OnMessage = OnMessageReceived;
+                rc.Initialize(endpointAddress, errorEndpointAddress);
+
+                receivingChannels.Add(rc);
             }
         }
 

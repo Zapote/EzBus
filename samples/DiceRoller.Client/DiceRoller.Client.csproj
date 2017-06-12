@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\EzBus.Core\EzBus.Core.csproj" />
+    <ProjectReference Include="..\..\src\EzBus.RabbitMQ\EzBus.RabbitMQ.csproj" />
+    <ProjectReference Include="..\..\src\EzBus\EzBus.csproj" />
+  </ItemGroup>
+
+</Project>

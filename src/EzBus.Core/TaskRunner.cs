@@ -1,8 +1,7 @@
 ﻿using System;
-using EzBus.Core.Resolvers;
+using System.Collections.Generic;
 using EzBus.Logging;
 using EzBus.ObjectFactory;
-using EzBus.Utils;
 
 namespace EzBus.Core
 {
@@ -10,6 +9,7 @@ namespace EzBus.Core
     {
         private static readonly ILogger log = LogManager.GetLogger<TaskRunner>();
         private readonly IObjectFactory objectFactory;
+        private IEnumerable<IStartupTask> startupTasks;
 
         public TaskRunner(IObjectFactory objectFactory)
         {
@@ -18,7 +18,7 @@ namespace EzBus.Core
 
         public void RunStartupTasks()
         {
-            var startupTasks = objectFactory.GetInstances<IStartupTask>();
+            startupTasks = objectFactory.GetInstances<IStartupTask>();
 
             foreach (var task in startupTasks)
             {

@@ -15,12 +15,9 @@ namespace EzBus.Msmq.Subscription
 
         public MsmqSubscriptionManager(IEzBusConfig config, IMessageSerializer messageSerializer, IBusConfig busConfig)
         {
-            if (config == null) throw new ArgumentNullException(nameof(config));
-            if (messageSerializer == null) throw new ArgumentNullException(nameof(messageSerializer));
-            if (busConfig == null) throw new ArgumentNullException(nameof(busConfig));
-            this.config = config;
-            this.messageSerializer = messageSerializer;
-            this.busConfig = busConfig;
+            this.config = config ?? throw new ArgumentNullException(nameof(config));
+            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
+            this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
 
         public void Run()

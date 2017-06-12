@@ -22,7 +22,7 @@ namespace EzBus.Core.Serializers
                 {typeof (bool), s => XmlConvert.ToBoolean(s.ToLower())},
                 {typeof (double), s => XmlConvert.ToDouble(s)},
                 {typeof (decimal), s => XmlConvert.ToDecimal(s)},
-                {typeof (DateTime), s => XmlConvert.ToDateTime(s, XmlDateTimeSerializationMode.Unspecified)},
+                {typeof (DateTime), s => XmlConvert.ToDateTime(s, XmlDateTimeSerializationMode.Local)},
                 {typeof (TimeSpan), s => XmlConvert.ToTimeSpan(s)},
                 {typeof (byte), s => XmlConvert.ToByte(s)},
                 {typeof (string), s => s},

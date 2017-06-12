@@ -8,8 +8,7 @@ namespace EzBus.Msmq.Subscription
 
         public SubscriptionMessageHandler(ISubscriptionStorage subscriptionStorage)
         {
-            if (subscriptionStorage == null) throw new ArgumentNullException(nameof(subscriptionStorage));
-            this.subscriptionStorage = subscriptionStorage;
+            this.subscriptionStorage = subscriptionStorage ?? throw new ArgumentNullException(nameof(subscriptionStorage));
         }
 
         public void Handle(SubscriptionMessage message)

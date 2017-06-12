@@ -5,8 +5,8 @@ namespace EzBus.Core
 {
     public class BusStarter
     {
-        private readonly ITaskRunner taskRunner;
         private static readonly ILogger log = LogManager.GetLogger<BusStarter>();
+        private readonly ITaskRunner taskRunner;
 
         public BusStarter(ITaskRunner taskRunner)
         {

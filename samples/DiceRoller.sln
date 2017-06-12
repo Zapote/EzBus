@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiceRoller.Client", "DiceRoller.Client\DiceRoller.Client.csproj", "{16249C4F-DACD-4EF4-BAD8-2D50D3028F1D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus", "..\src\EzBus\EzBus.csproj", "{C4ECE895-5489-41E3-B084-FBA06C4AE3F6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.Core", "..\src\EzBus.Core\EzBus.Core.csproj", "{0AA60278-30C1-4697-BF05-BA2A32F58E74}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.RabbitMQ", "..\src\EzBus.RabbitMQ\EzBus.RabbitMQ.csproj", "{5320DA28-04D6-4C9F-B34B-D2B50FA2356D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiceRoller.Service", "..\DiceRoller.Service\DiceRoller.Service.csproj", "{CB51393F-3A71-414D-9374-8901B2052B8A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16249C4F-DACD-4EF4-BAD8-2D50D3028F1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16249C4F-DACD-4EF4-BAD8-2D50D3028F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16249C4F-DACD-4EF4-BAD8-2D50D3028F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16249C4F-DACD-4EF4-BAD8-2D50D3028F1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4ECE895-5489-41E3-B084-FBA06C4AE3F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4ECE895-5489-41E3-B084-FBA06C4AE3F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4ECE895-5489-41E3-B084-FBA06C4AE3F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4ECE895-5489-41E3-B084-FBA06C4AE3F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA60278-30C1-4697-BF05-BA2A32F58E74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA60278-30C1-4697-BF05-BA2A32F58E74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA60278-30C1-4697-BF05-BA2A32F58E74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA60278-30C1-4697-BF05-BA2A32F58E74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5320DA28-04D6-4C9F-B34B-D2B50FA2356D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5320DA28-04D6-4C9F-B34B-D2B50FA2356D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5320DA28-04D6-4C9F-B34B-D2B50FA2356D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5320DA28-04D6-4C9F-B34B-D2B50FA2356D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB51393F-3A71-414D-9374-8901B2052B8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB51393F-3A71-414D-9374-8901B2052B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB51393F-3A71-414D-9374-8901B2052B8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB51393F-3A71-414D-9374-8901B2052B8A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

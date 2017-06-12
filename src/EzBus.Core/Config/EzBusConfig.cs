@@ -14,7 +14,7 @@ namespace EzBus.Core.Config
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(currentDirectory)
-                .AddJsonFile("ezbus.config.json", false, true);
+                .AddJsonFile("ezbus.config.json", true, true);
 
             var cfg = builder.Build();
             var section = cfg.GetSection("ezbus");

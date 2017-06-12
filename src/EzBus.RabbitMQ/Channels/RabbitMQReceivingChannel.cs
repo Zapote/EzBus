@@ -1,13 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using EzBus.Config;
+using EzBus.Logging;
 using RabbitMQ.Client.Events;
 
 namespace EzBus.RabbitMQ.Channels
 {
     public class RabbitMQReceivingChannel : RabbitMQChannel, IReceivingChannel
     {
+        private static readonly ILogger log = LogManager.GetLogger<RabbitMQReceivingChannel>();
         private readonly IEzBusConfig config;
         private EventingBasicConsumer consumer;
 
@@ -41,13 +44,19 @@ namespace EzBus.RabbitMQ.Channels
                 OnMessage(message);
             };
 
-            //channel.BasicConsume(inputAddress.QueueName, true, consumer,true,true);
+            channel.BasicConsume(inputAddress.QueueName, false, string.Empty, false, false, null, consumer);
         }
 
         public Action<ChannelMessage> OnMessage { get; set; }
 
         private void BindSubscriptionExchanges(EndpointAddress inputAddress)
         {
+            if (config.Subscriptions == null)
+            {
+                log.Info("No subscriptions found in config");
+                return;
+            }
+
             foreach (var subscription in config.Subscriptions)
             {
                 var exchange = subscription.Endpoint;

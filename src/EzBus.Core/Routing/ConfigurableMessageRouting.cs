@@ -9,9 +9,10 @@ namespace EzBus.Core.Routing
 
         public ConfigurableMessageRouting()
         {
-            var config = EzBusConfig.GetConfig();
-
+            var config = EzBusConfig.GetConfig();//TODO: Inject
             var destinations = config.Destinations;
+
+            if (destinations == null) return;
 
             foreach (var destination in destinations)
             {
