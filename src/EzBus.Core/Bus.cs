@@ -19,7 +19,7 @@ public static class Bus
         ConfigureLogging();
         SetupBusConfig(configAction);
         CreateBus();
-        StartHost();
+        StartBus();
     }
 
     private static void InitializeObjectFactory()
@@ -61,10 +61,12 @@ public static class Bus
         bus = objectFactory.GetInstance<IBus>();
     }
 
-    private static void StartHost()
+    private static void StartBus()
     {
+        var log = LogManager.GetLogger("Bus");
         var host = objectFactory.GetInstance<BusStarter>();
         host.Start();
+        log.Debug("EzBus started");
     }
 }
 

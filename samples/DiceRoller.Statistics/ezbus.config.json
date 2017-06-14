@@ -1,0 +1,9 @@
+﻿{
+  "ezbus": {
+    "subscriptions": [
+      {
+        "endpoint": "diceroller.service"
+      }
+    ]
+  }
+}

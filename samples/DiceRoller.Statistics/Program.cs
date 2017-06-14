@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace DiceRoller.Service
+namespace DiceRoller.Statistics
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.Title = "DiceRoller Service";
+            Console.Title = "DiceRoller Statistics";
             Bus.Start();
         }
     }

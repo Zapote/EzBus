@@ -4,7 +4,7 @@ using Xunit;
 
 namespace EzBus.Core.Test.Logging
 {
-    public class TraceLoggerTest
+    public class ConsoleLoggerTest
     {
         [Fact]
         public void Debug_should_not_be_enabled_when_level_is_info()

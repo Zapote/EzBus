@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.RabbitMQ", "..\src\Ez
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiceRoller.Service", "DiceRoller.Service\DiceRoller.Service.csproj", "{87D731F8-461F-4E0F-9CF8-03F74AC2B291}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiceRoller.Statistics", "DiceRoller.Statistics\DiceRoller.Statistics.csproj", "{DB8F4E42-FD5E-46B5-A819-FFE35721DED2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{87D731F8-461F-4E0F-9CF8-03F74AC2B291}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87D731F8-461F-4E0F-9CF8-03F74AC2B291}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87D731F8-461F-4E0F-9CF8-03F74AC2B291}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB8F4E42-FD5E-46B5-A819-FFE35721DED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB8F4E42-FD5E-46B5-A819-FFE35721DED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB8F4E42-FD5E-46B5-A819-FFE35721DED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB8F4E42-FD5E-46B5-A819-FFE35721DED2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

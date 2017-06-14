@@ -35,13 +35,13 @@ namespace EzBus.Core.Logging
         public void Debug(object message)
         {
             if (!IsDebugEnabled) return;
-            WriteLog(message, LogLevel.Debug);
+            WriteLog(message, LogLevel.Debug, ConsoleColor.DarkGray);
         }
 
         public void Info(object message)
         {
             if (!IsInfoEnabled) return;
-            WriteLog(message, LogLevel.Info, ConsoleColor.Blue);
+            WriteLog(message, LogLevel.Info, ConsoleColor.DarkGreen);
         }
 
         public void Warn(object message)

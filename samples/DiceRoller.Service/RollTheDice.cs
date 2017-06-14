@@ -4,6 +4,6 @@ namespace DiceRoller.Service
 {
     public class RollTheDice
     {
-        public int Number { get; private set; }
+        public int Attempts { get; set; }
     }
 }

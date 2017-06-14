@@ -7,7 +7,14 @@ namespace DiceRoller.Service
     {
         public void Handle(RollTheDice message)
         {
-            Console.WriteLine(message.Number);
+            
+            Console.WriteLine($"Rolling the dice {message.Attempts} times");
+            for (var i = 0; i < message.Attempts; i++)
+            {
+                var seed = Guid.NewGuid().GetHashCode();
+                var result = new Random().Next(1, 7);
+                Bus.Publish(new DiceRolled { Result = result });
+            }
         }
     }
 }

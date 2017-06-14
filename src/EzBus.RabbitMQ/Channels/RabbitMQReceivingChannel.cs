@@ -66,6 +66,7 @@ namespace EzBus.RabbitMQ.Channels
             foreach (var subscription in config.Subscriptions)
             {
                 var exchange = subscription.Endpoint;
+                log.Info($"Subscribing to messages from '{subscription.Endpoint}'");
                 BindQueue(inputAddress.QueueName, exchange);
             }
         }
