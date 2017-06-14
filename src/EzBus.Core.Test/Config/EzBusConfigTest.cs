@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using EzBus.Config;
+﻿using EzBus.Config;
 using EzBus.Core.Config;
 using Xunit;
 
@@ -49,6 +47,22 @@ namespace EzBus.Core.Test.Config
             var destination = config.Subscriptions[1];
 
             Assert.Equal("acme.endpoint", destination.Endpoint);
+        }
+
+        [Fact]
+        public void ConnectionString_shall_be_returned_when_exists()
+        {
+            var cs = config.GetConnectionString("RabbitMQ");
+
+            Assert.Equal("amqp://localhost", cs);
+        }
+
+        [Fact]
+        public void Null_shall_be_returned_when_connectionString_not_exists()
+        {
+            var cs = config.GetConnectionString("DB");
+
+            Assert.Null(cs);
         }
     }
 }

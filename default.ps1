@@ -1,10 +1,12 @@
 ﻿$baseDir  = resolve-path .
+$srcDir = "$baseDir\src"
 $buildDir = "$baseDir\build" 
 $toolsDir = "$baseDir\Tools"
 $outputDir = "$buildDir\output"
 $artifactsDir = "$buildDir\artifacts"
 $releaseDir = "$buildDir\release"
 $reportsDir = "$buildDir\reports"
+
 $gitVersionExec = "$toolsDir\gitversion\GitVersion.exe"
 include $toolsDir\psake\buildutils.ps1
 
@@ -60,12 +62,13 @@ task Build -depends Init {
 	$projects | % {
 		$projectFile = $_.FullName
 		$projectName = $_.BaseName
-		
+
 		[xml]$projectXml = Get-Content -Path $projectFile
 		$sdk = $projectXml.Project.Sdk
 
 		if($sdk -eq "Microsoft.NET.Sdk"){
 			# multi targets
+			
 			$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFrameworks
 		
 			# single targets
@@ -77,7 +80,7 @@ task Build -depends Init {
 		}
 		
 		write-host "Build $projectName"
-
+		
 		$targetFrameworks.Split(";") | % {
 			$targetFramework = $_
 			write-host "Building $projectName for $targetFramework"

@@ -7,5 +7,6 @@ namespace EzBus.Config
         string EndpointName { get; set; }
         Destination[] Destinations { get; set; }
         Subscription[] Subscriptions { get; set; }
+        string GetConnectionString(string name);
     }
 }

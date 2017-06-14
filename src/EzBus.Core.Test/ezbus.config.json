@@ -23,6 +23,9 @@
       {
         "endpoint": "acme.endpoint"
       }
-    ]
+    ],
+    "connectionstrings": {
+      "RabbitMQ": "amqp://localhost"
+    }
   }
 }
