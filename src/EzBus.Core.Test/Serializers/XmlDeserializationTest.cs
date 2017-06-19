@@ -5,6 +5,56 @@ using Xunit;
 
 namespace EzBus.Core.Test.Serializers
 {
+    public class XmlAnonymousDeserializationTest
+    {
+        private readonly dynamic message;
+        private const string stringValue = "FooBar";
+        private const int intValue = int.MaxValue;
+
+        public XmlAnonymousDeserializationTest()
+        {
+            var serializer = new XmlMessageSerializer();
+            var serializationMessage = new
+            {
+                stringValue,
+                data = new { intValue }
+            };
+
+            var xml = serializer.Serialize(serializationMessage);
+            message = serializer.Deserialize(xml, null);
+        }
+
+        [Fact]
+        public void Message_should_be_created()
+        {
+            Assert.NotNull(message);
+        }
+
+        [Fact]
+        public void StringValue_should_be_set()
+        {
+            Assert.Equal(stringValue, message.StringValue);
+        }
+
+        [Fact]
+        public void IntValue_should_be_set()
+        {
+            Assert.Equal(intValue, message.TestMessageData.IntValue);
+        }
+
+        [Fact]
+        public void NullableIntValue_should_be_set()
+        {
+            Assert.Null(message.NullableIntValue);
+        }
+
+        [Fact]
+        public void Collection_should_be_set()
+        {
+            Assert.Equal(2, message.DataCollection.Count());
+        }
+    }
+
     public class XmlDeserializationTest
     {
         private readonly TestMessageWithCollection message;

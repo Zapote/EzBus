@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -15,10 +16,14 @@ namespace EzBus.Core.Serializers
     {
         private static readonly ILogger log = LogManager.GetLogger(typeof(XmlMessageSerializer));
 
-        public Stream Serialize(object obj)
+        public Stream Serialize(object obj, string name = null)
         {
+            if (name == null)
+            {
+                name = CreateTypeName(obj);
+            }
+
             var xmlDocument = CreateXmlDocument();
-            var name = CreateTypeName(obj);
             var rootElement = xmlDocument.CreateElement(name);
 
             WriteObject(obj, xmlDocument, rootElement);
@@ -94,7 +99,17 @@ namespace EzBus.Core.Serializers
 
         public object Deserialize(Stream messageStream, Type messageType)
         {
-            var instance = FormatterServices.GetUninitializedObject(messageType);
+
+            dynamic instance;
+
+            if (messageType == null)
+            {
+                instance = new ExpandoObject(); ;
+            }
+            else
+            {
+                instance = FormatterServices.GetUninitializedObject(messageType);
+            }
 
             try
             {
@@ -179,6 +194,4 @@ namespace EzBus.Core.Serializers
             }
         }
     }
-
-
 }

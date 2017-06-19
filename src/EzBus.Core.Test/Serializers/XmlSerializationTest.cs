@@ -91,9 +91,21 @@ namespace EzBus.Core.Test.Serializers
             Assert.Equal(intValue.ToString(CultureInfo.InvariantCulture), xDoc.Descendants("IntValue").ElementAt(0).Value);
         }
 
-        private XDocument Serialize(object obj)
+        [Fact]
+        public void Anonymous_class_is_serialized_correct()
         {
-            result = serializer.Serialize(obj);
+            const int number = 123;
+            var message = new { number, child = new { number } };
+
+            var xDoc = Serialize(message, "DynamicMessage");
+
+            Assert.Equal(number.ToString(), xDoc.Descendants("number").ElementAt(0).Value);
+            Assert.Equal(number.ToString(), xDoc.Descendants("child").Descendants("number").ElementAt(0).Value);
+        }
+
+        private XDocument Serialize(object obj, string name = null)
+        {
+            result = serializer.Serialize(obj, name);
             var xDoc = XDocument.Load(result);
             return xDoc;
         }
