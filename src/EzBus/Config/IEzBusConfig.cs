@@ -1,5 +1,3 @@
-using EzBus.Core.Config;
-
 namespace EzBus.Config
 {
     public interface IEzBusConfig

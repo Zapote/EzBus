@@ -1,8 +1,6 @@
-using EzBus.Config;
-
-namespace EzBus.Core.Config
+namespace EzBus.Config
 {
-    public class Subscription 
+    public class Subscription
     {
         public string Endpoint { get; set; }
     }

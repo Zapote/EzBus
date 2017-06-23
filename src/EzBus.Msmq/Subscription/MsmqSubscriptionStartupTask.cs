@@ -6,14 +6,14 @@ using EzBus.Serializers;
 
 namespace EzBus.Msmq.Subscription
 {
-    public class MsmqSubscriptionManager : IStartupTask
+    public class MsmqSubscriptionStartupTask : IStartupTask
     {
-        private static readonly ILogger log = LogManager.GetLogger(typeof(MsmqSubscriptionManager));
+        private static readonly ILogger log = LogManager.GetLogger(typeof(MsmqSubscriptionStartupTask));
         private readonly IEzBusConfig config;
         private readonly IMessageSerializer messageSerializer;
         private readonly IBusConfig busConfig;
 
-        public MsmqSubscriptionManager(IEzBusConfig config, IMessageSerializer messageSerializer, IBusConfig busConfig)
+        public MsmqSubscriptionStartupTask(IEzBusConfig config, IMessageSerializer messageSerializer, IBusConfig busConfig)
         {
             this.config = config ?? throw new ArgumentNullException(nameof(config));
             this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
@@ -22,6 +22,8 @@ namespace EzBus.Msmq.Subscription
 
         public void Run()
         {
+            if (config.Subscriptions == null) return;
+
             var endpointName = busConfig.EndpointName;
 
             foreach (var subscription in config.Subscriptions)

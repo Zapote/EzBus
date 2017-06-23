@@ -50,7 +50,7 @@
     <Compile Include="Subscription\MsmqSubscriptionStorageItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MsmqUtilities.cs" />
-    <Compile Include="Subscription\SubscriptionManager.cs" />
+    <Compile Include="Subscription\MsmqSubscriptionStartupTask.cs" />
     <Compile Include="Subscription\SubscriptionMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>

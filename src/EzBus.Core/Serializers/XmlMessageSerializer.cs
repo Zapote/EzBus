@@ -104,7 +104,7 @@ namespace EzBus.Core.Serializers
 
             if (messageType == null)
             {
-                instance = new ExpandoObject(); ;
+                instance = new ExpandoObject();
             }
             else
             {

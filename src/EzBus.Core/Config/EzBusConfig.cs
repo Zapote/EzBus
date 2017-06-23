@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using EzBus.Config;
 using Microsoft.Extensions.Configuration;
 
@@ -8,6 +9,7 @@ namespace EzBus.Core.Config
     public class EzBusConfig : IEzBusConfig
     {
         private readonly IDictionary<string, string> connectionStrings = new Dictionary<string, string>();
+        private static IConfigurationRoot configurationRoot;
         private EzBusConfig() { }
 
         public static IEzBusConfig GetConfig()
@@ -18,17 +20,17 @@ namespace EzBus.Core.Config
                 .SetBasePath(currentDirectory)
                 .AddJsonFile("ezbus.config.json", true, true);
 
-            var cfg = builder.Build();
-            var section = cfg.GetSection("ezbus");
+            configurationRoot = builder.Build();
+            var root = configurationRoot.GetSection("ezbus");
 
-            var busConfig = new EzBusConfig();
-            section.Bind(busConfig);
-
-            var cs = section.GetSection("connectionstrings");
-            foreach (var item in cs.GetChildren())
+            var busConfig = new EzBusConfig
             {
-                busConfig.AddConnectionString(item.Key, item.Value);
-            }
+                EndpointName = root["endpointName"],
+                Destinations = ResolveDestionations(),
+                Subscriptions = ResolveSubscriptions()
+            };
+
+            AddConnectionStrings(busConfig);
 
             return busConfig;
         }
@@ -45,6 +47,36 @@ namespace EzBus.Core.Config
         private void AddConnectionString(string name, string value)
         {
             connectionStrings.Add(name, value);
+        }
+
+        private static Destination[] ResolveDestionations()
+        {
+            var section = configurationRoot.GetSection("ezbus:destinations");
+            return section
+                .GetChildren()
+                .Select(item => new Destination
+                {
+                    Endpoint = item["endpoint"],
+                    Namespace = item["namespace"],
+                    Message = item["message"]
+                }).ToArray();
+        }
+
+        private static Subscription[] ResolveSubscriptions()
+        {
+            var section = configurationRoot.GetSection("ezbus:subscriptions");
+            return section
+                .GetChildren()
+                .Select(item => new Subscription { Endpoint = item["endpoint"] }).ToArray();
+        }
+
+        private static void AddConnectionStrings(EzBusConfig busConfig)
+        {
+            var connectionstringsSection = configurationRoot.GetSection("ezbus:connectionstrings");
+            foreach (var item in connectionstringsSection.GetChildren())
+            {
+                busConfig.AddConnectionString(item.Key, item.Value);
+            }
         }
     }
 }
