@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messages\ConfirmOrder.cs" />
+    <Compile Include="Handlers\ConfirmOrderHandler.cs" />
+    <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Msmq.Client
+namespace Msmq.Client.Messages
 {
     public class ConfirmOrder
     {

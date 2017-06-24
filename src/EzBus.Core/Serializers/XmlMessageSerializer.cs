@@ -77,6 +77,11 @@ namespace EzBus.Core.Serializers
             else
             {
                 var text = string.Format(CultureInfo.InvariantCulture, "{0}", obj);
+                if (obj is DateTime)
+                {
+                    text = XmlConvert.ToString((DateTime)obj, XmlDateTimeSerializationMode.RoundtripKind);
+                }
+
                 currentNode.AppendChild(xmlDocument.CreateTextNode(text));
             }
         }
@@ -99,7 +104,6 @@ namespace EzBus.Core.Serializers
 
         public object Deserialize(Stream messageStream, Type messageType)
         {
-
             dynamic instance;
 
             if (messageType == null)

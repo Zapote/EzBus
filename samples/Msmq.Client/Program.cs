@@ -1,5 +1,5 @@
 ﻿using System;
-using EzBus;
+using Msmq.Client.Messages;
 
 namespace Msmq.Client
 {
@@ -17,14 +17,6 @@ namespace Msmq.Client
             Console.WriteLine($"Order confirmation requested. {orderId}");
 
             Console.Read();
-        }
-    }
-
-    public class OrderConfirmedHandler : IHandle<OrderConfirmed>
-    {
-        public void Handle(OrderConfirmed message)
-        {
-            Console.WriteLine($"Order '{message.OrderId}' confirmed!");
         }
     }
 }

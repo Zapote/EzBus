@@ -48,7 +48,7 @@ namespace EzBus.Core.Test.Serializers
 
             if (xDoc.Root == null) throw new Exception("Document should not be null");
             Assert.Equal(elementValue.GetType().Name, xDoc.Root.Name.LocalName);
-            Assert.Equal(elementValue.ToString(CultureInfo.InvariantCulture), xDoc.Descendants("DateTime").First().Value);
+            Assert.StartsWith("2001-12-31T22:45:30", xDoc.Descendants("DateTime").First().Value);
         }
 
         [Fact]
