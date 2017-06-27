@@ -4,6 +4,8 @@
     {
         public static bool HasStarted { get; set; }
 
+        public string Name => "StartupTaskOne";
+
         public void Run()
         {
             HasStarted = true;
