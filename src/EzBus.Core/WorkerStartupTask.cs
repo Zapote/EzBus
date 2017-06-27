@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EzBus.Core.Middleware;
 using EzBus.ObjectFactory;
 using EzBus.Utils;
@@ -19,6 +18,8 @@ namespace EzBus.Core
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
             this.objectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
         }
+
+        public string Name => "WorkerStartUp";
 
         public void Run()
         {

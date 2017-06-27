@@ -45,12 +45,13 @@
     <Compile Include="Channels\MsmqPublishingChannel.cs" />
     <Compile Include="Channels\MsmqReceivingChannel.cs" />
     <Compile Include="Channels\MsmqSendingChannel.cs" />
+    <Compile Include="MsmqSubscriptionStorageStartupTask.cs" />
     <Compile Include="Subscription\ISubscriptionStorage.cs" />
     <Compile Include="Subscription\MsmqSubscriptionStorage.cs" />
     <Compile Include="Subscription\MsmqSubscriptionStorageItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MsmqUtilities.cs" />
-    <Compile Include="Subscription\MsmqSubscriptionStartupTask.cs" />
+    <Compile Include="MsmqSubscriptionStartupTask.cs" />
     <Compile Include="Subscription\SubscriptionMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>

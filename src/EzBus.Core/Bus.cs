@@ -66,7 +66,7 @@ public static class Bus
         var log = LogManager.GetLogger("Bus");
         var host = objectFactory.GetInstance<BusStarter>();
         host.Start();
-        log.Debug("EzBus started");
+        log.Info("EzBus started");
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EzBus.Logging;
 using EzBus.ObjectFactory;
 
@@ -20,17 +21,16 @@ namespace EzBus.Core
         {
             startupTasks = objectFactory.GetInstances<IStartupTask>();
 
-            foreach (var task in startupTasks)
+            foreach (var task in startupTasks.OrderBy(x => x.Name))
             {
-                var taskName = task.GetType().Name;
                 try
                 {
-                    log.Info($"Running StartupTask {taskName}");
+                    log.Info($"Running StartupTask {task.Name}");
                     task.Run();
                 }
                 catch (Exception ex)
                 {
-                    log.Warn($"Failed to run StartupTask: {taskName}", ex);
+                    log.Warn($"Failed to run StartupTask: {task.Name}", ex);
                 }
             }
         }

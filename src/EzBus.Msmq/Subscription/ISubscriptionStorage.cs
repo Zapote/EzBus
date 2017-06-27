@@ -6,5 +6,6 @@ namespace EzBus.Msmq.Subscription
     {
         void Store(string endpoint, string messageType);
         IEnumerable<string> GetSubscribers(string messageType);
+        void Initialize();
     }
 }

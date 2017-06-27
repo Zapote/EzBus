@@ -1,27 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Messaging;
+using EzBus.Logging;
+using EzBus.Serializers;
 
 namespace EzBus.Msmq.Subscription
 {
     public class MsmqSubscriptionStorage : ISubscriptionStorage
     {
+        private static readonly ILogger log = LogManager.GetLogger(typeof(MsmqSubscriptionStorage));
+        private readonly IMessageSerializer messageSerializer;
         private readonly IBusConfig busConfig;
-        private static readonly List<MsmqSubscriptionStorageItem> subscriptions = new List<MsmqSubscriptionStorageItem>();
-        private static EndpointAddress storageAddress;
+        private readonly List<MsmqSubscriptionStorageItem> subscriptions = new List<MsmqSubscriptionStorageItem>();
+        private EndpointAddress storageAddress;
         private MessageQueue storageQueue;
 
-        public MsmqSubscriptionStorage(IBusConfig busConfig)
+        public MsmqSubscriptionStorage(IBusConfig busConfig, IMessageSerializer messageSerializer)
         {
+            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
-            Initialize();
         }
 
         private void GetQueue()
         {
             storageQueue = MsmqUtilities.GetQueue(storageAddress);
-            storageQueue.Formatter = new XmlMessageFormatter(new[] { typeof(MsmqSubscriptionStorageItem) });
         }
 
         public void Store(string endpoint, string messageType)
@@ -38,8 +42,16 @@ namespace EzBus.Msmq.Subscription
             };
 
             using (var tx = new MessageQueueTransaction())
+            using (var stream = new MemoryStream())
             {
-                var msg = new Message(item) { Label = item.Endpoint };
+                messageSerializer.Serialize(item, stream);
+
+                var msg = new Message
+                {
+                    BodyStream = stream,
+                    Label = item.Endpoint
+                };
+
                 tx.Begin();
                 storageQueue.Send(msg, tx);
                 tx.Commit();
@@ -48,13 +60,13 @@ namespace EzBus.Msmq.Subscription
             subscriptions.Add(item);
         }
 
-        private static bool IsSubcriber(string endpoint, string messageType)
+        private bool IsSubcriber(string endpoint, string messageType)
         {
             var result = subscriptions.Where(x => x.Endpoint == endpoint).ToList();
             return result.Any(x => string.IsNullOrEmpty(x.MessageType)) || result.Any(x => x.MessageType == messageType);
         }
 
-        private static void CreateQueueIfNotExists()
+        private void CreateQueueIfNotExists()
         {
             if (MsmqUtilities.QueueExists(storageAddress)) return;
             MsmqUtilities.CreateQueue(storageAddress);
@@ -67,7 +79,7 @@ namespace EzBus.Msmq.Subscription
                 .Select(x => x.Endpoint);
         }
 
-        private void Initialize()
+        public void Initialize()
         {
             storageAddress = new EndpointAddress($"{busConfig.EndpointName}.subscriptions");
 
@@ -79,9 +91,10 @@ namespace EzBus.Msmq.Subscription
 
             foreach (var message in storageQueue.GetAllMessages())
             {
-                var item = message.Body as MsmqSubscriptionStorageItem;
+                var item = messageSerializer.Deserialize(message.BodyStream, typeof(MsmqSubscriptionStorageItem)) as MsmqSubscriptionStorageItem;
                 if (item == null) continue;
                 subscriptions.Add(item);
+                log.Info($"{item.Endpoint} registered as subscriber.");
             }
         }
     }

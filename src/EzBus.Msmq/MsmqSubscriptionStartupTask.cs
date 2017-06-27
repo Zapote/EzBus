@@ -4,7 +4,7 @@ using EzBus.Logging;
 using EzBus.Msmq.Channels;
 using EzBus.Serializers;
 
-namespace EzBus.Msmq.Subscription
+namespace EzBus.Msmq
 {
     public class MsmqSubscriptionStartupTask : IStartupTask
     {
@@ -19,6 +19,8 @@ namespace EzBus.Msmq.Subscription
             this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
+
+        public string Name => "MsmqSubscription";
 
         public void Run()
         {

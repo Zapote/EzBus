@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Reflection;
 using EzBus.Serializers;
 
@@ -10,7 +11,8 @@ namespace EzBus
         {
             if (messageSerializer == null) throw new ArgumentNullException(nameof(messageSerializer));
             var messageType = message.GetType();
-            var stream = messageSerializer.Serialize(message);
+            var stream = new MemoryStream();
+            messageSerializer.Serialize(message, stream);
             var channelMessage = new ChannelMessage(stream);
             channelMessage.AddHeader(MessageHeaders.MessageFullname, messageType.FullName);
             channelMessage.AddHeader(MessageHeaders.MessageName, messageType.Name);
