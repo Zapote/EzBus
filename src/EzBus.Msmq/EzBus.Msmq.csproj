@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ezbus.msmq.nuspec">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

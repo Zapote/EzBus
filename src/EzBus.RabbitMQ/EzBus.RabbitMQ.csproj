@@ -12,4 +12,10 @@
     <ProjectReference Include="..\EzBus\EzBus.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ezbus.rabbitmq.nuspec">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -29,7 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Update="ezbus.nuspec">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
