@@ -12,7 +12,7 @@ include $toolsDir\psake\buildutils.ps1
 
 task default -depends DoRelease
 
-task DoRelease -depends Test
+task DoRelease -depends Test, Pack
 
 task Init{   	
 	Delete-Directory $buildDir	
@@ -57,7 +57,7 @@ task GenerateAssemblyInfo -depends GitVersion{
 }
 
 task Build -depends Init { 
-	$projects = Get-ChildItem -path "$srcDir" -recurse -include *.csproj
+	$projects = gci -path "$srcDir" -recurse -include *.csproj
 	
 	$projects | % {
 		$projectFile = $_.FullName
@@ -99,6 +99,14 @@ task Test -depends Build {
 	$tests = gci -path "$outputDir" -recurse -include *Test.dll 
 	$testReport = "$reportsDir\test-report.trx"
 	exec { dotnet vstest $tests --"logger:trx;LogFileName=$testReport" }
+} 
+
+task Pack -depends Build {	
+	Delete-Directory $artifactsDir
+	Create-Directory $artifactsDir
+	gci -path "$srcDir" -recurse -include *.csproj | % {
+		exec { dotnet pack $_ -o $artifactsDir --no-build -c Release }
+	}
 } 
 
 task CreateNugetPackages {

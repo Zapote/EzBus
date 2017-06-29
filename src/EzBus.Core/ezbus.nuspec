@@ -15,7 +15,13 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="EzBus.dll" target="lib\net45" />
-    <file src="EzBus.Core.dll" target="lib\net45" />
+    <file src="EzBus.dll" target="lib\net46" />
+    <file src="EzBus.Core.dll" target="lib\net46" />
+    <file src="EzBus.dll" target="lib\net461" />
+    <file src="EzBus.Core.dll" target="lib\net461" />
+    <file src="EzBus.dll" target="lib\net462" />
+    <file src="EzBus.Core.dll" target="lib\net462" />
+    <file src="EzBus.dll" target="lib\netstandard1.6" />
+    <file src="EzBus.Core.dll" target="lib\netstandard1.6" />
   </files>
 </package>
