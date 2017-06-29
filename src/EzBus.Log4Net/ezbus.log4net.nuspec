@@ -17,6 +17,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="EzBus.log4net.dll" target="lib\net46" />
+    <file src="net46\EzBus.log4net.dll" target="lib\net46" />
+    <file src="netstandard1.6\EzBus.log4net.dll" target="lib\net46" />
   </files>
 </package>

@@ -6,7 +6,7 @@ $outputDir = "$buildDir\output"
 $artifactsDir = "$buildDir\artifacts"
 $releaseDir = "$buildDir\release"
 $reportsDir = "$buildDir\reports"
-
+$nugetExec = "$toolsDir\nuget\nuget.exe"
 $gitVersionExec = "$toolsDir\gitversion\GitVersion.exe"
 include $toolsDir\psake\buildutils.ps1
 
@@ -14,7 +14,7 @@ task default -depends DoRelease
 
 task DoRelease -depends Test, Pack
 
-task Init{   	
+task Init -depends GitVersion{   	
 	Delete-Directory $buildDir	
 
 	write-host "Creating build directory at the follwing path $buildDir"
@@ -101,22 +101,20 @@ task Test -depends Build {
 	exec { dotnet vstest $tests --"logger:trx;LogFileName=$testReport" }
 } 
 
-task Pack -depends Build {	
+task Pack {	
 	Delete-Directory $artifactsDir
 	Create-Directory $artifactsDir
-	gci -path "$srcDir" -recurse -include *.csproj | % {
-		exec { dotnet pack $_ -o $artifactsDir --no-build -c Release }
-	}
-} 
-
-task CreateNugetPackages {
-	dir $outputDir -recurse -include *.nuspec | % {
-		$nuspecfile = $_.FullName
+	
+	gci -path "$srcDir" -recurse -include *.nuspec | ?{ $_.fullname -notmatch "\\bin\\?" } |  % {
+		$folderPath =  Split-Path $_.fullname -parent
+		$folder = Split-Path $folderPath -leaf
+		$filename = $_.name
+		$targetNuspec = "$outputDir\$folder\$filename"
+		copy-item $_.fullname $targetNuspec
 		
-		[xml]$content = Get-Content $nuspecfile
+		[xml]$content = Get-Content $targetNuspec
 		$packageVersion = $script:gitVersionInfo.NuGetVersion
 				
-        exec { &$nugetExec pack $nuspecfile -OutputDirectory $artifactsDir -Version $packageVersion }
+        exec { &$nugetExec pack $targetNuspec -OutputDirectory $artifactsDir -Version $packageVersion }
 	}
-}
-
+} 
