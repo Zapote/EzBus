@@ -4,10 +4,11 @@ namespace EzBus.ObjectFactory
 {
     public class RegistryInstance : IRegistryInstance
     {
-        public RegistryInstance(Type service, Type implementation)
+        public RegistryInstance(Type service, Type implementation, string serviceName = null)
         {
             Service = service;
             Implementation = implementation;
+            ServiceName = serviceName;
         }
 
         public RegistryInstance(Type service, object instance)
@@ -19,6 +20,7 @@ namespace EzBus.ObjectFactory
 
         public Type Implementation { get; }
         public Type Service { get; }
+        public string ServiceName { get; }
         public object Instance { get; }
         public LifeCycle LifeCycle { get; private set; }
 

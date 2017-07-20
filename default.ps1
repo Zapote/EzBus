@@ -1,149 +1,120 @@
-﻿properties { 
-  $Version = "1.0.1"
-  $TargetFramework = "net-4.0"
-} 
-
-$baseDir  = resolve-path .
+﻿$baseDir  = resolve-path .
+$srcDir = "$baseDir\src"
 $buildDir = "$baseDir\build" 
 $toolsDir = "$baseDir\Tools"
-$outputDir = "$buildDir\Output"
-$artifactsDir = "$buildDir\Artifacts"
-$releaseDir = "$buildDir\Release"
-$nunitexec = "$toolsDir\nunit-2.6.3\nunit-console.exe"
-$zipExec = "$toolsDir\zip\7za.exe"
+$outputDir = "$buildDir\output"
+$artifactsDir = "$buildDir\artifacts"
+$releaseDir = "$buildDir\release"
+$reportsDir = "$buildDir\reports"
 $nugetExec = "$toolsDir\nuget\nuget.exe"
+$gitVersionExec = "$toolsDir\gitversion\GitVersion.exe"
 include $toolsDir\psake\buildutils.ps1
 
 task default -depends DoRelease
 
-task DoRelease -depends GenerateAssemblyInfo, Test, CreateNugetPackages{
-}
+task DoRelease -depends Test, Pack
 
-task Clean{
-	if(Test-Path $buildDir){
-		Delete-Directory $buildDir	
-	}
-}
+task Init -depends GitVersion{   	
+	Delete-Directory $buildDir	
 
-task InitEnvironment{
-	if($script:isEnvironmentInitialized -ne $true){
-		if ($TargetFramework -eq "net-4.0"){
-			$netfxInstallroot ="" 
-			$netfxInstallroot =	Get-RegistryValue 'HKLM:\SOFTWARE\Microsoft\.NETFramework\' 'InstallRoot' 
-			$netfxCurrent = $netfxInstallroot + "v4.0.30319"
-			$script:msBuild = $netfxCurrent + "\msbuild.exe"
-			$script:msBuild = "C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe"
-			
-			echo ".Net 4.0 build requested - $script:msBuild" 
-
-			$script:nunitTargetFramework = "/framework=4.0";
-			$script:isEnvironmentInitialized = $true
-		}
-	}
-}
-
-task Init -depends InitEnvironment, Clean, DetectOperatingSystemArchitecture {   	
 	write-host "Creating build directory at the follwing path $buildDir"
-	Delete-Directory $buildDir
+
 	Create-Directory $buildDir
-	Delete-Directory $releaseDir
+	Create-Directory $outputDir
 	Create-Directory $releaseDir
-	Delete-Directory $artifactsDir
 	Create-Directory $artifactsDir
 	
-	$script:Version = $ProductVersion
 	$currentDirectory = Resolve-Path .
 	
 	write-host "Current Directory: $currentDirectory" 
  }
+
+task GitVersion{
+	$script:gitVersionInfo = ( &$gitVersionExec | Out-String | ConvertFrom-Json)
+	$buildVersion = $script:gitVersionInfo.NuGetVersion 
+	Write-Host "##teamcity[buildNumber '$buildVersion']"
+}
  
-task GenerateAssemblyInfo{
+task GenerateAssemblyInfo -depends GitVersion{
+	$version = $script:gitVersionInfo.AssemblySemVer
+	$informationalVersion = $gitVersionInfo.InformationalVersion
+	
 	$assemblyInfoDirs = Get-ChildItem -path "$baseDir" -recurse -include "*.csproj" | % {
 		$propDir = $_.DirectoryName + "\Properties"
 		Create-Directory $propDir
 		
+		$name = $_.Basename
+		
 		Generate-Assembly-Info `
 		-file "$propDir\AssemblyInfo.cs" `
-		-title "$name $version" `
+		-title "$name" `
 		-description "" `
 		-company "Zapote" `
-		-product "$name $version" `
-		-version $Version `
-		-copyright "Zapote" `
+		-version $version `
+		-informationalVersion "$informationalVersion" `
+		-copyright "None ©" `
 	}
 }
 
-task CompileMain -depends init { 
-	Delete-Directory $outputDir
-	Create-Directory $outputDir
-
-	Write-Host "Compiling version: $Version"
-
-	$toExclude = @();
-	$toExclude = "*nobuild.sln"
+task Build -depends Init { 
+	$projects = gci -path "$srcDir" -recurse -include *.csproj
 	
-	$solutions = Get-ChildItem -path "$baseDir" -recurse -include *.sln -Exclude $toExclude
-	$solutions | % {
-		$solutionFile = $_.FullName
-		$solutionName = $_.BaseName
-		$solutionDir = $_.Directory
-		$targetDir = "$outputDir\$solutionName\"
-		
-		Create-Directory $targetDir
-		
-		write-host $script:msBuild
-		
-		exec { &$script:msBuild $solutionFile /p:OutDir="$targetDir\" /p:Configuration=Release }
-	}
-}
+	$projects | % {
+		$projectFile = $_.FullName
+		$projectName = $_.BaseName
 
-task Test -depends CompileMain{	
-	if(Test-Path $buildDir\TestReports){
-		Delete-Directory $buildDir\TestReports
-	}
-	
-	Create-Directory $buildDir\TestReports
-	
-	$testAssemblies = @()
-	$testAssemblies += Get-ChildItem -path "$outputDir" -recurse -include *.Test.dll
-	exec {&$nunitexec $testAssemblies $script:nunitTargetFramework /xml="$buildDir\TestReports\TestResults.xml" /noshadow /nologo } 
-} 
+		[xml]$projectXml = Get-Content -Path $projectFile
+		$sdk = $projectXml.Project.Sdk
 
-task UpdateNugetPackageVersion {
-    echo "Updating packages to version $Version"
-    dir $outputDir -recurse -include *.nuspec | % {
-		$nuspecfile = $_.FullName
-		[xml]$content = Get-Content $nuspecfile
-		$content.package.metadata.version = $Version
+		if($sdk -eq "Microsoft.NET.Sdk"){
+			# multi targets
 			
-		if($content.package.metadata.dependencies.dependency -ne $null){
-			foreach($dependency in $content.package.metadata.dependencies.dependency) { 
-				if($dependency.Id.StartsWith("EzBus")){
-					$dependency.version = "[" + $Version + "]";
-				} 
+			$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFrameworks
+		
+			# single targets
+			if(!$targetFrameworks){
+				$targetFrameworks = $projectXml.Project.PropertyGroup.TargetFramework
 			}
+		} else {
+			$targetFrameworks = "net46"
 		}
 		
-		$content.save($nuspecfile)
-	}
-
-}
-
-task CreateNugetPackages -depends UpdateNugetPackageVersion {
-	dir $outputDir -recurse -include *.nuspec | % {
-		$nuspecfile = $_.FullName
+		write-host "Build $projectName"
 		
-		[xml]$content = Get-Content $nuspecfile
-		$packageVersion = $content.package.metadata.version
-				
-        exec { &$nugetExec pack $nuspecfile -OutputDirectory $artifactsDir -Version $packageVersion }
+		$targetFrameworks.Split(";") | % {
+			$targetFramework = $_
+			write-host "Building $projectName for $targetFramework"
+			exec { dotnet restore $projectFile --no-cache -v q }
+			exec { dotnet build $projectFile -c Release -o "$outputDir\$projectName\$targetFramework"  -f $targetFramework }
+		}
+		
 	}
+
+	write-host "build done"
 }
 
-task DetectOperatingSystemArchitecture {
-	if (IsWow64 -eq $true)
-	{
-		$script:architecture = "x64"
+task Test -depends Build {	
+	Delete-Directory $reportsDir
+	Create-Directory $reportsDir
+	$tests = gci -path "$outputDir" -recurse -include *Test.dll 
+	$testReport = "$reportsDir\test-report.trx"
+	exec { dotnet vstest $tests --"logger:trx;LogFileName=$testReport" }
+} 
+
+task Pack {	
+	Delete-Directory $artifactsDir
+	Create-Directory $artifactsDir
+	
+	gci -path "$srcDir" -recurse -include *.nuspec | ?{ $_.fullname -notmatch "\\bin\\?" } |  % {
+		$folderPath =  Split-Path $_.fullname -parent
+		$folder = Split-Path $folderPath -leaf
+		$filename = $_.name
+		$targetNuspec = "$outputDir\$folder\$filename"
+		copy-item $_.fullname $targetNuspec
+		
+		[xml]$content = Get-Content $targetNuspec
+		$packageVersion = $script:gitVersionInfo.NuGetVersion
+				
+        exec { &$nugetExec pack $targetNuspec -OutputDirectory $artifactsDir -Version $packageVersion }
 	}
-    echo "Machine Architecture is $script:architecture"
- }
+} 

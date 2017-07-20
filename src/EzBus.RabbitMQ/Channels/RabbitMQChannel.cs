@@ -11,8 +11,7 @@ namespace EzBus.RabbitMQ.Channels
 
         protected RabbitMQChannel(IChannelFactory channelFactory)
         {
-            if (channel == null) throw new ArgumentNullException(nameof(channel));
-            this.channel = channelFactory.GetChannel();
+            channel = channelFactory?.GetChannel() ?? throw new ArgumentNullException(nameof(channelFactory));
         }
 
         protected IBasicProperties ConstructHeaders(ChannelMessage channelMessage)
@@ -20,6 +19,7 @@ namespace EzBus.RabbitMQ.Channels
             var properties = channel.CreateBasicProperties();
 
             properties.ClearHeaders();
+            properties.Persistent = true;
             properties.Headers = new Dictionary<string, object>();
             foreach (var header in channelMessage.Headers)
             {
@@ -31,7 +31,7 @@ namespace EzBus.RabbitMQ.Channels
 
         protected void DeclareQueue(string queueName)
         {
-            channel.QueueDeclare(queueName, true, false, false, null);
+            channel.QueueDeclare(queueName, true, false, false);
         }
 
         protected void DeclareQueuePassive(string queueName)
@@ -44,9 +44,19 @@ namespace EzBus.RabbitMQ.Channels
             {
                 if (ex.ShutdownReason.ReplyCode != 404) throw;
 
-                string message = $"Queue '{queueName}' does not exist or is not currently available.";
+                var message = $"Queue '{queueName}' does not exist or is not currently available.";
                 throw new InvalidOperationException(message, ex);
             }
+        }
+
+        protected void DeclareExchange(string exchange, string type = "fanout", bool durable = true)
+        {
+            channel.ExchangeDeclare(exchange, type, true);
+        }
+
+        protected void BindQueue(string queueName, string exchange = "")
+        {
+            channel.QueueBind(queueName, exchange.ToLower(), string.Empty);
         }
     }
 }

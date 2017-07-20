@@ -42,18 +42,18 @@ namespace EzBus.Msmq.Channels
             inputQueue.BeginPeek();
         }
 
-        public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
+        public Action<ChannelMessage> OnMessage { get; set; }
 
         private void OnReceiveCompleted(object sender, ReceiveCompletedEventArgs e)
         {
             var m = inputQueue.EndReceive(e.AsyncResult);
 
-            if (OnMessageReceived != null)
+            if (OnMessage != null)
             {
                 var headers = GetMessageHeaders(m);
                 var message = new ChannelMessage(e.Message.BodyStream);
                 message.AddHeader(headers);
-                OnMessageReceived(this, new MessageReceivedEventArgs { Message = message });
+                OnMessage(message);
             }
 
             inputQueue.BeginReceive();
@@ -61,7 +61,7 @@ namespace EzBus.Msmq.Channels
 
         private void OnPeekCompleted(object sender, PeekCompletedEventArgs e)
         {
-            if (OnMessageReceived == null) return;
+            if (OnMessage == null) return;
 
             var transaction = new MessageQueueTransaction();
             transaction.Begin();
@@ -72,7 +72,7 @@ namespace EzBus.Msmq.Channels
                 var headers = GetMessageHeaders(queueMessage);
                 var message = new ChannelMessage(queueMessage.BodyStream);
                 message.AddHeader(headers);
-                OnMessageReceived(this, new MessageReceivedEventArgs { Message = message });
+                OnMessage(message);
                 transaction.Commit();
             }
             catch (Exception)

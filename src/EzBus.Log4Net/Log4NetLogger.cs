@@ -2,16 +2,15 @@
 using log4net;
 using log4net.Core;
 
-namespace EzBus.Log4Net
+namespace EzBus.log4net
 {
-    public class Log4NetLogger : Logging.ILogger
+    public class log4netLogger : Logging.ILogger
     {
         private readonly ILog log;
 
-        public Log4NetLogger(ILog log)
+        public log4netLogger(ILog log)
         {
-            if (log == null) throw new ArgumentNullException(nameof(log));
-            this.log = log;
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         public bool IsVerboseEnabled => log.Logger.IsEnabledFor(Level.Verbose);
@@ -23,7 +22,7 @@ namespace EzBus.Log4Net
 
         public void Verbose(object message)
         {
-            log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, Level.Verbose, message, null);
+            Verbose(message, null);
         }
 
         public void Debug(object message)
@@ -53,7 +52,7 @@ namespace EzBus.Log4Net
 
         public void Verbose(object message, Exception t)
         {
-            log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, Level.Verbose, message, t);
+            log.Logger.Log(System.Reflection.Assembly.GetEntryAssembly().GetType(), Level.Verbose, message, t);
         }
 
         public void Debug(object message, Exception t)
@@ -79,37 +78,6 @@ namespace EzBus.Log4Net
         public void Fatal(object message, Exception t)
         {
             log.Fatal(message, t);
-        }
-
-        public void VerboseFormat(string format, params object[] args)
-        {
-            var message = string.Format(format, args);
-            log.Logger.Log(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType, Level.Verbose, message, null);
-        }
-
-        public void DebugFormat(string format, params object[] args)
-        {
-            log.DebugFormat(format, args);
-        }
-
-        public void InfoFormat(string format, params object[] args)
-        {
-            log.InfoFormat(format, args);
-        }
-
-        public void WarnFormat(string format, params object[] args)
-        {
-            log.WarnFormat(format, args);
-        }
-
-        public void ErrorFormat(string format, params object[] args)
-        {
-            log.ErrorFormat(format, args);
-        }
-
-        public void FatalFormat(string format, params object[] args)
-        {
-            log.FatalFormat(format, args);
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IMessageRouting
     {
-        string GetRoute(string asssemblyName, string messageType);
+        string GetRoute(string @namespace, string messageType);
     }
 }

@@ -1,87 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EzBus</RootNamespace>
+    <TargetFrameworks>netstandard1.6;net46</TargetFrameworks>
     <AssemblyName>EzBus</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <PackageId>EzBus</PackageId>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ChannelMessageFactory.cs" />
-    <Compile Include="Config\IDestination.cs" />
-    <Compile Include="Config\IDestinationCollection.cs" />
-    <Compile Include="Config\ISubscription.cs" />
-    <Compile Include="Config\ISubscriptionCollection.cs" />
-    <Compile Include="EndpointAddress.cs" />
-    <Compile Include="IAssemblyScanner.cs" />
-    <Compile Include="IBus.cs" />
-    <Compile Include="IBusFactory.cs" />
-    <Compile Include="IHandle.cs" />
-    <Compile Include="ObjectFactory\IHandleScopes.cs" />
-    <Compile Include="IHostConfig.cs" />
-    <Compile Include="IMessageFilter.cs" />
-    <Compile Include="ObjectFactory\ILifeCycle.cs" />
-    <Compile Include="ObjectFactory\ILifeCycleConfiguration.cs" />
-    <Compile Include="ObjectFactory\IObjectFactory.cs" />
-    <Compile Include="IPublishingChannel.cs" />
-    <Compile Include="IReceivingChannel.cs" />
-    <Compile Include="ISendingChannel.cs" />
-    <Compile Include="ChannelMessage.cs" />
-    <Compile Include="ObjectFactory\IRegistryInstance.cs" />
-    <Compile Include="ObjectFactory\IServiceRegistry.cs" />
-    <Compile Include="ObjectFactory\LifeCycle.cs" />
-    <Compile Include="Logging\LogManager.cs" />
-    <Compile Include="Logging\LogManagerConfig.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\LoggerFactory.cs" />
-    <Compile Include="Logging\LogLevel.cs" />
-    <Compile Include="Logging\NullLogger.cs" />
-    <Compile Include="MessageHeader.cs" />
-    <Compile Include="MessageHeaders.cs" />
-    <Compile Include="MessageReceivedEventArgs.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ObjectFactory\RegistryInstance.cs" />
-    <Compile Include="Serializers\IMessageSerializer.cs" />
-    <Compile Include="IStartupTask.cs" />
-    <Compile Include="ObjectFactory\ServiceRegistry.cs" />
-    <Compile Include="SubscriptionMessage.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

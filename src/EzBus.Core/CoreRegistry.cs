@@ -1,8 +1,12 @@
 ﻿using EzBus.Config;
 using EzBus.Core.Config;
+using EzBus.Core.Middleware;
 using EzBus.Core.Resolvers;
+using EzBus.Core.Routing;
 using EzBus.ObjectFactory;
 using EzBus.Serializers;
+using EzBus.Utils;
+using AssemblyScanner = EzBus.Core.Utils.AssemblyScanner;
 
 namespace EzBus.Core
 {
@@ -10,10 +14,29 @@ namespace EzBus.Core
     {
         public CoreRegistry()
         {
+            RegisterHost();
+            RegisterBus();
             RegisterChannels();
             RegisterMessageSerializer();
+            RegisterMessageHandlers();
             RegisterSubscriptions();
-            RegisterHostConfig();
+            RegisterHandlerCache();
+            RegisterMiddlewares();
+            RegisterTaskRunner();
+            RegisterEzBusConfig();
+            RegistertBusConfig();
+            RegisterStartupTasks();
+        }
+
+        private void RegisterHost()
+        {
+            Register<BusStarter, BusStarter>().As.Singleton();
+        }
+
+        private void RegisterBus()
+        {
+            Register<IMessageRouting, ConfigurableMessageRouting>().As.Singleton();
+            Register<IBus, CoreBus>().As.Singleton();
         }
 
         private void RegisterChannels()
@@ -29,15 +52,80 @@ namespace EzBus.Core
             Register(typeof(IMessageSerializer), type).As.Singleton();
         }
 
-        private void RegisterSubscriptions()
+        private void RegisterMessageHandlers()
         {
-            var subscriptions = SubscriptionSection.Section.Subscriptions;
-            RegisterInstance(typeof(ISubscriptionCollection), subscriptions);
+            var assemblyScanner = new AssemblyScanner();
+            var types = assemblyScanner.FindTypes<IMessageHandler>();
+            foreach (var type in types)
+            {
+                if (type.IsInterface()) continue;
+                Register(type, type, type.FullName);
+            }
         }
 
-        private void RegisterHostConfig()
+        private void RegisterSubscriptions()
         {
-            RegisterInstance(typeof(IHostConfig), new HostConfig());
+            //TODO Fix 
+            //var subscriptions = SubscriptionSection.Section.Subscriptions;
+            //RegisterInstance(typeof(ISubscriptionCollection), subscriptions);
+        }
+
+        private void RegisterHandlerCache()
+        {
+            var handlerCache = new HandlerCache();
+            handlerCache.Prime();
+            RegisterInstance(typeof(IHandlerCache), handlerCache);
+        }
+
+        private void RegisterTaskRunner()
+        {
+            Register<ITaskRunner, TaskRunner>().As.Singleton();
+        }
+
+        private void RegisterMiddlewares()
+        {
+            var assemblyScanner = new AssemblyScanner();
+            var types = assemblyScanner.FindTypes<IMiddleware>();
+
+            foreach (var type in types)
+            {
+                if (type.IsInterface()) continue;
+                if (type.ImplementsInterface(typeof(IPreMiddleware)))
+                {
+                    Register(typeof(IPreMiddleware), type, type.FullName);
+                    continue;
+                }
+                if (type.ImplementsInterface(typeof(ISystemMiddleware)))
+                {
+                    Register(typeof(ISystemMiddleware), type, type.FullName);
+                    continue;
+                }
+
+                Register(typeof(IMiddleware), type, type.FullName);
+            }
+        }
+
+        private void RegistertBusConfig()
+        {
+            Register(typeof(IBusConfig), typeof(BusConfig)).As.Singleton();
+        }
+
+        private void RegisterEzBusConfig()
+        {
+            var config = EzBusConfig.GetConfig();
+            RegisterInstance(typeof(IEzBusConfig), config);
+        }
+
+        private void RegisterStartupTasks()
+        {
+            var assemblyScanner = new AssemblyScanner();
+            var types = assemblyScanner.FindTypes<IStartupTask>();
+
+            foreach (var type in types)
+            {
+                if (type.IsInterface()) continue;
+                Register(typeof(IStartupTask), type, type.FullName).As.Singleton();
+            }
         }
     }
 }

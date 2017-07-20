@@ -1,18 +1,71 @@
-﻿using EzBus.Core.ObjectFactory;
-using EzBus.Core.Test.TestHelpers;
-using NUnit.Framework;
+﻿using System;
+using EzBus.Core.ObjectFactory;
+using EzBus.ObjectFactory;
+using Xunit;
 
 namespace EzBus.Core.Test.ObjectFactory
 {
-    [TestFixture]
     public class LightInjectObjectFactoryTest
     {
-        [Test]
-        public void Can_create_object_with_default_constructor()
-        {
-            var obj = new LightInjectObjectFactory().GetInstance(typeof(BarHandler));
+        private readonly DefaultObjectFactory defaultObjectFactory;
 
-            Assert.That(obj, Is.Not.Null);
+        public LightInjectObjectFactoryTest()
+        {
+            defaultObjectFactory = new DefaultObjectFactory();
+        }
+
+        [Fact]
+        public void Gets_same_object_within_scope()
+        {
+            defaultObjectFactory.Register(typeof(IA), typeof(A));
+
+            defaultObjectFactory.BeginScope();
+            var first = defaultObjectFactory.GetInstance<IA>();
+            var second = defaultObjectFactory.GetInstance<IA>();
+            defaultObjectFactory.EndScope();
+
+            defaultObjectFactory.BeginScope();
+            var third = defaultObjectFactory.GetInstance<IA>();
+            defaultObjectFactory.EndScope();
+
+            Assert.Equal(first.Id, second.Id);
+            Assert.NotEqual(first.Id, third.Id);
+        }
+
+        [Fact]
+        public void Gets_different_objects_within_scope_when_registered_unique()
+        {
+            defaultObjectFactory.Register(typeof(IA), typeof(A), LifeCycle.Unique);
+
+            defaultObjectFactory.BeginScope();
+            var first = defaultObjectFactory.GetInstance<IA>();
+            var second = defaultObjectFactory.GetInstance<IA>();
+            defaultObjectFactory.EndScope();
+
+            Assert.NotEqual(first.Id, second.Id);
+        }
+
+        public interface IA
+        {
+            Guid Id { get; set; }
+        }
+
+        public class A : IA
+        {
+            public Guid Id { get; set; }
+
+            public A()
+            {
+                Id = Guid.NewGuid();
+            }
+        }
+
+        public class B
+        {
+            public B(A a)
+            {
+                if (a == null) throw new ArgumentNullException(nameof(a));
+            }
         }
     }
 }

@@ -1,50 +1,74 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using RabbitMQ.Client;
+using System.Threading;
+using EzBus.Config;
+using EzBus.Logging;
 using RabbitMQ.Client.Events;
 
 namespace EzBus.RabbitMQ.Channels
 {
     public class RabbitMQReceivingChannel : RabbitMQChannel, IReceivingChannel
     {
+        private static readonly ILogger log = LogManager.GetLogger<RabbitMQReceivingChannel>();
+        private readonly IEzBusConfig config;
         private EventingBasicConsumer consumer;
 
-        public RabbitMQReceivingChannel(IChannelFactory channelFactory) : base(channelFactory)
+        public RabbitMQReceivingChannel(IChannelFactory channelFactory, IEzBusConfig config) : base(channelFactory)
         {
+            this.config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
             DeclareQueue(inputAddress.QueueName);
             DeclareQueue(errorAddress.QueueName);
+            DeclareExchange(inputAddress.QueueName);
+
+            BindSubscriptionExchanges(inputAddress);
 
             consumer = new EventingBasicConsumer(channel);
-
-            consumer.Received += (model, eventArgs) =>
+            consumer.Received += (model, ea) =>
             {
-                if (OnMessageReceived == null) return;
+                if (OnMessage == null)
+                {
+                    channel.BasicAck(ea.DeliveryTag, false);
+                    return;
+                }
 
-                var body = eventArgs.Body;
+                var body = ea.Body;
                 var message = new ChannelMessage(new MemoryStream(body));
 
-                foreach (var header in eventArgs.BasicProperties.Headers)
+                foreach (var header in ea.BasicProperties.Headers)
                 {
                     var value = Encoding.UTF8.GetString((byte[])header.Value);
                     message.AddHeader(header.Key, value);
                 }
 
-                OnMessageReceived(this, new MessageReceivedEventArgs { Message = message });
+                OnMessage(message);
+
+                channel.BasicAck(ea.DeliveryTag, false);
             };
 
-            channel.BasicConsume(queue: inputAddress.QueueName,
-                                 noAck: true,
-                                 consumer: consumer);
-
+            channel.BasicConsume(inputAddress.QueueName, false, string.Empty, false, false, null, consumer);
         }
 
-        public event EventHandler<MessageReceivedEventArgs> OnMessageReceived;
+        public Action<ChannelMessage> OnMessage { get; set; }
 
+        private void BindSubscriptionExchanges(EndpointAddress inputAddress)
+        {
+            if (config.Subscriptions == null)
+            {
+                log.Info("No subscriptions found in config");
+                return;
+            }
 
+            foreach (var subscription in config.Subscriptions)
+            {
+                var exchange = subscription.Endpoint;
+                log.Info($"Subscribing to messages from '{subscription.Endpoint}'");
+                BindQueue(inputAddress.QueueName, exchange);
+            }
+        }
     }
 }

@@ -4,17 +4,16 @@ namespace EzBus.Msmq.Subscription
 {
     public class SubscriptionMessageHandler : IHandle<SubscriptionMessage>
     {
-        private readonly IMsmqSubscriptionStorage msmqSubscriptionStorage;
+        private readonly ISubscriptionStorage subscriptionStorage;
 
-        public SubscriptionMessageHandler(IMsmqSubscriptionStorage msmqSubscriptionStorage)
+        public SubscriptionMessageHandler(ISubscriptionStorage subscriptionStorage)
         {
-            if (msmqSubscriptionStorage == null) throw new ArgumentNullException(nameof(msmqSubscriptionStorage));
-            this.msmqSubscriptionStorage = msmqSubscriptionStorage;
+            this.subscriptionStorage = subscriptionStorage ?? throw new ArgumentNullException(nameof(subscriptionStorage));
         }
 
         public void Handle(SubscriptionMessage message)
         {
-            msmqSubscriptionStorage.Store(message.Endpoint, null);
+            subscriptionStorage.Store(message.Endpoint, null);
         }
     }
 }

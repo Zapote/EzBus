@@ -6,7 +6,6 @@ function Delete-Directory($directoryName){
 }
  
 function Create-Directory($directoryName){
-	if(Test-Path($directoryName)) {return}
 	New-Item $directoryName -ItemType Directory | Out-Null
 }
 
@@ -81,48 +80,59 @@ function Ilmerge($key, $directory, $name, $assemblies, $attributeAssembly, $exte
     Get-ChildItem "$directory\temp_merge\**" -Include *.$extension, *.pdb, *.xml | Copy-Item -Destination $directory
     Remove-Item "$directory\temp_merge" -Recurse -ErrorAction SilentlyContinue
 }
-  
-function Get-Hg-Commit{
-	$hgSum = hg log -l 1 -M
-	
-	if($hgSum.length -eq $null) {
-		return "";
-	
-	}
-	return $hgSum[0].Replace("changeset:","").Trim(" ")
-}
-function Generate-Assembly-Info
-{
+ 
+function Generate-Assembly-Info{
+
 param(
+	[string]$assemblyTitle,
+	[string]$assemblyDescription,
 	[string]$clsCompliant = "true",
-	[string]$title, 
-	[string]$description, 
+	[string]$internalsVisibleTo = "",
+	[string]$configuration, 
 	[string]$company, 
 	[string]$product, 
 	[string]$copyright, 
 	[string]$version,
+	[string]$fileVersion,
+	[string]$infoVersion,	
 	[string]$file = $(throw "file is a required parameter.")
 )
-  #$commit = Get-Hg-Commit
-  $asmInfo = "using System;
+	if($infoVersion -eq ""){
+		$infoVersion = $fileVersion
+	}
+	
+	$asmInfo = "using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Runtime.CompilerServices;
 
-[assembly: CLSCompliantAttribute($clsCompliant )]
-[assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyTitleAttribute(""$title"")]
-[assembly: AssemblyDescriptionAttribute(""$description"")]
-[assembly: AssemblyCompanyAttribute(""$company"")]
-[assembly: AssemblyProductAttribute(""$product"")]
-[assembly: AssemblyCopyrightAttribute(""$copyright"")]
-[assembly: AssemblyVersionAttribute(""$version"")]
-[assembly: AssemblyInformationalVersionAttribute(""$version"")]
-[assembly: AssemblyFileVersionAttribute(""$version"")]
-[assembly: AssemblyDelaySignAttribute(false)]
+[assembly: AssemblyTitle(""$assemblyTitle"")]
+[assembly: AssemblyDescription(""$assemblyDescription"")]
+[assembly: AssemblyVersion(""$version"")]
+[assembly: AssemblyFileVersion(""$fileVersion"")]
+[assembly: AssemblyCopyright(""$copyright"")]
+[assembly: AssemblyProduct(""$product"")]
+[assembly: AssemblyCompany(""$company"")]
+[assembly: AssemblyConfiguration(""$configuration"")]
+[assembly: AssemblyInformationalVersion(""$infoVersion"")]
+[assembly: ComVisible(false)]		
 "
+	
+	if($clsCompliant.ToLower() -eq "true"){
+		 $asmInfo += "[assembly: CLSCompliantAttribute($clsCompliant)]
+"
+	} 
+	
+	if($internalsVisibleTo -ne ""){
+		$asmInfo += "[assembly: InternalsVisibleTo(""$internalsVisibleTo"")]
+"	
+	}
+	
+	
 
 	$dir = [System.IO.Path]::GetDirectoryName($file)
+	
 	if ([System.IO.Directory]::Exists($dir) -eq $false)
 	{
 		Write-Host "Creating directory $dir"
@@ -131,9 +141,3 @@ using System.Runtime.InteropServices;
 	Write-Host "Generating assembly info file: $file"
 	Write-Output $asmInfo > $file
 }
-
-function Get-Directory([string[]]$path, [string[]]$include, [switch]$recurse) 
-{ 
-    Get-ChildItem -Path $path -Include $include -Recurse:$recurse | `
-         Where-Object { $_.PSIsContainer } 
-} 

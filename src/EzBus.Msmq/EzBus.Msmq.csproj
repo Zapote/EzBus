@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EzBus.Msmq</RootNamespace>
     <AssemblyName>EzBus.Msmq</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -40,31 +40,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreRegistry.cs" />
+    <Compile Include="MsmqRegistry.cs" />
     <Compile Include="EndpointAddressExtensions.cs" />
     <Compile Include="Channels\MsmqPublishingChannel.cs" />
     <Compile Include="Channels\MsmqReceivingChannel.cs" />
     <Compile Include="Channels\MsmqSendingChannel.cs" />
-    <Compile Include="Subscription\IMsmqSubscriptionStorage.cs" />
+    <Compile Include="MsmqSubscriptionStorageStartupTask.cs" />
+    <Compile Include="Subscription\ISubscriptionStorage.cs" />
     <Compile Include="Subscription\MsmqSubscriptionStorage.cs" />
     <Compile Include="Subscription\MsmqSubscriptionStorageItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MsmqUtilities.cs" />
-    <Compile Include="Subscription\SubscriptionManager.cs" />
-    <Compile Include="Subscription\SubscriptionManagerStartup.cs" />
+    <Compile Include="MsmqSubscriptionStartupTask.cs" />
     <Compile Include="Subscription\SubscriptionMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EzBus\EzBus.csproj">
-      <Project>{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}</Project>
-      <Name>EzBus</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ezbus.msmq.nuspec">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EzBus\EzBus.csproj">
+      <Project>{ecde44ba-f44d-442a-b914-b7405eafa69d}</Project>
+      <Name>EzBus</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

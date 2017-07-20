@@ -5,7 +5,7 @@ namespace EzBus.Serializers
 {
     public interface IMessageSerializer
     {
-        Stream Serialize(object obj);
-        object Deserialize(Stream messageStream, Type messageType);
+        void Serialize(object message, Stream stream);
+        object Deserialize(Stream stream, Type messageType);
     }
 }
