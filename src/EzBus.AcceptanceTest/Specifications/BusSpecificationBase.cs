@@ -8,7 +8,7 @@ namespace EzBus.AcceptanceTest.Specifications
     public abstract class BusSpecificationBase
     {
         protected BusStarter busStarter;
-        protected FakeMessageChannel messageChannel = new FakeMessageChannel();
+        protected static FakeMessageChannel messageChannel = new FakeMessageChannel();
         protected FakeMessageRouting messageRouting = new FakeMessageRouting();
         protected CoreBus bus;
 

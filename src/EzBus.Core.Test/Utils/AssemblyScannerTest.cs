@@ -23,7 +23,7 @@ namespace EzBus.Core.Test.Utils
         {
             var channels = scanner.FindTypes(typeof(IReceivingChannel));
 
-            Assert.InRange(channels.Length, 2, 3);
+            Assert.Equal(channels.Length, 1);
         }
     }
 }
