@@ -12,12 +12,19 @@
     <projectUrl>https://github.com/zapote/ezbus</projectUrl>
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus log4net logging</tags>
     <dependencies>
-      <dependency id="EzBus" version="[2,3)"/>
-      <dependency id="log4net"  version="[2,3)"/>
+      <group targetFramework=".NETStandard1.6">
+        <dependency id="EzBus" version="[2,3)" exclude="Build,Analyzers" />
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="log4net" version="[2,3)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="EzBus" version="[2,3)" exclude="Build,Analyzers" />
+        <dependency id="log4net" version="[2,3)" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
   </metadata>
   <files>
     <file src="net46\EzBus.log4net.dll" target="lib\net46" />
-    <file src="netstandard1.6\EzBus.log4net.dll" target="lib\net46" />
+    <file src="netstandard1.6\EzBus.log4net.dll" target="lib\netstandard1.6" />
   </files>
 </package>

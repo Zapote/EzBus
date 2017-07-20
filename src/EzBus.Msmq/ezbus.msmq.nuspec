@@ -16,6 +16,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="EzBus.Msmq.dll" target="lib\net46" />
+    <file src="net46/EzBus.Msmq.dll" target="lib\net46" />
   </files>
 </package>
