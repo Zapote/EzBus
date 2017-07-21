@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Threading;
 using EzBus.Config;
 using EzBus.Logging;
 using RabbitMQ.Client.Events;
@@ -21,9 +20,9 @@ namespace EzBus.RabbitMQ.Channels
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
-            DeclareQueue(inputAddress.QueueName);
-            DeclareQueue(errorAddress.QueueName);
-            DeclareExchange(inputAddress.QueueName);
+            DeclareQueue(inputAddress.Name);
+            DeclareQueue(errorAddress.Name);
+            DeclareExchange(inputAddress.Name);
 
             BindSubscriptionExchanges(inputAddress);
 
@@ -50,7 +49,7 @@ namespace EzBus.RabbitMQ.Channels
                 channel.BasicAck(ea.DeliveryTag, false);
             };
 
-            channel.BasicConsume(inputAddress.QueueName, false, string.Empty, false, false, null, consumer);
+            channel.BasicConsume(inputAddress.Name, false, string.Empty, false, false, null, consumer);
         }
 
         public Action<ChannelMessage> OnMessage { get; set; }
@@ -67,7 +66,7 @@ namespace EzBus.RabbitMQ.Channels
             {
                 var exchange = subscription.Endpoint;
                 log.Info($"Subscribing to messages from '{subscription.Endpoint}'");
-                BindQueue(inputAddress.QueueName, exchange);
+                BindQueue(inputAddress.Name, exchange);
             }
         }
     }

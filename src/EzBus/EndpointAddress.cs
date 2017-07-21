@@ -4,19 +4,19 @@ namespace EzBus
 {
     public class EndpointAddress
     {
-        public string QueueName { get; private set; }
-        public string MachineName { get; private set; }
+        public string Name { get; }
+        public string MachineName { get; }
 
-        public EndpointAddress(string queueName, string machineName = "")
+        public EndpointAddress(string name, string machineName = "")
         {
-            if (string.IsNullOrEmpty(queueName)) throw new ArgumentNullException("queueName");
-            QueueName = queueName.ToLower();
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
+            Name = name.ToLower();
             MachineName = machineName;
         }
 
         private bool Equals(EndpointAddress other)
         {
-            return string.Equals(QueueName, other.QueueName) && string.Equals(MachineName, other.MachineName);
+            return string.Equals(Name, other.Name) && string.Equals(MachineName, other.MachineName);
         }
 
         public override bool Equals(object obj)
@@ -31,13 +31,13 @@ namespace EzBus
         {
             unchecked
             {
-                return ((QueueName != null ? QueueName.GetHashCode() : 0) * 397) ^ (MachineName != null ? MachineName.GetHashCode() : 0);
+                return ((Name != null ? Name.GetHashCode() : 0) * 397) ^ (MachineName != null ? MachineName.GetHashCode() : 0);
             }
         }
 
         public override string ToString()
         {
-            return string.IsNullOrEmpty(MachineName) ? QueueName : string.Format("{0}@{1}", QueueName, MachineName);
+            return string.IsNullOrEmpty(MachineName) ? Name : string.Format("{0}@{1}", Name, MachineName);
         }
 
         public static EndpointAddress Parse(string s)
@@ -45,6 +45,5 @@ namespace EzBus
             var parts = s.Split('@');
             return parts.Length > 1 ? new EndpointAddress(parts[0], parts[1]) : new EndpointAddress(parts[0]);
         }
-
     }
 }

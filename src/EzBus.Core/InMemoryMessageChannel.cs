@@ -19,7 +19,7 @@ namespace EzBus.Core
         {
             channelMessage.BodyStream.Seek(0, 0);
             sentDestinations.Add(destination);
-            if (destination.QueueName.EndsWith("error")) return;
+            if (destination.Name.EndsWith("error")) return;
             OnMessage?.Invoke(channelMessage);
         }
 

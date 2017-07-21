@@ -13,7 +13,7 @@ namespace EzBus.AcceptanceTest.TestHelpers
         {
             channelMessage.BodyStream.Seek(0, 0);
             sentDestinations.Add(destination);
-            if (destination.QueueName.EndsWith("error")) return;
+            if (destination.Name.EndsWith("error")) return;
 
             OnMessage(channelMessage);
         }
@@ -32,7 +32,7 @@ namespace EzBus.AcceptanceTest.TestHelpers
 
         public static bool HasBeenSentToDestination(string destination)
         {
-            return sentDestinations.Any(x => x.QueueName == destination);
+            return sentDestinations.Any(x => x.Name == destination);
         }
 
         public static IEnumerable<EndpointAddress> GetSentDestinations()

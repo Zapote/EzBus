@@ -21,7 +21,7 @@ namespace EzBus.AcceptanceTest
         [Then]
         public void Message_should_be_placed_on_error_queue()
         {
-            Assert.Equal("testhost.error", FakeMessageChannel.LastSentDestination.QueueName);
+            Assert.Equal("testhost.error", FakeMessageChannel.LastSentDestination.Name);
         }
     }
 

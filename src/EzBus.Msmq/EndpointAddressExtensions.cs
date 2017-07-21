@@ -17,7 +17,7 @@ namespace EzBus.Msmq
                 machineName = Environment.MachineName;
             }
 
-            return $@"{machineName}\private$\{address.QueueName}";
+            return $@"{machineName}\private$\{address.Name}";
         }
 
         public static string GetQueuePath(this EndpointAddress address)

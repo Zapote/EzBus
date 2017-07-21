@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 
-namespace EzBus.RabbitMQ
+namespace EzBus.Utils
 {
-    internal static class StreamExtensions
+    public static class StreamExtensions
     {
         public static byte[] ToByteArray(this Stream stream)
         {

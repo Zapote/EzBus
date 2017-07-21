@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus", "EzBus\EzBus.csproj", "{ECDE44BA-F44D-442A-B914-B7405EAFA69D}"
 EndProject
@@ -13,9 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.AcceptanceTest", "EzB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.Msmq", "EzBus.Msmq\EzBus.Msmq.csproj", "{3F5D0C34-372D-49CD-A591-CFD59471EDA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.log4net", "EzBus.Log4Net\EzBus.log4net.csproj", "{CD96F4E9-66EA-45E1-981B-91A21FA0291E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.log4net", "EzBus.Log4Net\EzBus.log4net.csproj", "{CD96F4E9-66EA-45E1-981B-91A21FA0291E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.RabbitMQ", "EzBus.RabbitMQ\EzBus.RabbitMQ.csproj", "{76596B07-76A4-4576-AAB8-5506394BFAFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.RabbitMQ", "EzBus.RabbitMQ\EzBus.RabbitMQ.csproj", "{76596B07-76A4-4576-AAB8-5506394BFAFD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.NamnedPipes", "EzBus.NamnedPipes\EzBus.NamnedPipes.csproj", "{11D48431-F3A2-43B4-9DA0-7016049A4F95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EzBus.NamnedPipes.Test", "EzBus.NamnedPipes.Test\EzBus.NamnedPipes.Test.csproj", "{A510F062-0738-47F8-83EC-19112CD8B5DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{76596B07-76A4-4576-AAB8-5506394BFAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76596B07-76A4-4576-AAB8-5506394BFAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76596B07-76A4-4576-AAB8-5506394BFAFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11D48431-F3A2-43B4-9DA0-7016049A4F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11D48431-F3A2-43B4-9DA0-7016049A4F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11D48431-F3A2-43B4-9DA0-7016049A4F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11D48431-F3A2-43B4-9DA0-7016049A4F95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A510F062-0738-47F8-83EC-19112CD8B5DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A510F062-0738-47F8-83EC-19112CD8B5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A510F062-0738-47F8-83EC-19112CD8B5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A510F062-0738-47F8-83EC-19112CD8B5DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

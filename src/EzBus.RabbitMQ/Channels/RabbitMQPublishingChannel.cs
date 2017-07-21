@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.Utils;
 using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ.Channels
