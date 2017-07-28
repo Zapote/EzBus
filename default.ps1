@@ -116,5 +116,13 @@ task Pack {
 		$packageVersion = $script:gitVersionInfo.NuGetVersion
 				
         exec { &$nugetExec pack $targetNuspec -OutputDirectory $artifactsDir -Version $packageVersion }
+		
+		
+	}
+	
+	if (Test-Path("c:\nuget-packages")){
+		gci -path $artifactsDir -recurse -include *.nupkg | % {
+			exec { &$nugetExec add $_ -source "c:\nuget-packages" }
+		}
 	}
 } 
