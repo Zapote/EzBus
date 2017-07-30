@@ -1,118 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4142F834-AC35-4E99-9932-291805075F80}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EzBus.Core</RootNamespace>
+    <TargetFrameworks>netstandard1.6;net46</TargetFrameworks>
     <AssemblyName>EzBus.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <PackageId>EzBus.Core</PackageId>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\EzBus\EzBus.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="lightinject" Version="5.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
+    <PackageReference Include="Newtonsoft.json" Version="10.0.3" />
+    <PackageReference Include="System.Reflection" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HostConfig.cs" />
-    <Compile Include="Resolvers\MessageSerlializerResolver.cs" />
-    <Compile Include="Resolvers\ReceivingChannelResolver.cs" />
-    <Compile Include="Resolvers\ResolverBase.cs" />
-    <Compile Include="Resolvers\SendingChannelResolver.cs" />
-    <Compile Include="Resolvers\SubscriptionManagerResolver.cs" />
-    <Compile Include="Subscription\ISubscriptionManager.cs" />
-    <Compile Include="Subscription\SubscriptionManager.cs" />
-    <Compile Include="TaskRunner.cs" />
-    <Compile Include="Utils\AssemblyScanner.cs" />
-    <Compile Include="Builders\IHaveLifeCycle.cs" />
-    <Compile Include="Builders\IConfigureLifeCycle.cs" />
-    <Compile Include="Builders\IServiceRegistry.cs" />
-    <Compile Include="Builders\RegistryInstance.cs" />
-    <Compile Include="CoreBus.cs" />
-    <Compile Include="ChannelMessageFactory.cs" />
-    <Compile Include="Bus.cs" />
-    <Compile Include="HostFactory.cs" />
-    <Compile Include="InMemoryMessageChannel.cs" />
-    <Compile Include="Utils\IEnumerableExtensions.cs" />
-    <Compile Include="Logging\TraceLoggerFactory.cs" />
-    <Compile Include="Logging\TraceLogger.cs" />
-    <Compile Include="Resolvers\LoggerFactoryResolver.cs" />
-    <Compile Include="Resolvers\PublishingChannelResolver.cs" />
-    <Compile Include="ChannelTypes.cs" />
-    <Compile Include="Config\DestinationCollection.cs" />
-    <Compile Include="Config\DestinationElement.cs" />
-    <Compile Include="Config\DestinationSection.cs" />
-    <Compile Include="Config\SubscriptionCollection.cs" />
-    <Compile Include="Config\SubscriptionElement.cs" />
-    <Compile Include="Config\SubscriptionSection.cs" />
-    <Compile Include="Subscription\InMemorySubscriptionStorage.cs" />
-    <Compile Include="InvokationResult.cs" />
-    <Compile Include="Builders\LightInjectObjectFactory.cs" />
-    <Compile Include="Builders\LightInject.cs" />
-    <Compile Include="Resolvers\MessageFilterResolver.cs" />
-    <Compile Include="Resolvers\ObjectFactoryResolver.cs" />
-    <Compile Include="Routing\DestinationMissingException.cs" />
-    <Compile Include="Host.cs" />
-    <Compile Include="BusFactory.cs" />
-    <Compile Include="HandlerCache.cs" />
-    <Compile Include="HandlerInfo.cs" />
-    <Compile Include="Routing\ConfigurableMessageRouting.cs" />
-    <Compile Include="Routing\IMessageRouting.cs" />
-    <Compile Include="Routing\MessageRoutingException.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serializers\XmlMessageSerializer.cs" />
-    <Compile Include="Serializers\XmlValueConverter.cs" />
-    <Compile Include="Builders\ServiceRegistry.cs" />
-    <Compile Include="Subscription\Subscriber.cs" />
-    <Compile Include="Resolvers\SubscriptionStorageResolver.cs" />
-    <Compile Include="Utils\TypeExtensions.cs" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EzBus\EzBus.csproj">
-      <Project>{31BB0DDF-DCED-49D0-8FC8-0D8AC396DD7B}</Project>
-      <Name>EzBus</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ezbus.nuspec">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
+    <None Update="ezbus.nuspec">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

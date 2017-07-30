@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace EzBus.Core
 {
+    //TODO: Move to separate project and use NamnedPipes
     public class InMemoryMessageChannel : ISendingChannel, IReceivingChannel, IPublishingChannel
     {
         private static List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
-        private static event EventHandler<MessageReceivedEventArgs> InnerMessageHandler;
 
         public static void Reset()
         {
@@ -15,21 +15,12 @@ namespace EzBus.Core
             sentDestinations = new List<EndpointAddress>();
         }
 
-        public InMemoryMessageChannel()
-        {
-            InnerMessageHandler = null;
-        }
-
         public void Send(EndpointAddress destination, ChannelMessage channelMessage)
         {
             channelMessage.BodyStream.Seek(0, 0);
             sentDestinations.Add(destination);
-            if (destination.QueueName.EndsWith("error")) return;
-
-            InnerMessageHandler?.Invoke(this, new MessageReceivedEventArgs
-            {
-                Message = channelMessage
-            });
+            if (destination.Name.EndsWith("error")) return;
+            OnMessage?.Invoke(channelMessage);
         }
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
@@ -37,17 +28,7 @@ namespace EzBus.Core
 
         }
 
-        public event EventHandler<MessageReceivedEventArgs> OnMessageReceived
-        {
-            add
-            {
-                InnerMessageHandler += value;
-            }
-            remove
-            {
-                InnerMessageHandler -= value;
-            }
-        }
+        public Action<ChannelMessage> OnMessage { get; set; }
 
         public static EndpointAddress LastSentDestination => sentDestinations.LastOrDefault();
 
@@ -59,11 +40,7 @@ namespace EzBus.Core
         public void Publish(ChannelMessage channelMessage)
         {
             channelMessage.BodyStream.Seek(0, 0);
-
-            InnerMessageHandler?.Invoke(this, new MessageReceivedEventArgs
-            {
-                Message = channelMessage
-            });
+            OnMessage?.Invoke(channelMessage);
         }
     }
 }

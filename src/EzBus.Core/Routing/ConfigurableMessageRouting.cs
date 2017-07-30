@@ -9,37 +9,42 @@ namespace EzBus.Core.Routing
 
         public ConfigurableMessageRouting()
         {
-            var destinations = DestinationSection.Section.Destinations;
+            var config = EzBusConfig.GetConfig();//TODO: Inject
+            var destinations = config.Destinations;
 
-            foreach (DestinationElement destination in destinations)
+            if (destinations == null) return;
+
+            foreach (var destination in destinations)
             {
-                var key = CreateKey(destination.Assembly, destination.Message);
+                var key = CreateKey(destination.Namespace, destination.Message);
 
                 if (routingTable.ContainsKey(key))
                 {
-                    throw new MessageRoutingException(string.Format("Multiple setup for {0}", destination));
+                    throw new MessageRoutingException($"Multiple setup for {destination}");
                 }
 
                 routingTable.Add(key, destination.Endpoint);
             }
         }
 
-        private static int CreateKey(string assembly, string messageType)
+        public string GetRoute(string @namespace, string messageType)
         {
-            return string.IsNullOrWhiteSpace(messageType) ?
-                assembly.GetHashCode() :
-                string.Format("{0}::{1}", assembly, messageType).GetHashCode();
-        }
-
-        public string GetRoute(string asssemblyName, string messageType)
-        {
-            var specificKey = CreateKey(asssemblyName, messageType);
+            var specificKey = CreateKey(@namespace, messageType);
             if (routingTable.ContainsKey(specificKey)) return routingTable[specificKey];
 
-            var genericKey = CreateKey(asssemblyName, null);
+            var genericKey = CreateKey(@namespace, null);
             if (routingTable.ContainsKey(genericKey)) return routingTable[genericKey];
 
             throw new DestinationMissingException("No destination exists for " + messageType);
+        }
+
+        private static int CreateKey(string @namespace, string messageType)
+        {
+            @namespace = @namespace.ToLower();
+            messageType = messageType?.ToLower();
+
+            return string.IsNullOrWhiteSpace(messageType) ?
+                @namespace.ToLower().GetHashCode() : $"{@namespace}::{messageType}".GetHashCode();
         }
     }
 }

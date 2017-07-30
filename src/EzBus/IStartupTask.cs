@@ -2,6 +2,7 @@
 {
     public interface IStartupTask
     {
-        void Run(IHostConfig config);
+        string Name { get; }
+        void Run();
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Web;
 using EzBus.Logging;
+using EzBus.Utils;
 
 namespace EzBus.Core.Utils
 {
@@ -31,18 +32,20 @@ namespace EzBus.Core.Utils
             {
                 try
                 {
-                    var assembly = Assembly.LoadFile(file);
+                    var fileInfo = new FileInfo(file);
+                    var assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, "")));
+
                     foreach (var type in assembly.GetTypes())
                     {
                         if (t == type) continue;
 
-                        if (t.IsInterface)
+                        if (t.IsInterface())
                         {
                             var handlerInterface = type.GetInterface(t.Name);
                             if (handlerInterface == null) continue;
                         }
 
-                        if (!t.IsAssignableFrom(type) && !t.IsInterface) continue;
+                        if (!t.IsAssignableFrom(type) && !t.IsInterface()) continue;
 
                         types.Add(type);
                     }
@@ -51,32 +54,19 @@ namespace EzBus.Core.Utils
                 {
                     log.Error($"Failed to scan assemby: {file}", ex);
                 }
-
             }
 
-            return types.ToArray();
+            return types.OrderBy(x => x.FullName).ToArray();
         }
 
         private static void LoadAssemblyFiles()
         {
-
             if (directoryScanned) return;
-            string directory;
-            var httpContext = HttpContext.Current;
+            directoryScanned = true;
 
-            if (httpContext != null)
-            {
-                directory = httpContext.Server.MapPath("/bin");
-            }
-            else
-            {
-                var executingAssembly = Assembly.GetExecutingAssembly();
-                directory = Path.GetDirectoryName(executingAssembly.Location) ?? @"\.";
-            }
-
+            var directory = AppContext.BaseDirectory;
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
             assemblyFiles.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
-            directoryScanned = true;
         }
     }
 }

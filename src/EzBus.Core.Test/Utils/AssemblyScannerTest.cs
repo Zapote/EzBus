@@ -1,32 +1,29 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using EzBus.Core.Test.TestHelpers;
 using EzBus.Core.Utils;
-using NUnit.Framework;
+using Xunit;
 
 namespace EzBus.Core.Test.Utils
 {
-    [TestFixture]
     public class AssemblyScannerTest
     {
         private readonly AssemblyScanner scanner = new AssemblyScanner();
 
-        [Test]
+        [Fact]
         public void Scanner_should_find_all_handlers_types()
         {
-            var handlers = scanner.FindTypes(typeof(IHandle<>));
-
-            Assert.That(handlers.Count(), Is.GreaterThanOrEqualTo(2));
-            Assert.That(handlers, Contains.Item(typeof(BarHandler)));
-            Assert.That(handlers, Contains.Item(typeof(FooHandler)));
+            var handlerTypes = scanner.FindTypes(typeof(IHandle<>));
+            Assert.Contains(typeof(BarHandler), handlerTypes);
+            Assert.Contains(typeof(FooHandler), handlerTypes);
         }
 
-        [Test]
+        [Fact]
         public void Scanner_should_find_all_IReceivingChannel_types()
         {
-            var handlers = scanner.FindTypes(typeof(IReceivingChannel));
+            var channels = scanner.FindTypes(typeof(IReceivingChannel));
 
-            Assert.That(handlers.Length, Is.GreaterThanOrEqualTo(1));
-            Assert.That(handlers, Contains.Item(typeof(InMemoryMessageChannel)));
+            Assert.Equal(channels.Length, 1);
         }
     }
 }

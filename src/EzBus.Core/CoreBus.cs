@@ -1,8 +1,8 @@
 ﻿using System;
 using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
-using EzBus.Core.Utils;
 using EzBus.Serializers;
+using EzBus.Utils;
 
 namespace EzBus.Core
 {
@@ -15,15 +15,12 @@ namespace EzBus.Core
 
         public CoreBus(ISendingChannel sendingChannel, IPublishingChannel publishingChannel, IMessageRouting messageRouting)
         {
-            if (sendingChannel == null) throw new ArgumentNullException(nameof(sendingChannel));
-            if (messageRouting == null) throw new ArgumentNullException(nameof(messageRouting));
-            if (publishingChannel == null) throw new ArgumentNullException(nameof(publishingChannel));
+            this.sendingChannel = sendingChannel ?? throw new ArgumentNullException(nameof(sendingChannel));
+            this.messageRouting = messageRouting ?? throw new ArgumentNullException(nameof(messageRouting));
+            this.publishingChannel = publishingChannel ?? throw new ArgumentNullException(nameof(publishingChannel));
 
-            this.sendingChannel = sendingChannel;
-            this.messageRouting = messageRouting;
-            this.publishingChannel = publishingChannel;
-
-            serializer = MessageSerlializerResolver.GetSerializer();
+            var messageSerializerType = TypeResolver.GetType<IMessageSerializer>();
+            serializer = (IMessageSerializer)messageSerializerType.CreateInstance();
         }
 
         public void Send(object message)

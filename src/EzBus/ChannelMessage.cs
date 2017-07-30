@@ -19,7 +19,7 @@ namespace EzBus
 
         public void AddHeader(string name, string value)
         {
-            headers.Add(new MessageHeader { Name = name, Value = value });
+            headers.Add(new MessageHeader(name, value));
         }
 
         public void AddHeader(params MessageHeader[] headerparams)

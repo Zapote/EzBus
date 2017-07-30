@@ -1,23 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <package >
   <metadata>
-    <id>EzBus.Log4Net</id>
+    <id>EzBus.log4net</id>
     <version>0.0.0</version>
     <authors>Zapote</authors>
     <owners>Zapote</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Log4Net logging for EzBus</description>
+    <description>log4net appender for EzBus</description>
     <releaseNotes>None</releaseNotes>
-    <copyright>Copyright 2014</copyright>
     <iconUrl>http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ezbus-logo-128x128.png</iconUrl>
     <projectUrl>https://github.com/zapote/ezbus</projectUrl>
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus log4net logging</tags>
     <dependencies>
-      <dependency id="EzBus"  version="[0.0.0]"/>
-      <dependency id="log4net"  version="2.0.3"/>
+      <group targetFramework=".NETStandard1.6">
+        <dependency id="EzBus" version="[2,3)" exclude="Build,Analyzers" />
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="log4net" version="[2,3)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="EzBus" version="[2,3)" exclude="Build,Analyzers" />
+        <dependency id="log4net" version="[2,3)" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="EzBus.Log4Net.dll" target="lib\net40" />
+    <file src="net46\EzBus.log4net.dll" target="lib\net46" />
+    <file src="netstandard1.6\EzBus.log4net.dll" target="lib\netstandard1.6" />
   </files>
 </package>

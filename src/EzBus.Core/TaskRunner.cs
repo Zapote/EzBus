@@ -1,28 +1,36 @@
 ﻿using System;
-using EzBus.Core.Resolvers;
+using System.Collections.Generic;
+using System.Linq;
 using EzBus.Logging;
+using EzBus.ObjectFactory;
 
 namespace EzBus.Core
 {
-    public class TaskRunner
+    public class TaskRunner : ITaskRunner
     {
         private static readonly ILogger log = LogManager.GetLogger<TaskRunner>();
+        private readonly IObjectFactory objectFactory;
+        private IEnumerable<IStartupTask> startupTasks;
 
-        public static void RunStartupTasks(IHostConfig config)
+        public TaskRunner(IObjectFactory objectFactory)
         {
-            var startupTasks = StartupTaskResolver.GetStartupTasks();
-            foreach (var task in startupTasks)
-            {
-                var taskName = task.GetType().Name;
+            this.objectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
+        }
 
+        public void RunStartupTasks()
+        {
+            startupTasks = objectFactory.GetInstances<IStartupTask>();
+
+            foreach (var task in startupTasks.OrderBy(x => x.Name))
+            {
                 try
                 {
-                    log.Verbose($"Running task {taskName}");
-                    task.Run(config);
+                    log.Info($"Running StartupTask {task.Name}");
+                    task.Run();
                 }
                 catch (Exception ex)
                 {
-                    log.Error($"Failed to run startup task: {taskName}", ex);
+                    log.Warn($"Failed to run StartupTask: {task.Name}", ex);
                 }
             }
         }

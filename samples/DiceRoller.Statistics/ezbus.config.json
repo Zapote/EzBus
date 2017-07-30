@@ -1,0 +1,12 @@
+﻿{
+  "ezbus": {
+    "subscriptions": [
+      {
+        "endpoint": "diceroller.service"
+      }
+    ],
+    "ConnectionStrings": {
+      "RabbitMQ": "amqp://localhost"
+    }
+  }
+}

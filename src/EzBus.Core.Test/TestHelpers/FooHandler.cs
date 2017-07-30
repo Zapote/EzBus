@@ -1,8 +1,8 @@
 ﻿namespace EzBus.Core.Test.TestHelpers
 {
-    public class FooHandler : IHandle<MockData>
+    public class FooHandler : IHandle<TestMessageData>
     {
-        public void Handle(MockData message)
+        public void Handle(TestMessageData message)
         {
 
         }

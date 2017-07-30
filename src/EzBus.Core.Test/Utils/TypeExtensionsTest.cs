@@ -1,21 +1,20 @@
-﻿using EzBus.Core.Utils;
-using NUnit.Framework;
+﻿using EzBus.Utils;
+using Xunit;
 
 namespace EzBus.Core.Test.Utils
 {
-    [TestFixture]
     public class TypeExtensionsTest
     {
-        [Test]
+        [Fact]
         public void GetAssemblyName_returns_name_of_the_assembly()
         {
-            Assert.That(this.GetAssemblyName(), Is.EqualTo("EzBus.Core.Test"));
+            Assert.Equal("EzBus.Core.Test", this.GetAssemblyName());
         }
 
-        [Test]
+        [Fact]
         public void IsLocal_returns_true_when_type_from_EzBus_Core()
         {
-            Assert.That(typeof(CoreBus).IsLocal(), Is.True);
+            Assert.True(typeof(CoreBus).IsLocal());
         }
     }
 }

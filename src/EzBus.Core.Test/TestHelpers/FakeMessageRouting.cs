@@ -8,9 +8,9 @@ namespace EzBus.Core.Test.TestHelpers
     {
         private readonly List<KeyValuePair<string, string>> routing = new List<KeyValuePair<string, string>>();
 
-        public string GetRoute(string assemblyName, string messageType)
+        public string GetRoute(string @namespace, string messageType)
         {
-            return routing.First(x => x.Key == assemblyName + messageType).Value;
+            return routing.First(x => x.Key == @namespace + messageType).Value;
         }
 
         public void AddRoute(string assemblyName, string messageType, string endpoint)

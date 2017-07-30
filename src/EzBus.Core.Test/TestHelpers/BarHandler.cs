@@ -1,8 +1,8 @@
 ﻿namespace EzBus.Core.Test.TestHelpers
 {
-    public class BarHandler : IHandle<MockMessage>
+    public class BarHandler : IHandle<TestMessage>
     {
-        public void Handle(MockMessage message)
+        public void Handle(TestMessage message)
         {
 
         }
