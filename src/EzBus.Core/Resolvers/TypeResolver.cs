@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using EzBus.Core.Utils;
 using EzBus.Utils;
-using AssemblyScanner = EzBus.Core.Utils.AssemblyScanner;
+
 
 namespace EzBus.Core.Resolvers
 {
@@ -17,12 +18,20 @@ namespace EzBus.Core.Resolvers
 
             if (resolvedTypes.ContainsKey(typeToResolve)) return resolvedTypes[typeToResolve];
 
-            var types = assemblyScanner.FindTypes<TInterface>();
-            var resolvedType = types.All(x => x.IsLocal()) ? types.Last() : types.Last(x => !x.IsLocal());
-
+            var resolvedType = ResolveType(typeToResolve);
             resolvedTypes.AddOrUpdate(typeToResolve, resolvedType, (key, oldValue) => oldValue);
 
             return resolvedType;
+        }
+
+        private static Type ResolveType(Type type)
+        {
+            var types = assemblyScanner.FindTypes(type);
+            var resolvedType = types.All(x => x.IsLocal()) ? types.LastOrDefault() : types.LastOrDefault(x => !x.IsLocal());
+
+            if (resolvedType != null) return resolvedType;
+
+            throw new Exception($"Unable to resolve type: {type}");
         }
     }
 }

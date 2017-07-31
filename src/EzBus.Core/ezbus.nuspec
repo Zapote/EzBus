@@ -13,21 +13,21 @@
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.6">
-        <dependency id="lightinject" version="5.0.3" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Logging" version="1.1.2" exclude="Build,Analyzers" />
-        <dependency id="Newtonsoft.json" version="10.0.3" exclude="Build,Analyzers" />
-        <dependency id="System.Reflection" version="4.3.0" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Configuration" version="1.1.2" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Configuration.Json" version="1.1.2" exclude="Build,Analyzers" />
+        <dependency id="lightinject" version="5.0.3" />
+        <dependency id="Microsoft.Extensions.Logging" version="1.1.2" />
+        <dependency id="Newtonsoft.json" version="10.0.3" />
+        <dependency id="System.Reflection" version="4.3.0" />
+        <dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
+        <dependency id="Microsoft.Extensions.Configuration.Json" version="1.1.2" />
       </group>
       <group targetFramework=".NETStandard1.6">
-        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
-        <dependency id="lightinject" version="5.0.3" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Logging" version="1.1.2" exclude="Build,Analyzers" />
-        <dependency id="Newtonsoft.json" version="10.0.3" exclude="Build,Analyzers" />
-        <dependency id="System.Reflection" version="4.3.0" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Configuration" version="1.1.2" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Configuration.Json" version="1.1.2" exclude="Build,Analyzers" />
+        <dependency id="NETStandard.Library" version="1.6.1" />
+        <dependency id="lightinject" version="5.0.3" />
+        <dependency id="Microsoft.Extensions.Logging" version="1.1.2" />
+        <dependency id="Newtonsoft.json" version="10.0.3" />
+        <dependency id="System.Reflection" version="4.3.0" />
+        <dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
+        <dependency id="Microsoft.Extensions.Configuration.Json" version="1.1.2" />
       </group>
     </dependencies>
   </metadata>
