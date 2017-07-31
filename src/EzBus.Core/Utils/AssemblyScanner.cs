@@ -73,6 +73,7 @@ namespace EzBus.Core.Utils
             {
                 var assembly = Assembly.Load(assemblyRef);
                 assemblies.Add(assembly);
+                log.Verbose($"Assembly added: {assembly.FullName}");
             }
 
             var directory = AppContext.BaseDirectory;
@@ -86,6 +87,7 @@ namespace EzBus.Core.Utils
                 var assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, "")));
                 if (assemblies.Any(x => x.FullName == assembly.FullName)) continue;
                 assemblies.Add(assembly);
+                log.Verbose($"Assembly added: {assembly.FullName}");
             }
         }
     }

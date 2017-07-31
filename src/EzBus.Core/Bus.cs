@@ -16,8 +16,8 @@ public static class Bus
     public static void Start(Action<IBusConfig> configAction = null)
     {
         InitializeObjectFactory();
-        ConfigureLogging();
         SetupBusConfig(configAction);
+        ConfigureLogging();
         CreateBus();
         StartBus();
     }
@@ -47,7 +47,7 @@ public static class Bus
     private static void ConfigureLogging()
     {
         var loggerFactory = LoggerFactoryResolver.GetLoggerFactory();
-        LogManager.Configure(loggerFactory, LogLevel.Debug);
+        LogManager.Configure(loggerFactory, busConfig.LogLevel);
     }
 
     private static void SetupBusConfig(Action<IBusConfig> configAction)

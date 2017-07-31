@@ -3,10 +3,10 @@ using EzBus.Core.Config;
 using EzBus.Core.Middleware;
 using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
+using EzBus.Core.Utils;
 using EzBus.ObjectFactory;
 using EzBus.Serializers;
 using EzBus.Utils;
-using AssemblyScanner = EzBus.Core.Utils.AssemblyScanner;
 
 namespace EzBus.Core
 {

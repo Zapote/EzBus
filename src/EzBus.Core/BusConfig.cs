@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using EzBus.Logging;
 using EzBus.Utils;
 
 namespace EzBus.Core
@@ -16,6 +17,7 @@ namespace EzBus.Core
         public int NumberOfRetrys { get; set; }
         public string EndpointName { get; set; }
         public string ErrorEndpointName { get; set; }
+        public LogLevel LogLevel { get; set; }
 
         private void CreateEndpointNames()
         {
