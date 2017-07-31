@@ -15,9 +15,11 @@ public static class Bus
 
     public static void Start(Action<IBusConfig> configAction = null)
     {
-        InitializeObjectFactory();
         SetupBusConfig(configAction);
         ConfigureLogging();
+
+        InitializeObjectFactory();
+     
         CreateBus();
         StartBus();
     }
@@ -27,6 +29,7 @@ public static class Bus
         var objectFactoryType = TypeResolver.GetType<IObjectFactory>();
         objectFactory = (IObjectFactory)objectFactoryType.CreateInstance();
         objectFactory.Initialize();
+        objectFactory.RegisterInstance(typeof(IBusConfig), busConfig);
     }
 
     public static void Send(object message)
@@ -53,7 +56,6 @@ public static class Bus
     private static void SetupBusConfig(Action<IBusConfig> configAction)
     {
         configAction?.Invoke(busConfig);
-        objectFactory.RegisterInstance(typeof(IBusConfig), busConfig);
     }
 
     private static void CreateBus()

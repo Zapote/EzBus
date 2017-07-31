@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.Logging;
 
 namespace DiceRoller.Client
 {
@@ -7,7 +8,7 @@ namespace DiceRoller.Client
         static void Main(string[] args)
         {
             Console.Title = "DiceRoller Client";
-            Bus.Start();
+            Bus.Start(c => c.LogLevel = LogLevel.Verbose);
 
             var keyInfo = new ConsoleKeyInfo();
 

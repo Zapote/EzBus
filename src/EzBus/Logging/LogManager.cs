@@ -9,7 +9,7 @@ namespace EzBus.Logging
 
         public static ILogger GetLogger(string name)
         {
-            return loggerFactory == null ? NullLogger.Create() : loggerFactory.CreateLogger(logLevel, name);
+            return loggerFactory == null ? ConsoleLogger.Create(logLevel, name) : loggerFactory.CreateLogger(logLevel, name);
         }
 
         public static ILogger GetLogger(Type type)

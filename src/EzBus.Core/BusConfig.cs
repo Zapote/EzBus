@@ -11,6 +11,7 @@ namespace EzBus.Core
             NumberOfRetrys = 5;
             WorkerThreads = 1;
             CreateEndpointNames();
+            LogLevel = LogLevel.Info;
         }
 
         public int WorkerThreads { get; set; }

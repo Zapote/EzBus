@@ -68,12 +68,13 @@ namespace EzBus.Core.Utils
             var referencedAssemblies = entryAssembly.GetReferencedAssemblies();
 
             assemblies.Add(entryAssembly);
+            log.Verbose($"Entry assembly added: {entryAssembly.FullName}");
 
             foreach (var assemblyRef in referencedAssemblies)
             {
                 var assembly = Assembly.Load(assemblyRef);
                 assemblies.Add(assembly);
-                log.Verbose($"Assembly added: {assembly.FullName}");
+                log.Verbose($"Referenced assembly added: {assembly.FullName}");
             }
 
             var directory = AppContext.BaseDirectory;
@@ -87,7 +88,7 @@ namespace EzBus.Core.Utils
                 var assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, "")));
                 if (assemblies.Any(x => x.FullName == assembly.FullName)) continue;
                 assemblies.Add(assembly);
-                log.Verbose($"Assembly added: {assembly.FullName}");
+                log.Verbose($"Scanned assembly added: {assembly.FullName}");
             }
         }
     }

@@ -1,7 +1,6 @@
 using System;
-using EzBus.Logging;
 
-namespace EzBus.Core.Logging
+namespace EzBus.Logging
 {
     public class ConsoleLogger : ILogger
     {
@@ -95,8 +94,13 @@ namespace EzBus.Core.Logging
         private void WriteLog(object message, LogLevel logLevel, ConsoleColor color = ConsoleColor.Gray)
         {
             Console.ForegroundColor = color;
-            Console.WriteLine($"{DateTime.Now} [{System.Threading.Thread.CurrentThread.ManagedThreadId}] {logLevel} {name}: {message}");
+            Console.WriteLine($"{DateTime.Now} [{System.Threading.Tasks.Task.CurrentId}] {logLevel} {name}: {message}");
             Console.ResetColor();
+        }
+
+        public static ILogger Create(LogLevel level, string name)
+        {
+            return new ConsoleLogger(level, name);
         }
     }
 }
