@@ -1,5 +1,4 @@
-﻿using EzBus.Core.Logging;
-using EzBus.Logging;
+﻿using EzBus.Logging;
 using Xunit;
 
 namespace EzBus.Core.Test.Logging
