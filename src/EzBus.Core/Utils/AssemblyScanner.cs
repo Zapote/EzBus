@@ -65,9 +65,9 @@ namespace EzBus.Core.Utils
             if (assemblyLoaded) return;
             assemblyLoaded = true;
 
-            #if NETSTANDARD1_6
+#if NETSTANDARD1_6
             var libs = DependencyContext.Default.RuntimeLibraries;
-            var ezlibs = libs.Where(x => x.Name.StartsWith("EzBus."));
+            var ezlibs = libs.Where(x => x.Name.StartsWith("EzBus"));
 
             foreach (var lib in ezlibs)
             {
@@ -75,7 +75,7 @@ namespace EzBus.Core.Utils
                 assemblies.Add(assembly);
                 log.Verbose($"Referenced assembly added: {assembly.FullName}");
             }
-            #endif
+#endif
 
             var directory = AppContext.BaseDirectory;
             var fileNames = new List<string>();
