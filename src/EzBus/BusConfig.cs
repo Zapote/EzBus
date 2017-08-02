@@ -2,23 +2,20 @@
 using EzBus.Logging;
 using EzBus.Utils;
 
-namespace EzBus.Core
+namespace EzBus
 {
     public class BusConfig : IBusConfig
     {
         public BusConfig()
         {
-            NumberOfRetrys = 5;
-            WorkerThreads = 1;
             CreateEndpointNames();
-            LogLevel = LogLevel.Info;
         }
 
-        public int WorkerThreads { get; set; }
-        public int NumberOfRetrys { get; set; }
         public string EndpointName { get; set; }
         public string ErrorEndpointName { get; set; }
-        public LogLevel LogLevel { get; set; }
+        public LogLevel LogLevel { get; set; } = LogLevel.Info;
+        public int NumberOfRetrys { get; set; } = 5;
+        public int WorkerThreads { get; set; } = 1;
 
         private void CreateEndpointNames()
         {

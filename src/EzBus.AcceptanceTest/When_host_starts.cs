@@ -17,7 +17,7 @@ namespace EzBus.AcceptanceTest
             StartupTaskTwo.HasStarted = false;
 
             objectFactory.Initialize();
-            new BusStarter(new TaskRunner(objectFactory)).Start();
+            new BusStarter(new BusConfig(), new TaskRunner(objectFactory)).Start();
         }
 
         [Then]

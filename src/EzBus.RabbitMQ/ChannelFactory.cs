@@ -12,7 +12,7 @@ namespace EzBus.RabbitMQ
         private readonly string hostUri;
         private IConnection connection;
 
-        public ChannelFactory(IEzBusConfig config)
+        public ChannelFactory(IEzBusConfig config, IBusConfig busConfig)
         {
             this.config = config ?? throw new ArgumentNullException(nameof(config));
 

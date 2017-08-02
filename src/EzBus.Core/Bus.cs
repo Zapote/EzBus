@@ -1,35 +1,26 @@
 ﻿using System;
 using EzBus;
-using EzBus.Core;
 using EzBus.Core.Resolvers;
-using EzBus.Logging;
 using EzBus.ObjectFactory;
 using EzBus.Utils;
 
 // ReSharper disable once CheckNamespace
 public static class Bus
 {
-    private static readonly IBusConfig busConfig = new BusConfig();
     private static IObjectFactory objectFactory;
     private static IBus bus;
 
-    public static void Start(Action<IBusConfig> configAction = null)
+    public static ITransport Configure(Action<IBusConfig> action)
     {
-        SetupBusConfig(configAction);
-        ConfigureLogging();
-
         InitializeObjectFactory();
-     
-        CreateBus();
-        StartBus();
-    }
+        
+        var transport = GetTransport();
+        var config = GetConfig();
+        action?.Invoke(config);
 
-    private static void InitializeObjectFactory()
-    {
-        var objectFactoryType = TypeResolver.GetType<IObjectFactory>();
-        objectFactory = (IObjectFactory)objectFactoryType.CreateInstance();
-        objectFactory.Initialize();
-        objectFactory.RegisterInstance(typeof(IBusConfig), busConfig);
+        GetBus();
+
+        return transport;
     }
 
     public static void Send(object message)
@@ -47,28 +38,28 @@ public static class Bus
         bus.Publish(message);
     }
 
-    private static void ConfigureLogging()
+    private static void InitializeObjectFactory()
     {
-        var loggerFactory = LoggerFactoryResolver.GetLoggerFactory();
-        LogManager.Configure(loggerFactory, busConfig.LogLevel);
+        var objectFactoryType = TypeResolver.GetType<IObjectFactory>();
+        objectFactory = (IObjectFactory)objectFactoryType.CreateInstance();
+        objectFactory.Initialize();
     }
 
-    private static void SetupBusConfig(Action<IBusConfig> configAction)
-    {
-        configAction?.Invoke(busConfig);
-    }
-
-    private static void CreateBus()
+    private static void GetBus()
     {
         bus = objectFactory.GetInstance<IBus>();
     }
 
-    private static void StartBus()
+    private static IBusConfig GetConfig()
     {
-        var log = LogManager.GetLogger("Bus");
-        var host = objectFactory.GetInstance<BusStarter>();
-        host.Start();
-        log.Info("EzBus started");
+        var config = objectFactory.GetInstance<IBusConfig>();
+        return config;
+    }
+
+    private static ITransport GetTransport()
+    {
+        var transport = objectFactory.GetInstance<ITransport>();
+        return transport;
     }
 }
 

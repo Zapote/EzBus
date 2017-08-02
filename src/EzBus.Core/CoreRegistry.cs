@@ -19,7 +19,6 @@ namespace EzBus.Core
             RegisterChannels();
             RegisterMessageSerializer();
             RegisterMessageHandlers();
-            RegisterSubscriptions();
             RegisterHandlerCache();
             RegisterMiddlewares();
             RegisterTaskRunner();
@@ -30,7 +29,7 @@ namespace EzBus.Core
 
         private void RegisterHost()
         {
-            Register<BusStarter, BusStarter>().As.Singleton();
+            Register<IBusStarter, BusStarter>().As.Singleton();
         }
 
         private void RegisterBus()
@@ -61,13 +60,6 @@ namespace EzBus.Core
                 if (type.IsInterface()) continue;
                 Register(type, type, type.FullName);
             }
-        }
-
-        private void RegisterSubscriptions()
-        {
-            //TODO Fix 
-            //var subscriptions = SubscriptionSection.Section.Subscriptions;
-            //RegisterInstance(typeof(ISubscriptionCollection), subscriptions);
         }
 
         private void RegisterHandlerCache()
