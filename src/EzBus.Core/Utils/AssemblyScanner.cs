@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using EzBus.Logging;
 using EzBus.Utils;
-using Microsoft.Extensions.DependencyModel;
 
 namespace EzBus.Core.Utils
 {
@@ -65,16 +64,28 @@ namespace EzBus.Core.Utils
             if (assemblyLoaded) return;
             assemblyLoaded = true;
 
-            var libs = DependencyContext.Default.RuntimeLibraries;
-            var ezlibs = libs.Where(x => x.Name.StartsWith("EzBus"));
+            LoadFromEntryAssembly();
+            LoadFromFiles();
+        }
 
-            foreach (var lib in ezlibs)
+        private static void LoadFromEntryAssembly()
+        {
+            var entryAssembly = Assembly.GetEntryAssembly();
+            var referencedAssemblies = entryAssembly.GetReferencedAssemblies();
+
+            assemblies.Add(entryAssembly);
+            log.Verbose($"Entry assembly added: {entryAssembly.FullName}");
+
+            foreach (var assemblyRef in referencedAssemblies)
             {
-                var assembly = Assembly.Load(new AssemblyName(lib.Name));
+                var assembly = Assembly.Load(assemblyRef);
                 assemblies.Add(assembly);
                 log.Verbose($"Referenced assembly added: {assembly.FullName}");
             }
+        }
 
+        private static void LoadFromFiles()
+        {
             var directory = AppContext.BaseDirectory;
             var fileNames = new List<string>();
             fileNames.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
