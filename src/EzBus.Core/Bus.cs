@@ -10,7 +10,7 @@ public static class Bus
     private static IObjectFactory objectFactory;
     private static IBus bus;
 
-    public static ITransport Configure(Action<IBusConfig> action)
+    public static ITransport Configure(Action<IBusConfig> action = null)
     {
         InitializeObjectFactory();
         
@@ -25,16 +25,19 @@ public static class Bus
 
     public static void Send(object message)
     {
+        VerifyStarted();
         bus.Send(message);
     }
 
     public static void Send(string destination, object message)
     {
+        VerifyStarted();
         bus.Send(destination, message);
     }
 
     public static void Publish(object message)
     {
+        VerifyStarted();
         bus.Publish(message);
     }
 
@@ -60,6 +63,14 @@ public static class Bus
     {
         var transport = objectFactory.GetInstance<ITransport>();
         return transport;
+    }
+
+    private static void VerifyStarted()
+    {
+        if (bus != null) return;
+
+        const string message = "EzBus not started!";
+        throw new InvalidOperationException(message);
     }
 }
 

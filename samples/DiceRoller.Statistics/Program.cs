@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.RabbitMQ;
 
 namespace DiceRoller.Statistics
 {
@@ -7,7 +8,7 @@ namespace DiceRoller.Statistics
         static void Main(string[] args)
         {
             Console.Title = "DiceRoller Statistics";
-            Bus.Start();
+            Bus.Configure().UseRabbitMQ().Start();
         }
     }
 }

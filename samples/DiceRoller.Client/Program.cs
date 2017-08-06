@@ -1,5 +1,4 @@
 ﻿using System;
-using EzBus.Logging;
 using EzBus.RabbitMQ;
 
 namespace DiceRoller.Client
@@ -10,8 +9,7 @@ namespace DiceRoller.Client
         {
             Console.Title = "DiceRoller Client";
 
-            Bus.Start2.RabbitMQ(x => x.ServerName = "Kalle");
-            Bus.Start(c => c.LogLevel = LogLevel.Verbose);
+            Bus.Configure().UseRabbitMQ().Start();
 
             var keyInfo = new ConsoleKeyInfo();
 

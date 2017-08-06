@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.RabbitMQ;
 
 namespace DiceRoller.Service
 {
@@ -7,7 +8,7 @@ namespace DiceRoller.Service
         static void Main(string[] args)
         {
             Console.Title = "DiceRoller Service";
-            Bus.Start();
+            Bus.Configure().UseRabbitMQ().Start();
         }
     }
 }
