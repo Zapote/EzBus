@@ -6,6 +6,6 @@ namespace EzBus
 {
     public interface ITransport
     {
-        IBusStarter BusStarter { get; }
+        IHost Host { get; }
     }
 }

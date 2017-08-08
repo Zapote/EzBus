@@ -2,6 +2,9 @@ namespace EzBus.RabbitMQ
 {
     public interface IRabbitMQConfig
     {
-        string ServerName { get; set; }
+        string Uri { get; set; }
+        string UserName { get; set; }
+        string Password { get; set; }
+        bool AutomaticRecoveryEnabled { get; set; }
     }
 }

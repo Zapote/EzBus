@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MsmqTransport.cs" />
+    <Compile Include="TransportExtensions.cs" />
     <Compile Include="MsmqRegistry.cs" />
     <Compile Include="EndpointAddressExtensions.cs" />
     <Compile Include="Channels\MsmqPublishingChannel.cs" />

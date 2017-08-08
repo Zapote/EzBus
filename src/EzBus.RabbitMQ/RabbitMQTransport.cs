@@ -4,13 +4,13 @@ namespace EzBus.RabbitMQ
 {
     public class RabbitMQTransport : ITransport
     {
-        public RabbitMQTransport(IRabbitMQConfig config, IBusStarter busStarter)
+        public RabbitMQTransport(IRabbitMQConfig config, IHost host)
         {
             Config = config ?? throw new ArgumentNullException(nameof(config));
-            BusStarter = busStarter ?? throw new ArgumentNullException(nameof(busStarter));
+            Host = host ?? throw new ArgumentNullException(nameof(host));
         }
 
         public IRabbitMQConfig Config { get; }
-        public IBusStarter BusStarter { get; }
+        public IHost Host { get; }
     }
 }

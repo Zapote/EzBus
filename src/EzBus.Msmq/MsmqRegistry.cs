@@ -1,4 +1,4 @@
-﻿    using EzBus.Msmq.Subscription;
+﻿using EzBus.Msmq.Subscription;
 using EzBus.ObjectFactory;
 
 namespace EzBus.Msmq
@@ -8,6 +8,7 @@ namespace EzBus.Msmq
         public MsmqRegistry()
         {
             Register<ISubscriptionStorage, MsmqSubscriptionStorage>().As.Singleton();
+            Register<ITransport, MsmqTransport>().As.Singleton();
         }
     }
 }

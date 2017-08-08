@@ -4,13 +4,13 @@ using EzBus.Core.Resolvers;
 
 namespace EzBus.Core
 {
-    public class BusStarter : IBusStarter
+    public class Host : IHost
     {
         private static readonly ILogger log = LogManager.GetLogger("EzBus");
         private readonly IBusConfig busConfig;
         private readonly ITaskRunner taskRunner;
 
-        public BusStarter(IBusConfig busConfig, ITaskRunner taskRunner)
+        public Host(IBusConfig busConfig, ITaskRunner taskRunner)
         {
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
             this.taskRunner = taskRunner ?? throw new ArgumentNullException(nameof(taskRunner));

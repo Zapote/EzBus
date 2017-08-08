@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.Msmq;
 
 namespace Msmq.Service
 {
@@ -8,7 +9,7 @@ namespace Msmq.Service
         {
             Console.Title = "Msmq.Service";
 
-            Bus.Start();
+            Bus.Configure().UseMsmq();
 
             Console.Read();
         }
