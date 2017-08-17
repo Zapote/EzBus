@@ -12,7 +12,7 @@
     <projectUrl>https://github.com/zapote/ezbus</projectUrl>
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus</tags>
     <dependencies>
-      <group targetFramework=".NETFramework4.6">
+      <group targetFramework=".NETStandard2.0">
         <dependency id="lightinject" version="5.0.3" />
         <dependency id="Microsoft.Extensions.Logging" version="1.1.2" />
         <dependency id="Newtonsoft.json" version="10.0.3" />
@@ -31,6 +31,16 @@
         <dependency id="Microsoft.Extensions.Configuration.Json" version="1.1.2" />
         <dependency id="Microsoft.Extensions.DependencyModel" version="1.1.2" />
       </group>
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="lightinject" version="5.0.3" />
+        <dependency id="Microsoft.Extensions.Logging" version="1.1.2" />
+        <dependency id="Newtonsoft.json" version="10.0.3" />
+        <dependency id="System.Reflection" version="4.3.0" />
+        <dependency id="Microsoft.Extensions.Configuration" version="1.1.2" />
+        <dependency id="Microsoft.Extensions.Configuration.Json" version="1.1.2" />
+        <dependency id="Microsoft.Extensions.DependencyModel" version="1.1.2" />
+      </group>
+      
     </dependencies>
   </metadata>
   <files>
@@ -38,5 +48,7 @@
     <file src="net46\EzBus.Core.dll" target="lib\net46" />
     <file src="netstandard1.6\EzBus.dll" target="lib\netstandard1.6" />
     <file src="netstandard1.6\EzBus.Core.dll" target="lib\netstandard1.6" />
+    <file src="netstandard2.0\EzBus.dll" target="lib\netstandard2.0" />
+    <file src="netstandard2.0\EzBus.Core.dll" target="lib\netstandard2.0" />
   </files>
 </package>

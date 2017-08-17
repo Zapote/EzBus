@@ -14,7 +14,7 @@ task default -depends DoRelease
 
 task DoRelease -depends Test, Pack
 
-task Init -depends GitVersion{   	
+task Init -depends GitVersion {   	
 	Delete-Directory $buildDir	
 
 	write-host "Creating build directory at the follwing path $buildDir"
@@ -35,28 +35,26 @@ task GitVersion{
 	Write-Host "##teamcity[buildNumber '$buildVersion']"
 }
  
-task GenerateAssemblyInfo -depends GitVersion{
+task GenerateAssemblyInfo {
 	$version = $script:gitVersionInfo.AssemblySemVer
 	$informationalVersion = $gitVersionInfo.InformationalVersion
 	
-	$assemblyInfoDirs = Get-ChildItem -path "$baseDir" -recurse -include "*.csproj" | % {
+	$assemblyInfoDirs = Get-ChildItem -path "$srcDir" -recurse -include "*.csproj" | % {
 		$propDir = $_.DirectoryName + "\Properties"
-		Create-Directory $propDir
-		
 		$name = $_.Basename
-		
+
 		Generate-Assembly-Info `
 		-file "$propDir\AssemblyInfo.cs" `
-		-title "$name" `
+		-assemblyTitle "$name" `
 		-description "" `
-		-company "Zapote" `
 		-version $version `
-		-informationalVersion "$informationalVersion" `
+		-infoVersion "$informationalVersion" `
 		-copyright "None ©" `
+		-product "EzBus" `
 	}
 }
 
-task Build -depends Init { 
+task Build -depends Init, GenerateAssemblyInfo { 
 	$projects = gci -path "$srcDir" -recurse -include *.csproj
 	
 	$projects | % {
