@@ -1,5 +1,5 @@
 ﻿using System;
-using EzBus.Msmq;
+using EzBus;
 
 namespace Msmq.Service
 {
