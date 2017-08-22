@@ -9,7 +9,7 @@ namespace DiceRoller.Client
         {
             Console.Title = "DiceRoller Client";
 
-            Bus.Configure().UseRabbitMQ().Start();
+            Bus.Configure().UseRabbitMQ();
 
             var keyInfo = new ConsoleKeyInfo();
 

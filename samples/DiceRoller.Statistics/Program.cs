@@ -8,7 +8,7 @@ namespace DiceRoller.Statistics
         static void Main(string[] args)
         {
             Console.Title = "DiceRoller Statistics";
-            Bus.Configure().UseRabbitMQ().Start();
+            Bus.Configure().UseRabbitMQ();
         }
     }
 }

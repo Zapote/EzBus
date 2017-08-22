@@ -4,15 +4,17 @@ namespace EzBus.RabbitMQ
 {
     public static class TransportExtensions
     {
-        public static IHost UseRabbitMQ(this ITransport obj, Action<IRabbitMQConfig> action = null)
+        public static void UseRabbitMQ(this ITransport obj, Action<IRabbitMQConfig> action = null)
         {
-            if (action == null) return obj.Host;
-
             var transport = obj as RabbitMQTransport;
-            if (transport == null) return obj.Host;
 
-            action(transport.Config);
-            return transport.Host;
+            if (transport == null)
+            {
+                throw new Exception("Failed to setup RabbitMQ transport");
+            }
+
+            action?.Invoke(transport.Config);
+            transport.Host.Start();
         }
     }
 }
