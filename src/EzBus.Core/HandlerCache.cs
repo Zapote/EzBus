@@ -60,7 +60,7 @@ namespace EzBus.Core
 
         public bool HasCustomHandlers()
         {
-            return handlers.Count(x => !x.Value.HandlerType.IsLocal()) == 0;
+            return handlers.Any(x => !x.Value.HandlerType.IsLocal());
         }
 
         public int NumberOfEntries => handlers.Count;

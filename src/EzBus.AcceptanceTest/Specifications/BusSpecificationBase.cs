@@ -7,7 +7,7 @@ namespace EzBus.AcceptanceTest.Specifications
 {
     public abstract class BusSpecificationBase
     {
-        protected IHost busStarter;
+        protected IHost host;
         protected static FakeMessageChannel messageChannel = new FakeMessageChannel();
         protected FakeMessageRouting messageRouting = new FakeMessageRouting();
         protected CoreBus bus;
@@ -19,8 +19,8 @@ namespace EzBus.AcceptanceTest.Specifications
             var objectFactory = new DefaultObjectFactory();
             objectFactory.Initialize();
 
-            busStarter = objectFactory.GetInstance<IHost>();
-            busStarter.Start();
+            host = objectFactory.GetInstance<IHost>();
+            host.Start();
 
             LogManager.SetLogLevel(LogLevel.Verbose);
         }
