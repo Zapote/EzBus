@@ -54,6 +54,7 @@ namespace EzBus.Core
 
             foreach (var handlerType in handlerTypes)
             {
+                log.Debug($"Found handler {handlerType.Name}");
                 Add(handlerType);
             }
         }

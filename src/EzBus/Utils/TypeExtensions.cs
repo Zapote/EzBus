@@ -17,6 +17,8 @@ namespace EzBus.Utils
         {
             if (t.Namespace == null) return false;
             var isLocalNamespace = t.Namespace.Equals("EzBus") ||
+                                   t.Namespace.Equals("EzBus.Msmq") ||
+                                   t.Namespace.Equals("EzBus.RabbitMQ") ||
                                    t.Namespace.StartsWith("EzBus.Core");
             return isLocalNamespace;
         }
