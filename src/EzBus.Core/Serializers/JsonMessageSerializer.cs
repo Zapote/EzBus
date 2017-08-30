@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using EzBus.Serializers;
 using Newtonsoft.Json;
@@ -19,6 +20,7 @@ namespace EzBus.Core.Serializers
             };
             serializer.Serialize(jsonTextWriter, message);
             jsonTextWriter.Flush();
+            stream.Position = 0;
         }
 
         public object Deserialize(Stream stream, Type messageType)
@@ -30,3 +32,4 @@ namespace EzBus.Core.Serializers
         }
     }
 }
+

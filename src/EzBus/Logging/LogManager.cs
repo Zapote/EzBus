@@ -5,11 +5,11 @@ namespace EzBus.Logging
     public class LogManager
     {
         private static LoggerFactory loggerFactory;
-        private static LogLevel logLevel;
+        private static LogLevel logLevel = LogLevel.Info;
 
         public static ILogger GetLogger(string name)
         {
-            return loggerFactory == null ? NullLogger.Create() : loggerFactory.CreateLogger(logLevel, name);
+            return loggerFactory == null ? ConsoleLogger.Create(logLevel, name) : loggerFactory.CreateLogger(logLevel, name);
         }
 
         public static ILogger GetLogger(Type type)

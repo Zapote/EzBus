@@ -11,12 +11,12 @@ namespace EzBus.Core.Utils
     public class AssemblyScanner : IAssemblyScanner
     {
         private static readonly ILogger log = LogManager.GetLogger(typeof(AssemblyScanner));
-        private static readonly List<string> assemblyFiles = new List<string>();
-        private static bool directoryScanned;
+        private static readonly List<Assembly> assemblies = new List<Assembly>();
+        private static bool assemblyLoaded;
 
         public AssemblyScanner()
         {
-            LoadAssemblyFiles();
+            LoadAssemblies();
         }
 
         public Type[] FindTypes<T>()
@@ -28,20 +28,20 @@ namespace EzBus.Core.Utils
         {
             var types = new List<Type>();
 
-            foreach (var file in assemblyFiles)
+            foreach (var assembly in assemblies)
             {
                 try
                 {
-                    var fileInfo = new FileInfo(file);
-                    var assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, "")));
+                    var definedTypes = assembly.DefinedTypes;
 
-                    foreach (var type in assembly.GetTypes())
+                    foreach (var typeInfo in definedTypes)
                     {
+                        var type = typeInfo.AsType();
                         if (t == type) continue;
 
                         if (t.IsInterface())
                         {
-                            var handlerInterface = type.GetInterface(t.Name);
+                            var handlerInterface = typeInfo.GetInterface(t.Name);
                             if (handlerInterface == null) continue;
                         }
 
@@ -52,21 +52,50 @@ namespace EzBus.Core.Utils
                 }
                 catch (Exception ex)
                 {
-                    log.Error($"Failed to scan assemby: {file}", ex);
+                    log.Error($"Failed to scan assemby: {assembly.FullName}", ex);
                 }
             }
 
             return types.OrderBy(x => x.FullName).ToArray();
         }
 
-        private static void LoadAssemblyFiles()
+        private static void LoadAssemblies()
         {
-            if (directoryScanned) return;
-            directoryScanned = true;
+            if (assemblyLoaded) return;
+            assemblyLoaded = true;
 
+            LoadFromEntryAssembly();
+            LoadFromFiles();
+        }
+
+        private static void LoadFromEntryAssembly()
+        {
+            var entryAssembly = Assembly.GetEntryAssembly();
+            var referencedAssemblies = entryAssembly.GetReferencedAssemblies();
+
+            assemblies.Add(entryAssembly);
+
+            foreach (var assemblyRef in referencedAssemblies)
+            {
+                var assembly = Assembly.Load(assemblyRef);
+                assemblies.Add(assembly);
+            }
+        }
+
+        private static void LoadFromFiles()
+        {
             var directory = AppContext.BaseDirectory;
-            assemblyFiles.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
-            assemblyFiles.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
+            var fileNames = new List<string>();
+            fileNames.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
+            fileNames.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
+
+            foreach (var fileName in fileNames)
+            {
+                var fileInfo = new FileInfo(fileName);
+                var assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, "")));
+                if (assemblies.Any(x => x.FullName == assembly.FullName)) continue;
+                assemblies.Add(assembly);
+            }
         }
     }
 }

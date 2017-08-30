@@ -29,10 +29,8 @@ namespace EzBus.Utils
         public static bool IsCollection(this Type type)
         {
             return
-                (
-                    type != typeof(string) &&
-                    type.GetTypeInfo().GetInterfaces().Any(t => t.Name == typeof(IEnumerable).Name)
-                );
+                type != typeof(string) &&
+                type.GetTypeInfo().GetInterfaces().Any(t => t.Name == typeof(IEnumerable).Name);
         }
 
         public static bool IsInterface(this Type type)

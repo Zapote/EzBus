@@ -1,26 +1,15 @@
-using System;
-using EzBus.Config;
-using EzBus.Logging;
 using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ
 {
     internal class ChannelFactory : IChannelFactory
     {
-        private readonly IEzBusConfig config;
-        private static readonly ILogger log = LogManager.GetLogger<ChannelFactory>();
-        private readonly string hostUri;
+        private readonly IRabbitMQConfig config;
         private IConnection connection;
 
-        public ChannelFactory(IEzBusConfig config)
+        public ChannelFactory(IRabbitMQConfig config)
         {
-            this.config = config ?? throw new ArgumentNullException(nameof(config));
-
-            if (string.IsNullOrEmpty(hostUri))
-            {
-                hostUri = "amqp://localhost";
-                log.Warn($"HostUri not found in AppSettings. Defaulting to {hostUri}");
-            }
+            this.config = config;
 
             CreateConnection();
         }
@@ -34,9 +23,12 @@ namespace EzBus.RabbitMQ
         {
             var factory = new ConnectionFactory
             {
-                Uri = hostUri,
-                AutomaticRecoveryEnabled = true
+                AutomaticRecoveryEnabled = config.AutomaticRecoveryEnabled,
+                Uri = config.Uri,
+                UserName = config.UserName,
+                Password = config.Password
             };
+
             connection = factory.CreateConnection();
         }
     }

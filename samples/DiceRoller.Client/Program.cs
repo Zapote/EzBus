@@ -1,4 +1,5 @@
 ﻿using System;
+using EzBus.RabbitMQ;
 
 namespace DiceRoller.Client
 {
@@ -7,7 +8,8 @@ namespace DiceRoller.Client
         static void Main(string[] args)
         {
             Console.Title = "DiceRoller Client";
-            Bus.Start();
+
+            Bus.Configure().UseRabbitMQ();
 
             var keyInfo = new ConsoleKeyInfo();
 

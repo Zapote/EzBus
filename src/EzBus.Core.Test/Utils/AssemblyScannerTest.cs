@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using EzBus.Core.Test.TestHelpers;
+﻿using EzBus.Core.Test.TestHelpers;
 using EzBus.Core.Utils;
 using Xunit;
 
