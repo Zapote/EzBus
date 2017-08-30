@@ -9,6 +9,7 @@ namespace EzBus.AcceptanceTest
     {
         public When_message_is_received_and_exception_is_thrown()
         {
+            FailingMessageHandler.Reset();
             bus.Send("Moon", new FailingMessage());
         }
 
@@ -33,6 +34,11 @@ namespace EzBus.AcceptanceTest
         {
             Retries++;
             throw new Exception("Testing error in handler.");
+        }
+
+        public static void Reset()
+        {
+            Retries = 0;
         }
     }
 }
