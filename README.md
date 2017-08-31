@@ -12,8 +12,9 @@ For <b>RabbitMQ</b> transport:<br/>
 nuget Install-package EzBus.RabbitMQ
 
 #### Start EzBus
-```C#
 When your application starts
+
+```C#
 
 //EzBus.Msmq
 Bus.Configure().UseMsmq;
