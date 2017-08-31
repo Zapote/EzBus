@@ -47,7 +47,10 @@ add endpoints that you want to receive messages from.
 At startup of your application, start the bus:
 
 ```C#
+//EzBus.Msmq
 Bus.Configure().UseMsmq;
+
+//EzBus.RabbitMQ
 Bus.Configure().UseRabbitMQ;
 ```
 
