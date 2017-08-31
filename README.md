@@ -25,7 +25,7 @@ Bus.Publish(new TextMessage { Text = "Hello EzBus" });
 
 #### Subscribe to published messages
 
-in ez.config.json:
+in ezbus.config.json:
 
 ```javascript
 {
