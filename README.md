@@ -11,6 +11,17 @@ nuget Install-package EzBus.Msmq
 For <b>RabbitMQ</b> transport:<br/>
 nuget Install-package EzBus.RabbitMQ
 
+#### Start EzBus
+```C#
+When your application starts
+
+//EzBus.Msmq
+Bus.Configure().UseMsmq;
+
+//EzBus.RabbitMQ
+Bus.Configure().UseRabbitMQ;
+```
+
 #### Send your message
 
 ```C#
@@ -45,16 +56,6 @@ add endpoints that you want to receive messages from.
 
 
 ##### Handler class
-
-At startup of your application, start the bus:
-
-```C#
-//EzBus.Msmq
-Bus.Configure().UseMsmq;
-
-//EzBus.RabbitMQ
-Bus.Configure().UseRabbitMQ;
-```
 
 ```C#
 public class TextMessageHandler : IHandle<TextMessage>
