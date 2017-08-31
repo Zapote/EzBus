@@ -103,7 +103,7 @@ The "Invoke" method is called. Place your call before calling next() to do your 
 Can be used for a UnitOfWork for example. 
 
 ```C#
-public class UnitOfWorkMessageFilter : IMiddleware
+public class UnitOfWorkMiddleware : IMiddleware
 {
   private IUnitOfWork unitOfWork;
 
