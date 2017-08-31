@@ -25,16 +25,18 @@ Bus.Publish(new TextMessage { Text = "Hello EzBus" });
 
 #### Subscribe to published messages
 
-in app.config:
+in ez.config.json:
 
-```xml
-  <configSections>
-    <section name="subscriptions" type="EzBus.Core.Config.SubscriptionSection, EzBus.Core"/>
-  </configSections>
-
-  <subscriptions>
-    <add endpoint="My.Service"/>
-  </subscriptions>
+```javascript
+{
+  "ezbus": {
+    "subscriptions": [
+      {
+        "endpoint": "My.Service"
+      }
+    ]
+  }
+}
 ```
 
 add endpoints that you want to receive messages from.
