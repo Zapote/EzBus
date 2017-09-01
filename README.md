@@ -17,10 +17,10 @@ When your application starts
 ```C#
 
 //EzBus.Msmq
-Bus.Configure().UseMsmq;
+Bus.Configure().UseMsmq();
 
 //EzBus.RabbitMQ
-Bus.Configure().UseRabbitMQ;
+Bus.Configure().UseRabbitMQ();
 ```
 
 #### Send your message
@@ -123,6 +123,7 @@ public class UnitOfWorkMiddleware : IMiddleware
   {
     unitOfWork.Start();
     next();
+    unitOfWork.Commt();
   }
 
   public void OnError(Exception ex)
