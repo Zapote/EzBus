@@ -13,16 +13,16 @@
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus msmq</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="EzBus" version="[2,3)" />
+        <dependency id="EzBus" version="NuGetVersion" />
         <dependency id="RabbitMQ.client" version="4.1.3" />
       </group>
       <group targetFramework=".NETStandard1.6">
-        <dependency id="EzBus" version="[2,3)" />
+        <dependency id="EzBus" version="NuGetVersion" />
         <dependency id="NETStandard.Library" version="1.6.1" />
         <dependency id="RabbitMQ.client" version="4.1.3" />
       </group>
       <group targetFramework=".NETFramework4.6">
-        <dependency id="EzBus" version="[2,3)" />
+        <dependency id="EzBus" version="NuGetVersion" />
         <dependency id="RabbitMQ.client" version="4.1.3" />
       </group>
     </dependencies>
