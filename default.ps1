@@ -112,10 +112,10 @@ task Pack {
 		
 		[xml]$content = Get-Content $targetNuspec
 		$packageVersion = $script:gitVersionInfo.NuGetVersion
-				
-        exec { &$nugetExec pack $targetNuspec -OutputDirectory $artifactsDir -Version $packageVersion }
+		(Get-Content $targetNuspec).replace('NuGetVersion', $packageVersion) | Set-Content($targetNuspec)
 		
 		
+		exec { &$nugetExec pack $targetNuspec -OutputDirectory $artifactsDir -Version $packageVersion }
 	}
 	
 	if (Test-Path("c:\nuget-packages")){
