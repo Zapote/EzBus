@@ -13,23 +13,17 @@
     <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus log4net logging</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="EzBus" version="NuGetVersion" exclude="Build,Analyzers" />
-        <dependency id="log4net" version="2.0.8" exclude="Build,Analyzers" />
-      </group>
-      <group targetFramework=".NETStandard1.6">
-        <dependency id="EzBus" version="NuGetVersion" exclude="Build,Analyzers" />
-        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="EzBus" version="[NuGetVersion]" exclude="Build,Analyzers" />
         <dependency id="log4net" version="2.0.8" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.6">
-        <dependency id="EzBus" version="NuGetVersion" exclude="Build,Analyzers" />
+        <dependency id="EzBus" version="[NuGetVersion]" exclude="Build,Analyzers" />
         <dependency id="log4net" version="2.0.8" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
   <files>
     <file src="net46\EzBus.log4net.dll" target="lib\net46" />
-    <file src="netstandard1.6\EzBus.log4net.dll" target="lib\netstandard1.6" />
     <file src="netstandard2.0\EzBus.log4net.dll" target="lib\netstandard2.0" />
   </files>
 </package>
