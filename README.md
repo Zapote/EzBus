@@ -132,3 +132,33 @@ public class UnitOfWorkMiddleware : IMiddleware
   }
 }
 ```
+
+#### Unit Testing
+
+First in setup, start the host.
+
+```C#
+Bus.Configure().Host.Start();
+```
+
+Implement a fake class that derives from IBus
+
+```C#
+public class FakeBus : IBus
+{
+    public void Send(object message)
+    {
+        
+    }
+
+    public void Send(string destinationQueue, object message)
+    {
+        
+    }
+
+    public void Publish(object message)
+    {
+        
+    }
+}
+```
