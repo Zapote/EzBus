@@ -61,8 +61,15 @@ public static class Bus
 
     private static ITransport GetTransport()
     {
-        var transport = objectFactory.GetInstance<ITransport>();
-        return transport;
+        try
+        {
+            var transport = objectFactory.GetInstance<ITransport>();
+            return transport;
+        }
+        catch (Exception e)
+        {
+           
+        }
     }
 
     private static void VerifyStarted()

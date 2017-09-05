@@ -64,13 +64,13 @@ namespace EzBus.Core.Utils
             if (assemblyLoaded) return;
             assemblyLoaded = true;
 
-            LoadFromEntryAssembly();
+            LoadFromExecutingAssembly();
             LoadFromFiles();
         }
 
-        private static void LoadFromEntryAssembly()
+        private static void LoadFromExecutingAssembly()
         {
-            var entryAssembly = Assembly.GetEntryAssembly();
+            var entryAssembly = Assembly.GetExecutingAssembly();
             var referencedAssemblies = entryAssembly.GetReferencedAssemblies();
 
             assemblies.Add(entryAssembly);
