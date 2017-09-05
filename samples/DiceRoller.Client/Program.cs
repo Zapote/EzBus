@@ -1,5 +1,6 @@
 ﻿using System;
 using EzBus.RabbitMQ;
+using EzBus;
 
 namespace DiceRoller.Client
 {

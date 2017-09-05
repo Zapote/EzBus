@@ -13,7 +13,7 @@ public static class Bus
     public static ITransport Configure(Action<IBusConfig> action = null)
     {
         InitializeObjectFactory();
-        
+
         var transport = GetTransport();
         var config = GetConfig();
         action?.Invoke(config);
@@ -50,7 +50,13 @@ public static class Bus
 
     private static void GetBus()
     {
-        bus = objectFactory.GetInstance<IBus>();
+        var busType = TypeResolver.GetType<IBus>();
+        if (busType.IsLocal())
+        {
+            bus = objectFactory.GetInstance<IBus>();
+            return;
+        }
+        bus = busType.CreateInstance() as IBus;
     }
 
     private static IBusConfig GetConfig()
@@ -66,9 +72,10 @@ public static class Bus
             var transport = objectFactory.GetInstance<ITransport>();
             return transport;
         }
-        catch (Exception e)
+        catch (Exception)
         {
-           
+            var host = objectFactory.GetInstance<IHost>();
+            return new NullTransport(host);
         }
     }
 
