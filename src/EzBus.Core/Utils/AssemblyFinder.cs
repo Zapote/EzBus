@@ -36,7 +36,11 @@ namespace EzBus.Core.Utils
         private void FindInFiles()
         {
             FindInFiles(AppDomain.CurrentDomain.BaseDirectory);
-            FindInFiles(AppDomain.CurrentDomain.RelativeSearchPath);
+
+            var privateBinPath = AppDomain.CurrentDomain.RelativeSearchPath;
+            if (string.IsNullOrEmpty(privateBinPath)) return;
+
+            FindInFiles(privateBinPath);
         }
 
         private void FindInFiles(string path)

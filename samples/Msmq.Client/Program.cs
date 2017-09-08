@@ -1,6 +1,5 @@
 ﻿using System;
 using EzBus;
-using EzBus.Msmq;
 using Msmq.Client.Messages;
 
 namespace Msmq.Client

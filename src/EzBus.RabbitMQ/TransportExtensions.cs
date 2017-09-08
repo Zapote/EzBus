@@ -1,6 +1,8 @@
 ﻿using System;
+using EzBus.RabbitMQ;
 
-namespace EzBus.RabbitMQ
+// ReSharper disable once CheckNamespace
+namespace EzBus
 {
     public static class TransportExtensions
     {
