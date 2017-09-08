@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using EzBus.Logging;
@@ -64,38 +63,8 @@ namespace EzBus.Core.Utils
             if (assemblyLoaded) return;
             assemblyLoaded = true;
 
-            LoadFromExecutingAssembly();
-            LoadFromFiles();
-        }
-
-        private static void LoadFromExecutingAssembly()
-        {
-            var entryAssembly = Assembly.GetExecutingAssembly();
-            var referencedAssemblies = entryAssembly.GetReferencedAssemblies();
-
-            assemblies.Add(entryAssembly);
-
-            foreach (var assemblyRef in referencedAssemblies)
-            {
-                var assembly = Assembly.Load(assemblyRef);
-                assemblies.Add(assembly);
-            }
-        }
-
-        private static void LoadFromFiles()
-        {
-            var directory = AppContext.BaseDirectory;
-            var fileNames = new List<string>();
-            fileNames.AddRange(Directory.GetFiles(directory, "*.dll", SearchOption.TopDirectoryOnly));
-            fileNames.AddRange(Directory.GetFiles(directory, "*.exe", SearchOption.TopDirectoryOnly));
-
-            foreach (var fileName in fileNames)
-            {
-                var fileInfo = new FileInfo(fileName);
-                var assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, "")));
-                if (assemblies.Any(x => x.FullName == assembly.FullName)) continue;
-                assemblies.Add(assembly);
-            }
+            var assemblyFinder = new AssemblyFinder();
+            assemblies.AddRange(assemblyFinder.FindAssemblies());
         }
     }
 }
