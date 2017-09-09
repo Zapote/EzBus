@@ -1,6 +1,4 @@
-﻿using EzBus.Config;
-using EzBus.Core.Config;
-using EzBus.Core.Middleware;
+﻿using EzBus.Core.Middleware;
 using EzBus.Core.Resolvers;
 using EzBus.Core.Routing;
 using EzBus.Core.Utils;
@@ -22,7 +20,6 @@ namespace EzBus.Core
             RegisterHandlerCache();
             RegisterMiddlewares();
             RegisterTaskRunner();
-            RegisterEzBusConfig();
             RegistertBusConfig();
             RegisterStartupTasks();
         }
@@ -34,7 +31,6 @@ namespace EzBus.Core
 
         private void RegisterBus()
         {
-            Register<IMessageRouting, ConfigurableMessageRouting>().As.Singleton();
             Register<IBus, CoreBus>().As.Singleton();
         }
 
@@ -100,12 +96,6 @@ namespace EzBus.Core
         private void RegistertBusConfig()
         {
             Register(typeof(IBusConfig), typeof(BusConfig)).As.Singleton();
-        }
-
-        private void RegisterEzBusConfig()
-        {
-            var config = EzBusConfig.GetConfig();
-            RegisterInstance(typeof(IEzBusConfig), config);
         }
 
         private void RegisterStartupTasks()

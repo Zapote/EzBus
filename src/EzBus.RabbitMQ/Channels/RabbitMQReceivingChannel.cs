@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using EzBus.Config;
 using EzBus.Logging;
 using RabbitMQ.Client.Events;
 
@@ -10,23 +9,21 @@ namespace EzBus.RabbitMQ.Channels
     public class RabbitMQReceivingChannel : RabbitMQChannel, IReceivingChannel
     {
         private static readonly ILogger log = LogManager.GetLogger<RabbitMQReceivingChannel>();
-        private readonly IEzBusConfig config;
         private EventingBasicConsumer consumer;
+        private string inputQueue;
 
-        public RabbitMQReceivingChannel(IChannelFactory channelFactory, IEzBusConfig config) : base(channelFactory)
+        public RabbitMQReceivingChannel(IChannelFactory channelFactory) : base(channelFactory)
         {
-            this.config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
             log.Info("Initializing RabbitMQ receving channel");
 
-            DeclareQueue(inputAddress.Name);
+            inputQueue = inputAddress.Name;
+            DeclareQueue(inputQueue);
             DeclareQueue(errorAddress.Name);
-            DeclareExchange(inputAddress.Name);
-
-            BindSubscriptionExchanges(inputAddress);
+            DeclareExchange(inputQueue);
 
             consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
@@ -55,21 +52,5 @@ namespace EzBus.RabbitMQ.Channels
         }
 
         public Action<ChannelMessage> OnMessage { get; set; }
-
-        private void BindSubscriptionExchanges(EndpointAddress inputAddress)
-        {
-            if (config.Subscriptions == null)
-            {
-                log.Info("No subscriptions found in config");
-                return;
-            }
-
-            foreach (var subscription in config.Subscriptions)
-            {
-                var exchange = subscription.Endpoint;
-                log.Info($"Subscribing to messages from '{subscription.Endpoint}'");
-                BindQueue(inputAddress.Name, exchange);
-            }
-        }
     }
 }

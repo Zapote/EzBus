@@ -1,5 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-namespace EzBus
+﻿namespace EzBus.Msmq
 {
     public static class TransportExtensions
     {

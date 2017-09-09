@@ -1,5 +1,6 @@
 ﻿using System;
 using EzBus;
+using EzBus.Msmq;
 using Msmq.Client.Messages;
 
 namespace Msmq.Client
@@ -9,8 +10,11 @@ namespace Msmq.Client
         static void Main(string[] args)
         {
             Console.Title = "Msmq.Client";
-
             Bus.Configure().UseMsmq();
+            Bus.Subscribe("msmq.service");
+
+
+
 
             var orderId = Guid.NewGuid();
             Bus.Send("msmq.service", new ConfirmOrder(orderId));

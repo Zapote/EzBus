@@ -9,6 +9,7 @@ namespace EzBus.Msmq
         {
             Register<ISubscriptionStorage, MsmqSubscriptionStorage>().As.Singleton();
             Register<ITransport, MsmqTransport>().As.Singleton();
+            Register<ISubscriptionManager, SubscriptionManager>().As.Singleton();
         }
     }
 }

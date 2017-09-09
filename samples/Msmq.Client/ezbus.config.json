@@ -1,5 +1,0 @@
-﻿{
-  "ezbus": {
-    "Subscriptions": [ { "Endpoint": "msmq.service" } ]
-  }
-}

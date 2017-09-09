@@ -1,6 +1,6 @@
-namespace EzBus.Config
+namespace EzBus.Msmq
 {
-    public class Subscription
+    public class SubscriptionMessage
     {
         public string Endpoint { get; set; }
     }

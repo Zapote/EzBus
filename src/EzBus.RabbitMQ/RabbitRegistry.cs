@@ -9,6 +9,7 @@ namespace EzBus.RabbitMQ
             Register<IChannelFactory, ChannelFactory>().As.Singleton();
             Register<IRabbitMQConfig, RabbitMQConfig>().As.Singleton();
             Register<ITransport, RabbitMQTransport>().As.Singleton();
+            Register<ISubscriptionManager, SubscriptionManager>().As.Singleton();
         }
     }
 }
