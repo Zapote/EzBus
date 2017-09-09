@@ -11,10 +11,4 @@
     <ProjectReference Include="..\..\src\EzBus\EzBus.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="ezbus.config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

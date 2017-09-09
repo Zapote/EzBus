@@ -14,7 +14,7 @@ namespace EzBus.AcceptanceTest.Specifications
 
         protected BusSpecificationBase()
         {
-            bus = new CoreBus(messageChannel, messageChannel, messageRouting);
+            bus = new CoreBus(messageChannel, messageChannel);
 
             var objectFactory = new DefaultObjectFactory();
             objectFactory.Initialize();

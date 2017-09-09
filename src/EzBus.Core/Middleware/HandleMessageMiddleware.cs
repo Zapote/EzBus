@@ -52,7 +52,7 @@ namespace EzBus.Core.Middleware
             var success = true;
             Exception exception = null;
 
-            for (var i = 0; i < busConfig.NumberOfRetrys; i++)
+            for (var i = 0; i < busConfig.NumberOfRetries; i++)
             {
                 var methodInfo = handlerType.GetMethod("Handle", new[] { message.GetType() });
 

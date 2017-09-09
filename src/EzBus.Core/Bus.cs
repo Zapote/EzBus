@@ -23,12 +23,6 @@ public static class Bus
         return transport;
     }
 
-    public static void Send(object message)
-    {
-        VerifyStarted();
-        bus.Send(message);
-    }
-
     public static void Send(string destination, object message)
     {
         VerifyStarted();
@@ -39,6 +33,13 @@ public static class Bus
     {
         VerifyStarted();
         bus.Publish(message);
+    }
+
+    public static void Subscribe(string endpoint)
+    {
+        VerifyStarted("Failed to subscribe");
+        var sm = objectFactory.GetInstance<ISubscriptionManager>();
+        sm?.Subscribe(endpoint);
     }
 
     private static void InitializeObjectFactory()
@@ -79,11 +80,15 @@ public static class Bus
         }
     }
 
-    private static void VerifyStarted()
+    private static void VerifyStarted(string failMessage = "")
     {
         if (bus != null) return;
 
-        const string message = "EzBus not started!";
+        var message = "EzBus not started!";
+        if (failMessage.HasValue())
+        {
+            message = $"{failMessage} - {message}";
+        }
         throw new InvalidOperationException(message);
     }
 }

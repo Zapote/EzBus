@@ -10,30 +10,21 @@ namespace EzBus.Core
     {
         private readonly ISendingChannel sendingChannel;
         private readonly IPublishingChannel publishingChannel;
-        private readonly IMessageRouting messageRouting;
         private readonly IMessageSerializer serializer;
 
-        public CoreBus(ISendingChannel sendingChannel, IPublishingChannel publishingChannel, IMessageRouting messageRouting)
+        public CoreBus(ISendingChannel sendingChannel, IPublishingChannel publishingChannel)
         {
             this.sendingChannel = sendingChannel ?? throw new ArgumentNullException(nameof(sendingChannel));
-            this.messageRouting = messageRouting ?? throw new ArgumentNullException(nameof(messageRouting));
             this.publishingChannel = publishingChannel ?? throw new ArgumentNullException(nameof(publishingChannel));
 
             var messageSerializerType = TypeResolver.GetType<IMessageSerializer>();
             serializer = (IMessageSerializer)messageSerializerType.CreateInstance();
         }
 
-        public void Send(object message)
-        {
-            var assemblyName = message.GetAssemblyName();
-            var address = messageRouting.GetRoute(assemblyName, message.GetType().FullName);
-            Send(address, message);
-        }
-
-        public void Send(string destinationQueue, object message)
+        public void Send(string endpoint, object message)
         {
             var channelMessage = ChannelMessageFactory.CreateChannelMessage(message, serializer);
-            var destination = EndpointAddress.Parse(destinationQueue);
+            var destination = EndpointAddress.Parse(endpoint);
             channelMessage.AddHeader(MessageHeaders.Destination, destination.ToString());
             sendingChannel.Send(destination, channelMessage);
         }
