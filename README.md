@@ -1,59 +1,51 @@
 EzBus - Messaging made easy!
 ===============================
 
-## Getting started
+### Install via NuGet
 
-#### Install via NuGet
+##### Msmq
+nuget install-package EzBus.Msmq
 
-For <b>Msmq</b> transport:<br/>
-nuget Install-package EzBus.Msmq
+##### RabbitMQ
+nuget install-package EzBus.RabbitMQ
 
-For <b>RabbitMQ</b> transport:<br/>
-nuget Install-package EzBus.RabbitMQ
-
-#### Start EzBus
+### Start EzBus
 When your application starts
 
+##### RabbitMQ 
+
 ```C#
+using EzBus.RabbitMQ;
 
-//EzBus.Msmq
-Bus.Configure().UseMsmq();
-
-//EzBus.RabbitMQ
 Bus.Configure().UseRabbitMQ();
 ```
 
-#### Send your message
+##### Msmq: 
+```C#
+using EzBus.Msmq;
+
+Bus.Configure().UseMsmq();
+```
+
+### Subscribe to published messages
+
+```C#
+Bus.Subscribe("My.Service");
+```
+
+### Send your message
 
 ```C#
 Bus.Send("My.Service", new TextMessage { Text = "Hello EzBus" });
 ```
 
-#### Publish your message
+### Publish your message
 
 ```C#
 Bus.Publish(new TextMessage { Text = "Hello EzBus" });
 ```
 
-#### Subscribe to published messages
-
-in ezbus.config.json:
-
-```javascript
-{
-  "ezbus": {
-    "subscriptions": [
-      {
-        "endpoint": "My.Service"
-      }
-    ]
-  }
-}
-```
-
-add endpoints that you want to receive messages from.
-
-#### Handle your message
+### Handle your message
 
 
 ##### Handler class
@@ -67,7 +59,7 @@ public class TextMessageHandler : IHandle<TextMessage>
   }
 }
 ```
-#### Constructur/Dependency injection in handler
+### Constructur/Dependency injection in handler
 
 ##### Handler code
 
@@ -103,7 +95,7 @@ public class CoreRegistry : ServiceRegistry
 }
 ```
 
-#### Middleware
+### Middleware
 
 The "Invoke" method is called. Place your call before calling next() to do your stuff before mesasage is handled and after if the code should be executed after the message is handled. If an error occurs the "OnError" method is called with the given exception.
 
@@ -133,7 +125,25 @@ public class UnitOfWorkMiddleware : IMiddleware
 }
 ```
 
-#### Unit Testing
+### StartupTasks
+
+If you want EzBus to run a something at startup, implement interface EzBus.IStartupTask
+
+```C#
+
+public class MyStartupTask
+{
+  public string Name => "MyStartupTask";
+
+  public void Run()
+  {
+    //Do some exciting stuff
+  }
+}
+
+```
+
+### Unit Testing
 
 First in setup, start the host.
 
@@ -141,16 +151,11 @@ First in setup, start the host.
 Bus.Configure().Host.Start();
 ```
 
-Implement a fake class that derives from IBus
+Create a class that implements interface EzBus.IBus, this class will now be used instead of EzBus implementation when doing bus operations (send, publish).
 
 ```C#
 public class FakeBus : IBus
 {
-    public void Send(object message)
-    {
-        
-    }
-
     public void Send(string destinationQueue, object message)
     {
         
