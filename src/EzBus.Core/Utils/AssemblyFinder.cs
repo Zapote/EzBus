@@ -15,7 +15,6 @@ namespace EzBus.Core.Utils
             assemblies.Clear();
 
             FindInAppDomain();
-            FindInExecutingAssembly();
             FindInFiles();
 
             return assemblies;
@@ -26,19 +25,6 @@ namespace EzBus.Core.Utils
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 AddAssembly(assembly);
-            }
-        }
-
-        private void FindInExecutingAssembly()
-        {
-            var executingAssembly = Assembly.GetExecutingAssembly();
-            var referencedAssemblies = executingAssembly.GetReferencedAssemblies();
-
-            AddAssembly(executingAssembly);
-
-            foreach (var assemblyName in referencedAssemblies)
-            {
-                AddAssembly(Assembly.Load(assemblyName));
             }
         }
 
