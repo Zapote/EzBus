@@ -14,22 +14,17 @@ namespace EzBus.Core.Utils
         {
             assemblies.Clear();
 
-            FindInExecutingAssembly();
+            FindInAppDomain();
             FindInFiles();
 
             return assemblies;
         }
 
-        private void FindInExecutingAssembly()
+        private void FindInAppDomain()
         {
-            var executingAssembly = Assembly.GetExecutingAssembly();
-            var referencedAssemblies = executingAssembly.GetReferencedAssemblies();
-
-            AddAssembly(executingAssembly);
-
-            foreach (var assemblyName in referencedAssemblies)
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                AddAssembly(Assembly.Load(assemblyName));
+                AddAssembly(assembly);
             }
         }
 
