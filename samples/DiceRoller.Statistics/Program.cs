@@ -9,7 +9,6 @@ namespace DiceRoller.Statistics
         {
             Console.Title = "DiceRoller Statistics";
             Bus.Configure().UseRabbitMQ();
-
             Bus.Subscribe("diceroller.service");
         }
     }
