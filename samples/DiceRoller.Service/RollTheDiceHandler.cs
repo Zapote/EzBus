@@ -7,7 +7,6 @@ namespace DiceRoller.Service
     {
         public void Handle(RollTheDice message)
         {
-            
             Console.WriteLine($"Rolling the dice {message.Attempts} times");
             for (var i = 0; i < message.Attempts; i++)
             {

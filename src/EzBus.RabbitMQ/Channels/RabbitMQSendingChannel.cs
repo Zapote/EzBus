@@ -1,8 +1,9 @@
-﻿using EzBus.Utils;
-using RabbitMQ.Client;
+﻿using System;
+using EzBus.Utils;
 
 namespace EzBus.RabbitMQ.Channels
 {
+    [CLSCompliant(false)]
     public class RabbitMQSendingChannel : RabbitMQChannel, ISendingChannel
     {
         public RabbitMQSendingChannel(IChannelFactory channelFactory)
