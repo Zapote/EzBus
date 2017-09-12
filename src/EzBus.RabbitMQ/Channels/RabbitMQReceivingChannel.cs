@@ -6,6 +6,7 @@ using RabbitMQ.Client.Events;
 
 namespace EzBus.RabbitMQ.Channels
 {
+    [CLSCompliant(false)]
     public class RabbitMQReceivingChannel : RabbitMQChannel, IReceivingChannel
     {
         private static readonly ILogger log = LogManager.GetLogger<RabbitMQReceivingChannel>();
