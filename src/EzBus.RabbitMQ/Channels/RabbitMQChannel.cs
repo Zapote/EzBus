@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using EzBus.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
 namespace EzBus.RabbitMQ.Channels
 {
-    public abstract class RabbitMQChannel
+    [CLSCompliant(false)]
+    public abstract class RabbitMQChannel 
     {
         protected readonly IModel channel;
 

@@ -23,6 +23,7 @@ namespace EzBus.Core.Middleware
         public void OnError(Exception ex)
         {
             if (channelMessage == null) throw new Exception("ChannelMessage is null!", ex);
+            channelMessage.BodyStream.Position = 0;
 
             var level = 0;
 

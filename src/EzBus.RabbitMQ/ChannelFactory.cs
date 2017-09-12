@@ -1,3 +1,4 @@
+using System;
 using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ
@@ -16,7 +17,9 @@ namespace EzBus.RabbitMQ
 
         public IModel GetChannel()
         {
-            return connection.CreateModel();
+            var channel = connection.CreateModel();
+            connection.AutoClose = true;
+            return channel;
         }
 
         private void CreateConnection()
