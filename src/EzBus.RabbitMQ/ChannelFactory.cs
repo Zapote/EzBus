@@ -1,3 +1,4 @@
+using System;
 using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ
@@ -7,7 +8,6 @@ namespace EzBus.RabbitMQ
         private readonly IRabbitMQConfig config;
         private readonly string endpointName;
         private IConnection connection;
-
 
         public ChannelFactory(IRabbitMQConfig config, IBusConfig busConfig)
         {
@@ -19,7 +19,7 @@ namespace EzBus.RabbitMQ
         public IModel GetChannel()
         {
             var channel = connection.CreateModel();
-            connection.AutoClose = true;
+            channel.BasicQos(0, config.PrefetchCount, false);
             return channel;
         }
 
