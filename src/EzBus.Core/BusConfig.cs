@@ -7,12 +7,23 @@ namespace EzBus.Core
 {
     public class BusConfig : IBusConfig
     {
+        private string endpointName;
+
         public BusConfig()
         {
             CreateEndpointNames();
         }
 
-        public string EndpointName { get; set; }
+        public string EndpointName
+        {
+            get => endpointName;
+            set
+            {
+                endpointName = value;
+                ErrorEndpointName = $"{endpointName}.error";
+            }
+        }
+
         public string ErrorEndpointName { get; set; }
         public LogLevel LogLevel { get; set; } = LogLevel.Info;
         public int NumberOfRetries { get; set; } = 5;
