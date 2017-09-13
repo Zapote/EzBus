@@ -9,6 +9,8 @@ namespace DiceRoller.Service
         {
             Console.Title = "DiceRoller Service";
             Bus.Configure().UseRabbitMQ();
+
+            Console.Read();
         }
     }
 }
