@@ -20,7 +20,7 @@ namespace EzBus.NamnedPipes.Test
             {
                 channel.Send(destination, channelMessage);
             }
-            catch (ConnectionTimeout)
+            catch (IOException)
             {
                 return;
             }
