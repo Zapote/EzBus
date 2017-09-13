@@ -48,7 +48,7 @@ namespace EzBus.RabbitMQ.Channels
 
                 channel.BasicAck(ea.DeliveryTag, false);
             };
-
+            
             channel.BasicConsume(inputAddress.Name, false, string.Empty, false, false, null, consumer);
         }
 

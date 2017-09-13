@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using EzBus.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 
