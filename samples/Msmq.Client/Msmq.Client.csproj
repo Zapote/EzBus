@@ -56,6 +56,10 @@
       <Project>{0aa60278-30c1-4697-bf05-ba2a32f58e74}</Project>
       <Name>EzBus.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\EzBus.Log4Net\EzBus.Log4Net.csproj">
+      <Project>{1e865725-1be0-447c-b49e-5d90c29981d3}</Project>
+      <Name>EzBus.Log4Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\EzBus.Msmq\EzBus.Msmq.csproj">
       <Project>{3f5d0c34-372d-49cd-a591-cfd59471eda2}</Project>
       <Name>EzBus.Msmq</Name>

@@ -15,12 +15,10 @@ namespace EzBus.Utils
 
         public static bool IsLocal(this Type t)
         {
-            if (t.Namespace == null) return false;
-            var isLocalNamespace = t.Namespace.Equals("EzBus") ||
-                                   t.Namespace.Equals("EzBus.Msmq") ||
-                                   t.Namespace.Equals("EzBus.RabbitMQ") ||
-                                   t.Namespace.StartsWith("EzBus.Core");
-            return isLocalNamespace;
+            var localAssemblies = new[] { "EzBus", "EzBus.Core", "EzBus.Msmq", "EzBus.RabbitMQ" };
+            var assemblyName = t.Assembly.GetName().Name;
+
+            return localAssemblies.Contains(assemblyName);
         }
 
         public static string GetAssemblyName(this object obj)
