@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus", "..\src\EzBus\EzBus.csproj", "{C4ECE895-5489-41E3-B084-FBA06C4AE3F6}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msmq.Client", "Msmq.Client\Msmq.Client.csproj", "{79E1CE85-BBBD-4B59-9D5F-AE1525BD39AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Msmq.Service", "Msmq.Service\Msmq.Service.csproj", "{205F7F33-AD5F-4C69-85C2-8A55B4018726}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.Log4Net", "..\src\EzBus.Log4Net\EzBus.Log4Net.csproj", "{1E865725-1BE0-447C-B49E-5D90C29981D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +41,15 @@ Global
 		{205F7F33-AD5F-4C69-85C2-8A55B4018726}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{205F7F33-AD5F-4C69-85C2-8A55B4018726}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{205F7F33-AD5F-4C69-85C2-8A55B4018726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E865725-1BE0-447C-B49E-5D90C29981D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E865725-1BE0-447C-B49E-5D90C29981D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E865725-1BE0-447C-B49E-5D90C29981D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E865725-1BE0-447C-B49E-5D90C29981D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {370356C3-D709-47DF-99D9-AF933F5302C2}
 	EndGlobalSection
 EndGlobal
