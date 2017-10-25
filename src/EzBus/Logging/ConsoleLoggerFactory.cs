@@ -2,9 +2,9 @@ namespace EzBus.Logging
 {
     public class ConsoleLoggerFactory : LoggerFactory
     {
-        public override ILogger CreateLogger(LogLevel level, string name)
+        public override ILogger CreateLogger(LogLevel lvl, string name)
         {
-            return new ConsoleLogger(level, name);
+            return new ConsoleLogger(lvl, name);
         }
     }
 }

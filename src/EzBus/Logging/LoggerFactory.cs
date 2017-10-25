@@ -2,6 +2,6 @@
 {
     public abstract class LoggerFactory
     {
-        public abstract ILogger CreateLogger(LogLevel level, string name);
+        public abstract ILogger CreateLogger(LogLevel lvl, string name);
     }
 }
