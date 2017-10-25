@@ -31,16 +31,16 @@ namespace EzBus.Core
 
         private void CreateEndpointNames()
         {
-            var applicationEnvironment = PlatformServices.Default.Application;
-            var applicationName = applicationEnvironment.ApplicationName;
+            var app = PlatformServices.Default.Application;
+            var appName = app.ApplicationName;
 
-            if (applicationName.IsNullOrEmpty())
+            if (appName.IsNullOrEmpty())
             {
-                applicationName = Path.GetPathRoot(applicationEnvironment.ApplicationBasePath);
+                appName = new DirectoryInfo(app.ApplicationBasePath).Name;
             }
 
-            EndpointName = applicationName;
-            ErrorEndpointName = $"{applicationName}.error";
+            EndpointName = appName;
+            ErrorEndpointName = $"{appName}.error";
         }
     }
 }
