@@ -5,10 +5,11 @@ namespace EzBus.log4net
 {
     public class log4netLoggerFactory : Logging.LoggerFactory
     {
-        public override Logging.ILogger CreateLogger(Logging.LogLevel level, string name)
+        public override Logging.ILogger CreateLogger(Logging.LogLevel lvl, string name)
         {
-            var repository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-            var log = LogManager.GetLogger(repository.Name, name);
+            var ass = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+            var repo = LogManager.GetRepository(ass);
+            var log = LogManager.GetLogger(repo.Name, name);
             return new log4netLogger(log);
         }
     }
