@@ -15,19 +15,19 @@ namespace EzBus.RabbitMQ.Channels
             channel = channelFactory?.GetChannel() ?? throw new ArgumentNullException(nameof(channelFactory));
         }
 
-        protected IBasicProperties ConstructHeaders(ChannelMessage channelMessage)
+        protected IBasicProperties ConstructHeaders(ChannelMessage message)
         {
-            var properties = channel.CreateBasicProperties();
+            var props = channel.CreateBasicProperties();
 
-            properties.ClearHeaders();
-            properties.Persistent = true;
-            properties.Headers = new Dictionary<string, object>();
-            foreach (var header in channelMessage.Headers)
+            props.ClearHeaders();
+            props.Persistent = true;
+            props.Headers = new Dictionary<string, object>();
+            foreach (var h in message.Headers)
             {
-                properties.Headers.Add(header.Name, header.Value);
+                props.Headers.Add(h.Name, h.Value);
             }
 
-            return properties;
+            return props;
         }
 
         protected void DeclareQueue(string queueName)

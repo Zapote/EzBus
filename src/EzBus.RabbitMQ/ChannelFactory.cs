@@ -5,21 +5,21 @@ namespace EzBus.RabbitMQ
 {
     internal class ChannelFactory : IChannelFactory
     {
-        private readonly IRabbitMQConfig config;
+        private readonly IRabbitMQConfig rabbitCfg;
         private readonly string endpointName;
         private IConnection connection;
 
-        public ChannelFactory(IRabbitMQConfig config, IBusConfig busConfig)
+        public ChannelFactory(IRabbitMQConfig rabbitCfg, IBusConfig busCfg)
         {
-            this.config = config;
-            endpointName = busConfig.EndpointName;
+            this.rabbitCfg = rabbitCfg;
+            endpointName = busCfg.EndpointName;
             CreateConnection();
         }
 
         public IModel GetChannel()
         {
             var channel = connection.CreateModel();
-            channel.BasicQos(0, config.PrefetchCount, false);
+            channel.BasicQos(0, rabbitCfg.PrefetchCount, false);
             return channel;
         }
 
@@ -27,12 +27,14 @@ namespace EzBus.RabbitMQ
         {
             var factory = new ConnectionFactory
             {
-                AutomaticRecoveryEnabled = config.AutomaticRecoveryEnabled,
-                RequestedHeartbeat = config.RequestedHeartbeat,
+                AutomaticRecoveryEnabled = rabbitCfg.AutomaticRecoveryEnabled,
+                RequestedHeartbeat = rabbitCfg.RequestedHeartbeat,
                 UseBackgroundThreadsForIO = true,
-                Uri = config.Uri,
-                UserName = config.UserName,
-                Password = config.Password
+                UserName = rabbitCfg.UserName,
+                Password = rabbitCfg.Password,
+                HostName = rabbitCfg.HostName,
+                VirtualHost = rabbitCfg.VirutalHost,
+                Port = rabbitCfg.Port 
             };
 
             connection = factory.CreateConnection($"EzBus - {endpointName}");
