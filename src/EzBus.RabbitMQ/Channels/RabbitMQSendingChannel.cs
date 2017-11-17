@@ -16,11 +16,15 @@ namespace EzBus.RabbitMQ.Channels
             DeclareQueuePassive(destination.Name);
             var properties = ConstructHeaders(channelMessage);
             var body = channelMessage.BodyStream.ToByteArray();
-            channel.BasicPublish(string.Empty,
-                                 destination.Name,
-                                 basicProperties: properties,
-                                 body: body,
-                                 mandatory: true);
+
+            lock (channel)
+            {
+                channel.BasicPublish(string.Empty,
+                    destination.Name,
+                    basicProperties: properties,
+                    body: body,
+                    mandatory: true);
+            }
         }
     }
 }

@@ -20,7 +20,11 @@ namespace EzBus.RabbitMQ.Channels
             var exchange = busConfig.EndpointName.ToLower();
             var properties = ConstructHeaders(channelMessage);
             var body = channelMessage.BodyStream.ToByteArray();
-            channel.BasicPublish(exchange, string.Empty, properties, body);
+
+            lock (channel)
+            {
+                channel.BasicPublish(exchange, string.Empty, properties, body);
+            }
         }
     }
 }

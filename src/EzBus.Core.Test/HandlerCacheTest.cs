@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Xunit;
 
 namespace EzBus.Core.Test
@@ -28,10 +29,10 @@ namespace EzBus.Core.Test
         {
             const string messageTypeName = "EzBus.Core.Test.TestHelpers.TestMessage";
 
-            var handlerInfo = handlerCache.GetHandlerInfo(messageTypeName).Single();
+            var result = handlerCache.GetHandlerInfo(messageTypeName).Single();
 
-            Assert.Equal("BarHandler", handlerInfo.HandlerType.Name);
-            Assert.Equal(messageTypeName, handlerInfo.MessageType.FullName);
+            Assert.Equal("BarHandler", result.HandlerType.Name);
+            Assert.Equal(messageTypeName, result.MessageType.FullName);
         }
 
         [Fact]
