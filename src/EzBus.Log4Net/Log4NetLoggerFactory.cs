@@ -3,7 +3,7 @@ using log4net;
 
 namespace EzBus.log4net
 {
-    public class log4netLoggerFactory : Logging.LoggerFactory
+    public class Log4NetLoggerFactory : Logging.LoggerFactory
     {
         public override Logging.ILogger CreateLogger(Logging.LogLevel lvl, string name)
         {
