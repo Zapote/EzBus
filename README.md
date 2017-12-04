@@ -115,7 +115,7 @@ public class UnitOfWorkMiddleware : IMiddleware
   {
     unitOfWork.Start();
     next();
-    unitOfWork.Commt();
+    unitOfWork.Commit();
   }
 
   public void OnError(Exception ex)
