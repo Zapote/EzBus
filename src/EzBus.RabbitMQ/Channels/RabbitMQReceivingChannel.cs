@@ -27,29 +27,31 @@ namespace EzBus.RabbitMQ.Channels
             DeclareExchange(inputQueue);
 
             consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, ea) =>
-            {
-                if (OnMessage == null)
-                {
-                    channel.BasicAck(ea.DeliveryTag, false);
-                    return;
-                }
+            consumer.Received += OnReceivedMessage;
 
-                var body = ea.Body;
-                var message = new ChannelMessage(new MemoryStream(body));
-
-                foreach (var header in ea.BasicProperties.Headers)
-                {
-                    var value = Encoding.UTF8.GetString((byte[])header.Value);
-                    message.AddHeader(header.Key, value);
-                }
-
-                OnMessage(message);
-
-                channel.BasicAck(ea.DeliveryTag, false);
-            };
-            
             channel.BasicConsume(inputAddress.Name, false, string.Empty, false, false, null, consumer);
+        }
+
+        private void OnReceivedMessage(object sender, BasicDeliverEventArgs ea)
+        {
+            if (OnMessage == null)
+            {
+                channel.BasicAck(ea.DeliveryTag, false);
+                return;
+            }
+
+            var body = ea.Body;
+            var message = new ChannelMessage(new MemoryStream(body));
+
+            foreach (var header in ea.BasicProperties.Headers)
+            {
+                var value = Encoding.UTF8.GetString((byte[])header.Value);
+                message.AddHeader(header.Key, value);
+            }
+
+            OnMessage(message);
+
+            channel.BasicAck(ea.DeliveryTag, false);
         }
 
         public Action<ChannelMessage> OnMessage { get; set; }

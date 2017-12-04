@@ -10,7 +10,10 @@ namespace DiceRoller.Client
         {
             Console.Title = "DiceRoller Client";
 
-            Bus.Configure().UseRabbitMQ();
+            Bus.Configure().UseRabbitMQ(x =>
+            {
+                x.Uri = "BROKR";
+            });
 
             var keyInfo = new ConsoleKeyInfo();
 
