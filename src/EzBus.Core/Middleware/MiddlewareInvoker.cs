@@ -6,8 +6,10 @@ namespace EzBus.Core.Middleware
 {
     public class MiddlewareInvoker
     {
-        private readonly IList<IMiddleware> middlewares;
         private readonly Queue<IMiddleware> queue;
+        private readonly IList<IMiddleware> middlewares;
+
+        public IEnumerable<IMiddleware> Middlewares => middlewares;
 
         public MiddlewareInvoker(IEnumerable<IMiddleware> middlewares)
         {

@@ -61,12 +61,25 @@ namespace EzBus.Core
         {
             var middlewares = new List<IMiddleware>();
             var instances = objectFactory.GetInstances<IMiddleware>().ToList();
-            middlewares.AddRange(instances.Where(x => x.GetType().ImplementsInterface<IPreMiddleware>()));
-            middlewares.AddRange(instances.Where(x => x.GetType().ImplementsInterface<ISystemMiddleware>()));
-            middlewares.AddRange(objectFactory.GetInstances<IMiddleware>()
-                .Where(x => !x.GetType().ImplementsInterface<IPreMiddleware>()
-                            && !x.GetType().ImplementsInterface<ISystemMiddleware>()));
+            middlewares.AddRange(instances.Where(IsPreMiddleware));
+            middlewares.AddRange(instances.Where(IsMiddleware));
+            middlewares.AddRange(instances.Where(IsSystemMiddleware));
             return middlewares;
+        }
+
+        private static bool IsSystemMiddleware(IMiddleware x)
+        {
+            return x.GetType().ImplementsInterface<ISystemMiddleware>();
+        }
+
+        private static bool IsPreMiddleware(IMiddleware x)
+        {
+            return x.GetType().ImplementsInterface<IPreMiddleware>();
+        }
+
+        private static bool IsMiddleware(IMiddleware x)
+        {
+            return !x.GetType().ImplementsInterface<IPreMiddleware>() && !x.GetType().ImplementsInterface<ISystemMiddleware>();
         }
     }
 }
