@@ -26,8 +26,9 @@ namespace EzBus.Core
 
         public void Start()
         {
-            log.Verbose("Starting EzBus");
+            log.Info("Starting EzBus");
             taskRunner.RunStartupTasks();
+            log.Info("EzBus started");
         }
     }
 }
