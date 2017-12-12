@@ -5,68 +5,75 @@ using EzBus.ObjectFactory;
 using EzBus.Utils;
 
 // ReSharper disable once CheckNamespace
-public static class Bus
+public sealed class Bus
 {
-    private static IObjectFactory objectFactory;
-    private static IBus bus;
+    private IObjectFactory objectFactory;
+    private IBus bus;
+    private static volatile Bus instance;
+    private static readonly object syncRoot = new object();
+
+    private Bus() { }
+
+    private static Bus Instance
+    {
+        get
+        {
+            if (instance != null) return instance;
+
+            lock (syncRoot)
+            {
+                if (instance == null)
+                {
+                    instance = new Bus();
+                }
+            }
+
+            return instance;
+        }
+    }
 
     public static ITransport Configure(Action<IBusConfig> action = null)
     {
-        InitializeObjectFactory();
+        Instance.InitializeObjectFactory();
 
-        var transport = GetTransport();
-        var config = GetConfig();
+        var config = Instance.GetConfig();
         action?.Invoke(config);
 
-        GetBus();
+        var transport = Instance.GetTransport();
 
         return transport;
     }
 
     public static void Send(string destination, object message)
     {
-        VerifyStarted();
-        bus.Send(destination, message);
+        Instance.GetBus().Send(destination, message);
     }
 
     public static void Publish(object message)
     {
-        VerifyStarted();
-        bus.Publish(message);
+        Instance.GetBus().Publish(message);
     }
 
     public static void Subscribe(string endpoint)
     {
-        VerifyStarted("Failed to subscribe");
-        var sm = objectFactory.GetInstance<ISubscriptionManager>();
+        var sm = Instance.objectFactory.GetInstance<ISubscriptionManager>();
         sm?.Subscribe(endpoint);
     }
 
-    private static void InitializeObjectFactory()
+    private void InitializeObjectFactory()
     {
         var objectFactoryType = TypeResolver.GetType<IObjectFactory>();
         objectFactory = (IObjectFactory)objectFactoryType.CreateInstance();
         objectFactory.Initialize();
     }
 
-    private static void GetBus()
-    {
-        var busType = TypeResolver.GetType<IBus>();
-        if (busType.IsLocal())
-        {
-            bus = objectFactory.GetInstance<IBus>();
-            return;
-        }
-        bus = busType.CreateInstance() as IBus;
-    }
-
-    private static IBusConfig GetConfig()
+    private IBusConfig GetConfig()
     {
         var config = objectFactory.GetInstance<IBusConfig>();
         return config;
     }
 
-    private static ITransport GetTransport()
+    private ITransport GetTransport()
     {
         try
         {
@@ -80,16 +87,20 @@ public static class Bus
         }
     }
 
-    private static void VerifyStarted(string failMessage = "")
+    private IBus GetBus()
     {
-        if (bus != null) return;
+        if (bus != null) return bus;
 
-        var message = "EzBus not started!";
-        if (failMessage.HasValue())
+        var t = TypeResolver.GetType<IBus>();
+
+        if (t.IsLocal())
         {
-            message = $"{failMessage} - {message}";
+            bus = objectFactory.GetInstance<IBus>();
+            return bus;
         }
-        throw new InvalidOperationException(message);
+
+        bus = t.CreateInstance() as IBus;
+        return bus;
     }
 }
 

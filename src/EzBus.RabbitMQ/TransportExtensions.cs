@@ -6,9 +6,7 @@ namespace EzBus.RabbitMQ
     {
         public static void UseRabbitMQ(this ITransport obj, Action<IRabbitMQConfig> action = null)
         {
-            var transport = obj as RabbitMQTransport;
-
-            if (transport == null)
+            if (!(obj is RabbitMQTransport transport))
             {
                 throw new Exception("Failed to setup RabbitMQ transport");
             }
