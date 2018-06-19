@@ -6,21 +6,21 @@ namespace EzBus.RabbitMQ.Channels
     [CLSCompliant(false)]
     public class RabbitMQSendingChannel : RabbitMQChannel, ISendingChannel
     {
-        public RabbitMQSendingChannel(IChannelFactory channelFactory)
-            : base(channelFactory)
+        public RabbitMQSendingChannel(IChannelFactory cf)
+            : base(cf)
         {
         }
 
-        public void Send(EndpointAddress destination, ChannelMessage channelMessage)
+        public void Send(EndpointAddress dest, ChannelMessage cm)
         {
-            DeclareQueuePassive(destination.Name);
-            var properties = ConstructHeaders(channelMessage);
-            var body = channelMessage.BodyStream.ToByteArray();
+            DeclareQueuePassive(dest.Name);
+            var properties = ConstructHeaders(cm);
+            var body = cm.BodyStream.ToByteArray();
 
             lock (channel)
             {
                 channel.BasicPublish(string.Empty,
-                    destination.Name,
+                    dest.Name,
                     basicProperties: properties,
                     body: body,
                     mandatory: true);

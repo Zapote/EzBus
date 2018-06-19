@@ -15,12 +15,12 @@ namespace EzBus.Core
             sentDestinations = new List<EndpointAddress>();
         }
 
-        public void Send(EndpointAddress destination, ChannelMessage channelMessage)
+        public void Send(EndpointAddress dest, ChannelMessage cm)
         {
-            channelMessage.BodyStream.Seek(0, 0);
-            sentDestinations.Add(destination);
-            if (destination.Name.EndsWith("error")) return;
-            OnMessage?.Invoke(channelMessage);
+            cm.BodyStream.Seek(0, 0);
+            sentDestinations.Add(dest);
+            if (dest.Name.EndsWith("error")) return;
+            OnMessage?.Invoke(cm);
         }
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
@@ -37,10 +37,10 @@ namespace EzBus.Core
             return sentDestinations;
         }
 
-        public void Publish(ChannelMessage channelMessage)
+        public void Publish(ChannelMessage cm)
         {
-            channelMessage.BodyStream.Seek(0, 0);
-            OnMessage?.Invoke(channelMessage);
+            cm.BodyStream.Seek(0, 0);
+            OnMessage?.Invoke(cm);
         }
     }
 }

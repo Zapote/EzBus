@@ -37,5 +37,9 @@ namespace EzBus.RabbitMQ
         /// Maximum of unacknowledged messages at once. Default 100
         /// </summary>
         ushort PrefetchCount { get; set; }
+        /// <summary>
+        /// ExchangeType for publishing. Direct, Fanout or Topic. Defaults to Topic.
+        /// </summary>
+        string ExchangeType { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Messaging;
 using EzBus.Logging;
 using EzBus.Serializers;
+using EzBus.Utils;
 
 namespace EzBus.Msmq.Subscription
 {
@@ -28,9 +29,9 @@ namespace EzBus.Msmq.Subscription
             storageQueue = MsmqUtilities.GetQueue(storageAddress);
         }
 
-        public void Store(string endpoint, string messageType)
+        public void Store(string endpoint, string messageName)
         {
-            if (IsSubcriber(endpoint, messageType)) return;
+            if (IsSubcriber(endpoint, messageName)) return;
 
             CreateQueueIfNotExists();
             GetQueue();
@@ -38,7 +39,7 @@ namespace EzBus.Msmq.Subscription
             var item = new MsmqSubscriptionStorageItem
             {
                 Endpoint = endpoint,
-                MessageType = messageType
+                MessageName = messageName
             };
 
             using (var tx = new MessageQueueTransaction())
@@ -63,7 +64,7 @@ namespace EzBus.Msmq.Subscription
         private bool IsSubcriber(string endpoint, string messageType)
         {
             var result = subscriptions.Where(x => x.Endpoint == endpoint).ToList();
-            return result.Any(x => string.IsNullOrEmpty(x.MessageType)) || result.Any(x => x.MessageType == messageType);
+            return result.Any(x => x.MessageName.IsNullOrEmpty()) || result.Any(x => x.MessageName == messageType);
         }
 
         private void CreateQueueIfNotExists()
@@ -72,10 +73,10 @@ namespace EzBus.Msmq.Subscription
             MsmqUtilities.CreateQueue(storageAddress);
         }
 
-        public IEnumerable<string> GetSubscribers(string messageType)
+        public IEnumerable<string> GetSubscribers(string messageName)
         {
             return subscriptions
-                .Where(x => x.MessageType == messageType || string.IsNullOrEmpty(x.MessageType))
+                .Where(x => x.MessageName == messageName || string.IsNullOrEmpty(x.MessageName))
                 .Select(x => x.Endpoint);
         }
 

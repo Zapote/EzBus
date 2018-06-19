@@ -13,7 +13,7 @@ namespace EzBus.Msmq.Subscription
 
         public void Handle(SubscriptionMessage message)
         {
-            subscriptionStorage.Store(message.Endpoint, null);
+            subscriptionStorage.Store(message.Endpoint, message.MessageName);
         }
     }
 }

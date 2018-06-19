@@ -9,12 +9,14 @@ namespace EzBus.RabbitMQ.Channels
     [CLSCompliant(false)]
     public class RabbitMQReceivingChannel : RabbitMQChannel, IReceivingChannel
     {
+        private readonly IRabbitMQConfig cfg;
         private static readonly ILogger log = LogManager.GetLogger<RabbitMQReceivingChannel>();
         private EventingBasicConsumer consumer;
         private string inputQueue;
 
-        public RabbitMQReceivingChannel(IChannelFactory channelFactory) : base(channelFactory)
+        public RabbitMQReceivingChannel(IChannelFactory cf, IRabbitMQConfig cfg) : base(cf)
         {
+            this.cfg = cfg;
         }
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
@@ -24,7 +26,7 @@ namespace EzBus.RabbitMQ.Channels
             inputQueue = inputAddress.Name;
             DeclareQueue(inputQueue);
             DeclareQueue(errorAddress.Name);
-            DeclareExchange(inputQueue);
+            DeclareExchange(inputQueue, cfg.ExchangeType);
 
             consumer = new EventingBasicConsumer(channel);
             consumer.Received += OnReceivedMessage;

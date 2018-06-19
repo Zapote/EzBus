@@ -1,5 +1,6 @@
 ﻿using System;
 using EzBus.Logging;
+using EzBus.Utils;
 using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ
@@ -18,17 +19,51 @@ namespace EzBus.RabbitMQ
 
         public void Subscribe(string endpoint)
         {
+            Subscribe(endpoint, string.Empty);
+        }
+
+        public void Subscribe(string endpoint, string messageName)
+        {
             try
             {
                 endpoint = endpoint.ToLower();
-                log.Info($"Subscribing to endpoint '{endpoint}'");
+
                 var channel = channelFactory.GetChannel();
                 var queue = busConfig.EndpointName.ToLower();
-                channel.QueueBind(queue, endpoint, string.Empty);
+                var routingKey = messageName.IsNullOrEmpty() ? "#" : messageName;
+
+                log.Info($"Subscribing to endpoint '{endpoint}'. Routingkey '{routingKey}'");
+
+                channel.QueueBind(queue, endpoint, routingKey);
             }
             catch (Exception ex)
             {
                 log.Error($"Failed to subscribe to endpoint {endpoint}", ex);
+            }
+        }
+
+        public void Unsubscribe(string endpoint)
+        {
+            Unsubscribe(endpoint, string.Empty);
+        }
+
+        public void Unsubscribe(string endpoint, string messageName)
+        {
+            try
+            {
+                endpoint = endpoint.ToLower();
+
+                var channel = channelFactory.GetChannel();
+                var queue = busConfig.EndpointName.ToLower();
+                var routingKey = messageName.IsNullOrEmpty() ? "#" : messageName;
+
+                log.Info($"Unsubscribing from endpoint '{endpoint}'. Routingkey '{routingKey}'");
+
+                channel.QueueUnbind(queue, endpoint, routingKey);
+            }
+            catch (Exception ex)
+            {
+                log.Error($"Failed to unsubscribe to endpoint {endpoint}", ex);
             }
         }
     }

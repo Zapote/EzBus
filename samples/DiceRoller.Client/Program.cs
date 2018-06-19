@@ -10,11 +10,7 @@ namespace DiceRoller.Client
         {
             Console.Title = "DiceRoller Client";
 
-<<<<<<< HEAD
             Bus.Configure().UseRabbitMQ();
-=======
-            Bus.Configure().UseRabbitMQ(x => x.HostName = "127.0.0.1");
->>>>>>> hotfix/2.1.11
 
             var keyInfo = new ConsoleKeyInfo();
 

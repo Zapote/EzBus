@@ -6,11 +6,11 @@ namespace EzBus.Msmq.Subscription
     public class MsmqSubscriptionStorageItem
     {
         public string Endpoint { get; set; }
-        public string MessageType { get; set; }
+        public string MessageName { get; set; }
 
         public override string ToString()
         {
-            return $"Endpoint: {Endpoint}, MessageType: {MessageType}";
+            return $"Endpoint: {Endpoint}, MessageType: {MessageName}";
         }
     }
 }
