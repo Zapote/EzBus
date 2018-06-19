@@ -14,10 +14,12 @@ namespace EzBus.Core
 
         public void Add(Type handlerType)
         {
-            var messageType = GetMessageType(handlerType);
-            var handlerInfo = new HandlerInfo(handlerType, messageType);
-            handlers.Add(new KeyValuePair<string, HandlerInfo>(messageType.FullName, handlerInfo));
-            log.Verbose($"Handler '{handlerType.FullName}' for message '{messageType.FullName}' added to cache");
+            foreach (var messageType in GetMessageTypes(handlerType))
+            {
+                var handlerInfo = new HandlerInfo(handlerType, messageType);
+                handlers.Add(new KeyValuePair<string, HandlerInfo>(messageType.FullName, handlerInfo));
+                log.Verbose($"Handler '{handlerType.FullName}' for message '{messageType.FullName}' added to cache");
+            }
         }
 
         public IEnumerable<HandlerInfo> GetHandlerInfo(string messageTypeName)
@@ -34,10 +36,18 @@ namespace EzBus.Core
             return result.Select(x => x.Value);
         }
 
-        private static Type GetMessageType(Type handlerType)
+        private static Type[] GetMessageTypes(Type handlerType)
         {
-            var handlerInterface = handlerType.GetInterface(typeof(IHandle<>).Name);
-            return handlerInterface.GetGenericArguments()[0];
+            var handlerInterface = handlerType.GetInterfaces().Where( x => x.Name == typeof(IHandle<>).Name);
+
+            var args = new List<Type>();
+
+            foreach (var i in handlerInterface)
+            {
+                args.Add(i.GetGenericArguments()[0]);
+            }
+
+            return args.ToArray();
         }
 
         private void Clear()

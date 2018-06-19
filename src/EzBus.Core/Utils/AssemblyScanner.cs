@@ -40,8 +40,21 @@ namespace EzBus.Core.Utils
 
                         if (t.IsInterface())
                         {
-                            var handlerInterface = typeInfo.GetInterface(t.Name);
-                            if (handlerInterface == null) continue;
+                            var found = false;
+                            var interfaces = typeInfo.GetInterfaces();
+                            if (interfaces.Length == 0) continue;
+
+                            foreach (var i in interfaces)
+                            {
+                                if (i.Name == t.Name)
+                                {
+                                    found = true;
+                                    break;
+                                }
+                                
+                            }
+
+                            if (!found) continue;
                         }
 
                         if (!t.IsAssignableFrom(type) && !t.IsInterface()) continue;
