@@ -33,7 +33,7 @@ namespace EzBus.RabbitMQ
                 Password = rabbitCfg.Password,
                 HostName = rabbitCfg.HostName,
                 VirtualHost = rabbitCfg.VirutalHost,
-                Port = rabbitCfg.Port 
+                Port = rabbitCfg.Port
             };
 
             connection = factory.CreateConnection($"EzBus - {endpointName}");

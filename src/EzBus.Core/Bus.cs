@@ -90,6 +90,7 @@ public sealed class Bus
     private IBus GetBus()
     {
         if (bus != null) return bus;
+        if (objectFactory == null) throw new Exception("Transport not configured! Pls first call Bus.Configure.UseRabbitMQ() or Bus.Configure.Msmq()");
 
         var t = TypeResolver.GetType<IBus>();
 

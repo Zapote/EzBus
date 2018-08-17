@@ -6,7 +6,7 @@ using RabbitMQ.Client.Exceptions;
 namespace EzBus.RabbitMQ.Channels
 {
     [CLSCompliant(false)]
-    public abstract class RabbitMQChannel 
+    public abstract class RabbitMQChannel
     {
         protected readonly IModel channel;
 
