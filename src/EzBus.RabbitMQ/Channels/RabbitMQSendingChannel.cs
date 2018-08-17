@@ -6,6 +6,8 @@ namespace EzBus.RabbitMQ.Channels
     [CLSCompliant(false)]
     public class RabbitMQSendingChannel : RabbitMQChannel, ISendingChannel
     {
+        private static readonly object syncRoot = new object();
+
         public RabbitMQSendingChannel(IChannelFactory channelFactory)
             : base(channelFactory)
         {
@@ -17,7 +19,7 @@ namespace EzBus.RabbitMQ.Channels
             var properties = ConstructHeaders(channelMessage);
             var body = channelMessage.BodyStream.ToByteArray();
 
-            lock (channel)
+            lock (syncRoot)
             {
                 channel.BasicPublish(string.Empty,
                     destination.Name,
