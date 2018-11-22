@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using EzBus;
 using EzBus.Logging;
 
@@ -18,11 +19,15 @@ namespace DiceRoller.Service
         {
             log.Debug($"DependencyId {dependency.Id}");
             log.Debug($"Rolling the dice {message.Attempts} times");
+            var sw = new Stopwatch();
+            sw.Start();
             for (var i = 0; i < message.Attempts; i++)
             {
                 var result = new Random().Next(1, 7);
                 Bus.Publish(new DiceRolled { Result = result });
             }
+            sw.Stop();
+            log.Debug($"{message.Attempts} times took ${sw.Elapsed.TotalSeconds} s");
         }
     }
 }

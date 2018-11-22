@@ -28,17 +28,17 @@ namespace EzBus.RabbitMQ.Channels
             DeclareQueue(errorAddress.Name);
             DeclareExchange(inputQueue, cfg.ExchangeType);
 
-            consumer = new EventingBasicConsumer(channel);
+            consumer = new EventingBasicConsumer(Channel);
             consumer.Received += OnReceivedMessage;
 
-            channel.BasicConsume(inputAddress.Name, false, string.Empty, false, false, null, consumer);
+            Channel.BasicConsume(inputAddress.Name, false, string.Empty, false, false, null, consumer);
         }
 
         private void OnReceivedMessage(object sender, BasicDeliverEventArgs ea)
         {
             if (OnMessage == null)
             {
-                channel.BasicAck(ea.DeliveryTag, false);
+                Channel.BasicAck(ea.DeliveryTag, false);
                 return;
             }
 
@@ -53,7 +53,7 @@ namespace EzBus.RabbitMQ.Channels
 
             OnMessage(message);
 
-            channel.BasicAck(ea.DeliveryTag, false);
+            Channel.BasicAck(ea.DeliveryTag, false);
         }
 
         public Action<ChannelMessage> OnMessage { get; set; }

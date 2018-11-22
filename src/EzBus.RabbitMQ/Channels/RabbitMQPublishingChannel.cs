@@ -26,7 +26,7 @@ namespace EzBus.RabbitMQ.Channels
 
             lock (syncRoot)
             {
-                channel.BasicPublish(exchange, messageName, properties, body);
+                Channel.BasicPublish(exchange, string.Empty, properties, body);
             }
         }
 
