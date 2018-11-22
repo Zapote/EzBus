@@ -20,19 +20,16 @@ namespace EzBus.RabbitMQ.Channels
             var properties = ConstructHeaders(channelMessage);
             var body = channelMessage.BodyStream.ToByteArray();
 
-            lock (syncRoot)
+            lock (channel)
             {
-                using (var sendingChannel = channelFactory.GetChannel())
-                {
-                    sendingChannel.BasicPublish(string.Empty,
-                           destination.Name,
-                           basicProperties: properties,
-                           body: body,
-                           mandatory: true);
-                    sendingChannel.Close();
-                }
+                channel.BasicPublish(string.Empty,
+                    destination.Name,
+                    basicProperties: properties,
+                    body: body,
+                    mandatory: true);
             }
         }
     }
 }
+
 

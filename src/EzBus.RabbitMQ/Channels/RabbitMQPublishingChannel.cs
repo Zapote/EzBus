@@ -22,9 +22,9 @@ namespace EzBus.RabbitMQ.Channels
             var properties = ConstructHeaders(channelMessage);
             var body = channelMessage.BodyStream.ToByteArray();
 
-            lock (syncRoot)
+            lock (channel)
             {
-                Channel.BasicPublish(exchange, string.Empty, properties, body);
+                channel.BasicPublish(exchange, string.Empty, properties, body);
             }
         }
     }
