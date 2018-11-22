@@ -8,7 +8,7 @@ namespace EzBus.RabbitMQ.Channels
     [CLSCompliant(false)]
     public abstract class RabbitMQChannel
     {
-        protected IModel channel;
+        protected readonly IModel channel;
         protected readonly IChannelFactory channelFactory;
 
         protected RabbitMQChannel(IChannelFactory channelFactory)
@@ -17,11 +17,9 @@ namespace EzBus.RabbitMQ.Channels
             this.channel = channelFactory.GetChannel();
         }
 
-        protected IModel Channel => channel ?? (channel = channelFactory.GetChannel());
-
         protected IBasicProperties ConstructHeaders(ChannelMessage message)
         {
-            var props = Channel.CreateBasicProperties();
+            var props = channel.CreateBasicProperties();
 
             props.ClearHeaders();
             props.Persistent = true;
@@ -36,14 +34,14 @@ namespace EzBus.RabbitMQ.Channels
 
         protected void DeclareQueue(string queueName)
         {
-            Channel.QueueDeclare(queueName, true, false, false);
+            channel.QueueDeclare(queueName, true, false, false);
         }
 
         protected void DeclareQueuePassive(string queueName)
         {
             try
             {
-                Channel.QueueDeclarePassive(queueName);
+                channel.QueueDeclarePassive(queueName);
             }
             catch (OperationInterruptedException ex)
             {
@@ -56,12 +54,12 @@ namespace EzBus.RabbitMQ.Channels
 
         protected void DeclareExchange(string exchange, string type = "fanout", bool durable = true)
         {
-            Channel.ExchangeDeclare(exchange, type, true);
+            channel.ExchangeDeclare(exchange, type, true);
         }
 
         protected void BindQueue(string queueName, string exchange = "")
         {
-            Channel.QueueBind(queueName, exchange.ToLower(), string.Empty);
+            channel.QueueBind(queueName, exchange.ToLower(), string.Empty);
         }
     }
 }
