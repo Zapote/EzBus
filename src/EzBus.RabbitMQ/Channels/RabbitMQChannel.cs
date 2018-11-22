@@ -8,16 +8,20 @@ namespace EzBus.RabbitMQ.Channels
     [CLSCompliant(false)]
     public abstract class RabbitMQChannel
     {
-        protected readonly IModel channel;
+        protected IModel channel;
+        protected readonly IChannelFactory channelFactory;
 
         protected RabbitMQChannel(IChannelFactory channelFactory)
         {
-            channel = channelFactory?.GetChannel() ?? throw new ArgumentNullException(nameof(channelFactory));
+            this.channelFactory = channelFactory;
+            this.channel = channelFactory.GetChannel();
         }
+
+        protected IModel Channel => channel ?? (channel = channelFactory.GetChannel());
 
         protected IBasicProperties ConstructHeaders(ChannelMessage message)
         {
-            var props = channel.CreateBasicProperties();
+            var props = Channel.CreateBasicProperties();
 
             props.ClearHeaders();
             props.Persistent = true;
@@ -32,14 +36,14 @@ namespace EzBus.RabbitMQ.Channels
 
         protected void DeclareQueue(string queueName)
         {
-            channel.QueueDeclare(queueName, true, false, false);
+            Channel.QueueDeclare(queueName, true, false, false);
         }
 
         protected void DeclareQueuePassive(string queueName)
         {
             try
             {
-                channel.QueueDeclarePassive(queueName);
+                Channel.QueueDeclarePassive(queueName);
             }
             catch (OperationInterruptedException ex)
             {
@@ -52,12 +56,12 @@ namespace EzBus.RabbitMQ.Channels
 
         protected void DeclareExchange(string exchange, string type = "fanout", bool durable = true)
         {
-            channel.ExchangeDeclare(exchange, type, true);
+            Channel.ExchangeDeclare(exchange, type, true);
         }
 
         protected void BindQueue(string queueName, string exchange = "")
         {
-            channel.QueueBind(queueName, exchange.ToLower(), string.Empty);
+            Channel.QueueBind(queueName, exchange.ToLower(), string.Empty);
         }
     }
 }
