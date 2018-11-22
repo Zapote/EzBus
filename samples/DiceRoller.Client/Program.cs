@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using EzBus.RabbitMQ;
 using EzBus;
 
@@ -18,7 +19,13 @@ namespace DiceRoller.Client
             {
                 Console.WriteLine("Press <enter> to send RollTheDice");
                 keyInfo = Console.ReadKey();
-                Bus.Send("DiceRoller.Service", new RollTheDice { Attempts = 10000 });
+
+                for (int i = 0; i < 1000; i++)
+                {
+                    Console.WriteLine("sending");
+                            Bus.Send("DiceRoller.Service", new RollTheDice { Attempts = 10 });
+                }
+
             }
         }
     }

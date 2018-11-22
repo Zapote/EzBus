@@ -24,9 +24,9 @@ namespace EzBus.RabbitMQ.Channels
             var body = cm.BodyStream.ToByteArray();
             var messageName = cm.GetHeader(MessageHeaders.MessageName);
 
-            lock (syncRoot)
+            lock (channel)
             {
-                Channel.BasicPublish(exchange, string.Empty, properties, body);
+                channel.BasicPublish(exchange, string.Empty, properties, body);
             }
         }
 
