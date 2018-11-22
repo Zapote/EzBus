@@ -14,11 +14,11 @@
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="EzBus" version="[NuGetVersion]" />
-        <dependency id="RabbitMQ.client" version="5.0.1" />
+        <dependency id="RabbitMQ.client" version="5.1.0" />
       </group>
       <group targetFramework=".NETFramework4.6">
         <dependency id="EzBus" version="[NuGetVersion]" />
-        <dependency id="RabbitMQ.client" version="5.0.1" />
+        <dependency id="RabbitMQ.client" version="5.1.0" />
       </group>
     </dependencies>
   </metadata>
