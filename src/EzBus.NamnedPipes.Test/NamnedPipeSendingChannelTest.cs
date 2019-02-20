@@ -8,7 +8,7 @@ namespace EzBus.NamnedPipes.Test
     public class NamnedPipeSendingChannelTest
     {
         private readonly NamnedPipeSendingChannel channel = new NamnedPipeSendingChannel();
-        private readonly JsonMessageSerializer serializer = new JsonMessageSerializer();
+        private readonly JsonBodySerializer serializer = new JsonBodySerializer();
         private readonly EndpointAddress destination = new EndpointAddress("globex.server");
 
         [Fact]

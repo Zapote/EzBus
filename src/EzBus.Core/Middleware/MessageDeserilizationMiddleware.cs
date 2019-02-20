@@ -8,12 +8,12 @@ namespace EzBus.Core.Middleware
     internal class MessageDeserilizationMiddleware : IPreMiddleware
     {
         private static readonly ILogger log = LogManager.GetLogger<MessageDeserilizationMiddleware>();
-        private readonly IMessageSerializer messageSerializer;
+        private readonly IBodySerializer bodySerializer;
         private readonly IHandlerCache handlerCache;
 
-        public MessageDeserilizationMiddleware(IMessageSerializer messageSerializer, IHandlerCache handlerCache)
+        public MessageDeserilizationMiddleware(IBodySerializer bodySerializer, IHandlerCache handlerCache)
         {
-            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
+            this.bodySerializer = bodySerializer ?? throw new ArgumentNullException(nameof(bodySerializer));
             this.handlerCache = handlerCache ?? throw new ArgumentNullException(nameof(handlerCache));
         }
 
@@ -26,11 +26,11 @@ namespace EzBus.Core.Middleware
             if (handlerInfos.Any())
             {
                 var messageType = handlerInfos.First().MessageType;
-                context.Message = messageSerializer.Deserialize(channelMessage.BodyStream, messageType);
+                context.Message = bodySerializer.Deserialize(channelMessage.BodyStream, messageType);
             }
             else
             {
-                context.Message = messageSerializer.Deserialize(channelMessage.BodyStream, typeof(object));
+                context.Message = bodySerializer.Deserialize(channelMessage.BodyStream, typeof(object));
             }
 
             next();

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace EzBus.Core.Serializers
 {
-    public class JsonMessageSerializer : IMessageSerializer
+    public class JsonBodySerializer : IBodySerializer
     {
         private readonly JsonSerializer serializer = new JsonSerializer();
 

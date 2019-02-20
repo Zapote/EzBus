@@ -10,7 +10,7 @@ namespace EzBus.Core.Test.Serializers
 {
     public class JsonSerializationTest
     {
-        private readonly JsonMessageSerializer serializer = new JsonMessageSerializer();
+        private readonly JsonBodySerializer serializer = new JsonBodySerializer();
 
         [Fact]
         public void DecimalIsSerializedCorrect()
