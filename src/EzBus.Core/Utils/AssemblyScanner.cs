@@ -26,9 +26,10 @@ namespace EzBus.Core.Utils
         public Type[] FindTypes(Type t)
         {
             var types = new List<Type>();
-
-            foreach (var assembly in assemblies)
+            for (var i = 0; i < assemblies.Count; i++)
             {
+                var assembly = assemblies[i];
+
                 try
                 {
                     var definedTypes = assembly.DefinedTypes;
@@ -40,21 +41,12 @@ namespace EzBus.Core.Utils
 
                         if (t.IsInterface())
                         {
-                            var found = false;
                             var interfaces = typeInfo.GetInterfaces();
                             if (interfaces.Length == 0) continue;
 
-                            foreach (var i in interfaces)
-                            {
-                                if (i.Name == t.Name)
-                                {
-                                    found = true;
-                                    break;
-                                }
-                                
-                            }
+                            var any = interfaces.Any(x => x.Name == t.Name);
 
-                            if (!found) continue;
+                            if (!any) continue;
                         }
 
                         if (!t.IsAssignableFrom(type) && !t.IsInterface()) continue;
@@ -64,7 +56,8 @@ namespace EzBus.Core.Utils
                 }
                 catch (Exception ex)
                 {
-                    log.Error($"Failed to scan assemby: {assembly.FullName}", ex);
+                    log.Warn($"Failed to scan assemby: {assembly.FullName}", ex);
+                    assemblies.Remove(assembly);
                 }
             }
 
