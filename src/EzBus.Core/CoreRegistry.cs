@@ -43,8 +43,8 @@ namespace EzBus.Core
 
         private void RegisterMessageSerializer()
         {
-            var type = TypeResolver.GetType<IMessageSerializer>();
-            Register(typeof(IMessageSerializer), type).As.Singleton();
+            var type = TypeResolver.GetType<IBodySerializer>();
+            Register(typeof(IBodySerializer), type).As.Singleton();
         }
 
         private void RegisterMessageHandlers()

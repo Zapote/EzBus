@@ -9,12 +9,12 @@ namespace EzBus.Msmq
     {
         private static readonly ILogger log = LogManager.GetLogger(typeof(SubscriptionManager));
         private readonly IBusConfig busConfig;
-        private readonly IMessageSerializer messageSerializer;
+        private readonly IBodySerializer bodySerializer;
 
-        public SubscriptionManager(IBusConfig busConfig, IMessageSerializer messageSerializer)
+        public SubscriptionManager(IBusConfig busConfig, IBodySerializer bodySerializer)
         {
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
-            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
+            this.bodySerializer = bodySerializer ?? throw new ArgumentNullException(nameof(bodySerializer));
         }
 
         public void Subscribe(string endpoint)
@@ -35,7 +35,7 @@ namespace EzBus.Msmq
             var logMsg = messageName == string.Empty ? "All" : messageName;
             log.Info($"Subscribing to endpoint '{destination}'. Message '{logMsg}'");
 
-            var channelMessage = ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, messageSerializer);
+            var channelMessage = ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, bodySerializer);
             var msmqSendingChannel = new MsmqSendingChannel();
             msmqSendingChannel.Send(destination, channelMessage);
         }

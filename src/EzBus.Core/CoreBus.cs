@@ -10,15 +10,15 @@ namespace EzBus.Core
     {
         private readonly ISendingChannel sendingChannel;
         private readonly IPublishingChannel publishingChannel;
-        private readonly IMessageSerializer serializer;
+        private readonly IBodySerializer serializer;
 
         public CoreBus(ISendingChannel sendingChannel, IPublishingChannel publishingChannel)
         {
             this.sendingChannel = sendingChannel ?? throw new ArgumentNullException(nameof(sendingChannel));
             this.publishingChannel = publishingChannel ?? throw new ArgumentNullException(nameof(publishingChannel));
 
-            var messageSerializerType = TypeResolver.GetType<IMessageSerializer>();
-            serializer = (IMessageSerializer)messageSerializerType.CreateInstance();
+            var messageSerializerType = TypeResolver.GetType<IBodySerializer>();
+            serializer = (IBodySerializer)messageSerializerType.CreateInstance();
         }
 
         public void Send(string endpoint, object message)
