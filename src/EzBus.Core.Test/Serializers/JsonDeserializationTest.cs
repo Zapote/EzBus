@@ -17,7 +17,7 @@ namespace EzBus.Core.Test.Serializers
 
         public JsonDeserializationTest()
         {
-            var serializer = new JsonMessageSerializer();
+            var serializer = new JsonBodySerializer();
             var json = $@"{{ 
                                 StringValue : '{stringValue}', 
                                 TestEnum : '{TestEnum.Bar}',

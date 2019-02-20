@@ -11,15 +11,15 @@ namespace EzBus.Msmq.Subscription
     public class MsmqSubscriptionStorage : ISubscriptionStorage
     {
         private static readonly ILogger log = LogManager.GetLogger(typeof(MsmqSubscriptionStorage));
-        private readonly IMessageSerializer messageSerializer;
+        private readonly IBodySerializer bodySerializer;
         private readonly IBusConfig busConfig;
         private readonly List<MsmqSubscriptionStorageItem> subscriptions = new List<MsmqSubscriptionStorageItem>();
         private EndpointAddress storageAddress;
         private MessageQueue storageQueue;
 
-        public MsmqSubscriptionStorage(IBusConfig busConfig, IMessageSerializer messageSerializer)
+        public MsmqSubscriptionStorage(IBusConfig busConfig, IBodySerializer bodySerializer)
         {
-            this.messageSerializer = messageSerializer ?? throw new ArgumentNullException(nameof(messageSerializer));
+            this.bodySerializer = bodySerializer ?? throw new ArgumentNullException(nameof(bodySerializer));
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
 
@@ -44,7 +44,7 @@ namespace EzBus.Msmq.Subscription
             using (var tx = new MessageQueueTransaction())
             using (var stream = new MemoryStream())
             {
-                messageSerializer.Serialize(item, stream);
+                bodySerializer.Serialize(item, stream);
 
                 var msg = new Message
                 {
@@ -91,7 +91,7 @@ namespace EzBus.Msmq.Subscription
 
             foreach (var message in storageQueue.GetAllMessages())
             {
-                var item = messageSerializer.Deserialize(message.BodyStream, typeof(MsmqSubscriptionStorageItem)) as MsmqSubscriptionStorageItem;
+                var item = bodySerializer.Deserialize(message.BodyStream, typeof(MsmqSubscriptionStorageItem)) as MsmqSubscriptionStorageItem;
                 if (item == null) continue;
                 subscriptions.Add(item);
                 log.Info($"{item.Endpoint} registered as subscriber.");

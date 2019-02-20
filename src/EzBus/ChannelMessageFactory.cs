@@ -6,12 +6,12 @@ namespace EzBus
 {
     public class ChannelMessageFactory
     {
-        public static ChannelMessage CreateChannelMessage(object message, IMessageSerializer messageSerializer)
+        public static ChannelMessage CreateChannelMessage(object message, IBodySerializer bodySerializer)
         {
-            if (messageSerializer == null) throw new ArgumentNullException(nameof(messageSerializer));
+            if (bodySerializer == null) throw new ArgumentNullException(nameof(bodySerializer));
             var messageType = message.GetType();
             var stream = new MemoryStream();
-            messageSerializer.Serialize(message, stream);
+            bodySerializer.Serialize(message, stream);
 
             var channelMessage = new ChannelMessage(stream);
             channelMessage.AddHeader(MessageHeaders.MessageFullname, messageType.FullName);
