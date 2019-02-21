@@ -44,7 +44,7 @@ namespace EzBus.Core.Utils
                             var interfaces = typeInfo.GetInterfaces();
                             if (interfaces.Length == 0) continue;
 
-                            var any = interfaces.Any(x => x.Name == t.Name);
+                            var any = interfaces.Any(x => x.Name == t.Name && x.Namespace == t.Namespace);
 
                             if (!any) continue;
                         }
