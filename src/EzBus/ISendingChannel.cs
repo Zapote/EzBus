@@ -2,6 +2,6 @@
 {
     public interface ISendingChannel
     {
-        void Send(EndpointAddress destination, ChannelMessage channelMessage);
+        void Send(EndpointAddress dest, ChannelMessage cm);
     }
 }

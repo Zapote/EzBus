@@ -47,12 +47,12 @@ namespace EzBus.RabbitMQ.Channels
             {
                 if (ex.ShutdownReason.ReplyCode != 404) throw;
 
-                var message = $"Queue '{queueName}' does not exist or is not currently available.";
+                var message = $"Queue '{queueName}' does not exist or is currently not available.";
                 throw new InvalidOperationException(message, ex);
             }
         }
 
-        protected void DeclareExchange(string exchange, string type = "fanout", bool durable = true)
+        protected void DeclareExchange(string exchange, string type, bool durable = true)
         {
             channel.ExchangeDeclare(exchange, type, true);
         }

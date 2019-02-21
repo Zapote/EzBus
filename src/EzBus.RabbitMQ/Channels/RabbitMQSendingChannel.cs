@@ -14,16 +14,16 @@ namespace EzBus.RabbitMQ.Channels
         {
         }
 
-        public void Send(EndpointAddress destination, ChannelMessage channelMessage)
+        public void Send(EndpointAddress dest, ChannelMessage cm)
         {
-            DeclareQueuePassive(destination.Name);
-            var properties = ConstructHeaders(channelMessage);
-            var body = channelMessage.BodyStream.ToByteArray();
+            DeclareQueuePassive(dest.Name);
+            var properties = ConstructHeaders(cm);
+            var body = cm.BodyStream.ToByteArray();
 
             lock (channel)
             {
                 channel.BasicPublish(string.Empty,
-                    destination.Name,
+                    dest.Name,
                     basicProperties: properties,
                     body: body,
                     mandatory: true);

@@ -4,8 +4,8 @@ namespace EzBus.Msmq.Subscription
 {
     public interface ISubscriptionStorage
     {
-        void Store(string endpoint, string messageType);
-        IEnumerable<string> GetSubscribers(string messageType);
+        void Store(string endpoint, string messageName);
+        IEnumerable<string> GetSubscribers(string messageName);
         void Initialize();
     }
 }

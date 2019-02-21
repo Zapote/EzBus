@@ -2,6 +2,6 @@ namespace EzBus
 {
     public interface IPublishingChannel
     {
-        void Publish(ChannelMessage channelMessage);
+        void Publish(ChannelMessage cm);
     }
 }
