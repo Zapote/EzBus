@@ -23,7 +23,7 @@ namespace EzBus.RabbitMQ.Channels
             lock (channel)
             {
                 channel.BasicPublish(string.Empty,
-                    destination.Name,
+                    dest.Name,
                     basicProperties: properties,
                     body: body,
                     mandatory: true);
