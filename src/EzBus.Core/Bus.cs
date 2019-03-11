@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices.ComTypes;
 using EzBus;
 using EzBus.Core.Resolvers;
 using EzBus.ObjectFactory;
@@ -61,6 +62,18 @@ public sealed class Bus
     /// <param name="messageName">Name of the message. Default empty string (all messages)</param>
     public static void Subscribe(string endpoint, string messageName = "")
     {
+        var sm = Instance.objectFactory.GetInstance<ISubscriptionManager>();
+        sm?.Subscribe(endpoint, messageName);
+    }
+
+    /// <summary>
+    /// Subscribe to published messages from an endpoint
+    /// </summary>
+    /// <param name="endpoint">Endpoint to subscribe to</param>
+    public static void Subscribe<T>(string endpoint)
+        where T : class
+    {
+        var messageName = typeof(T).Name;
         var sm = Instance.objectFactory.GetInstance<ISubscriptionManager>();
         sm?.Subscribe(endpoint, messageName);
     }
