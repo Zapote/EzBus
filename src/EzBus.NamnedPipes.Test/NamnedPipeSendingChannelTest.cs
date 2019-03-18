@@ -11,7 +11,7 @@ namespace EzBus.NamnedPipes.Test
         private readonly JsonBodySerializer serializer = new JsonBodySerializer();
         private readonly EndpointAddress destination = new EndpointAddress("globex.server");
 
-        [Fact]
+        [Fact(Skip = "Not implemented yet")]
         public void Throws_exception_when_failed_to_connect()
         {
             var channelMessage = CreateChannelMessage();
@@ -28,7 +28,7 @@ namespace EzBus.NamnedPipes.Test
             throw new Exception("Should throw connection timeout");
         }
 
-        [Fact]
+        [Fact(Skip = "Not implemented yet")]
         public void Sends_when_connected()
         {
             var rec = new NamnedPipesReceivingChannel();
