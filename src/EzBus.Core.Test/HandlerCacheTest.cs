@@ -6,9 +6,9 @@ namespace EzBus.Core.Test
 {
     public class HandlerCacheTest
     {
-        private readonly HandlerCache handlerCache = new HandlerCache();
+        private static readonly HandlerCache handlerCache = new HandlerCache();
 
-        public HandlerCacheTest()
+        static HandlerCacheTest()
         {
             handlerCache.Prime();
         }
