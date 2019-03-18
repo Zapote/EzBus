@@ -39,10 +39,7 @@ namespace EzBus.Msmq
 
         public static void WriteMessage(EndpointAddress destination, ChannelMessage channelMessage)
         {
-            var queueName = destination.GetQueueName();
             var queuePath = destination.GetQueuePath();
-
-            if (!MessageQueue.Exists(queueName)) throw new InvalidOperationException($"Destination {destination} does not exist.");
 
             var destinationQueue = new MessageQueue(queuePath);
 
