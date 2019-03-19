@@ -29,7 +29,7 @@ namespace EzBus.Core.Test
         {
             const string messageTypeName = "EzBus.Core.Test.TestHelpers.TestMessage";
 
-            var result = handlerCache.GetHandlerInfo(messageTypeName).Single();
+            var result = handlerCache.GetHandlerInfo(messageTypeName).FirstOrDefault();
 
             Assert.Equal("BarHandler", result.HandlerType.Name);
             Assert.Equal(messageTypeName, result.MessageType.FullName);
