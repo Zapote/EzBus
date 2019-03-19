@@ -17,5 +17,6 @@
   </metadata>
   <files>
     <file src="net46/EzBus.Msmq.dll" target="lib\net46" />
+    <file src="..\..\..\LICENSE" target="license\license.txt"></file>
   </files>
 </package>
