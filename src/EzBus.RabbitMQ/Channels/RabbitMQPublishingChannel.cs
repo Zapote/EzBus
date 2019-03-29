@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using EzBus.Utils;
 using RabbitMQ.Client;
 
@@ -9,7 +8,6 @@ namespace EzBus.RabbitMQ.Channels
     public class RabbitMQPublishingChannel : RabbitMQChannel, IPublishingChannel
     {
         private readonly IBusConfig busConfig;
-        private static readonly object syncRoot = new object();
 
         public RabbitMQPublishingChannel(IChannelFactory cf, IBusConfig busConfig)
             : base(cf)
@@ -29,7 +27,5 @@ namespace EzBus.RabbitMQ.Channels
                 channel.BasicPublish(exchange, string.Empty, properties, body);
             }
         }
-
-
     }
 }

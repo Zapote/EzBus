@@ -21,7 +21,7 @@ namespace EzBus.RabbitMQ.Channels
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
-            log.Info("Initializing RabbitMQ receving channel");
+            log.Info("Initializing RabbitMQ receiving channel");
 
             inputQueue = inputAddress.Name;
             DeclareQueue(inputQueue);
