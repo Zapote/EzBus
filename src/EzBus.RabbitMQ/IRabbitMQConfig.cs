@@ -20,7 +20,7 @@ namespace EzBus.RabbitMQ
         /// <summary>
         /// Virtual host to access during this connection
         /// </summary>
-        string VirutalHost { get; set; }
+        string VirtualHost { get; set; }
         /// <summary>
         /// The port to connect on
         /// </summary>

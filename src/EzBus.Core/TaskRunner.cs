@@ -19,6 +19,8 @@ namespace EzBus.Core
 
         public void RunStartupTasks()
         {
+            objectFactory.BeginScope();
+
             startupTasks = objectFactory.GetInstances<IStartupTask>();
 
             foreach (var task in startupTasks.OrderBy(x => x.Name))
@@ -33,6 +35,8 @@ namespace EzBus.Core
                     log.Warn($"Failed to run StartupTask: {task.Name}", ex);
                 }
             }
+
+            objectFactory.EndScope();
         }
     }
 }
