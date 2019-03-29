@@ -32,7 +32,7 @@ namespace EzBus.RabbitMQ
                 UserName = rabbitCfg.UserName,
                 Password = rabbitCfg.Password,
                 HostName = rabbitCfg.HostName,
-                VirtualHost = rabbitCfg.VirutalHost,
+                VirtualHost = rabbitCfg.VirtualHost,
                 Port = rabbitCfg.Port
             };
 
