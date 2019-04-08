@@ -95,10 +95,32 @@ namespace EzBus.Core.Test.Serializers
         [Fact]
         public void ClassWithXmlMarkUpWorksAsWell()
         {
-            var json = Serialize(new XmlContract {Name = "Jane Doe"});
+            var json = Serialize(new XmlContract { Name = "Jane Doe" });
             var obj = JObject.Parse(json);
 
             Assert.Equal("Jane Doe", obj["Name"]);
+        }
+
+        [Fact]
+        public void ShouldNotContainByteOrderMarkForUTF8()
+        {
+            using (var ms = new MemoryStream())
+            {
+                var obj = new
+                {
+                    Name = "Jon Doe",
+                    Age = 30
+                };
+
+                serializer.Serialize(obj, ms);
+                ms.Position = 0;
+
+                var buff = ms.ToArray();
+                if (buff[0] == 0xef && buff[1] == 0xbb && buff[2] == 0xbf)
+                {
+                    Assert.True(false, "Should not contain Byte Order Mark for UTF8");
+                }
+            }
         }
 
         [XmlType(Namespace = "http://Nobel.Implant/Integration")]
