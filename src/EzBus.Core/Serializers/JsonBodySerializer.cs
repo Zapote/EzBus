@@ -13,7 +13,7 @@ namespace EzBus.Core.Serializers
 
         public void Serialize(object message, Stream stream)
         {
-            var streamWriter = new StreamWriter(stream, Encoding.UTF8);
+            var streamWriter = new StreamWriter(stream);
             var jsonTextWriter = new JsonTextWriter(streamWriter)
             {
                 Formatting = Formatting.None

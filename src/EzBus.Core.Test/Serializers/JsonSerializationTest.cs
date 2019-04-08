@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Xml.Serialization;
 using EzBus.Core.Serializers;
 using EzBus.Core.Test.TestHelpers;
 using Newtonsoft.Json.Linq;
@@ -89,6 +90,44 @@ namespace EzBus.Core.Test.Serializers
             Assert.Equal(stringValue, obj["StringValue"]);
             Assert.Equal(intValue, obj["IntValue"]);
             Assert.Equal("1", obj["EnumValue"]);
+        }
+
+        [Fact]
+        public void ClassWithXmlMarkUpWorksAsWell()
+        {
+            var json = Serialize(new XmlContract { Name = "Jane Doe" });
+            var obj = JObject.Parse(json);
+
+            Assert.Equal("Jane Doe", obj["Name"]);
+        }
+
+        [Fact]
+        public void ShouldNotContainByteOrderMarkForUTF8()
+        {
+            using (var ms = new MemoryStream())
+            {
+                var obj = new
+                {
+                    Name = "Jon Doe",
+                    Age = 30
+                };
+
+                serializer.Serialize(obj, ms);
+                ms.Position = 0;
+
+                var buff = ms.ToArray();
+                if (buff[0] == 0xef && buff[1] == 0xbb && buff[2] == 0xbf)
+                {
+                    Assert.True(false, "Should not contain Byte Order Mark for UTF8");
+                }
+            }
+        }
+
+        [XmlType(Namespace = "http://Nobel.Implant/Integration")]
+        [XmlRoot(Namespace = "http://Nobel.Implant/Integration", IsNullable = false)]
+        public class XmlContract
+        {
+            public string Name { get; set; }
         }
 
         private string Serialize(object obj)
