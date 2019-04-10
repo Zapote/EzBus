@@ -22,32 +22,29 @@ namespace EzBus.Core
             }
         }
 
-        public IEnumerable<HandlerInfo> GetHandlerInfo(string messageTypeName)
+        public IEnumerable<HandlerInfo> GetHandlerInfo(string messageFullName)
         {
-            var nameParts = messageTypeName.Split('.');
-            var className = nameParts.Last();
-            var result = handlers.Where(x => x.Key == messageTypeName).ToList();
+            var className = GetClassName(messageFullName);
+            var result = handlers.Where(x => x.Key == messageFullName).ToList();
 
             if (!result.Any())
             {
-                result = handlers.Where(x => x.Key.EndsWith(className)).ToList();
+                result = handlers.Where(x => GetClassName(x.Key) == className).ToList();
             }
 
             return result.Select(x => x.Value);
         }
 
-        private static Type[] GetMessageTypes(Type handlerType)
+        private static string GetClassName(string messageFullName)
+        {
+            var parts = messageFullName.Split('.');
+            return parts.Last();
+        }
+
+        private static IEnumerable<Type> GetMessageTypes(Type handlerType)
         {
             var handlerInterface = handlerType.GetInterfaces().Where( x => x.Name == typeof(IHandle<>).Name);
-
-            var args = new List<Type>();
-
-            foreach (var i in handlerInterface)
-            {
-                args.Add(i.GetGenericArguments()[0]);
-            }
-
-            return args.ToArray();
+            return handlerInterface.Select(i => i.GetGenericArguments()[0]).ToArray();
         }
 
         private void Clear()
