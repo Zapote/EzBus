@@ -42,5 +42,15 @@ namespace EzBus.Core.Test
 
             Assert.Null(handlerInfo);
         }
+
+        [Fact]
+        public void Null_is_returned_on_similar_message_names()
+        {
+            const string messageTypeName = "Message";
+
+            var result = handlerCache.GetHandlerInfo(messageTypeName);
+
+            Assert.Equal(0,result.Count());
+        }
     }
 }
