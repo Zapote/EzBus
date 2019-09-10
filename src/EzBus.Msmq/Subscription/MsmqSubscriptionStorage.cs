@@ -24,17 +24,11 @@ namespace EzBus.Msmq.Subscription
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
 
-        private void GetQueue()
-        {
-            storageQueue = MsmqUtilities.GetQueue(storageAddress);
-        }
-
         public void Store(string endpoint, string messageName)
         {
             if (IsSubcriber(endpoint, messageName)) return;
 
             CreateQueueIfNotExists();
-            GetQueue();
 
             var item = new MsmqSubscriptionStorageItem
             {
@@ -59,6 +53,46 @@ namespace EzBus.Msmq.Subscription
             }
 
             subscriptions.Add(item);
+        }
+
+        public void Remove(string endpoint, string messageName)
+        {
+            var toBeStored = new List<MsmqSubscriptionStorageItem>();
+
+            foreach (var message in storageQueue.GetAllMessages())
+            {
+                var item = bodySerializer.Deserialize(message.BodyStream, typeof(MsmqSubscriptionStorageItem)) as MsmqSubscriptionStorageItem;
+                if (item == null) continue;
+
+                if (item.Endpoint == endpoint && item.MessageName == messageName) continue;
+                toBeStored.Add(item);
+            }
+
+            using (var tx = new MessageQueueTransaction())
+            using (var stream = new MemoryStream())
+            {
+                tx.Begin();
+
+                storageQueue.Purge();
+
+                foreach (var item in toBeStored)
+                {
+                    bodySerializer.Serialize(item, stream);
+
+                    var msg = new Message
+                    {
+                        BodyStream = stream,
+                        Label = item.Endpoint
+                    };
+
+                    storageQueue.Send(msg, tx);
+                }
+
+                tx.Commit();
+            }
+
+            var remove = subscriptions.FirstOrDefault(x => x.Endpoint == endpoint && x.MessageName == messageName);
+            if (remove != null) subscriptions.Remove(remove);
         }
 
         private bool IsSubcriber(string endpoint, string messageType)
@@ -88,7 +122,7 @@ namespace EzBus.Msmq.Subscription
 
             subscriptions.Clear();
 
-            GetQueue();
+            storageQueue = MsmqUtilities.GetQueue(storageAddress);
 
             foreach (var message in storageQueue.GetAllMessages())
             {

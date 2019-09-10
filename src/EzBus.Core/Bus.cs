@@ -78,6 +78,29 @@ public sealed class Bus
         sm?.Subscribe(endpoint, messageName);
     }
 
+    /// <summary>
+    /// Unsubscribe from published messages from an endpoint
+    /// </summary>
+    /// <param name="endpoint">Endpoint to subscribe to</param>
+    public static void Unsubscribe<T>(string endpoint)
+        where T : class
+    {
+        var messageName = typeof(T).Name;
+        var sm = Instance.objectFactory.GetInstance<ISubscriptionManager>();
+        sm?.Unsubscribe(endpoint, messageName);
+    }
+
+    /// <summary>
+    /// Unsubscribe from published messages from an endpoint
+    /// </summary>
+    /// <param name="endpoint">Endpoint to subscribe to</param>
+    /// <param name="messageName">Name of the message. Default empty string (all messages)</param>
+    public static void Unsubscribe(string endpoint, string messageName = "")
+    {
+        var sm = Instance.objectFactory.GetInstance<ISubscriptionManager>();
+        sm?.Unsubscribe(endpoint, messageName);
+    }
+
     private void InitializeObjectFactory()
     {
         var objectFactoryType = TypeResolver.GetType<IObjectFactory>();
