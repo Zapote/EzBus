@@ -18,8 +18,6 @@ namespace Msmq.Client
 
             Console.WriteLine($"Order confirmation requested. {orderId}");
 
-            
-
             Bus.Unsubscribe("msmq.service");
             Bus.Stop();
 
