@@ -3,5 +3,6 @@
     public interface IHost
     {
         void Start();
+        void Stop();
     }
 }

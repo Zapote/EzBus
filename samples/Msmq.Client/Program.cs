@@ -18,9 +18,21 @@ namespace Msmq.Client
 
             Console.WriteLine($"Order confirmation requested. {orderId}");
 
-            Console.Read();
+            
 
             Bus.Unsubscribe("msmq.service");
+            Bus.Stop();
+
+            Console.Read();
+        }
+    }
+
+    public  class LogOnExitTask : IShutdownTask
+    {
+        public string Name => "LogOnExitTask";
+        public void Run()
+        {
+            Console.WriteLine("LogOnExitTask is running");
         }
     }
 }

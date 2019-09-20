@@ -30,5 +30,12 @@ namespace EzBus.Core
             taskRunner.RunStartupTasks();
             log.Info("EzBus started");
         }
+
+        public void Stop()
+        {
+            log.Info("Stopping EzBus");
+            taskRunner.RunShutdownTasks();
+            log.Info("EzBus stopped");
+        }
     }
 }

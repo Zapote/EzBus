@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using EzBus.Logging;
 using EzBus.ObjectFactory;
@@ -10,7 +9,6 @@ namespace EzBus.Core
     {
         private static readonly ILogger log = LogManager.GetLogger<TaskRunner>();
         private readonly IObjectFactory objectFactory;
-        private IEnumerable<IStartupTask> startupTasks;
 
         public TaskRunner(IObjectFactory objectFactory)
         {
@@ -21,9 +19,9 @@ namespace EzBus.Core
         {
             objectFactory.BeginScope();
 
-            startupTasks = objectFactory.GetInstances<IStartupTask>();
+            var tasks = objectFactory.GetInstances<IStartupTask>();
 
-            foreach (var task in startupTasks.OrderBy(x => x.Name))
+            foreach (var task in tasks.OrderBy(x => x.Name))
             {
                 try
                 {
@@ -33,6 +31,28 @@ namespace EzBus.Core
                 catch (Exception ex)
                 {
                     log.Warn($"Failed to run StartupTask: {task.Name}", ex);
+                }
+            }
+
+            objectFactory.EndScope();
+        }
+
+        public void RunShutdownTasks()
+        {
+            objectFactory.BeginScope();
+
+            var tasks = objectFactory.GetInstances<IShutdownTask>();
+
+            foreach (var task in tasks.OrderBy(x => x.Name))
+            {
+                try
+                {
+                    log.Info($"Running ShutdownTask {task.Name}");
+                    task.Run();
+                }
+                catch (Exception ex)
+                {
+                    log.Warn($"Failed to run ShutdownTask: {task.Name}", ex);
                 }
             }
 

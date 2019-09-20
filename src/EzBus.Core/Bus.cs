@@ -45,6 +45,12 @@ public sealed class Bus
         return transport;
     }
 
+    public static void Stop()
+    {
+        var transport = Instance.GetTransport();
+        transport.Host.Stop();
+    }
+
     public static void Send(string destination, object message)
     {
         Instance.GetBus().Send(destination, message);
