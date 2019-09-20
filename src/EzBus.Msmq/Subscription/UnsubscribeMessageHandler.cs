@@ -2,18 +2,18 @@
 
 namespace EzBus.Msmq.Subscription
 {
-    public class SubscriptionMessageHandler : IHandle<SubscriptionMessage>
+    public class UnsubscribeMessageHandler : IHandle<UnsubscribeMessage>
     {
         private readonly ISubscriptionStorage subscriptionStorage;
 
-        public SubscriptionMessageHandler(ISubscriptionStorage subscriptionStorage)
+        public UnsubscribeMessageHandler(ISubscriptionStorage subscriptionStorage)
         {
             this.subscriptionStorage = subscriptionStorage ?? throw new ArgumentNullException(nameof(subscriptionStorage));
         }
 
-        public void Handle(SubscriptionMessage message)
+        public void Handle(UnsubscribeMessage message)
         {
-            subscriptionStorage.Store(message.Endpoint, message.MessageName);
+            subscriptionStorage.Remove(message.Endpoint, message.MessageName);
         }
     }
 }

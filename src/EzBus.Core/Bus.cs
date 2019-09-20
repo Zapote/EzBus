@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices.ComTypes;
 using EzBus;
 using EzBus.Core.Resolvers;
 using EzBus.ObjectFactory;
@@ -44,6 +45,12 @@ public sealed class Bus
         return transport;
     }
 
+    public static void Stop()
+    {
+        var transport = Instance.GetTransport();
+        transport.Host.Stop();
+    }
+
     public static void Send(string destination, object message)
     {
         Instance.GetBus().Send(destination, message);
@@ -63,6 +70,41 @@ public sealed class Bus
     {
         var sm = Instance.objectFactory.GetInstance<ISubscriptionManager>();
         sm?.Subscribe(endpoint, messageName);
+    }
+
+    /// <summary>
+    /// Subscribe to published messages from an endpoint
+    /// </summary>
+    /// <param name="endpoint">Endpoint to subscribe to</param>
+    public static void Subscribe<T>(string endpoint)
+        where T : class
+    {
+        var messageName = typeof(T).Name;
+        var sm = Instance.objectFactory.GetInstance<ISubscriptionManager>();
+        sm?.Subscribe(endpoint, messageName);
+    }
+
+    /// <summary>
+    /// Unsubscribe from published messages from an endpoint
+    /// </summary>
+    /// <param name="endpoint">Endpoint to subscribe to</param>
+    public static void Unsubscribe<T>(string endpoint)
+        where T : class
+    {
+        var messageName = typeof(T).Name;
+        var sm = Instance.objectFactory.GetInstance<ISubscriptionManager>();
+        sm?.Unsubscribe(endpoint, messageName);
+    }
+
+    /// <summary>
+    /// Unsubscribe from published messages from an endpoint
+    /// </summary>
+    /// <param name="endpoint">Endpoint to subscribe to</param>
+    /// <param name="messageName">Name of the message. Default empty string (all messages)</param>
+    public static void Unsubscribe(string endpoint, string messageName = "")
+    {
+        var sm = Instance.objectFactory.GetInstance<ISubscriptionManager>();
+        sm?.Unsubscribe(endpoint, messageName);
     }
 
     private void InitializeObjectFactory()

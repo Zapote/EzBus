@@ -24,7 +24,7 @@ namespace EzBus.Msmq
 
         public void Subscribe(string endpoint, string messageName)
         {
-            var subscriptionMessage = new SubscriptionMessage
+            var message = new SubscribeMessage
             {
                 Endpoint = $"{busConfig.EndpointName}@{Environment.MachineName}",
                 MessageName = messageName
@@ -35,19 +35,32 @@ namespace EzBus.Msmq
             var logMsg = messageName == string.Empty ? "All" : messageName;
             log.Info($"Subscribing to endpoint '{destination}'. Message '{logMsg}'");
 
-            var channelMessage = ChannelMessageFactory.CreateChannelMessage(subscriptionMessage, bodySerializer);
+            var channelMessage = ChannelMessageFactory.CreateChannelMessage(message, bodySerializer);
             var msmqSendingChannel = new MsmqSendingChannel();
             msmqSendingChannel.Send(destination, channelMessage);
         }
 
         public void Unsubscribe(string endpoint)
         {
-            throw new NotImplementedException();
+            Unsubscribe(endpoint, string.Empty);
         }
 
         public void Unsubscribe(string endpoint, string messageName)
         {
-            throw new NotImplementedException();
+            var message = new UnsubscribeMessage
+            {
+                Endpoint = $"{busConfig.EndpointName}@{Environment.MachineName}",
+                MessageName = messageName
+            };
+
+            var destination = EndpointAddress.Parse(endpoint);
+
+            var logMsg = messageName == string.Empty ? "All" : messageName;
+            log.Info($"Unsubscribing from endpoint '{destination}'. Message '{logMsg}'");
+
+            var channelMessage = ChannelMessageFactory.CreateChannelMessage(message, bodySerializer);
+            var msmqSendingChannel = new MsmqSendingChannel();
+            msmqSendingChannel.Send(destination, channelMessage);
         }
     }
 }

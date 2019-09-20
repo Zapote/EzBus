@@ -22,6 +22,7 @@ namespace EzBus.Core
             RegisterTaskRunner();
             RegistertBusConfig();
             RegisterStartupTasks();
+            RegisterShutdownTasks();
         }
 
         private void RegisterHost()
@@ -107,6 +108,18 @@ namespace EzBus.Core
             {
                 if (type.IsInterface()) continue;
                 Register(typeof(IStartupTask), type, type.FullName).As.Singleton();
+            }
+        }
+
+        private void RegisterShutdownTasks()
+        {
+            var assemblyScanner = new AssemblyScanner();
+            var types = assemblyScanner.FindTypes<IShutdownTask>();
+
+            foreach (var type in types)
+            {
+                if (type.IsInterface()) continue;
+                Register(typeof(IShutdownTask), type, type.FullName).As.Singleton();
             }
         }
     }
