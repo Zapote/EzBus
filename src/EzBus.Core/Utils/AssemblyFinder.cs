@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EzBus.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace EzBus.Core.Utils
 {
     public class AssemblyFinder
     {
+        private static readonly ILogger log = LogManager.GetLogger("EzBus");
         private readonly List<Assembly> assemblies = new List<Assembly>();
 
         public IEnumerable<Assembly> FindAssemblies()
@@ -47,8 +49,15 @@ namespace EzBus.Core.Utils
             foreach (var fileName in fileNames)
             {
                 var fileInfo = new FileInfo(fileName);
-                var assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, "")));
-                AddAssembly(assembly);
+                try
+                {
+                    var assembly = Assembly.Load(new AssemblyName(fileInfo.Name.Replace(fileInfo.Extension, "")));
+                    AddAssembly(assembly);
+                }
+                catch (Exception ex)
+                {
+                    log.Warn($"Failed to load assembly '{fileName}'. {ex.Message}");
+                }
             }
         }
 
