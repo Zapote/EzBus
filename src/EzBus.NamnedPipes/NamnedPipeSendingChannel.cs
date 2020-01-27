@@ -34,10 +34,7 @@ namespace EzBus.NamnedPipes
         private NamedPipeServerStream serverStream;
         public Action<ChannelMessage> OnMessage { get; set; }
 
-        public NamnedPipesReceivingChannel()
-        {
-            
-        }
+        public NamnedPipesReceivingChannel() { }
 
         public void Initialize(EndpointAddress inputAddress, EndpointAddress errorAddress)
         {
