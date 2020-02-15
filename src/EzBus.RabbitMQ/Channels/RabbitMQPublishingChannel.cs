@@ -4,7 +4,6 @@ using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ.Channels
 {
-    [CLSCompliant(false)]
     public class RabbitMQPublishingChannel : RabbitMQChannel, IPublishingChannel
     {
         private readonly IBusConfig busConfig;

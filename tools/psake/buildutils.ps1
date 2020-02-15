@@ -1,15 +1,15 @@
 ﻿
-function Delete-Directory($directoryName){
-	if(Test-Path($directoryName)){
+function Delete-Directory($directoryName) {
+	if (Test-Path($directoryName)) {
 		Remove-Item -Force -Recurse $directoryName -ErrorAction SilentlyContinue
 	}
 }
  
-function Create-Directory($directoryName){
+function Create-Directory($directoryName) {
 	New-Item $directoryName -ItemType Directory | Out-Null
 }
 
-function AddType{
+function AddType {
 	Add-Type -TypeDefinition "
 	using System;
 	using System.Runtime.InteropServices;
@@ -25,23 +25,23 @@ function AddType{
 	"
 }
  
-function Generate-Assembly-Info{
+function Generate-Assembly-Info {
 
-param(
-	[string]$assemblyTitle,
-	[string]$assemblyDescription,
-	[string]$clsCompliant = "true",
-	[string]$internalsVisibleTo = "",
-	[string]$configuration, 
-	[string]$company, 
-	[string]$product, 
-	[string]$copyright, 
-	[string]$version,
-	[string]$fileVersion,
-	[string]$infoVersion,	
-	[string]$file = $(throw "file is a required parameter.")
-)
-	if($infoVersion -eq ""){
+	param(
+		[string]$assemblyTitle,
+		[string]$assemblyDescription,
+		[string]$clsCompliant = "true",
+		[string]$internalsVisibleTo = "",
+		[string]$configuration, 
+		[string]$company, 
+		[string]$product, 
+		[string]$copyright, 
+		[string]$version,
+		[string]$fileVersion,
+		[string]$infoVersion,	
+		[string]$file = $(throw "file is a required parameter.")
+	)
+	if ($infoVersion -eq "") {
 		$infoVersion = $fileVersion
 	}
 
@@ -56,19 +56,13 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyInformationalVersion(""$infoVersion"")]
 [assembly: ComVisible(false)]		
 "
-	
-	if($clsCompliant.ToLower() -eq "true"){
-		 $asmInfo += "[assembly: CLSCompliantAttribute($clsCompliant)]"
-	} 
-	
-	if($internalsVisibleTo -ne ""){
+	if ($internalsVisibleTo -ne "") {
 		$asmInfo += "[assembly: InternalsVisibleTo(""$internalsVisibleTo"")]"	
 	}
 	
 	$dir = [System.IO.Path]::GetDirectoryName($file)
 	
-	if ([System.IO.Directory]::Exists($dir) -eq $false)
-	{
+	if ([System.IO.Directory]::Exists($dir) -eq $false) {
 		Write-Host "Creating directory $dir"
 		[System.IO.Directory]::CreateDirectory($dir)
 	}

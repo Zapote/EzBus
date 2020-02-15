@@ -6,7 +6,6 @@ using RabbitMQ.Client.Events;
 
 namespace EzBus.RabbitMQ.Channels
 {
-    [CLSCompliant(false)]
     public class RabbitMQReceivingChannel : RabbitMQChannel, IReceivingChannel
     {
         private readonly IRabbitMQConfig cfg;

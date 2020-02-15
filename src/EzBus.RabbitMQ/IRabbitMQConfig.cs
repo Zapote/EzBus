@@ -2,7 +2,6 @@ using System;
 
 namespace EzBus.RabbitMQ
 {
-    [CLSCompliant(false)]
     public interface IRabbitMQConfig
     {
         /// <summary>

@@ -3,7 +3,6 @@ using EzBus.Utils;
 
 namespace EzBus.RabbitMQ.Channels
 {
-    [CLSCompliant(false)]
     public class RabbitMQSendingChannel : RabbitMQChannel, ISendingChannel
     {
         private static readonly object syncRoot = new object();
