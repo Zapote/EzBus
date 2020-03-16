@@ -14,7 +14,7 @@ namespace EzBus.Core.Test.Utils
         [Fact]
         public void IsLocal_returns_true_when_type_from_EzBus_Core()
         {
-            Assert.True(typeof(CoreBus).IsLocal());
+            Assert.True(typeof(Bus).IsLocal());
         }
     }
 }

@@ -4,21 +4,20 @@ namespace EzBus.RabbitMQ
 {
     internal class ChannelFactory : IChannelFactory
     {
-        private readonly IRabbitMQConfig rabbitCfg;
-        private readonly string endpointName;
+        private readonly IConfig conf;
+        private readonly string endpointName = "TODO";
         private IConnection connection;
 
-        public ChannelFactory(IRabbitMQConfig rabbitCfg, IBusConfig busCfg)
+        public ChannelFactory(IConfig conf)
         {
-            this.rabbitCfg = rabbitCfg;
-            endpointName = busCfg.EndpointName;
+            this.conf = conf;
             CreateConnection();
         }
 
         public IModel GetChannel()
         {
             var channel = connection.CreateModel();
-            channel.BasicQos(0, rabbitCfg.PrefetchCount, false);
+            channel.BasicQos(0, conf.PrefetchCount, false);
             return channel;
         }
 
@@ -26,17 +25,17 @@ namespace EzBus.RabbitMQ
         {
             var factory = new ConnectionFactory
             {
-                AutomaticRecoveryEnabled = rabbitCfg.AutomaticRecoveryEnabled,
-                RequestedHeartbeat = rabbitCfg.RequestedHeartbeat,
+                AutomaticRecoveryEnabled = conf.AutomaticRecoveryEnabled,
+                RequestedHeartbeat = conf.RequestedHeartbeat,
                 UseBackgroundThreadsForIO = true,
-                UserName = rabbitCfg.UserName,
-                Password = rabbitCfg.Password,
-                HostName = rabbitCfg.HostName,
-                VirtualHost = rabbitCfg.VirtualHost,
-                Port = rabbitCfg.Port
+                UserName = conf.UserName,
+                Password = conf.Password,
+                HostName = conf.HostName,
+                VirtualHost = conf.VirtualHost,
+                Port = conf.Port
             };
 
-            connection = factory.CreateConnection($"EzBus - {endpointName}");
+            connection = factory.CreateConnection($"EzBus-{endpointName}");
         }
     }
 }

@@ -4,6 +4,6 @@ namespace EzBus
 {
     public class MessageReceivedEventArgs : EventArgs
     {
-        public ChannelMessage Message { get; set; }
+        public BasicMessage Message { get; set; }
     }
 }

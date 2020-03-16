@@ -1,62 +1,60 @@
 ﻿using System;
 using System.Linq;
 using EzBus.Logging;
-using EzBus.ObjectFactory;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EzBus.Core
 {
     public class TaskRunner : ITaskRunner
     {
         private static readonly ILogger log = LogManager.GetLogger<TaskRunner>();
-        private readonly IObjectFactory objectFactory;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
-        public TaskRunner(IObjectFactory objectFactory)
+        public TaskRunner(IServiceScopeFactory serviceScopeFactory)
         {
-            this.objectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
         }
 
         public void RunStartupTasks()
         {
-            objectFactory.BeginScope();
-
-            var tasks = objectFactory.GetInstances<IStartupTask>();
-
-            foreach (var task in tasks.OrderBy(x => x.Name))
+            using (var scope = serviceScopeFactory.CreateScope())
             {
-                try
+                var tasks = scope.ServiceProvider.GetServices<IStartupTask>();
+
+                foreach (var task in tasks.OrderBy(x => x.Name))
                 {
-                    log.Info($"Running StartupTask {task.Name}");
-                    task.Run();
-                }
-                catch (Exception ex)
-                {
-                    log.Warn($"Failed to run StartupTask: {task.Name}", ex);
+                    try
+                    {
+                        log.Info($"Running StartupTask {task.Name}");
+                        task.Run();
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Warn($"Failed to run StartupTask: {task.Name}", ex);
+                    }
                 }
             }
-
-            objectFactory.EndScope();
         }
 
         public void RunShutdownTasks()
         {
-            objectFactory.BeginScope();
-
-            var tasks = objectFactory.GetInstances<IShutdownTask>();
-
-            foreach (var task in tasks.OrderBy(x => x.Name))
+            using (var scope = serviceScopeFactory.CreateScope())
             {
-                try
+                var tasks = scope.ServiceProvider.GetServices<IShutdownTask>();
+
+                foreach (var task in tasks.OrderBy(x => x.Name))
                 {
-                    log.Info($"Running ShutdownTask {task.Name}");
-                    task.Run();
-                }
-                catch (Exception ex)
-                {
-                    log.Warn($"Failed to run ShutdownTask: {task.Name}", ex);
+                    try
+                    {
+                        log.Info($"Running ShutdownTask {task.Name}");
+                        task.Run();
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Warn($"Failed to run ShutdownTask: {task.Name}", ex);
+                    }
                 }
             }
-
-            objectFactory.EndScope();
         }
     }
 }

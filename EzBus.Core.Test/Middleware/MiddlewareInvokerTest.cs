@@ -11,7 +11,7 @@ namespace EzBus.Core.Test.Middleware
         [Fact]
         public void Test()
         {
-            invoker.Invoke(new MiddlewareContext(new ChannelMessage(new MemoryStream())));
+            invoker.Invoke(new MiddlewareContext(new BasicMessage(new MemoryStream())));
 
             Assert.All(invoker.Middlewares, item =>
             {

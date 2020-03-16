@@ -4,19 +4,19 @@ using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ.Channels
 {
-    public class RabbitMQPublishingChannel : RabbitMQChannel, IPublishingChannel
+    public class RabbitMQPublishingChannel : RabbitMQChannel
     {
-        private readonly IBusConfig busConfig;
+        private readonly EzBus.IConfig busConfig;
 
-        public RabbitMQPublishingChannel(IChannelFactory cf, IBusConfig busConfig)
+        public RabbitMQPublishingChannel(IChannelFactory cf, EzBus.IConfig busConfig)
             : base(cf)
         {
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
 
-        public void Publish(ChannelMessage cm)
+        public void Publish(BasicMessage cm)
         {
-            var exchange = busConfig.EndpointName.ToLower();
+            var exchange = busConfig.Address.ToLower();
             var properties = ConstructHeaders(cm);
             var body = cm.BodyStream.ToByteArray();
             var messageName = cm.GetHeader(MessageHeaders.MessageName);

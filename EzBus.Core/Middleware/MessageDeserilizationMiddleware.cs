@@ -19,7 +19,7 @@ namespace EzBus.Core.Middleware
 
         public void Invoke(MiddlewareContext context, Action next)
         {
-            var channelMessage = context.ChannelMessage;
+            var channelMessage = context.BasicMessage;
             var messageTypeName = channelMessage.GetHeader(MessageHeaders.MessageFullname);
             var handlerInfos = handlerCache.GetHandlerInfo(messageTypeName).ToList();
 

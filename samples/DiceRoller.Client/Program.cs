@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
+using EzBus.Core;
 using EzBus.RabbitMQ;
-using EzBus;
 
 namespace DiceRoller.Client
 {
@@ -9,9 +8,20 @@ namespace DiceRoller.Client
     {
         static void Main(string[] args)
         {
-            Console.Title = "DiceRoller Client";
+            var bus = BusFactory
+                .Configure()
+                .UseRabbitMQ()
+                .Create();
 
-            Bus.Configure().UseRabbitMQ();
+            bus.Start().GetAwaiter().GetResult();
+            
+            bus.Send("diceroller.service", new RollTheDice { Attempts = 10 });
+
+            
+            //bus.Stop();
+
+
+            Console.Title = "DiceRoller Client";
 
             var keyInfo = new ConsoleKeyInfo();
 
@@ -23,7 +33,7 @@ namespace DiceRoller.Client
                 for (int i = 0; i < 1000; i++)
                 {
                     Console.WriteLine("sending");
-                            Bus.Send("DiceRoller.Service", new RollTheDice { Attempts = 10 });
+                    bus.Send("diceroller.service", new RollTheDice { Attempts = 10 });
                 }
 
             }

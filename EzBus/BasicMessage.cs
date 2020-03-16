@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace EzBus
 {
-    public class ChannelMessage
+    public class BasicMessage
     {
         private readonly List<MessageHeader> headers = new List<MessageHeader>();
 
-        public ChannelMessage(Stream bodyStream)
+        public BasicMessage(Stream bodyStream)
         {
             BodyStream = bodyStream;
         }

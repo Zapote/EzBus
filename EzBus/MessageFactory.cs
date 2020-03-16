@@ -4,16 +4,16 @@ using EzBus.Serializers;
 
 namespace EzBus
 {
-    public class ChannelMessageFactory
+    public class MessageFactory
     {
-        public static ChannelMessage CreateChannelMessage(object message, IBodySerializer bodySerializer)
+        public static BasicMessage Create(object message, IBodySerializer bodySerializer)
         {
             if (bodySerializer == null) throw new ArgumentNullException(nameof(bodySerializer));
             var messageType = message.GetType();
             var stream = new MemoryStream();
             bodySerializer.Serialize(message, stream);
 
-            var channelMessage = new ChannelMessage(stream);
+            var channelMessage = new BasicMessage(stream);
             channelMessage.AddHeader(MessageHeaders.MessageFullname, messageType.FullName);
             channelMessage.AddHeader(MessageHeaders.MessageName, messageType.Name);
             channelMessage.AddHeader(MessageHeaders.SendingMachine, Environment.MachineName);

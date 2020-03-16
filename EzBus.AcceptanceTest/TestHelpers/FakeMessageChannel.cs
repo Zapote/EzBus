@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace EzBus.AcceptanceTest.TestHelpers
 {
-    public class FakeMessageChannel : ISendingChannel, IReceivingChannel, IPublishingChannel
+    public class FakeMessageChannel 
     {
         private static readonly List<EndpointAddress> sentDestinations = new List<EndpointAddress>();
-        private static Action<ChannelMessage> onMessage;
+        private static Action<BasicMessage> onMessage;
 
-        public void Send(EndpointAddress destination, ChannelMessage channelMessage)
+        public void Send(EndpointAddress destination, BasicMessage channelMessage)
         {
             channelMessage.BodyStream.Seek(0, 0);
             sentDestinations.Add(destination);
@@ -23,7 +23,7 @@ namespace EzBus.AcceptanceTest.TestHelpers
 
         }
 
-        public Action<ChannelMessage> OnMessage
+        public Action<BasicMessage> OnMessage
         {
             get => onMessage; set => onMessage = value;
         }
@@ -40,7 +40,7 @@ namespace EzBus.AcceptanceTest.TestHelpers
             return sentDestinations;
         }
 
-        public void Publish(ChannelMessage channelMessage)
+        public void Publish(BasicMessage channelMessage)
         {
             throw new NotImplementedException();
         }

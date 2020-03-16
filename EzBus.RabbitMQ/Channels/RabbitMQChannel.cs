@@ -16,7 +16,7 @@ namespace EzBus.RabbitMQ.Channels
             this.channel = channelFactory.GetChannel();
         }
 
-        protected IBasicProperties ConstructHeaders(ChannelMessage message)
+        protected IBasicProperties ConstructHeaders(BasicMessage message)
         {
             var props = channel.CreateBasicProperties();
 

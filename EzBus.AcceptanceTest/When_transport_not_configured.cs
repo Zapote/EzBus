@@ -12,7 +12,7 @@ namespace EzBus.AcceptanceTest
         {
             try
             {
-                Bus.Send("dark.side.of.the.moon", new { Message = "Hello moon!" });
+                //Bus.Send("dark.side.of.the.moon", new { Message = "Hello moon!" });
             }
             catch (Exception e)
             {

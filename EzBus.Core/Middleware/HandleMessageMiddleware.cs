@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using EzBus.Logging;
-using EzBus.ObjectFactory;
 
 namespace EzBus.Core.Middleware
 {
@@ -9,20 +8,20 @@ namespace EzBus.Core.Middleware
     {
         private static readonly ILogger log = LogManager.GetLogger<HandleMessageMiddleware>();
         private readonly IHandlerCache handlerCache;
-        private readonly IObjectFactory objectFactory;
-        private readonly IBusConfig busConfig;
+        private readonly IConfig busConfig;
+        private readonly IServiceProvider serviceProvider;
 
-        public HandleMessageMiddleware(IHandlerCache handlerCache, IObjectFactory objectFactory, IBusConfig busConfig)
+        public HandleMessageMiddleware(IHandlerCache handlerCache, IServiceProvider serviceProvider, IConfig busConfig)
         {
             this.handlerCache = handlerCache ?? throw new ArgumentNullException(nameof(handlerCache));
-            this.objectFactory = objectFactory ?? throw new ArgumentNullException(nameof(objectFactory));
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
 
         public void Invoke(MiddlewareContext context, Action next)
         {
-            var channelMessage = context.ChannelMessage;
-            var messageTypeName = channelMessage.GetHeader(MessageHeaders.MessageFullname);
+            var basicMessage = context.BasicMessage;
+            var messageTypeName = basicMessage.GetHeader(MessageHeaders.MessageFullname);
             var handlerInfos = handlerCache.GetHandlerInfo(messageTypeName);
 
             foreach (var info in handlerInfos)
@@ -58,7 +57,7 @@ namespace EzBus.Core.Middleware
 
                 try
                 {
-                    var handler = objectFactory.GetInstance(handlerType);
+                    var handler = serviceProvider.GetService(handlerType);
                     methodInfo.Invoke(handler, new[] { message });
                     success = true;
                     break;

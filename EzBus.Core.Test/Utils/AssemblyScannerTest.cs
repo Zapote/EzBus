@@ -15,13 +15,5 @@ namespace EzBus.Core.Test.Utils
             Assert.Contains(typeof(BarHandler), handlerTypes);
             Assert.Contains(typeof(FooHandler), handlerTypes);
         }
-
-        [Fact]
-        public void Scanner_should_find_all_IReceivingChannel_types()
-        {
-            var channels = scanner.FindTypes(typeof(IReceivingChannel));
-
-            Assert.Equal(channels.Length, 1);
-        }
     }
 }

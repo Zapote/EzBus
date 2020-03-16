@@ -2,7 +2,7 @@ using System;
 
 namespace EzBus.RabbitMQ
 {
-    public interface IRabbitMQConfig
+    public interface IConfig
     {
         /// <summary>
         /// Username to use when authenticating to the server

@@ -4,26 +4,26 @@ namespace EzBus.Core.Middleware
 {
     internal class HandleErrorMessageMiddleware : IPreMiddleware
     {
-        private readonly ISendingChannel sendingChannel;
-        private readonly IBusConfig busConfig;
-        private ChannelMessage channelMessage;
+        private readonly ISender sender;
+        private readonly IConfig busConfig;
+        private BasicMessage basicMessage;
 
-        public HandleErrorMessageMiddleware(ISendingChannel sendingChannel, IBusConfig busConfig)
+        public HandleErrorMessageMiddleware(ISender sender, IConfig busConfig)
         {
-            this.sendingChannel = sendingChannel ?? throw new ArgumentNullException(nameof(sendingChannel));
+            this.sender = sender ?? throw new ArgumentNullException(nameof(sender));
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
 
         public void Invoke(MiddlewareContext context, Action next)
         {
-            channelMessage = context.ChannelMessage;
+            basicMessage = context.BasicMessage;
             next();
         }
 
         public void OnError(Exception ex)
         {
-            if (channelMessage == null) throw new Exception("ChannelMessage is null!", ex);
-            channelMessage.BodyStream.Position = 0;
+            if (basicMessage == null) throw new Exception("ChannelMessage is null!", ex);
+            basicMessage.BodyStream.Position = 0;
 
             var level = 0;
 
@@ -31,13 +31,12 @@ namespace EzBus.Core.Middleware
             {
                 var headerName = $"EzBus.ErrorMessage L{level}";
                 var value = $"{DateTime.UtcNow}: {ex.Message}";
-                channelMessage.AddHeader(headerName, value);
+                basicMessage.AddHeader(headerName, value);
                 ex = ex.InnerException;
                 level++;
             }
 
-            var endpointAddress = new EndpointAddress(busConfig.ErrorEndpointName);
-            sendingChannel.Send(endpointAddress, channelMessage);
+            sender.Send(busConfig.ErrorAddress, basicMessage);
         }
     }
 }

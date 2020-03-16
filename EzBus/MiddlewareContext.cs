@@ -2,12 +2,12 @@
 {
     public class MiddlewareContext
     {
-        public MiddlewareContext(ChannelMessage channelMessage)
+        public MiddlewareContext(BasicMessage message)
         {
-            ChannelMessage = channelMessage;
+            BasicMessage = message;
         }
 
-        public ChannelMessage ChannelMessage { get; private set; }
+        public BasicMessage BasicMessage { get; private set; }
         public object Message { get; set; }
     }
 }

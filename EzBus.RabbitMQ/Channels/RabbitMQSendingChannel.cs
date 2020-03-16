@@ -3,7 +3,7 @@ using EzBus.Utils;
 
 namespace EzBus.RabbitMQ.Channels
 {
-    public class RabbitMQSendingChannel : RabbitMQChannel, ISendingChannel
+    public class RabbitMQSendingChannel : RabbitMQChannel
     {
         private static readonly object syncRoot = new object();
 
@@ -13,11 +13,11 @@ namespace EzBus.RabbitMQ.Channels
         {
         }
 
-        public void Send(EndpointAddress dest, ChannelMessage cm)
+        public void Send(EndpointAddress dest, BasicMessage m)
         {
             DeclareQueuePassive(dest.Name);
-            var properties = ConstructHeaders(cm);
-            var body = cm.BodyStream.ToByteArray();
+            var properties = ConstructHeaders(m);
+            var body = m.BodyStream.ToByteArray();
 
             lock (channel)
             {

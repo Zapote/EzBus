@@ -4,4 +4,9 @@
     {
         void Handle(T m);
     }
+
+    public interface IMessageHandler
+    {
+
+    }
 }

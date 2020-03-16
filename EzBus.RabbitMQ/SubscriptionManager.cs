@@ -8,10 +8,10 @@ namespace EzBus.RabbitMQ
     internal class SubscriptionManager : ISubscriptionManager
     {
         private static readonly ILogger log = LogManager.GetLogger<SubscriptionManager>();
-        private readonly IBusConfig busConfig;
+        private readonly EzBus.IConfig busConfig;
         private readonly IChannelFactory channelFactory;
 
-        public SubscriptionManager(IChannelFactory channelFactory, IBusConfig busConfig)
+        public SubscriptionManager(IChannelFactory channelFactory, EzBus.IConfig busConfig)
         {
             this.channelFactory = channelFactory ?? throw new ArgumentNullException(nameof(channelFactory));
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
@@ -29,7 +29,7 @@ namespace EzBus.RabbitMQ
                 endpoint = endpoint.ToLower();
 
                 var channel = channelFactory.GetChannel();
-                var queue = busConfig.EndpointName.ToLower();
+                var queue = busConfig.Address.ToLower();
                 var routingKey = messageName.IsNullOrEmpty() ? "#" : messageName;
 
                 log.Info($"Subscribing to endpoint '{endpoint}'. Routingkey '{routingKey}'");
@@ -54,7 +54,7 @@ namespace EzBus.RabbitMQ
                 endpoint = endpoint.ToLower();
 
                 var channel = channelFactory.GetChannel();
-                var queue = busConfig.EndpointName.ToLower();
+                var queue = busConfig.Address.ToLower();
                 var routingKey = messageName.IsNullOrEmpty() ? "#" : messageName;
 
                 log.Info($"Unsubscribing from endpoint '{endpoint}'. Routingkey '{routingKey}'");

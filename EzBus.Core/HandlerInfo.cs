@@ -10,7 +10,7 @@ namespace EzBus.Core
             MessageType = messageType;
         }
 
-        public Type HandlerType { get; set; }
-        public Type MessageType { get; set; }
+        public Type HandlerType { get; private set; }
+        public Type MessageType { get; private set; }
     }
 }

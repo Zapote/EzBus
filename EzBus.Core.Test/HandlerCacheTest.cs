@@ -14,7 +14,7 @@ namespace EzBus.Core.Test
         }
 
         [Fact]
-        public void Handler_info_is_returned_when_using_only_class_name()
+        public void Handler_info_is_returned_when_using_only_message_name()
         {
             const string messageTypeName = "TestMessage";
 

@@ -16,6 +16,9 @@ namespace DiceRoller.Service
             Console.Title = "DiceRoller Service";
             Bus.Configure(x => x.LogLevel = LogLevel.Debug).UseRabbitMQ(x => x.HostName = "127.0.0.1");
 
+            //BusFactory.Create
+
+
             Console.Read();
         }
     }

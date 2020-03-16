@@ -6,14 +6,14 @@ using RabbitMQ.Client.Events;
 
 namespace EzBus.RabbitMQ.Channels
 {
-    public class RabbitMQReceivingChannel : RabbitMQChannel, IReceivingChannel
+    public class RabbitMQReceivingChannel : RabbitMQChannel
     {
-        private readonly IRabbitMQConfig cfg;
+        private readonly IConfig cfg;
         private static readonly ILogger log = LogManager.GetLogger<RabbitMQReceivingChannel>();
         private EventingBasicConsumer consumer;
         private string inputQueue;
 
-        public RabbitMQReceivingChannel(IChannelFactory cf, IRabbitMQConfig cfg) : base(cf)
+        public RabbitMQReceivingChannel(IChannelFactory cf, IConfig cfg) : base(cf)
         {
             this.cfg = cfg;
         }
@@ -42,7 +42,7 @@ namespace EzBus.RabbitMQ.Channels
             }
 
             var body = ea.Body;
-            var message = new ChannelMessage(new MemoryStream(body));
+            var message = new BasicMessage(new MemoryStream(body));
 
             foreach (var header in ea.BasicProperties.Headers)
             {
@@ -55,6 +55,6 @@ namespace EzBus.RabbitMQ.Channels
             channel.BasicAck(ea.DeliveryTag, false);
         }
 
-        public Action<ChannelMessage> OnMessage { get; set; }
+        public Action<BasicMessage> OnMessage { get; set; }
     }
 }
