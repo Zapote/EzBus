@@ -1,11 +1,12 @@
-﻿using EzBus.Utils;
+﻿using EzBus.Core.Utils;
+using EzBus.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EzBus.Core
 {
     public class BusFactory : IBusFactory
     {
-        private readonly Config config = new Config();
+        private readonly Config conf = new Config();
         private readonly IServiceCollection services = new ServiceCollection();
 
         public static IBusFactory Configure(string address = null) => new BusFactory(address);
@@ -14,15 +15,21 @@ namespace EzBus.Core
         {
             if (address.HasValue())
             {
-                config.SetAddress(address);
+                conf.SetAddress(address);
             }
 
-            services.AddSingleton<IBus, Bus>();
+            var scanner = new AssemblyScanner();
+            var handlerTypes = scanner.FindTypes<IMessageHandler>();
+            foreach (var type in handlerTypes)
+            {
+                if (type.IsInterface()) continue;
+                services.AddScoped(type);
+            }
         }
 
         public IBusFactory AddServices(IServiceCollection services)
         {
-            foreach(var item in services)
+            foreach (var item in services)
             {
                 this.services.Add(item);
             }
@@ -32,6 +39,7 @@ namespace EzBus.Core
 
         public IBusFactory WorkerThreads(int n)
         {
+            conf.SetNumberOfWorkerThreads(n);
             return this;
         }
 
@@ -52,13 +60,12 @@ namespace EzBus.Core
 
         public IBus Create()
         {
-            var sp  = services.BuildServiceProvider();
+            services.AddSingleton<IBus, Bus>();
+            services.AddSingleton<IPublisher, Bus>();
+            services.AddSingleton<ISender, Bus>();
+            services.AddSingleton<IConfig>(conf);
+            var sp = services.BuildServiceProvider();
             return sp.GetService<IBus>();
-        }
-
-        public IBusFactory Broker(IMessageBroker b)
-        {
-            return this;
         }
     }
 }

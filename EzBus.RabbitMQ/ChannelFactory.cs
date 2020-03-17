@@ -1,3 +1,4 @@
+using System;
 using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ
@@ -12,6 +13,11 @@ namespace EzBus.RabbitMQ
         {
             this.conf = conf;
             CreateConnection();
+        }
+
+        public void Close()
+        {
+            connection.Close();
         }
 
         public IModel GetChannel()
@@ -36,6 +42,12 @@ namespace EzBus.RabbitMQ
             };
 
             connection = factory.CreateConnection($"EzBus-{endpointName}");
+            connection.ConnectionShutdown += ShutDown;
+        }
+
+        private void ShutDown(object sender, ShutdownEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

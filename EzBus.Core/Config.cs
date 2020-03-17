@@ -43,7 +43,7 @@ namespace EzBus.Core
         private void CreateAddress()
         {
             var assembly = Assembly.GetEntryAssembly();
-            var address = assembly.GetName().Name.Replace(".","-");
+            var address = assembly.GetName().Name.Replace(".","-").ToLower();
             Address = address;
             ErrorAddress = $"{address}-error";
         }

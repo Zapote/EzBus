@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using EzBus.Core;
 using EzBus.RabbitMQ;
 
@@ -6,20 +7,14 @@ namespace DiceRoller.Client
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var bus = BusFactory
                 .Configure()
                 .UseRabbitMQ()
                 .Create();
 
-            bus.Start().GetAwaiter().GetResult();
-            
-            bus.Send("diceroller.service", new RollTheDice { Attempts = 10 });
-
-            
-            //bus.Stop();
-
+            await bus.Start();
 
             Console.Title = "DiceRoller Client";
 
@@ -33,10 +28,11 @@ namespace DiceRoller.Client
                 for (int i = 0; i < 1000; i++)
                 {
                     Console.WriteLine("sending");
-                    bus.Send("diceroller.service", new RollTheDice { Attempts = 10 });
+                    await bus.Send("diceroller-service", new RollTheDice { Attempts = 10 });
                 }
-
             }
+
+            await bus.Stop();
         }
     }
 }

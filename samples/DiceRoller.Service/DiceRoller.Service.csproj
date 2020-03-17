@@ -8,10 +8,10 @@
         <NoWarn>1701;1702;1705</NoWarn>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\src\EzBus.Core\EzBus.Core.csproj" />
-        <ProjectReference Include="..\..\src\EzBus.RabbitMQ\EzBus.RabbitMQ.csproj" />
-        <ProjectReference Include="..\..\src\EzBus\EzBus.csproj" />
-        <ProjectReference Include="..\..\src\EzBus.Serilog\EzBus.Serilog.csproj" />
+        <ProjectReference Include="..\..\EzBus.Core\EzBus.Core.csproj" />
+        <ProjectReference Include="..\..\EzBus.RabbitMQ\EzBus.RabbitMQ.csproj" />
+        <ProjectReference Include="..\..\EzBus\EzBus.csproj" />
+        <ProjectReference Include="..\..\EzBus.Serilog\EzBus.Serilog.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Serilog" Version="2.8.0" />

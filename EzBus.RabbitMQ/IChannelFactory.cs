@@ -6,5 +6,6 @@ namespace EzBus.RabbitMQ
     public interface IChannelFactory
     {
         IModel GetChannel();
+        void Close();
     }
 }

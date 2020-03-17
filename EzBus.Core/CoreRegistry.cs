@@ -6,7 +6,7 @@ using EzBus.Utils;
 
 namespace EzBus.Core
 {
-    public class CoreRegistry 
+    public class CoreRegistry
     {
         public CoreRegistry()
         {
@@ -50,6 +50,7 @@ namespace EzBus.Core
         {
             var assemblyScanner = new AssemblyScanner();
             var types = assemblyScanner.FindTypes<IMessageHandler>();
+
             foreach (var type in types)
             {
                 if (type.IsInterface()) continue;

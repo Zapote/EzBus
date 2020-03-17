@@ -7,7 +7,6 @@ namespace EzBus
         IBusFactory Address(string s);
         IBusFactory AddServices(IServiceCollection services);
         IBusFactory LogLevel();
-        IBusFactory Broker(IMessageBroker b);
         IBusFactory NumberOfRetries(int n);
         IBusFactory WorkerThreads(int n);
         IBus Create();
