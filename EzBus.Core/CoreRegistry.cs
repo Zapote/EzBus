@@ -1,4 +1,4 @@
-﻿using EzBus.Core.Middleware;
+﻿using EzBus.Core.Middlewares;
 using EzBus.Core.Resolvers;
 using EzBus.Core.Utils;
 using EzBus.Serializers;

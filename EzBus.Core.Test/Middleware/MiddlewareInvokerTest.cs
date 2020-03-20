@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using EzBus.Core.Middleware;
+using EzBus.Core.Middlewares;
 using Xunit;
 
 namespace EzBus.Core.Test.Middleware

@@ -5,22 +5,18 @@ namespace EzBus.Core.Test
 {
     public class ConfigTest
     {
-        private IConfig config = new Config();
+        private readonly IBusConfig config = new BusConfig("acme-svc");
 
         [Fact]
-        public void EndpointName_should_be_applicitaionName()
+        public void Address_should_be_given_address_to_lower()
         {
-            var expected = $"{Assembly.GetEntryAssembly().GetName().Name.Replace(".", "-")}";
-
-            Assert.Equal(expected, config.Address);
+            Assert.Equal("acme-svc", config.Address);
         }
 
         [Fact]
         public void ErrorEndpointName_should_be_applicitaionName_plus_error()
         {
-            var expected = $"{Assembly.GetEntryAssembly().GetName().Name.Replace(".", "-")}-error";
-
-            Assert.Equal(expected, config.ErrorAddress);
+            Assert.Equal("acme-svc-error", config.ErrorAddress);
         }
 
         [Fact]

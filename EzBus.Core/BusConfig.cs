@@ -6,24 +6,18 @@ using EzBus.Logging;
 [assembly: InternalsVisibleTo("EzBus.Core.Test")]
 namespace EzBus.Core
 {
-    internal class Config : IConfig
+    internal class BusConfig : IBusConfig
     {
-        public Config()
+        public BusConfig(string addr)
         {
-            CreateAddress();
+            Address = addr;
         }
 
         public string Address { get; private set; }
-        public string ErrorAddress { get; private set; }
+        public string ErrorAddress => $"{Address}-error";
         public LogLevel LogLevel { get; private set; } = LogLevel.Info;
         public int NumberOfRetries { get; private set; } = 5;
         public int WorkerThreads { get; private set; } = 1;
-
-        internal void SetAddress(string adr)
-        {
-            Address = adr;
-            ErrorAddress = $"{adr}-error";
-        }
 
         internal void SetLogLevel(LogLevel l)
         {
@@ -38,14 +32,6 @@ namespace EzBus.Core
         internal void SetNumberOfWorkerThreads(int n)
         {
             WorkerThreads = n;
-        }
-
-        private void CreateAddress()
-        {
-            var assembly = Assembly.GetEntryAssembly();
-            var address = assembly.GetName().Name.Replace(".","-").ToLower();
-            Address = address;
-            ErrorAddress = $"{address}-error";
         }
     }
 }

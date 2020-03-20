@@ -3,7 +3,7 @@ using System.Linq;
 using EzBus.Logging;
 using EzBus.Serializers;
 
-namespace EzBus.Core.Middleware
+namespace EzBus.Core.Middlewares
 {
     internal class MessageDeserilizationMiddleware : IPreMiddleware
     {

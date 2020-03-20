@@ -1,30 +1,32 @@
 ﻿using EzBus.AcceptanceTest.Specifications;
 using EzBus.AcceptanceTest.TestHelpers;
+using EzBus.Core;
 using Xunit;
 
 namespace EzBus.AcceptanceTest
 {
-    public class When_message_is_received : BusSpecificationBase
+    public class When_message_is_received : IHandle<TestMessage>
     {
-        public When_message_is_received()
+        private static bool messageHandled = false;
+
+        public void Handle(TestMessage m)
         {
-            bus.Send("Moon", new ToBeReceivedMessage());
+            messageHandled = true;
         }
 
         [Then]
         public void Message_is_handled()
         {
-            Assert.True(ToBeReceivedMessageMessageHandler.MessageIsHandled);
-        }
-    }
+            messageHandled = false;
 
-    public class ToBeReceivedMessageMessageHandler : IHandle<ToBeReceivedMessage>
-    {
-        public static bool MessageIsHandled { get; private set; }
+            var bus = BusFactory.Configure("test")
+                .UseTestBroker()
+                .Create();
+            
+            bus.Start().Wait();
+            bus.Send("test", new TestMessage()).Wait();
 
-        public void Handle(ToBeReceivedMessage message)
-        {
-            MessageIsHandled = true;
+            Assert.True(messageHandled);
         }
     }
 }

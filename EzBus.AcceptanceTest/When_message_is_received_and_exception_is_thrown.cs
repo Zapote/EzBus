@@ -1,44 +1,41 @@
 ﻿using System;
 using EzBus.AcceptanceTest.Specifications;
 using EzBus.AcceptanceTest.TestHelpers;
+using EzBus.Core;
 using Xunit;
 
 namespace EzBus.AcceptanceTest
 {
-    public class When_message_is_received_and_exception_is_thrown : BusSpecificationBase
+    public class When_message_is_received_and_exception_is_thrown : IHandle<TestMessage>
     {
-        public When_message_is_received_and_exception_is_thrown()
-        {
-            FailingMessageHandler.Reset();
-            bus.Send("Moon", new FailingMessage());
-        }
+        private static int retries = 0;
 
         [Then]
         public void Message_should_be_retried_five_times()
         {
-            Assert.InRange(FailingMessageHandler.Retries, 1, 5);
+            retries = 0;
+            var bus = BusFactory.Configure("test")
+                .UseTestBroker()
+                .Create();
+            bus.Start().Wait();
+            bus.Send("test", new TestMessage { ThrowError = true }).Wait();
+
+            Assert.Equal(5, retries);
         }
 
         [Then]
         public void Message_should_be_placed_on_error_queue()
         {
-            Assert.Equal("testhost.error", FakeMessageChannel.LastSentDestination.Name);
-        }
-    }
-
-    public class FailingMessageHandler : IHandle<FailingMessage>
-    {
-        public static int Retries { get; private set; }
-
-        public void Handle(FailingMessage message)
-        {
-            Retries++;
-            throw new Exception("Testing error in handler.");
+            //Assert.Equal("testhost.error", FakeMessageChannel.LastSentDestination.Name);
         }
 
-        public static void Reset()
+        public void Handle(TestMessage m)
         {
-            Retries = 0;
+            if (m.ThrowError)
+            {
+                retries++;
+                throw new Exception("Cannot handle this message");
+            }
         }
     }
 }

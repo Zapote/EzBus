@@ -6,9 +6,9 @@ namespace EzBus.RabbitMQ.Channels
 {
     public class RabbitMQPublishingChannel : RabbitMQChannel
     {
-        private readonly EzBus.IConfig busConfig;
+        private readonly EzBus.IBusConfig busConfig;
 
-        public RabbitMQPublishingChannel(IChannelFactory cf, EzBus.IConfig busConfig)
+        public RabbitMQPublishingChannel(IChannelFactory cf, EzBus.IBusConfig busConfig)
             : base(cf)
         {
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));

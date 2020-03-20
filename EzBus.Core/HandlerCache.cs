@@ -22,7 +22,7 @@ namespace EzBus.Core
             }
         }
 
-        public IEnumerable<HandlerInfo> GetHandlerInfo(string messageFullName)
+        public HandlerInfo[] GetHandlerInfo(string messageFullName)
         {
             var className = GetClassName(messageFullName);
             var result = handlers.Where(x => x.Key == messageFullName).ToList();
@@ -32,7 +32,7 @@ namespace EzBus.Core
                 result = handlers.Where(x => GetClassName(x.Key) == className).ToList();
             }
 
-            return result.Select(x => x.Value);
+            return result.Select(x => x.Value).ToArray();
         }
 
         private static string GetClassName(string messageFullName)

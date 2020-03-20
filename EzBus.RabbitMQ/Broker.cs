@@ -1,26 +1,26 @@
 ﻿using EzBus.Utils;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EzBus.RabbitMQ
 {
-    public class Broker : IMessageBroker
+    public class Broker : IBroker
     {
         private readonly IChannelFactory channelFactory;
         private readonly IConfig conf;
+        private readonly string address;
+        private readonly string errorAddress;
         private IModel channel;
-        private string address;
 
-        public Broker(IChannelFactory channelFactory, IConfig conf)
+        public Broker(IChannelFactory channelFactory, IConfig conf, IAddressConfig addressConf)
         {
             this.channelFactory = channelFactory ?? throw new ArgumentNullException(nameof(channelFactory));
             this.conf = conf ?? throw new ArgumentNullException(nameof(conf));
+            address = addressConf.Address;
+            errorAddress = addressConf.ErrorAddress;
         }
 
         public Task Publish(BasicMessage message)
@@ -46,9 +46,8 @@ namespace EzBus.RabbitMQ
             return Task.CompletedTask;
         }
 
-        public Task Start(string address, string errorAddress)
+        public Task Start()
         {
-            this.address = address;
             channel = channelFactory.GetChannel();
 
             //log.Info("Initializing RabbitMQ receiving channel");
@@ -100,46 +99,6 @@ namespace EzBus.RabbitMQ
                 var message = $"Queue '{queueName}' does not exist or is currently not available.";
                 throw new InvalidOperationException(message, ex);
             }
-        }
-    }
-
-    internal class Consumer : IConsumer
-    {
-        private readonly IChannelFactory factory;
-        private readonly string queue;
-        private IModel channel;
-        private Action<BasicMessage> onMessage;
-
-        public Consumer(IChannelFactory factory, string queue)
-        {
-            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
-            this.queue = queue;
-        }
-
-        public Task Consume(Action<BasicMessage> onMessage)
-        {
-            this.onMessage = onMessage;
-            channel = factory.GetChannel();
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += OnReceivedMessage;
-            channel.BasicConsume(queue, false, string.Empty, false, false, null, consumer);
-            return Task.CompletedTask;
-        }
-
-        private void OnReceivedMessage(object sender, BasicDeliverEventArgs args)
-        {
-            var body = args.Body;
-            var message = new BasicMessage(new MemoryStream(body));
-
-            foreach (var header in args.BasicProperties.Headers)
-            {
-                var value = Encoding.UTF8.GetString((byte[])header.Value);
-                message.AddHeader(header.Key, value);
-            }
-
-            onMessage(message);
-
-            channel.BasicAck(args.DeliveryTag, false);
         }
     }
 }

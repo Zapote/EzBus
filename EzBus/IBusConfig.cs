@@ -2,12 +2,29 @@
 
 namespace EzBus
 {
-    public interface IConfig
+    public interface IBusConfig : IAddressConfig, IRetryConfig, IWorkerThreadsConfig, ILogLevelConfig
     {
-        int WorkerThreads { get; }
-        int NumberOfRetries { get; }
+        
+    }
+
+    public interface IAddressConfig
+    {
         string Address { get; }
         string ErrorAddress { get; }
+    }
+
+    public interface IRetryConfig
+    {
+        int NumberOfRetries { get; }
+    }
+
+    public interface IWorkerThreadsConfig
+    {
+        int WorkerThreads { get; }
+    }
+
+    public interface ILogLevelConfig
+    {
         LogLevel LogLevel { get; }
     }
 }

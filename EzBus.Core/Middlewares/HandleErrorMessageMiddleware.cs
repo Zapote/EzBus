@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace EzBus.Core.Middleware
+namespace EzBus.Core.Middlewares
 {
     internal class HandleErrorMessageMiddleware : IPreMiddleware
     {
-        private readonly ISender sender;
-        private readonly IConfig busConfig;
+        private readonly IBroker broker;
+        private readonly IAddressConfig addressConfig;
         private BasicMessage basicMessage;
 
-        public HandleErrorMessageMiddleware(ISender sender, IConfig busConfig)
+        public HandleErrorMessageMiddleware(IBroker broker, IAddressConfig addressConfig)
         {
-            this.sender = sender ?? throw new ArgumentNullException(nameof(sender));
-            this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
+            this.broker = broker ?? throw new ArgumentNullException(nameof(broker));
+            this.addressConfig = addressConfig ?? throw new ArgumentNullException(nameof(addressConfig));
         }
 
         public void Invoke(MiddlewareContext context, Action next)
@@ -22,7 +22,7 @@ namespace EzBus.Core.Middleware
 
         public void OnError(Exception ex)
         {
-            if (basicMessage == null) throw new Exception("ChannelMessage is null!", ex);
+            if (basicMessage == null) throw new Exception("Message is null!", ex);
             basicMessage.BodyStream.Position = 0;
 
             var level = 0;
@@ -36,7 +36,7 @@ namespace EzBus.Core.Middleware
                 level++;
             }
 
-            sender.Send(busConfig.ErrorAddress, basicMessage);
+            broker.Send(addressConfig.ErrorAddress, basicMessage);
         }
     }
 }

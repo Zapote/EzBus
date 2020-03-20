@@ -1,4 +1,6 @@
-﻿using EzBus.Core.Utils;
+﻿using EzBus.Core.Serializers;
+using EzBus.Core.Utils;
+using EzBus.Serializers;
 using EzBus.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,16 +8,16 @@ namespace EzBus.Core
 {
     public class BusFactory : IBusFactory
     {
-        private readonly Config conf = new Config();
+        private readonly BusConfig conf;
         private readonly IServiceCollection services = new ServiceCollection();
 
-        public static IBusFactory Configure(string address = null) => new BusFactory(address);
+        public static IBrokerConfig Configure(string address) => new BusFactory(address);
 
         public BusFactory(string address)
         {
             if (address.HasValue())
             {
-                conf.SetAddress(address);
+                conf = new BusConfig(address);
             }
 
             var scanner = new AssemblyScanner();
@@ -63,9 +65,50 @@ namespace EzBus.Core
             services.AddSingleton<IBus, Bus>();
             services.AddSingleton<IPublisher, Bus>();
             services.AddSingleton<ISender, Bus>();
-            services.AddSingleton<IConfig>(conf);
+            services.AddSingleton<IBusConfig>(conf);
+            services.AddSingleton<IAddressConfig>(conf);
+            services.AddSingleton<ITaskRunner, TaskRunner>();
+            services.AddSingleton<IConsumerFactory, ConsumerFactory>();
+            services.AddSingleton<IHandlerCache, HandlerCache>();
+            services.AddSingleton<IBodySerializer, JsonBodySerializer>();
+
+            services.AddScoped<IHandlerInvoker, HandlerInvoker>();
+            services.AddScoped<ISystemStartupTask, StartBroker>();
+            services.AddScoped<ISystemStartupTask, StartConsumers>();
+
+            AddStartupTasks(services);
+            AddMiddlewares(services);
+
             var sp = services.BuildServiceProvider();
             return sp.GetService<IBus>();
+        }
+
+        private void AddStartupTasks(IServiceCollection services)
+        {
+            var scanner = new AssemblyScanner();
+            var types = scanner.FindTypes<IStartupTask>();
+            foreach (var type in types)
+            {
+                if (type.IsInterface()) continue;
+                services.AddScoped(typeof(IStartupTask), type);
+            }
+        }
+
+        private void AddMiddlewares(IServiceCollection services)
+        {
+            var scanner = new AssemblyScanner();
+            var types = scanner.FindTypes<IMiddleware>();
+            foreach (var type in types)
+            {
+                if (type.IsInterface()) continue;
+                services.AddScoped(typeof(IMiddleware), type);
+            }
+        }
+
+        public IBusFactory AddBroker<T>() where T : IBroker
+        {
+            services.AddSingleton(typeof(IBroker), typeof(T));
+            return this;
         }
     }
 }

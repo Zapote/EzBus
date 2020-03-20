@@ -8,43 +8,31 @@ namespace EzBus.RabbitMQ
     internal class SubscriptionManager : ISubscriptionManager
     {
         private static readonly ILogger log = LogManager.GetLogger<SubscriptionManager>();
-        private readonly EzBus.IConfig busConfig;
+        private readonly IAddressConfig busConfig;
         private readonly IChannelFactory channelFactory;
 
-        public SubscriptionManager(IChannelFactory channelFactory, EzBus.IConfig busConfig)
+        public SubscriptionManager(IChannelFactory channelFactory, IAddressConfig busConfig)
         {
             this.channelFactory = channelFactory ?? throw new ArgumentNullException(nameof(channelFactory));
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
         }
 
-        public void Subscribe(string endpoint)
-        {
-            Subscribe(endpoint, string.Empty);
-        }
-
-        public void Subscribe(string endpoint, string messageName)
+        public void Subscribe(string address, string messageName)
         {
             try
             {
-                endpoint = endpoint.ToLower();
-
                 var channel = channelFactory.GetChannel();
                 var queue = busConfig.Address.ToLower();
                 var routingKey = messageName.IsNullOrEmpty() ? "#" : messageName;
 
-                log.Info($"Subscribing to endpoint '{endpoint}'. Routingkey '{routingKey}'");
+                log.Info($"Subscribing to endpoint '{address}'. Routingkey '{routingKey}'");
 
-                channel.QueueBind(queue, endpoint, routingKey);
+                channel.QueueBind(queue, address, routingKey);
             }
             catch (Exception ex)
             {
-                log.Error($"Failed to subscribe to endpoint {endpoint}", ex);
+                log.Error($"Failed to subscribe to endpoint {address}", ex);
             }
-        }
-
-        public void Unsubscribe(string endpoint)
-        {
-            Unsubscribe(endpoint, string.Empty);
         }
 
         public void Unsubscribe(string endpoint, string messageName)

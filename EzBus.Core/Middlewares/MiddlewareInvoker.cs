@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EzBus.Core.Middleware
+namespace EzBus.Core.Middlewares
 {
     public class MiddlewareInvoker
     {

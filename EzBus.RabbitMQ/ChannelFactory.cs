@@ -6,13 +6,12 @@ namespace EzBus.RabbitMQ
     internal class ChannelFactory : IChannelFactory
     {
         private readonly IConfig conf;
-        private readonly string endpointName = "TODO";
         private IConnection connection;
 
-        public ChannelFactory(IConfig conf)
+        public ChannelFactory(IConfig conf, IAddressConfig addressConf)
         {
             this.conf = conf;
-            CreateConnection();
+            CreateConnection(addressConf.Address);
         }
 
         public void Close()
@@ -27,7 +26,7 @@ namespace EzBus.RabbitMQ
             return channel;
         }
 
-        private void CreateConnection()
+        private void CreateConnection(string name)
         {
             var factory = new ConnectionFactory
             {
@@ -41,7 +40,7 @@ namespace EzBus.RabbitMQ
                 Port = conf.Port
             };
 
-            connection = factory.CreateConnection($"EzBus-{endpointName}");
+            connection = factory.CreateConnection($"EzBus-{name}");
             connection.ConnectionShutdown += ShutDown;
         }
 

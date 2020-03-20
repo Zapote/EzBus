@@ -1,8 +1,9 @@
-﻿namespace EzBus
+﻿using System.Threading.Tasks;
+
+namespace EzBus
 {
     public interface ITaskRunner
     {
-        void RunStartupTasks();
-        void RunShutdownTasks();
+        Task Run<T>() where T : ITask;
     }
 }

@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Reflection;
 using EzBus.Logging;
 
-namespace EzBus.Core.Middleware
+namespace EzBus.Core.Middlewares
 {
     internal class HandleMessageMiddleware : ISystemMiddleware
     {
         private static readonly ILogger log = LogManager.GetLogger<HandleMessageMiddleware>();
         private readonly IHandlerCache handlerCache;
-        private readonly IConfig busConfig;
+        private readonly IBusConfig busConfig;
         private readonly IServiceProvider serviceProvider;
 
-        public HandleMessageMiddleware(IHandlerCache handlerCache, IServiceProvider serviceProvider, IConfig busConfig)
+        public HandleMessageMiddleware(IHandlerCache handlerCache, IServiceProvider serviceProvider, IBusConfig busConfig)
         {
             this.handlerCache = handlerCache ?? throw new ArgumentNullException(nameof(handlerCache));
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
