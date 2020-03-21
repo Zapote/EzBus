@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EzBus.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace EzBus.Core
 {
     public class TaskRunner : ITaskRunner
     {
-        private static readonly ILogger log = LogManager.GetLogger<TaskRunner>();
+        private readonly ILogger<TaskRunner> logger;
         private readonly IServiceScopeFactory serviceScopeFactory;
 
-        public TaskRunner(IServiceScopeFactory serviceScopeFactory)
+        public TaskRunner(ILogger<TaskRunner> logger, IServiceScopeFactory serviceScopeFactory)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
         }
 
@@ -35,12 +36,12 @@ namespace EzBus.Core
             {
                 try
                 {
-                    log.Info($"Running task {task.Name}");
+                    logger.LogInformation($"Running task: '{task.Name}'");
                     await task.Run();
                 }
                 catch (Exception ex)
                 {
-                    log.Warn($"Failed to run task: {task.Name}", ex);
+                    logger.LogWarning($"Failed to run task: '{task.Name}'", ex);
                 }
             }
         }

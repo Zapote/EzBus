@@ -10,9 +10,9 @@ namespace DiceRoller.Client
         static async Task Main(string[] args)
         {
             var bus = BusFactory
-                .Configure()
+                .Configure("diceroller-client")
                 .UseRabbitMQ()
-                .Create();
+                .CreateBus();
 
             await bus.Start();
 
@@ -28,7 +28,7 @@ namespace DiceRoller.Client
                 for (int i = 0; i < 1000; i++)
                 {
                     Console.WriteLine("sending");
-                    await bus.Send("diceroller-service", new RollTheDice { Attempts = 10 });
+                    await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });
                 }
             }
 

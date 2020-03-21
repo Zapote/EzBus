@@ -6,9 +6,4 @@ namespace DiceRoller.Service
     {
         public int Attempts { get; set; }
     }
-
-    public class Reset
-    {
-
-    }
 }

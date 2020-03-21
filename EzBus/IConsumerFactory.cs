@@ -1,7 +1,7 @@
 ﻿namespace EzBus
 {
-    public interface IConsumerFactory
-    {
-        IConsumer Create();
-    }
+  public interface IConsumerFactory
+  {
+    IConsumer Create();
+  }
 }

@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Diagnostics;
 using EzBus;
-using EzBus.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace DiceRoller.Service
 {
-    public class RollTheDiceHandler : IHandle<RollTheDice>, IHandle<Reset>
+    public class RollTheDiceHandler : IHandle<RollTheDice>
     {
-        private static readonly ILogger log = LogManager.GetLogger<RollTheDiceHandler>();
+        private readonly ILogger<RollTheDiceHandler> logger;
         private readonly IPublisher publisher;
 
-        public RollTheDiceHandler(IPublisher publisher)
+        public RollTheDiceHandler(ILogger<RollTheDiceHandler> logger, IPublisher publisher)
         {
+            this.logger = logger;
             this.publisher = publisher;
         }
 
         public void Handle(RollTheDice message)
         {
-            log.Debug($"Rolling the dice {message.Attempts} times");
+            logger.LogDebug($"Rolling the dice {message.Attempts} times");
+            
             var sw = new Stopwatch();
             sw.Start();
             for (var i = 0; i < message.Attempts; i++)
@@ -26,12 +28,8 @@ namespace DiceRoller.Service
                 publisher.Publish(new DiceRolled { Result = result });
             }
             sw.Stop();
-            log.Debug($"{message.Attempts} times took ${sw.Elapsed.TotalSeconds} s");
-        }
 
-        public void Handle(Reset m)
-        {
-            throw new NotImplementedException();
+            logger.LogDebug($"{message.Attempts} times took ${sw.Elapsed.TotalSeconds} s");
         }
     }
 }

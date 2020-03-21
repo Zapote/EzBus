@@ -1,6 +1,4 @@
-﻿using EzBus.Logging;
-
-namespace EzBus
+﻿namespace EzBus
 {
     public interface IBusConfig : IAddressConfig, IRetryConfig, IWorkerThreadsConfig, ILogLevelConfig
     {
@@ -25,6 +23,6 @@ namespace EzBus
 
     public interface ILogLevelConfig
     {
-        LogLevel LogLevel { get; }
+    //    LogLevel LogLevel { get; }
     }
 }

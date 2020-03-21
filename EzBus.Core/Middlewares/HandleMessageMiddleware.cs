@@ -1,20 +1,21 @@
-﻿using System;
-using EzBus.Logging;
+﻿using Microsoft.Extensions.Logging;
+using System;
 
 namespace EzBus.Core.Middlewares
 {
     internal class HandleMessageMiddleware : ISystemMiddleware
     {
-        private static readonly ILogger log = LogManager.GetLogger<HandleMessageMiddleware>();
         private readonly IHandlerCache handlerCache;
         private readonly IBusConfig busConfig;
+        private readonly ILogger<HandleMessageMiddleware> logger;
         private readonly IServiceProvider serviceProvider;
 
-        public HandleMessageMiddleware(IHandlerCache handlerCache, IServiceProvider serviceProvider, IBusConfig busConfig)
+        public HandleMessageMiddleware(IHandlerCache handlerCache, IServiceProvider serviceProvider, IBusConfig busConfig, ILogger<HandleMessageMiddleware> logger)
         {
             this.handlerCache = handlerCache ?? throw new ArgumentNullException(nameof(handlerCache));
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             this.busConfig = busConfig ?? throw new ArgumentNullException(nameof(busConfig));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public void Invoke(MiddlewareContext context, Action next)
@@ -27,7 +28,7 @@ namespace EzBus.Core.Middlewares
             {
                 var handlerType = info.HandlerType;
 
-                log.Verbose($"Invoking handler {handlerType.Name}");
+                logger.LogDebug($"Invoking handler {handlerType.Name}");
 
                 var result = InvokeHandler(handlerType, context.Message);
 
@@ -63,7 +64,7 @@ namespace EzBus.Core.Middlewares
                 }
                 catch (Exception ex)
                 {
-                    log.Error(string.Format("Attempt {1}: Failed to handle message '{0}'.", message.GetType().Name, i + 1), ex.InnerException);
+                    logger.LogError(string.Format("Attempt {1}: Failed to handle message '{0}'.", message.GetType().Name, i + 1), ex.InnerException);
                     success = false;
                     exception = ex.InnerException;
                 }

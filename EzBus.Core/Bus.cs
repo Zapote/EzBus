@@ -21,7 +21,6 @@ namespace EzBus.Core
 
         public async Task Start()
         {
-            await taskRunner.Run<ISystemStartupTask>();
             await taskRunner.Run<IStartupTask>();
         }
 

@@ -21,7 +21,7 @@ namespace EzBus.AcceptanceTest
 
             var bus = BusFactory.Configure("test")
                 .UseTestBroker()
-                .Create();
+                .CreateBus();
             
             bus.Start().Wait();
             bus.Send("test", new TestMessage()).Wait();

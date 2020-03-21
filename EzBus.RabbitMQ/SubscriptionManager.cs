@@ -1,5 +1,4 @@
 ﻿using System;
-using EzBus.Logging;
 using EzBus.Utils;
 using RabbitMQ.Client;
 
@@ -7,7 +6,6 @@ namespace EzBus.RabbitMQ
 {
     internal class SubscriptionManager : ISubscriptionManager
     {
-        private static readonly ILogger log = LogManager.GetLogger<SubscriptionManager>();
         private readonly IAddressConfig busConfig;
         private readonly IChannelFactory channelFactory;
 
@@ -25,13 +23,13 @@ namespace EzBus.RabbitMQ
                 var queue = busConfig.Address.ToLower();
                 var routingKey = messageName.IsNullOrEmpty() ? "#" : messageName;
 
-                log.Info($"Subscribing to endpoint '{address}'. Routingkey '{routingKey}'");
+               // log.Info($"Subscribing to endpoint '{address}'. Routingkey '{routingKey}'");
 
                 channel.QueueBind(queue, address, routingKey);
             }
             catch (Exception ex)
             {
-                log.Error($"Failed to subscribe to endpoint {address}", ex);
+               // log.Error($"Failed to subscribe to endpoint {address}", ex);
             }
         }
 
@@ -45,13 +43,13 @@ namespace EzBus.RabbitMQ
                 var queue = busConfig.Address.ToLower();
                 var routingKey = messageName.IsNullOrEmpty() ? "#" : messageName;
 
-                log.Info($"Unsubscribing from endpoint '{endpoint}'. Routingkey '{routingKey}'");
+               // log.Info($"Unsubscribing from endpoint '{endpoint}'. Routingkey '{routingKey}'");
 
                 channel.QueueUnbind(queue, endpoint, routingKey);
             }
             catch (Exception ex)
             {
-                log.Error($"Failed to unsubscribe to endpoint {endpoint}", ex);
+               // log.Error($"Failed to unsubscribe to endpoint {endpoint}", ex);
             }
         }
     }

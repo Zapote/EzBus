@@ -1,24 +1,23 @@
 ﻿using System;
 using EzBus;
-using EzBus.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace DiceRoller.Service
 {
     public class MyMiddleware : IMiddleware
     {
-        private readonly ILogger log = LogManager.GetLogger<MyMiddleware>();
-        private readonly IDependency dependency;
+        private readonly ILogger<MyMiddleware> logger;
 
-        public MyMiddleware(IDependency dependency)
+        public MyMiddleware(ILogger<MyMiddleware> logger )
         {
-            this.dependency = dependency;
+            this.logger = logger;
         }
 
         public void Invoke(MiddlewareContext context, Action next)
         {
-            log.Info("Before " + dependency.Id);
+            logger.LogInformation("Before message handled.");
             next();
-            log.Info("After " + dependency.Id);
+            logger.LogInformation("After  message handled.");
         }
 
         public void OnError(Exception ex)
