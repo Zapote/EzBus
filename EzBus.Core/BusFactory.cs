@@ -1,5 +1,4 @@
-﻿using System;
-using EzBus.Core.Serializers;
+﻿using EzBus.Core.Serializers;
 using EzBus.Core.Utils;
 using EzBus.Serializers;
 using EzBus.Utils;
@@ -8,12 +7,12 @@ using Microsoft.Extensions.Logging;
 
 namespace EzBus.Core
 {
-  public class BusFactory : IBusFactory
+    public class BusFactory : IBusFactory
   {
     private readonly BusConfig conf;
     private readonly IServiceCollection services = new ServiceCollection();
 
-    public static IBrokerConfig Configure(string address) => new BusFactory(address);
+    public static IBrokerConfig Address(string address) => new BusFactory(address);
 
     public BusFactory(string address)
     {
@@ -76,7 +75,10 @@ namespace EzBus.Core
       services.AddScoped<ISystemStartupTask, StartBroker>();
       services.AddScoped<ISystemStartupTask, StartConsumers>();
 
-      services.AddLogging(configure => configure.SetMinimumLevel(conf.LogLevel));
+      services.AddLogging(configure => {
+          configure.SetMinimumLevel(conf.LogLevel);
+          configure.AddConsole();
+          });
 
       AddStartupTasks();
       AddMiddlewares();

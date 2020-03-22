@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EzBus.Core;
 using EzBus.RabbitMQ;
+using Microsoft.Extensions.Logging;
 
 namespace DiceRoller.Statistics
 {
@@ -10,14 +11,22 @@ namespace DiceRoller.Statistics
         static async Task Main(string[] args)
         {
             var bus = BusFactory
-                       .Configure("diceroller-statistics")
+                       .Address("diceroller-statistics")
                        .UseRabbitMQ()
+                       .LogLevel(LogLevel.Debug)
                        .CreateBus();
-
+            
+            await bus.Subscribe("diceroller-worker", "DiceRolled");
             await bus.Start();
+            
+
+            
 
             Console.Title = "DiceRoller Statistics";
             Console.Read();
+
+            await bus.Unsubscribe("diceroller-worker", "DiceRolled");
+            await bus.Stop();
         }
     }
 }

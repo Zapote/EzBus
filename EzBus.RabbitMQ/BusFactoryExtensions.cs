@@ -12,7 +12,9 @@ namespace EzBus.RabbitMQ
             var services = new ServiceCollection();
             services.AddSingleton<IConfig>(config);
             services.AddSingleton<IChannelFactory, ChannelFactory>();
+            services.AddSingleton<ISubscriptionManager, SubscriptionManager>();
             services.AddTransient<IConsumerFactory, ConsumerFactory>();
+
             return factory.AddBroker<Broker>().AddServices(services);
         }
     }

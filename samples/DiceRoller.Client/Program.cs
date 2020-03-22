@@ -10,7 +10,7 @@ namespace DiceRoller.Client
         static async Task Main(string[] args)
         {
             var bus = BusFactory
-                .Configure("diceroller-client")
+                .Address("diceroller-client")
                 .UseRabbitMQ()
                 .CreateBus();
 

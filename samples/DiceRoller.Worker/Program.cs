@@ -19,7 +19,7 @@ namespace DiceRoller.Worker
                 {
                     services.AddHostedService<Worker>();
                     var bus = BusFactory
-                       .Configure("diceroller-worker")
+                       .Address("diceroller-worker")
                        .UseRabbitMQ()
                        .AddServices(services)
                        .CreateBus();

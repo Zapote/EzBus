@@ -39,14 +39,16 @@ namespace EzBus.RabbitMQ
                 VirtualHost = conf.VirtualHost,
                 Port = conf.Port
             };
+            try
+            {
+                connection = factory.CreateConnection($"EzBus-{name}");
+            }
+            catch (Exception ex)
+            {
 
-            connection = factory.CreateConnection($"EzBus-{name}");
-            connection.ConnectionShutdown += ShutDown;
-        }
+                throw new Exception("Failed to create RabbitMQ connection.", ex);
+            }
 
-        private void ShutDown(object sender, ShutdownEventArgs e)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -25,6 +25,16 @@ namespace EzBus.RabbitMQ
 
         public Task Publish(BasicMessage message)
         {
+            var exchange = address;
+            var properties = ConstructHeaders(message);
+            var body = message.BodyStream.ToByteArray();
+            var messageName = message.GetHeader(MessageHeaders.MessageName);
+
+            lock (channel)
+            {
+                channel.BasicPublish(exchange, messageName, properties, body);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -49,9 +59,6 @@ namespace EzBus.RabbitMQ
         public Task Start()
         {
             channel = channelFactory.GetChannel();
-
-            //log.Info("Initializing RabbitMQ receiving channel");
-
             channel.QueueDeclare(address, true, false, false);
             channel.QueueDeclare(errorAddress, true, false, false);
             channel.ExchangeDeclare(address, conf.ExchangeType, true);
