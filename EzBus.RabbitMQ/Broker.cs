@@ -13,14 +13,17 @@ namespace EzBus.RabbitMQ
         private readonly IConfig conf;
         private readonly string address;
         private readonly string errorAddress;
-        private IModel channel;
+        private readonly IModel channel;
 
         public Broker(IChannelFactory channelFactory, IConfig conf, IAddressConfig addressConf)
         {
             this.channelFactory = channelFactory ?? throw new ArgumentNullException(nameof(channelFactory));
             this.conf = conf ?? throw new ArgumentNullException(nameof(conf));
+            
             address = addressConf.Address;
             errorAddress = addressConf.ErrorAddress;
+
+            channel = channelFactory.GetChannel();
         }
 
         public Task Publish(BasicMessage message)
@@ -58,7 +61,6 @@ namespace EzBus.RabbitMQ
 
         public Task Start()
         {
-            channel = channelFactory.GetChannel();
             channel.QueueDeclare(address, true, false, false);
             channel.QueueDeclare(errorAddress, true, false, false);
             channel.ExchangeDeclare(address, conf.ExchangeType, true);

@@ -14,7 +14,7 @@ namespace DiceRoller.Client
                 .UseRabbitMQ()
                 .CreateBus();
 
-            await bus.Start();
+           // await bus.Start();
 
             Console.Title = "DiceRoller Client";
 
