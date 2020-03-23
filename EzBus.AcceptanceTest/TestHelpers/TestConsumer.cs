@@ -27,21 +27,4 @@ namespace EzBus.AcceptanceTest.TestHelpers
       onMessage.Invoke(basicMessage);
     }
   }
-
-  public class TestConsumerFactory : IConsumerFactory
-  {
-    private readonly IAddressConfig addressConfig;
-    private readonly IServiceProvider serviceProvider;
-
-    public TestConsumerFactory(IAddressConfig addressConfig, IServiceProvider serviceProvider)
-    {
-      this.addressConfig = addressConfig ?? throw new ArgumentNullException(nameof(addressConfig));
-      this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-    }
-
-    public IConsumer Create()
-    {
-      return serviceProvider.GetService(typeof(IConsumer)) as IConsumer;
-    }
-  }
 }
