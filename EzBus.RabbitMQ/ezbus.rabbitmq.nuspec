@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>EzBus.RabbitMQ</id>
-    <version>0.0.0</version>
+    <version>3.0.0-pre1</version>
     <authors>Zapote</authors>
     <owners>Zapote</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,14 +13,13 @@
     <tags>bus esb service soa micro publish subscribe messaging event architecture pub sub queue rabbitmq</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.1">
-        <dependency id="EzBus" version="[NuGetVersion]" />
+        <dependency id="EzBus" version="3.0.0-pre1" />
         <dependency id="RabbitMQ.client" version="5.1.2" />
         <dependency id="Microsoft.Extensions.DependencyInjection" version="3.1.2" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="netstandard2.1/EzBus.RabbitMQ.dll" target="lib\netstandard2.1" />
-    <file src="..\..\..\LICENSE" target="license\license.txt"></file>
+    <file src="bin/Release/netstandard2.1/EzBus.RabbitMQ.dll" target="lib\netstandard2.1" />
   </files>
 </package>

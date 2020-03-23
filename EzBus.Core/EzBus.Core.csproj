@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Version>3.0.0-beta0001</Version>
+    <Version>3.0.0-pre1</Version>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\EzBus\EzBus.csproj" />
