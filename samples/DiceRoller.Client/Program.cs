@@ -14,8 +14,6 @@ namespace DiceRoller.Client
                 .UseRabbitMQ()
                 .CreateBus();
 
-           // await bus.Start();
-
             Console.Title = "DiceRoller Client";
 
             var keyInfo = new ConsoleKeyInfo();
@@ -25,10 +23,10 @@ namespace DiceRoller.Client
                 Console.WriteLine("Press <enter> to send RollTheDice");
                 keyInfo = Console.ReadKey();
 
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     Console.WriteLine("sending");
-                    await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });
+                    await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10, Order = i });
                 }
             }
 

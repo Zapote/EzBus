@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using EzBus;
 using Microsoft.Extensions.Logging;
 
@@ -16,16 +17,17 @@ namespace DiceRoller.Service
             this.publisher = publisher;
         }
 
-        public void Handle(RollTheDice message)
+        public async Task Handle(RollTheDice message)
         {
             logger.LogDebug($"Rolling the dice {message.Attempts} times");
-            
+
             var sw = new Stopwatch();
             sw.Start();
             for (var i = 0; i < message.Attempts; i++)
             {
                 var result = new Random().Next(1, 7);
-                publisher.Publish(new DiceRolled { Result = result });
+                await publisher.Publish(new DiceRolled { Result = result });
+                logger.LogInformation($"Result published {message.Order}");
             }
             sw.Stop();
 

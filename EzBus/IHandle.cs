@@ -1,8 +1,10 @@
-﻿namespace EzBus
+﻿using System.Threading.Tasks;
+
+namespace EzBus
 {
     public interface IHandle<in T> : IMessageHandler
     {
-        void Handle(T m);
+        Task Handle(T m);
     }
 
     public interface IMessageHandler

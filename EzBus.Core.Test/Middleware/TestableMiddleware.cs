@@ -1,17 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace EzBus.Core.Test.Middleware
 {
     public abstract class TestableMiddleware : IMiddleware
     {
-        public void Invoke(MiddlewareContext context, Action next)
+        public Task Invoke(MiddlewareContext context, Func<Task> next)
         {
             IsInvoked = true;
-
-            next();
+            return next();
         }
 
-        public void OnError(Exception ex)
+        public Task OnError(Exception ex)
         {
             throw new NotImplementedException();
         }

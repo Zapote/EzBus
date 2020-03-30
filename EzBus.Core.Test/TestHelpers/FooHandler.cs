@@ -1,10 +1,12 @@
-﻿namespace EzBus.Core.Test.TestHelpers
+﻿using System.Threading.Tasks;
+
+namespace EzBus.Core.Test.TestHelpers
 {
     public class FooHandler : IHandle<TestMessageData>
     {
-        public void Handle(TestMessageData message)
+        public Task Handle(TestMessageData message)
         {
-
+            return Task.CompletedTask;
         }
     }
 }

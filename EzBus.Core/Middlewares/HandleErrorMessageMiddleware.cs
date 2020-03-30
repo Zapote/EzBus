@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace EzBus.Core.Middlewares
 {
@@ -14,13 +15,13 @@ namespace EzBus.Core.Middlewares
             this.addressConfig = addressConfig ?? throw new ArgumentNullException(nameof(addressConfig));
         }
 
-        public void Invoke(MiddlewareContext context, Action next)
+        public async Task Invoke(MiddlewareContext context, Func<Task> next)
         {
             basicMessage = context.BasicMessage;
-            next();
+            await next();
         }
 
-        public void OnError(Exception ex)
+        public async Task OnError(Exception ex)
         {
             if (basicMessage == null) throw new Exception("Message is null!", ex);
             basicMessage.BodyStream.Position = 0;
@@ -36,7 +37,7 @@ namespace EzBus.Core.Middlewares
                 level++;
             }
 
-            broker.Send(addressConfig.ErrorAddress, basicMessage);
+            await broker.Send(addressConfig.ErrorAddress, basicMessage);
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace EzBus
 {
     public interface IMiddleware
     {
-        void Invoke(MiddlewareContext context, Action next);
-        void OnError(Exception ex);
+        Task Invoke(MiddlewareContext context, Func<Task> next);
+        Task OnError(Exception ex);
     }
 }

@@ -17,6 +17,12 @@ namespace EzBus.RabbitMQ
         public void Close()
         {
             connection.Close();
+            connection.ConnectionShutdown += Connection_ConnectionShutdown;
+        }
+
+        private void Connection_ConnectionShutdown(object sender, ShutdownEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public IModel GetChannel()
@@ -31,6 +37,7 @@ namespace EzBus.RabbitMQ
             var factory = new ConnectionFactory
             {
                 AutomaticRecoveryEnabled = conf.AutomaticRecoveryEnabled,
+                TopologyRecoveryEnabled = true,
                 RequestedHeartbeat = conf.RequestedHeartbeat,
                 UseBackgroundThreadsForIO = true,
                 UserName = conf.UserName,
@@ -48,7 +55,6 @@ namespace EzBus.RabbitMQ
 
                 throw new Exception("Failed to create RabbitMQ connection.", ex);
             }
-
         }
     }
 }

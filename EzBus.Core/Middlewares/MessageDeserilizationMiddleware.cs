@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using EzBus.Serializers;
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +19,7 @@ namespace EzBus.Core.Middlewares
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public void Invoke(MiddlewareContext context, Action next)
+        public Task Invoke(MiddlewareContext context, Func<Task> next)
         {
             var channelMessage = context.BasicMessage;
             var messageTypeName = channelMessage.GetHeader(MessageHeaders.MessageFullname);
@@ -34,11 +35,12 @@ namespace EzBus.Core.Middlewares
                 context.Message = bodySerializer.Deserialize(channelMessage.BodyStream, typeof(object));
             }
 
-            next();
+            return next();
         }
 
-        public void OnError(Exception ex)
+        public Task OnError(Exception ex)
         {
+            return Task.CompletedTask;
         }
     }
 }

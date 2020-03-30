@@ -4,7 +4,7 @@ namespace EzBus.RabbitMQ
     {
         public int Port { get; set; } = 5672;
         public bool AutomaticRecoveryEnabled { get; set; } = true;
-        public ushort RequestedHeartbeat { get; set; } = 5;
+        public ushort RequestedHeartbeat { get; set; } = 30;
         public ushort PrefetchCount { get; set; } = 100;
         public string ExchangeType { get; set; } = "topic";
         public string UserName { get; set; } = "guest";

@@ -12,7 +12,7 @@ namespace EzBus.RabbitMQ
         private readonly IChannelFactory factory;
         private readonly string queue;
         private IModel channel;
-        private Action<BasicMessage> onMessage;
+        private Func<BasicMessage, Task> onMessage;
 
         public Consumer(IChannelFactory factory, string queue)
         {
@@ -20,7 +20,7 @@ namespace EzBus.RabbitMQ
             this.queue = queue;
         }
 
-        public Task Consume(Action<BasicMessage> onMessage)
+        public Task Consume(Func<BasicMessage, Task> onMessage)
         {
             this.onMessage = onMessage;
             channel = factory.GetChannel();
@@ -41,7 +41,7 @@ namespace EzBus.RabbitMQ
                 message.AddHeader(header.Key, value);
             }
 
-            onMessage(message);
+            onMessage(message).GetAwaiter().GetResult();
 
             channel.BasicAck(args.DeliveryTag, false);
         }

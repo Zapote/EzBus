@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EzBus.Core.Middlewares
 {
@@ -17,19 +18,19 @@ namespace EzBus.Core.Middlewares
             queue = new Queue<IMiddleware>(this.middlewares);
         }
 
-        public void Invoke(MiddlewareContext context)
+        public async Task Invoke(MiddlewareContext context)
         {
             if (queue.Count == 0) return;
             var mw = queue.Dequeue();
             try
             {
-                mw.Invoke(context, () => Invoke(context));
+                await mw.Invoke(context, () => Invoke(context));
             }
             catch (Exception ex)
             {
                 foreach (var middleware in middlewares)
                 {
-                    middleware.OnError(ex);
+                    await middleware.OnError(ex);
                 }
             }
         }

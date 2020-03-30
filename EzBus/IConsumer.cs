@@ -5,6 +5,6 @@ namespace EzBus
 {
     public interface IConsumer
     {
-        Task Consume(Action<BasicMessage> onMessage);
+        Task Consume(Func<BasicMessage, Task> onMessage);
     }
 }

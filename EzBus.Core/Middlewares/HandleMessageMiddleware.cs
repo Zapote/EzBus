@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace EzBus.Core.Middlewares
 {
@@ -18,7 +19,7 @@ namespace EzBus.Core.Middlewares
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public void Invoke(MiddlewareContext context, Action next)
+        public async Task Invoke(MiddlewareContext context, Func<Task> next)
         {
             var basicMessage = context.BasicMessage;
             var messageTypeName = basicMessage.GetHeader(MessageHeaders.MessageFullname);
@@ -38,12 +39,12 @@ namespace EzBus.Core.Middlewares
                 }
             }
 
-            next();
+            await next();
         }
 
-        public void OnError(Exception ex)
+        public Task OnError(Exception ex)
         {
-
+            return Task.CompletedTask;
         }
 
         private InvokationResult InvokeHandler(Type handlerType, object message)

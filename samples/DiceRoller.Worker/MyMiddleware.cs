@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using EzBus;
 using Microsoft.Extensions.Logging;
 
@@ -8,19 +9,19 @@ namespace DiceRoller.Service
     {
         private readonly ILogger<MyMiddleware> logger;
 
-        public MyMiddleware(ILogger<MyMiddleware> logger )
+        public MyMiddleware(ILogger<MyMiddleware> logger)
         {
             this.logger = logger;
         }
 
-        public void Invoke(MiddlewareContext context, Action next)
+        public async Task Invoke(MiddlewareContext context, Func<Task> next)
         {
             logger.LogInformation("Before message handled.");
-            next();
+            await next();
             logger.LogInformation("After  message handled.");
         }
 
-        public void OnError(Exception ex)
+        public Task OnError(Exception ex)
         {
             throw new NotImplementedException();
         }
