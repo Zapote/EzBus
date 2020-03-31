@@ -17,16 +17,12 @@ namespace EzBus.Core
             this.scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
         }
 
-        public Task Invoke(BasicMessage basicMessage)
+        public async Task Invoke(BasicMessage basicMessage)
         {
-            using (var scope = scopeFactory.CreateScope())
-            {
-                var middlewares = LoadMiddlewares(scope);
-                var middlewareInvoker = new MiddlewareInvoker(middlewares);
-                middlewareInvoker.Invoke(new MiddlewareContext(basicMessage));
-            }
-
-            return Task.CompletedTask;
+            using var scope = scopeFactory.CreateScope();
+            var middlewares = LoadMiddlewares(scope);
+            var middlewareInvoker = new MiddlewareInvoker(middlewares);
+            await middlewareInvoker.Invoke(new MiddlewareContext(basicMessage));
         }
 
         private IEnumerable<IMiddleware> LoadMiddlewares(IServiceScope scope)
