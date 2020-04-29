@@ -13,13 +13,13 @@ namespace EzBus.RabbitMQ
         private readonly IConfig conf;
         private readonly string address;
         private readonly string errorAddress;
-        private readonly IModel channel;
+        private IModel channel;
 
         public Broker(IChannelFactory channelFactory, IConfig conf, IAddressConfig addressConf)
         {
             this.channelFactory = channelFactory ?? throw new ArgumentNullException(nameof(channelFactory));
             this.conf = conf ?? throw new ArgumentNullException(nameof(conf));
-            
+
             address = addressConf.Address;
             errorAddress = addressConf.ErrorAddress;
 
@@ -104,10 +104,15 @@ namespace EzBus.RabbitMQ
             catch (OperationInterruptedException ex)
             {
                 if (ex.ShutdownReason.ReplyCode != 404) throw;
-
+                RestoreChannel();
                 var message = $"Queue '{queueName}' does not exist or is currently not available.";
                 throw new InvalidOperationException(message, ex);
             }
+        }
+
+        private void RestoreChannel()
+        {
+            channel = channelFactory.GetChannel();
         }
     }
 }

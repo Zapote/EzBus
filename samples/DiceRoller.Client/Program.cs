@@ -23,11 +23,19 @@ namespace DiceRoller.Client
                 Console.WriteLine("Press <enter> to send RollTheDice");
                 keyInfo = Console.ReadKey();
 
-                for (int i = 0; i < 5; i++)
+
+                Console.WriteLine("sending");
+                try
                 {
-                    Console.WriteLine("sending");
-                    await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10, Order = i });
+                    await bus.Send("diceroller-worker1", new RollTheDice { Attempts = 10 });
                 }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e);
+                }
+
+                await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });
+
             }
 
             await bus.Stop();
