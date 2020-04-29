@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DiceRoller.Service
+namespace DiceRoller.Worker
 {
     public class RollTheDice
     {

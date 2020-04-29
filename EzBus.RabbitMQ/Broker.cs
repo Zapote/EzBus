@@ -89,6 +89,7 @@ namespace EzBus.RabbitMQ
 
             foreach (var h in message.Headers)
             {
+                if (props.Headers.ContainsKey(h.Name)) continue;
                 props.Headers.Add(h.Name, h.Value);
             }
 

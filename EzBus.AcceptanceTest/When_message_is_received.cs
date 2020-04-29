@@ -17,7 +17,7 @@ namespace EzBus.AcceptanceTest
         }
 
         [Then]
-        public void Message_is_handled()
+        public async Task Message_is_handled()
         {
             messageHandled = false;
 
@@ -25,8 +25,8 @@ namespace EzBus.AcceptanceTest
                 .UseTestBroker()
                 .CreateBus();
 
-            bus.Start().Wait();
-            bus.Send("test", new TestMessage()).Wait();
+            await bus.Start();
+            await bus.Send("test", new TestMessage());
 
             Assert.True(messageHandled);
         }

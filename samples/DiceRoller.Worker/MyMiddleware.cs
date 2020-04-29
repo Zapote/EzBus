@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using EzBus;
 using Microsoft.Extensions.Logging;
 
-namespace DiceRoller.Service
+namespace DiceRoller.Worker
 {
     public class MyMiddleware : IMiddleware
     {
@@ -23,7 +23,8 @@ namespace DiceRoller.Service
 
         public Task OnError(Exception ex)
         {
-            throw new NotImplementedException();
+            System.Console.WriteLine(ex.Message);
+            return Task.CompletedTask;
         }
     }
 }

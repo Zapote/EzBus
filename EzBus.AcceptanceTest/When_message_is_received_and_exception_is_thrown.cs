@@ -12,14 +12,14 @@ namespace EzBus.AcceptanceTest
         private static int retries = 0;
 
         [Then]
-        public void Message_should_be_retried_five_times()
+        public async Task Message_should_be_retried_five_times()
         {
             retries = 0;
             var bus = BusFactory.Address("test")
                 .UseTestBroker()
                 .CreateBus();
             bus.Start().Wait();
-            bus.Send("test", new TestMessage { ThrowError = true }).Wait();
+            await bus.Send("test", new TestMessage { ThrowError = true });
 
             Assert.Equal(5, retries);
         }

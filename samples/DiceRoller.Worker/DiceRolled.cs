@@ -1,4 +1,4 @@
-﻿namespace DiceRoller.Service
+﻿namespace DiceRoller.Worker
 {
     public class DiceRolled
     {

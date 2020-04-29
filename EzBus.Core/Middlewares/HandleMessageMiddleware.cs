@@ -65,9 +65,9 @@ namespace EzBus.Core.Middlewares
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(string.Format("Attempt {1}: Failed to handle message '{0}'.", message.GetType().Name, i + 1), ex.InnerException);
+                    logger.LogError($"Attempt {i + 1}: Failed to handle message '{message.GetType().Name}' {ex}", ex);
                     success = false;
-                    exception = ex.InnerException;
+                    exception = ex;
                 }
             }
 

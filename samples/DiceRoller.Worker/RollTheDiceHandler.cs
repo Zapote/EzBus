@@ -4,17 +4,19 @@ using System.Threading.Tasks;
 using EzBus;
 using Microsoft.Extensions.Logging;
 
-namespace DiceRoller.Service
+namespace DiceRoller.Worker
 {
     public class RollTheDiceHandler : IHandle<RollTheDice>
     {
         private readonly ILogger<RollTheDiceHandler> logger;
         private readonly IPublisher publisher;
+        private readonly IMyClass my;
 
-        public RollTheDiceHandler(ILogger<RollTheDiceHandler> logger, IPublisher publisher)
+        public RollTheDiceHandler(ILogger<RollTheDiceHandler> logger, IPublisher publisher, IMyClass my)
         {
             this.logger = logger;
             this.publisher = publisher;
+            this.my = my;
         }
 
         public async Task Handle(RollTheDice message)
@@ -31,7 +33,9 @@ namespace DiceRoller.Service
             }
             sw.Stop();
 
-            logger.LogDebug($"{message.Attempts} times took ${sw.Elapsed.TotalSeconds} s");
+            logger.LogInformation($"{message.Attempts} times took ${sw.Elapsed.TotalSeconds} s");
+
+            logger.LogInformation("Id: " + my.Id);
         }
     }
 }

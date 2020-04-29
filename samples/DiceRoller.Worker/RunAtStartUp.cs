@@ -2,7 +2,7 @@
 using EzBus;
 using Microsoft.Extensions.Logging;
 
-namespace DiceRoller.Service
+namespace DiceRoller.Worker
 {
     public class RunAtStartUp : IStartupTask
     {
@@ -14,7 +14,7 @@ namespace DiceRoller.Service
         }
 
         public string Name => "RunAtStartUp task";
-        
+
         public Task Run()
         {
             logger.LogDebug("I am running at startup!");
