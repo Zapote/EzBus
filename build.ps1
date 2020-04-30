@@ -1,5 +1,5 @@
 $major = "3.0.0"
-$pre = 2
+$pre = 3
 $branch = git rev-parse --abbrev-ref HEAD
 
 if ($branch -eq "master") {
