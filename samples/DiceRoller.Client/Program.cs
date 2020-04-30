@@ -27,15 +27,12 @@ namespace DiceRoller.Client
                 Console.WriteLine("sending");
                 try
                 {
-                    await bus.Send("diceroller-worker1", new RollTheDice { Attempts = 10 });
+                    await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });
                 }
                 catch (Exception e)
                 {
                     System.Console.WriteLine(e);
                 }
-
-                await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });
-
             }
 
             await bus.Stop();

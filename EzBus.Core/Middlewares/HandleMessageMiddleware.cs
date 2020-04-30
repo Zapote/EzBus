@@ -31,7 +31,7 @@ namespace EzBus.Core.Middlewares
 
                 logger.LogDebug($"Invoking handler {handlerType.Name}");
 
-                var result = InvokeHandler(handlerType, context.Message);
+                var result = await InvokeHandler(handlerType, context.Message);
 
                 if (!result.Success)
                 {
@@ -47,7 +47,7 @@ namespace EzBus.Core.Middlewares
             return Task.CompletedTask;
         }
 
-        private InvokationResult InvokeHandler(Type handlerType, object message)
+        private async Task<InvokationResult> InvokeHandler(Type handlerType, object message)
         {
             var success = true;
             Exception exception = null;
@@ -59,7 +59,8 @@ namespace EzBus.Core.Middlewares
                 try
                 {
                     var handler = serviceProvider.GetService(handlerType);
-                    methodInfo.Invoke(handler, new[] { message });
+                    var task = (Task)methodInfo.Invoke(handler, new[] { message });
+                    await task.ConfigureAwait(false);
                     success = true;
                     break;
                 }

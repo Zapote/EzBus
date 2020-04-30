@@ -14,8 +14,7 @@ namespace DiceRoller.Worker
 
         public Task Handle(RollTheDice message)
         {
-            System.Console.WriteLine("Id:" + myClass.Id);
-            return Task.CompletedTask;
+            return myClass.DoSomeWork();
         }
     }
 }

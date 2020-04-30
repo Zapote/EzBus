@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace DiceRoller.Worker
 {
@@ -10,5 +11,11 @@ namespace DiceRoller.Worker
         }
 
         public Guid Id { get; set; }
+
+        public Task DoSomeWork()
+        {
+            System.Console.WriteLine("Doing the work");
+            return Task.CompletedTask;
+        }
     }
 }

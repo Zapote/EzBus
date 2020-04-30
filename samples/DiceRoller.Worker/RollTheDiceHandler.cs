@@ -35,7 +35,7 @@ namespace DiceRoller.Worker
 
             logger.LogInformation($"{message.Attempts} times took ${sw.Elapsed.TotalSeconds} s");
 
-            logger.LogInformation("Id: " + my.Id);
+            my.DoSomeWork();
         }
     }
 }
