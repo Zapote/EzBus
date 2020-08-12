@@ -1,14 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>dotnet-DiceRoller.Service-905DB422-8765-4962-9CFA-FB32BF1E9DBC</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\EzBus.Core\EzBus.Core.csproj" />
     <ProjectReference Include="..\..\EzBus.RabbitMQ\EzBus.RabbitMQ.csproj" />
     <ProjectReference Include="..\..\EzBus\EzBus.csproj" />
   </ItemGroup>
-
 </Project>

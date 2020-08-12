@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using EzBus;
 
 namespace DiceRoller.Statistics
@@ -10,11 +11,12 @@ namespace DiceRoller.Statistics
     {
         private static readonly DiceStatistics statistics = new DiceStatistics();
 
-        public void Handle(DiceRolled message)
+        public Task Handle(DiceRolled message)
         {
             statistics.AddRoll(message.Result);
             ClearLastLine();
             Console.WriteLine(statistics);
+            return Task.CompletedTask;
         }
 
         public static void ClearLastLine()
