@@ -1,12 +1,14 @@
-$major = "3.0.0"
+$major = "3"
+$minor = "0"
+$revision = "0"
 $pre = 3
 $branch = git rev-parse --abbrev-ref HEAD
 
 if ($branch -eq "master") {
-  $version = "$major"
+  $version = "$major.$minor.$revision"
 }
 else {
-  $version = "$major-pre$pre"
+  $version = "$major.$minor.$revision-pre$pre"
 }
 
 setversion $version "./EzBus/EzBus.csproj"
