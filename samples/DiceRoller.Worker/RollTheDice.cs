@@ -1,4 +1,6 @@
-namespace DiceRoller.Client
+﻿using System;
+
+namespace DiceRoller.Worker
 {
     public class RollTheDice
     {

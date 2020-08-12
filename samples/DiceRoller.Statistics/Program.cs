@@ -1,17 +1,28 @@
 ﻿using System;
+using System.Threading.Tasks;
+using EzBus.Core;
 using EzBus.RabbitMQ;
+using Microsoft.Extensions.Logging;
 
 namespace DiceRoller.Statistics
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            var bus = BusFactory
+                       .Address("diceroller-statistics")
+                       .UseRabbitMQ()
+                       .CreateBus();
+            
+            await bus.Subscribe("diceroller-worker", "DiceRolled");
+            await bus.Start();
+            
             Console.Title = "DiceRoller Statistics";
-            Bus.Configure().UseRabbitMQ();
-            Bus.Subscribe("diceroller.service");
-
             Console.Read();
+
+            await bus.Unsubscribe("diceroller-worker", "DiceRolled");
+            await bus.Stop();
         }
     }
 }

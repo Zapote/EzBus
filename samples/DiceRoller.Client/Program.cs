@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EzBus.Core;
 using EzBus.RabbitMQ;
-using EzBus;
 
 namespace DiceRoller.Client
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.Title = "DiceRoller Client";
+            var bus = BusFactory
+                .Address("diceroller-client")
+                .UseRabbitMQ()
+                .CreateBus();
 
-            Bus.Configure().UseRabbitMQ();
+            Console.Title = "DiceRoller Client";
 
             var keyInfo = new ConsoleKeyInfo();
 
@@ -20,13 +23,19 @@ namespace DiceRoller.Client
                 Console.WriteLine("Press <enter> to send RollTheDice");
                 keyInfo = Console.ReadKey();
 
-                for (int i = 0; i < 1000; i++)
-                {
-                    Console.WriteLine("sending");
-                            Bus.Send("DiceRoller.Service", new RollTheDice { Attempts = 10 });
-                }
 
+                Console.WriteLine("sending");
+                try
+                {
+                    await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e);
+                }
             }
+
+            await bus.Stop();
         }
     }
 }

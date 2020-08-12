@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<package >
+  <metadata>
+    <id>EzBus</id>
+    <version>3.0.0-pre3</version>
+    <authors>Zapote</authors>
+    <owners>Zapote</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>EzBus - Messaging made easy!</description>
+    <releaseNotes>None</releaseNotes>
+    <iconUrl>http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ezbus-logo-128x128.png</iconUrl>
+    <projectUrl>https://github.com/zapote/ezbus</projectUrl>
+    <tags>bus esb service soa publish subscribe messaging event architecture pub sub queue servicebus</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="3.1.2" />
+        <dependency id="Microsoft.Extensions.Logging" version="3.1.2" />
+        <dependency id="Microsoft.Extensions.Logging.Console" version="3.1.2" />
+        <dependency id="Newtonsoft.json" version="12.0.3" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin/Release/netstandard2.1/EzBus.dll" target="lib\netstandard2.1" />
+    <file src="bin/Release/netstandard2.1/EzBus.Core.dll" target="lib\netstandard2.1" />
+  </files>
+</package>
