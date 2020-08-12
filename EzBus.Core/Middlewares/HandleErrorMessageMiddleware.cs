@@ -7,7 +7,7 @@ namespace EzBus.Core.Middlewares
     {
         private readonly IBroker broker;
         private readonly IAddressConfig addressConfig;
-        private BasicMessage basicMessage;
+        private BasicMessage bm;
 
         public HandleErrorMessageMiddleware(IBroker broker, IAddressConfig addressConfig)
         {
@@ -17,14 +17,14 @@ namespace EzBus.Core.Middlewares
 
         public async Task Invoke(MiddlewareContext context, Func<Task> next)
         {
-            basicMessage = context.BasicMessage;
+            bm = context.BasicMessage;
             await next();
         }
 
         public async Task OnError(Exception ex)
         {
-            if (basicMessage == null) throw new Exception("Message is null!", ex);
-            basicMessage.BodyStream.Position = 0;
+            if (bm == null) throw new Exception("Message is null!", ex);
+            bm.BodyStream.Position = 0;
 
             var level = 0;
 
@@ -32,12 +32,12 @@ namespace EzBus.Core.Middlewares
             {
                 var headerName = $"EzBus.ErrorMessage L{level}";
                 var value = $"{DateTime.UtcNow}: {ex.Message}";
-                basicMessage.AddHeader(headerName, value);
+                bm.AddHeader(headerName, value);
                 ex = ex.InnerException;
                 level++;
             }
 
-            await broker.Send(addressConfig.ErrorAddress, basicMessage);
+            await broker.Send(addressConfig.ErrorAddress, bm);
         }
     }
 }

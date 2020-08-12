@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using EzBus.Core.Middlewares;
 using Xunit;
 
@@ -9,9 +10,9 @@ namespace EzBus.Core.Test.Middleware
         private readonly MiddlewareInvoker invoker = new MiddlewareInvoker(new IMiddleware[] { new MiddlewareOne(), new MiddlewareTwo() });
 
         [Fact]
-        public void Test()
+        public async Task Test()
         {
-            invoker.Invoke(new MiddlewareContext(new BasicMessage(new MemoryStream())));
+            await invoker.Invoke(new MiddlewareContext(new BasicMessage(new MemoryStream())));
 
             Assert.All(invoker.Middlewares, item =>
             {
