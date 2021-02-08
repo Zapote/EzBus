@@ -32,7 +32,7 @@ namespace EzBus.RabbitMQ
 
         private void OnReceivedMessage(object sender, BasicDeliverEventArgs args)
         {
-            var body = args.Body;
+            var body = args.Body.ToArray();
             var message = new BasicMessage(new MemoryStream(body));
 
             foreach (var header in args.BasicProperties.Headers)

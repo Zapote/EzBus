@@ -17,32 +17,31 @@ When your application starts
 ```C#
 using EzBus.RabbitMQ;
 
-Bus.Configure().UseRabbitMQ();
-```
+var bus = BusFactory
+          .Address("my-service")
+          .UseRabbitMQ()
+          .LogLevel(LogLevel.Debug)
+          .CreateBus();
 
-##### Msmq: 
-```C#
-using EzBus.Msmq;
-
-Bus.Configure().UseMsmq();
+await bus.Start();
 ```
 
 ### Subscribe to published messages
 
 ```C#
-Bus.Subscribe("My.Service");
+await bus.Subscribe("order-service", "OrderPlaced");
 ```
 
 ### Send your message
 
 ```C#
-Bus.Send("My.Service", new TextMessage { Text = "Hello EzBus" });
+await bus.Send("my-service", new TextMessage { Text = "Hello EzBus" });
 ```
 
 ### Publish your message
 
 ```C#
-Bus.Publish(new TextMessage { Text = "Hello EzBus" });
+await bus.Publish(new TextMessage { Text = "Hello EzBus" });
 ```
 
 ### Handle your message
@@ -53,9 +52,10 @@ Bus.Publish(new TextMessage { Text = "Hello EzBus" });
 ```C#
 public class TextMessageHandler : IHandle<TextMessage>
 {
-  public void Handle(TextMessage message)
+  public Task Handle(TextMessage message)
   {
     Console.WriteLine(message.Text);
+    return Task.CompletedTask;
   }
 }
 ```
@@ -79,20 +79,7 @@ public class TextMessageHandler : IHandle<TextMessage>
 ##### ServiceRegistry
 Derive from class ServiceRegistry and register dependencies in constructor. This class will be activated on startup.
 ```C#
-public class CoreRegistry : ServiceRegistry
-{
-    public CoreRegistry()
-    {
-        // Per message scoped
-        Register<IDependencyService, DependencyService>();
-        
-        // Always unique instance
-        Register<IFoo, Foo>().As.Unique();
-        
-        // Singleton
-        Register<IBar, Bar>().As.Singleton();
-    }
-}
+
 ```
 
 ### Middleware
@@ -111,16 +98,16 @@ public class UnitOfWorkMiddleware : IMiddleware
     this.unitOfWork = unitOfWork;   
   }
 
-  public void Invoke()
+  public async Task Invoke()
   {
-    unitOfWork.Start();
-    next();
-    unitOfWork.Commit();
+    await unitOfWork.StartAsync();
+    await next();
+    await unitOfWork.CommitAsync();
   }
 
-  public void OnError(Exception ex)
+  public Task OnError(Exception ex)
   {
-    unitOfWork.Rollback();
+    await unitOfWork.RollbackAsync();
   }
 }
 ```
@@ -131,39 +118,33 @@ If you want EzBus to run a something at startup, implement interface EzBus.IStar
 
 ```C#
 
-public class MyStartupTask
+public class MyTask : IStartupTask
 {
-  public string Name => "MyStartupTask";
+    public string Name => "My task";
 
-  public void Run()
-  {
-    //Do some exciting stuff
-  }
+    public Task Run()
+    {
+        return Task.CompletedTask;
+    }
 }
 
 ```
 
 ### Unit Testing
 
-First in setup, start the host.
-
-```C#
-Bus.Configure().Host.Start();
-```
-
 Create a class that implements interface EzBus.IBus, this class will now be used instead of EzBus implementation when doing bus operations (send, publish).
 
 ```C#
 public class FakeBus : IBus
 {
-    public void Send(string destinationQueue, object message)
+    public Task Send(string destinationQueue, object message)
     {
-        
+        return Task.CompletedTask;
     }
 
-    public void Publish(object message)
+    public Task Publish(object message)
     {
-        
+        return Task.CompletedTask;
     }
 }
 ```

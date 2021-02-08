@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EzBus.Core;
 using EzBus.RabbitMQ;
+using System.Diagnostics;
 
 namespace DiceRoller.Client
 {
@@ -27,7 +28,12 @@ namespace DiceRoller.Client
                 Console.WriteLine("sending");
                 try
                 {
-                    await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });
+                    var stopwatch = new Stopwatch();
+                   
+                        stopwatch.Start();
+                        await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });    
+                        stopwatch.Stop();
+                        System.Console.WriteLine("Outer:" + stopwatch.ElapsedMilliseconds);
                 }
                 catch (Exception e)
                 {

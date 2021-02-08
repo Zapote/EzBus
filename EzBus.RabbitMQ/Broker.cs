@@ -22,7 +22,6 @@ namespace EzBus.RabbitMQ
 
             address = addressConf.Address;
             errorAddress = addressConf.ErrorAddress;
-
             channel = channelFactory.GetChannel();
         }
 
@@ -46,17 +45,17 @@ namespace EzBus.RabbitMQ
             QueueDeclarePassive(destination);
             var properties = ConstructHeaders(message);
             var body = message.BodyStream.ToByteArray();
-
             lock (channel)
             {
-                channel.BasicPublish(string.Empty,
+                return Task.Run(() =>
+                {
+                    channel.BasicPublish(string.Empty,
                     destination,
                     basicProperties: properties,
                     body: body,
                     mandatory: true);
+                });
             }
-
-            return Task.CompletedTask;
         }
 
         public Task Start()

@@ -31,7 +31,7 @@ namespace EzBus.RabbitMQ
         /// <summary>
         /// Heartbeat setting for connection in seconds. 0 for disabled.
         /// </summary>
-        ushort RequestedHeartbeat { get; set; }
+        TimeSpan RequestedHeartbeat { get; set; }
         /// <summary>
         /// Maximum of unacknowledged messages at once. Default 100
         /// </summary>
