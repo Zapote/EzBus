@@ -29,11 +29,11 @@ namespace DiceRoller.Client
                 try
                 {
                     var stopwatch = new Stopwatch();
-                   
-                        stopwatch.Start();
-                        await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });    
-                        stopwatch.Stop();
-                        System.Console.WriteLine("Outer:" + stopwatch.ElapsedMilliseconds);
+
+                    stopwatch.Start();
+                    await bus.Send("diceroller-worker", new RollTheDice { Attempts = 10 });
+                    stopwatch.Stop();
+                    System.Console.WriteLine("Outer:" + stopwatch.ElapsedMilliseconds);
                 }
                 catch (Exception e)
                 {

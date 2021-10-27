@@ -42,18 +42,19 @@ namespace EzBus.RabbitMQ
                 UseBackgroundThreadsForIO = true,
                 UserName = conf.UserName,
                 Password = conf.Password,
-                HostName = conf.HostName,
-                VirtualHost = conf.VirtualHost,
-                Port = conf.Port
             };
+
+            var scheme = conf.Port == 5671 ? "amqps" : "amqp";
+            var uri = new Uri($"{scheme}://{conf.HostName}:{conf.Port}/{conf.VirtualHost}");
+            factory.Uri = uri;
+
             try
             {
                 connection = factory.CreateConnection($"EzBus-{name}");
             }
             catch (Exception ex)
             {
-
-                throw new Exception("Failed to create RabbitMQ connection.", ex);
+                throw new Exception($"Failed to create RabbitMQ connection to {uri}.", ex);
             }
         }
     }
