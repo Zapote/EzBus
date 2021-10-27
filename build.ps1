@@ -1,6 +1,6 @@
 $major = "3"
 $minor = "0"
-$revision = "0"
+$revision = "1"
 $pre = 3
 $branch = git rev-parse --abbrev-ref HEAD
 
