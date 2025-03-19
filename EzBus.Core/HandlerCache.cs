@@ -25,11 +25,13 @@ namespace EzBus.Core
             {
                 var handlerInfo = new HandlerInfo(handlerType, messageType);
                 var key = messageType.FullName;
-                if (!handlers.ContainsKey(key))
+                if (!handlers.TryGetValue(key, out List<HandlerInfo> value))
                 {
-                    handlers[key] = new List<HandlerInfo>();
+                    value = [];
+                    handlers[key] = value;
                 }
-                handlers[key].Add(handlerInfo);
+
+                value.Add(handlerInfo);
                 logger.LogDebug($"Handler '{handlerType.FullName}' for message '{messageType.FullName}' added to cache");
             }
         }
@@ -43,8 +45,8 @@ namespace EzBus.Core
 
             var className = GetClassName(messageFullName);
             var result = handlers.FirstOrDefault(x => GetClassName(x.Key) == className).Value;
-            if (result == null) return new HandlerInfo[0];
-            return result.ToArray();
+            if (result == null) return [];
+            return [.. result];
         }
 
         private static string GetClassName(string messageFullName)

@@ -2,15 +2,9 @@
 
 namespace EzBus.Core
 {
-    public class InvokationResult
+    public class InvokationResult(bool success, Exception ex)
     {
-        public InvokationResult(bool success, Exception exception)
-        {
-            Success = success;
-            Exception = exception;
-        }
-
-        public bool Success { get; set; }
-        public Exception Exception { get; set; }
+        public bool Success { get; set; } = success;
+        public Exception Exception { get; set; } = ex;
     }
 }

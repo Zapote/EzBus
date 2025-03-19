@@ -1,11 +1,12 @@
 using System;
+using System.Threading.Tasks;
 using RabbitMQ.Client;
 
 namespace EzBus.RabbitMQ
 {
     public interface IChannelFactory
     {
-        IModel GetChannel();
-        void Close();
+        Task<IChannel> GetChannel();
+        Task Close();
     }
 }

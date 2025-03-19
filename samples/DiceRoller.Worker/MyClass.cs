@@ -12,10 +12,9 @@ namespace DiceRoller.Worker
 
         public Guid Id { get; set; }
 
-        public Task DoSomeWork()
+        public async Task DoSomeWork()
         {
             System.Console.WriteLine("Doing the work");
-            return Task.CompletedTask;
         }
     }
 }

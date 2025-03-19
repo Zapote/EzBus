@@ -14,7 +14,7 @@ namespace DiceRoller.Statistics
         public Task Handle(DiceRolled message)
         {
             statistics.AddRoll(message.Result);
-            ClearLastLine();
+            //ClearLastLine();
             Console.WriteLine(statistics);
             return Task.CompletedTask;
         }

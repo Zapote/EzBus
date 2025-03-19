@@ -38,17 +38,17 @@ namespace EzBus.Core
             logger.LogInformation("EzBus stopped");
         }
 
-        public Task Publish(object message)
+        public async Task Publish(object message)
         {
             var m = MessageFactory.Create(message, serializer);
-            return broker.Publish(m);
+            await broker.Publish(m);
         }
 
-        public Task Send(string destination, object message)
+        public async Task Send(string destination, object message)
         {
             var m = MessageFactory.Create(message, serializer);
             m.AddHeader(MessageHeaders.Destination, destination);
-            return broker.Send(destination, m);
+            await broker.Send(destination, m);
         }
 
         public Task Subscribe(string address, string messageName)

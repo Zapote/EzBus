@@ -3,6 +3,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EzBus.RabbitMQ
@@ -13,7 +14,7 @@ namespace EzBus.RabbitMQ
         private readonly IConfig conf;
         private readonly string address;
         private readonly string errorAddress;
-        private IModel channel;
+        private IChannel channel;
 
         public Broker(IChannelFactory channelFactory, IConfig conf, IAddressConfig addressConf)
         {
@@ -22,49 +23,33 @@ namespace EzBus.RabbitMQ
 
             address = addressConf.Address;
             errorAddress = addressConf.ErrorAddress;
-            channel = channelFactory.GetChannel();
+            channel = channelFactory.GetChannel().Result;
         }
 
-        public Task Publish(BasicMessage message)
+        public async Task Publish(BasicMessage message)
         {
             var exchange = address;
             var properties = ConstructHeaders(message);
             var body = message.BodyStream.ToByteArray();
             var messageName = message.GetHeader(MessageHeaders.MessageName);
 
-            lock (channel)
-            {
-                channel.BasicPublish(exchange, messageName, properties, body);
-            }
-
-            return Task.CompletedTask;
+            await channel.BasicPublishAsync(exchange, messageName, true, properties, body);
         }
 
-        public Task Send(string destination, BasicMessage message)
+        public async Task Send(string destination, BasicMessage message)
         {
-            QueueDeclarePassive(destination);
             var properties = ConstructHeaders(message);
             var body = message.BodyStream.ToByteArray();
-            lock (channel)
-            {
-                return Task.Run(() =>
-                {
-                    channel.BasicPublish(string.Empty,
-                    destination,
-                    basicProperties: properties,
-                    body: body,
-                    mandatory: true);
-                });
-            }
+
+            await QueueDeclarePassive(destination);
+            await channel.BasicPublishAsync(string.Empty, destination, true, properties, body);
         }
 
-        public Task Start()
+        public async Task Start()
         {
-            channel.QueueDeclare(address, true, false, false);
-            channel.QueueDeclare(errorAddress, true, false, false);
-            channel.ExchangeDeclare(address, conf.ExchangeType, true);
-
-            return Task.CompletedTask;
+            await channel.QueueDeclareAsync(address, true, false, false);
+            await channel.QueueDeclareAsync(errorAddress, true, false, false);
+            await channel.ExchangeDeclareAsync(address, conf.ExchangeType, true);
         }
 
         public Task<IConsumer> CreateConsumer()
@@ -72,47 +57,44 @@ namespace EzBus.RabbitMQ
             return Task.FromResult<IConsumer>(new Consumer(channelFactory, address));
         }
 
-        public Task Stop()
+        public async Task Stop()
         {
-            channelFactory.Close();
-            return Task.CompletedTask;
+            await channelFactory.Close();
         }
 
-        private IBasicProperties ConstructHeaders(BasicMessage message)
+        private static BasicProperties ConstructHeaders(BasicMessage message)
         {
-            var props = channel.CreateBasicProperties();
-
+            var props = new BasicProperties();
             props.ClearHeaders();
             props.Persistent = true;
             props.Headers = new Dictionary<string, object>();
 
             foreach (var h in message.Headers)
             {
-                if (props.Headers.ContainsKey(h.Name)) continue;
                 props.Headers.Add(h.Name, h.Value);
             }
 
             return props;
         }
 
-        protected void QueueDeclarePassive(string queueName)
+        protected async Task QueueDeclarePassive(string queueName)
         {
             try
             {
-                channel.QueueDeclarePassive(queueName);
+                await channel.QueueDeclarePassiveAsync(queueName);
             }
             catch (OperationInterruptedException ex)
             {
                 if (ex.ShutdownReason.ReplyCode != 404) throw;
-                RestoreChannel();
+                await RestoreChannel();
                 var message = $"Queue '{queueName}' does not exist or is currently not available.";
                 throw new InvalidOperationException(message, ex);
             }
         }
 
-        private void RestoreChannel()
+        private async Task RestoreChannel()
         {
-            channel = channelFactory.GetChannel();
+            channel = await channelFactory.GetChannel();
         }
     }
 }

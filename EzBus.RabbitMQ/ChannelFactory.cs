@@ -1,5 +1,8 @@
 using System;
+using System.Dynamic;
+using System.Threading.Tasks;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace EzBus.RabbitMQ
 {
@@ -11,35 +14,34 @@ namespace EzBus.RabbitMQ
         public ChannelFactory(IConfig conf, IAddressConfig addressConf)
         {
             this.conf = conf;
-            CreateConnection(addressConf.Address);
+            Task.WaitAll(CreateConnection(addressConf.Address));
         }
 
-        public void Close()
+        public async Task Close()
         {
-            connection.Close();
-            connection.ConnectionShutdown += Connection_ConnectionShutdown;
+            await connection.CloseAsync();
+            connection.ConnectionShutdownAsync += ShutdownConnection;
         }
 
-        private void Connection_ConnectionShutdown(object sender, ShutdownEventArgs e)
+        private async Task ShutdownConnection(object sender, ShutdownEventArgs @event)
         {
-            throw new NotImplementedException();
+            await connection.DisposeAsync();
         }
 
-        public IModel GetChannel()
+        public async Task<IChannel> GetChannel()
         {
-            var channel = connection.CreateModel();
-            channel.BasicQos(0, conf.PrefetchCount, false);
+            var channel = await connection.CreateChannelAsync();
+            await channel.BasicQosAsync(0, conf.PrefetchCount, false);
             return channel;
         }
 
-        private void CreateConnection(string name)
+        private async Task CreateConnection(string name)
         {
             var factory = new ConnectionFactory
             {
                 AutomaticRecoveryEnabled = conf.AutomaticRecoveryEnabled,
                 TopologyRecoveryEnabled = true,
                 RequestedHeartbeat = conf.RequestedHeartbeat,
-                UseBackgroundThreadsForIO = true,
                 UserName = conf.UserName,
                 Password = conf.Password,
             };
@@ -50,7 +52,7 @@ namespace EzBus.RabbitMQ
 
             try
             {
-                connection = factory.CreateConnection($"EzBus-{name}");
+                connection = await factory.CreateConnectionAsync($"EzBus-{name}");
             }
             catch (Exception ex)
             {

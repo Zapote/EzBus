@@ -8,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace EzBus.Core
 {
-    public class HandlerInvoker : IHandlerInvoker
+    public class HandlerInvoker(IServiceScopeFactory scopeFactory) : IHandlerInvoker
     {
-        private readonly IServiceScopeFactory scopeFactory;
-
-        public HandlerInvoker(IServiceScopeFactory scopeFactory)
-        {
-            this.scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
-        }
+        private readonly IServiceScopeFactory scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
 
         public async Task Invoke(BasicMessage basicMessage)
         {
@@ -25,7 +20,7 @@ namespace EzBus.Core
             await middlewareInvoker.Invoke(new MiddlewareContext(basicMessage));
         }
 
-        private IEnumerable<IMiddleware> LoadMiddlewares(IServiceScope scope)
+        private static List<IMiddleware> LoadMiddlewares(IServiceScope scope)
         {
             var middlewares = new List<IMiddleware>();
             var instances = scope.ServiceProvider.GetServices<IMiddleware>();

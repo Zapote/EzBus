@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <UserSecretsId>dotnet-DiceRoller.Service-905DB422-8765-4962-9CFA-FB32BF1E9DBC</UserSecretsId>
   </PropertyGroup>
 

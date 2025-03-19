@@ -11,7 +11,7 @@ namespace EzBus.RabbitMQ
     {
         private readonly IChannelFactory factory;
         private readonly string queue;
-        private IModel channel;
+        private IChannel channel;
         private Func<BasicMessage, Task> onMessage;
 
         public Consumer(IChannelFactory factory, string queue)
@@ -20,17 +20,16 @@ namespace EzBus.RabbitMQ
             this.queue = queue;
         }
 
-        public Task Consume(Func<BasicMessage, Task> onMessage)
+        public async Task Consume(Func<BasicMessage, Task> onMessage)
         {
             this.onMessage = onMessage;
-            channel = factory.GetChannel();
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += OnReceivedMessage;
-            channel.BasicConsume(queue, false, string.Empty, false, false, null, consumer);
-            return Task.CompletedTask;
+            channel = await factory.GetChannel();
+            var consumer = new AsyncEventingBasicConsumer(channel);
+            consumer.ReceivedAsync += OnReceivedMessage;
+            await channel.BasicConsumeAsync(queue, false, string.Empty, false, false, null, consumer);
         }
 
-        private void OnReceivedMessage(object sender, BasicDeliverEventArgs args)
+        private async Task OnReceivedMessage(object sender, BasicDeliverEventArgs args)
         {
             var body = args.Body.ToArray();
             var message = new BasicMessage(new MemoryStream(body));
@@ -41,9 +40,8 @@ namespace EzBus.RabbitMQ
                 message.AddHeader(header.Key, value);
             }
 
-            onMessage(message).GetAwaiter().GetResult();
-
-            channel.BasicAck(args.DeliveryTag, false);
+            await onMessage(message);
+            await channel.BasicAckAsync(args.DeliveryTag, false);
         }
     }
 }
