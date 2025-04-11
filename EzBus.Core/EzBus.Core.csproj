@@ -2,10 +2,14 @@
   <PropertyGroup>
     <TargetFrameworks>net9.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Version>4.0.0</Version>
     <PackageTags>
       bus;esb;service;soa;publish;subscribe;messaging;event;architecture;pub;sub;queue;servicebus</PackageTags>
     <Description>EzBus - Messaging made easy!</Description>
+    <PackageIcon>
+      <Icon>
+        http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ezbus-logo-128x128.png
+      </Icon>
+    </PackageIcon>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\EzBus\EzBus.csproj" />
