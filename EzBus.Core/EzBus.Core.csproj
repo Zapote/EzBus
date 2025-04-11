@@ -2,7 +2,10 @@
   <PropertyGroup>
     <TargetFrameworks>net9.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Version>3.1.0</Version>
+    <Version>4.0.0</Version>
+    <PackageTags>
+      bus;esb;service;soa;publish;subscribe;messaging;event;architecture;pub;sub;queue;servicebus</PackageTags>
+    <Description>EzBus - Messaging made easy!</Description>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\EzBus\EzBus.csproj" />
@@ -11,6 +14,5 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.3" />
-    <PackageReference Include="Newtonsoft.json" Version="13.0.1" />
   </ItemGroup>
 </Project>

@@ -1,33 +1,26 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using EzBus.Core.Serializers;
+﻿using EzBus.Core.Serializers;
 using EzBus.Core.Test.TestHelpers;
-using Xunit;
 
 namespace EzBus.Core.Test.Serializers
 {
     public class JsonDeserializationTest
     {
-        private readonly TestMessage message;
-        private readonly DateTime dateTimeValue = new DateTime(2011, 12, 23, 13, 37, 0);
-        private const string stringValue = "FooBar";
-        private const int intValue = 1337;
-        private const int nullableIntValue = 1338;
+        private readonly TestMessage message = new();
 
         public JsonDeserializationTest()
         {
             var serializer = new JsonBodySerializer();
-            var json = $@"{{ 
-                                StringValue : '{stringValue}', 
-                                TestEnum : '{TestEnum.Bar}',
-                                NullableIntValue : {nullableIntValue},
-                                DateTimeValue : '2011-12-23T13:37:00',
-                                TestMessageData : 
-                                {{
-                                    IntValue : {intValue}
-                                }}
-                          }}";
+            var json = """
+                {"StringValue": "FooBar",
+                    "TestMessageData": {
+                        "IntValue": 1337,
+                        "NullableIntValue": 1338
+                    },
+                    "TestEnum": 1,
+                    "NullableIntValue": 1338,
+                    "DateTimeValue": "2011-12-23T13:37:00"
+                }
+                """;
 
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
@@ -47,25 +40,25 @@ namespace EzBus.Core.Test.Serializers
         [Fact]
         public void StringValue_should_be_set()
         {
-            Assert.Equal(stringValue, message.StringValue);
+            Assert.Equal("FooBar", message.StringValue);
         }
 
         [Fact]
         public void IntValue_should_be_set()
         {
-            Assert.Equal(intValue, message.TestMessageData.IntValue);
+            Assert.Equal(1337, message.TestMessageData.IntValue);
         }
 
         [Fact]
         public void NullableIntValue_should_be_set()
         {
-            Assert.Equal(nullableIntValue, message.NullableIntValue);
+            Assert.Equal(1338, message.NullableIntValue);
         }
 
         [Fact]
         public void DateTimeValue_should_be_set()
         {
-            Assert.Equal(dateTimeValue, message.DateTimeValue);
+            Assert.Equal(new DateTime(2011, 12, 23, 13, 37, 0), message.DateTimeValue);
         }
     }
 }
