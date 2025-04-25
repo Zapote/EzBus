@@ -19,8 +19,9 @@ echo " ███████╗███████╗██████╗ █
                     E Z   B U S
 "
 
+version=4.0.0
 branch=$(git rev-parse --abbrev-ref HEAD)
-version=$(git describe --tags)
+
 echo current branch $branch
 # Check if the current branch is 'main'
 if [ "$branch" != "main" ]; then
@@ -34,5 +35,5 @@ dotnet build "./EzBus.sln" -c Release
 echo "Running tests..."
 dotnet test "./EzBus.sln" -c Release
 echo "Packing the project..."
-dotnet pack "./EzBus.Core/EzBus.Core.csproj" -c Release -p:Version=$version 
-dotnet pack "./EzBus.RabbitMQ/EzBus.RabbitMQ.csproj" -c Release  -p:Version=$version
+dotnet pack "./EzBus/EzBus.csproj" -c Release -p:PackageVersion=$version -o ./.artifacts
+dotnet pack "./EzBus.RabbitMQ/EzBus.RabbitMQ.csproj" -c Release -p:PackageVersion=$version -o ./.artifacts

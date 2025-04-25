@@ -1,4 +1,5 @@
 ﻿using EzBus.Utils;
+using EzBus.Core;
 using Xunit;
 
 namespace EzBus.Core.Test.Utils
@@ -8,7 +9,7 @@ namespace EzBus.Core.Test.Utils
         [Fact]
         public void GetAssemblyName_returns_name_of_the_assembly()
         {
-            Assert.Equal("EzBus.Core.Test", this.GetAssemblyName());
+            Assert.Equal("EzBus.Test", this.GetAssemblyName());
         }
 
         [Fact]

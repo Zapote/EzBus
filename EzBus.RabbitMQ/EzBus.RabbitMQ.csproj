@@ -3,11 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>net9.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <PackageTags>
-      bus;esb;service;soa;publish;subscribe;messaging;event;architecture;pub;sub;queue;servicebus</PackageTags>
-    <Description>EzBus - Messaging made easy!</Description>
-    <PackageIconUrl>
-      http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ezbus-logo-128x128.png</PackageIconUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />

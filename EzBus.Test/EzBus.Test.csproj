@@ -16,7 +16,6 @@
         <Using Include="Xunit" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\EzBus.Core\EzBus.Core.csproj" />
         <ProjectReference Include="..\EzBus\EzBus.csproj" />
     </ItemGroup>
     <ItemGroup>

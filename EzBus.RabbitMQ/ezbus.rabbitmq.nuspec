@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>EzBus.RabbitMQ</id>
+        <version>4.0.0-beta.5</version>
+        <authors>Zapote</authors>
+        <owners>Zapote</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>EzBus - Messaging made easy!</description>
+        <releaseNotes>None</releaseNotes>
+        <PackageTags>
+            bus;esb;service;soa;publish;subscribe;messaging;event;architecture;pub;sub;queue;servicebus</PackageTags>
+        <Description>EzBus - Messaging made easy!</Description>
+        <PackageIcon>
+            <Icon>
+                http://54f6bbc1606323e7ca30-826e1c33a24235ae62ed1c25c0c4f663.r67.cf3.rackcdn.com/ezbus-logo-128x128.png</Icon>
+        </PackageIcon>
+    </metadata>
+    <dependencies>
+        <dependency id="RabbitMQ.Client" version="7.1.1" />
+    </dependencies>
+    <files>
+        <file src="bin/Release/net9.0/EzBus.RabbitMQ.dll" target="lib\net9.0" />
+    </files>
+</package>

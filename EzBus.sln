@@ -5,9 +5,7 @@ VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus", "EzBus\EzBus.csproj", "{ECDE44BA-F44D-442A-B914-B7405EAFA69D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.Core", "EzBus.Core\EzBus.Core.csproj", "{09EA7FC5-A6BE-4FC6-9AE3-4CB1134704FA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.Core.Test", "EzBus.Core.Test\EzBus.Core.Test.csproj", "{A0AD14C9-0172-4CAD-8704-B8610B39DFE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.Test", "EzBus.Test\EzBus.Test.csproj", "{A0AD14C9-0172-4CAD-8704-B8610B39DFE5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EzBus.AcceptanceTest", "EzBus.AcceptanceTest\EzBus.AcceptanceTest.csproj", "{63769B5F-E76C-451C-B9A0-3FF1BE9D12CA}"
 EndProject

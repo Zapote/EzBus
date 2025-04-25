@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 
-[assembly: InternalsVisibleTo("EzBus.Core.Test")]
+[assembly: InternalsVisibleTo("EzBus.Test")]
 namespace EzBus.Core
 {
   internal class BusConfig : IBusConfig
