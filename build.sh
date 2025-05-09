@@ -35,5 +35,5 @@ dotnet build "./EzBus.sln" -c Release
 echo "Running tests..."
 dotnet test "./EzBus.sln" -c Release
 echo "Packing the project..."
-dotnet pack "./EzBus/EzBus.csproj" -c Release -p:PackageVersion=$version -o ./.artifacts
-dotnet pack "./EzBus.RabbitMQ/EzBus.RabbitMQ.csproj" -c Release -p:PackageVersion=$version -o ./.artifacts
+dotnet pack "./EzBus/EzBus.csproj" -c Release -p:PackageVersion=$version -o ./artifacts
+dotnet pack "./EzBus.RabbitMQ/EzBus.RabbitMQ.csproj" -c Release -p:PackageVersion=$version -o ./artifacts
